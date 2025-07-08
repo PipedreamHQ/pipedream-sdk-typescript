@@ -14,7 +14,7 @@ export declare namespace Actions {
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
         projectId: string;
-        token?: core.Supplier<core.BearerToken | undefined>;
+        apiKey?: core.Supplier<string | undefined>;
         /** Override the x-pd-environment header */
         xPdEnvironment?: core.Supplier<string | undefined>;
         /** Additional headers to include in requests. */
@@ -85,8 +85,8 @@ export class Actions {
                     headers: mergeHeaders(
                         this._options?.headers,
                         mergeOnlyDefinedHeaders({
-                            Authorization: await this._getAuthorizationHeader(),
                             "x-pd-environment": requestOptions?.xPdEnvironment,
+                            ...(await this._getCustomAuthorizationHeaders()),
                         }),
                         requestOptions?.headers,
                     ),
@@ -171,8 +171,8 @@ export class Actions {
             headers: mergeHeaders(
                 this._options?.headers,
                 mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
                     "x-pd-environment": requestOptions?.xPdEnvironment,
+                    ...(await this._getCustomAuthorizationHeaders()),
                 }),
                 requestOptions?.headers,
             ),
@@ -247,9 +247,9 @@ export class Actions {
             headers: mergeHeaders(
                 this._options?.headers,
                 mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
                     "x-async-handle": asyncHandle != null ? asyncHandle : undefined,
                     "x-pd-environment": requestOptions?.xPdEnvironment,
+                    ...(await this._getCustomAuthorizationHeaders()),
                 }),
                 requestOptions?.headers,
             ),
@@ -326,9 +326,9 @@ export class Actions {
             headers: mergeHeaders(
                 this._options?.headers,
                 mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
                     "x-async-handle": asyncHandle != null ? asyncHandle : undefined,
                     "x-pd-environment": requestOptions?.xPdEnvironment,
+                    ...(await this._getCustomAuthorizationHeaders()),
                 }),
                 requestOptions?.headers,
             ),
@@ -403,9 +403,9 @@ export class Actions {
             headers: mergeHeaders(
                 this._options?.headers,
                 mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
                     "x-async-handle": asyncHandle != null ? asyncHandle : undefined,
                     "x-pd-environment": requestOptions?.xPdEnvironment,
+                    ...(await this._getCustomAuthorizationHeaders()),
                 }),
                 requestOptions?.headers,
             ),
@@ -447,12 +447,8 @@ export class Actions {
         }
     }
 
-    protected async _getAuthorizationHeader(): Promise<string | undefined> {
-        const bearer = await core.Supplier.get(this._options.token);
-        if (bearer != null) {
-            return `Bearer ${bearer}`;
-        }
-
-        return undefined;
+    protected async _getCustomAuthorizationHeaders() {
+        const apiKeyValue = await core.Supplier.get(this._options.apiKey);
+        return { Authorization: apiKeyValue };
     }
 }

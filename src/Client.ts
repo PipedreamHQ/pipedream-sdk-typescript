@@ -4,7 +4,6 @@
 
 import * as environments from "./environments.js";
 import * as core from "./core/index.js";
-import { OauthTokens } from "./api/resources/oauthTokens/client/Client.js";
 import { mergeHeaders } from "./core/headers.js";
 import { AppCategories } from "./api/resources/appCategories/client/Client.js";
 import { Apps } from "./api/resources/apps/client/Client.js";
@@ -17,15 +16,15 @@ import { DeployedTriggers } from "./api/resources/deployedTriggers/client/Client
 import { Projects } from "./api/resources/projects/client/Client.js";
 import { Proxy } from "./api/resources/proxy/client/Client.js";
 import { Tokens } from "./api/resources/tokens/client/Client.js";
+import { OauthTokens } from "./api/resources/oauthTokens/client/Client.js";
 
 export declare namespace PipedreamClient {
     export interface Options {
         environment?: core.Supplier<environments.PipedreamEnvironment | string>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
-        clientId: core.Supplier<string>;
-        clientSecret: core.Supplier<string>;
         projectId: string;
+        apiKey?: core.Supplier<string | undefined>;
         /** Override the x-pd-environment header */
         xPdEnvironment?: core.Supplier<string | undefined>;
         /** Additional headers to include in requests. */
@@ -48,7 +47,6 @@ export declare namespace PipedreamClient {
 
 export class PipedreamClient {
     protected readonly _options: PipedreamClient.Options;
-    private readonly _oauthTokenProvider: core.OAuthTokenProvider;
     protected _appCategories: AppCategories | undefined;
     protected _apps: Apps | undefined;
     protected _accounts: Accounts | undefined;
@@ -78,98 +76,53 @@ export class PipedreamClient {
                 _options?.headers,
             ),
         };
-
-        this._oauthTokenProvider = new core.OAuthTokenProvider({
-            clientId: this._options.clientId,
-            clientSecret: this._options.clientSecret,
-            authClient: new OauthTokens({
-                ...this._options,
-                environment: this._options.environment,
-            }),
-        });
     }
 
     public get appCategories(): AppCategories {
-        return (this._appCategories ??= new AppCategories({
-            ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
-        }));
+        return (this._appCategories ??= new AppCategories(this._options));
     }
 
     public get apps(): Apps {
-        return (this._apps ??= new Apps({
-            ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
-        }));
+        return (this._apps ??= new Apps(this._options));
     }
 
     public get accounts(): Accounts {
-        return (this._accounts ??= new Accounts({
-            ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
-        }));
+        return (this._accounts ??= new Accounts(this._options));
     }
 
     public get users(): Users {
-        return (this._users ??= new Users({
-            ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
-        }));
+        return (this._users ??= new Users(this._options));
     }
 
     public get components(): Components {
-        return (this._components ??= new Components({
-            ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
-        }));
+        return (this._components ??= new Components(this._options));
     }
 
     public get actions(): Actions {
-        return (this._actions ??= new Actions({
-            ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
-        }));
+        return (this._actions ??= new Actions(this._options));
     }
 
     public get triggers(): Triggers {
-        return (this._triggers ??= new Triggers({
-            ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
-        }));
+        return (this._triggers ??= new Triggers(this._options));
     }
 
     public get deployedTriggers(): DeployedTriggers {
-        return (this._deployedTriggers ??= new DeployedTriggers({
-            ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
-        }));
+        return (this._deployedTriggers ??= new DeployedTriggers(this._options));
     }
 
     public get projects(): Projects {
-        return (this._projects ??= new Projects({
-            ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
-        }));
+        return (this._projects ??= new Projects(this._options));
     }
 
     public get proxy(): Proxy {
-        return (this._proxy ??= new Proxy({
-            ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
-        }));
+        return (this._proxy ??= new Proxy(this._options));
     }
 
     public get tokens(): Tokens {
-        return (this._tokens ??= new Tokens({
-            ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
-        }));
+        return (this._tokens ??= new Tokens(this._options));
     }
 
     public get oauthTokens(): OauthTokens {
-        return (this._oauthTokens ??= new OauthTokens({
-            ...this._options,
-            token: async () => await this._oauthTokenProvider.getToken(),
-        }));
+        return (this._oauthTokens ??= new OauthTokens(this._options));
     }
 }
