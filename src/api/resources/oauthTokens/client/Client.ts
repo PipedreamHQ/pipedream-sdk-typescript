@@ -13,7 +13,6 @@ export declare namespace OauthTokens {
         environment?: core.Supplier<environments.PipedreamEnvironment | string>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
-        projectEnvironment: string;
         projectId: string;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-pd-environment header */
