@@ -36,11 +36,11 @@ export class Pipedream extends PipedreamClient {
     }
 
     const {
-      environment: projectEnvironment = process.env.PIPEDREAM_PROJECT_ENVIRONMENT,
+      environment: xPdEnvironment = process.env.PIPEDREAM_PROJECT_ENVIRONMENT,
       projectId = process.env.PIPEDREAM_PROJECT_ID,
       apiEnvironment: environment = environments.PipedreamEnvironment.Prod,
     } = opts;
-    if (!projectEnvironment) {
+    if (!xPdEnvironment) {
       throw new Error("Project environment is required");
     }
     if (!projectId) {
@@ -51,8 +51,7 @@ export class Pipedream extends PipedreamClient {
       clientId,
       clientSecret,
       environment,
-      xPdEnvironment: projectEnvironment,
-      projectEnvironment,
+      xPdEnvironment,
       projectId,
     });
   }
