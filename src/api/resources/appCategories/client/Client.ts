@@ -14,7 +14,7 @@ export declare namespace AppCategories {
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
         projectId: string;
-        token?: core.Supplier<core.BearerToken | undefined>;
+        accessToken?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-pd-environment header */
         xPdEnvironment?: core.Supplier<string | undefined>;
         /** Additional headers to include in requests. */

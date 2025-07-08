@@ -26,6 +26,7 @@ export declare namespace PipedreamClient {
         clientId: core.Supplier<string>;
         clientSecret: core.Supplier<string>;
         projectId: string;
+        accessToken?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-pd-environment header */
         xPdEnvironment?: core.Supplier<string | undefined>;
         /** Additional headers to include in requests. */
