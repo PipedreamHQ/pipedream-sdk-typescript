@@ -23,8 +23,8 @@ export declare namespace PipedreamClient {
         environment?: core.Supplier<environments.PipedreamEnvironment | string>;
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
-        clientId: core.Supplier<string>;
-        clientSecret: core.Supplier<string>;
+        clientId?: core.Supplier<string>;
+        clientSecret?: core.Supplier<string>;
         projectId: string;
         /** Override the x-pd-environment header */
         xPdEnvironment?: core.Supplier<string | undefined>;
@@ -79,9 +79,23 @@ export class PipedreamClient {
             ),
         };
 
+        const clientId = this._options.clientId ?? process.env["PIPEDREAM_CLIENT_ID"];
+        if (clientId == null) {
+            throw new Error(
+                "clientId is required; either pass it as an argument or set the PIPEDREAM_CLIENT_ID environment variable",
+            );
+        }
+
+        const clientSecret = this._options.clientSecret ?? process.env["PIPEDREAM_CLIENT_SECRET"];
+        if (clientSecret == null) {
+            throw new Error(
+                "clientSecret is required; either pass it as an argument or set the PIPEDREAM_CLIENT_SECRET environment variable",
+            );
+        }
+
         this._oauthTokenProvider = new core.OAuthTokenProvider({
-            clientId: this._options.clientId,
-            clientSecret: this._options.clientSecret,
+            clientId,
+            clientSecret,
             authClient: new OauthTokens({
                 ...this._options,
                 environment: this._options.environment,
