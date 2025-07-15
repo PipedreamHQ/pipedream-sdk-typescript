@@ -25,6 +25,7 @@ import { PipedreamClient } from "@pipedream/sdk";
 const client = new PipedreamClient({
     clientId: "YOUR_CLIENT_ID",
     clientSecret: "YOUR_CLIENT_SECRET",
+    accessToken: "YOUR_ACCESS_TOKEN",
     xPdEnvironment: "YOUR_X_PD_ENVIRONMENT",
 });
 await client.accounts.create({
@@ -77,6 +78,7 @@ import { PipedreamClient } from "@pipedream/sdk";
 const client = new PipedreamClient({
     clientId: "YOUR_CLIENT_ID",
     clientSecret: "YOUR_CLIENT_SECRET",
+    accessToken: "YOUR_ACCESS_TOKEN",
     xPdEnvironment: "YOUR_X_PD_ENVIRONMENT",
 });
 const response = await client.apps.list();
