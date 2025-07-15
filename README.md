@@ -85,7 +85,7 @@ for await (const item of response) {
 }
 
 // Or you can manually iterate page-by-page
-const page = await client.apps.list();
+let page = await client.apps.list();
 while (page.hasNextPage()) {
     page = page.getNextPage();
 }
