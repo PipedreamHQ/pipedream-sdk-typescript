@@ -4,6 +4,7 @@
 
 import * as environments from "../../../../environments.js";
 import * as core from "../../../../core/index.js";
+import * as Pipedream from "../../../index.js";
 import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
 import * as errors from "../../../../errors/index.js";
 
@@ -15,7 +16,7 @@ export declare namespace Users {
         projectId: string;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-pd-environment header */
-        xPdEnvironment?: core.Supplier<string | undefined>;
+        projectEnvironment?: core.Supplier<Pipedream.ProjectEnvironment | undefined>;
         /** Additional headers to include in requests. */
         headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
     }
@@ -28,7 +29,7 @@ export declare namespace Users {
         /** A hook to abort the request. */
         abortSignal?: AbortSignal;
         /** Override the x-pd-environment header */
-        xPdEnvironment?: string | undefined;
+        projectEnvironment?: Pipedream.ProjectEnvironment | undefined;
         /** Additional headers to include in the request. */
         headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
     }
@@ -71,7 +72,7 @@ export class Users {
                 this._options?.headers,
                 mergeOnlyDefinedHeaders({
                     Authorization: await this._getAuthorizationHeader(),
-                    "x-pd-environment": requestOptions?.xPdEnvironment,
+                    "x-pd-environment": requestOptions?.projectEnvironment,
                 }),
                 requestOptions?.headers,
             ),

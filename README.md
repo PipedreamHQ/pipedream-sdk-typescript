@@ -25,7 +25,7 @@ import { PipedreamClient } from "@pipedream/sdk";
 const client = new PipedreamClient({
     clientId: "YOUR_CLIENT_ID",
     clientSecret: "YOUR_CLIENT_SECRET",
-    xPdEnvironment: "YOUR_X_PD_ENVIRONMENT",
+    projectEnvironment: "YOUR_PROJECT_ENVIRONMENT",
 });
 await client.accounts.create({
     app_slug: "app_slug",
@@ -77,7 +77,7 @@ import { PipedreamClient } from "@pipedream/sdk";
 const client = new PipedreamClient({
     clientId: "YOUR_CLIENT_ID",
     clientSecret: "YOUR_CLIENT_SECRET",
-    xPdEnvironment: "YOUR_X_PD_ENVIRONMENT",
+    projectEnvironment: "YOUR_PROJECT_ENVIRONMENT",
 });
 const response = await client.apps.list();
 for await (const item of response) {
@@ -85,7 +85,7 @@ for await (const item of response) {
 }
 
 // Or you can manually iterate page-by-page
-const page = await client.apps.list();
+let page = await client.apps.list();
 while (page.hasNextPage()) {
     page = page.getNextPage();
 }

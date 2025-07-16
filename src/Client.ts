@@ -4,6 +4,7 @@
 
 import * as environments from "./environments.js";
 import * as core from "./core/index.js";
+import * as Pipedream from "./api/index.js";
 import { OauthTokens } from "./api/resources/oauthTokens/client/Client.js";
 import { mergeHeaders } from "./core/headers.js";
 import { AppCategories } from "./api/resources/appCategories/client/Client.js";
@@ -27,7 +28,7 @@ export declare namespace PipedreamClient {
         clientSecret?: core.Supplier<string>;
         projectId: string;
         /** Override the x-pd-environment header */
-        xPdEnvironment?: core.Supplier<string | undefined>;
+        projectEnvironment?: core.Supplier<Pipedream.ProjectEnvironment | undefined>;
         /** Additional headers to include in requests. */
         headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
     }
@@ -40,7 +41,7 @@ export declare namespace PipedreamClient {
         /** A hook to abort the request. */
         abortSignal?: AbortSignal;
         /** Override the x-pd-environment header */
-        xPdEnvironment?: string | undefined;
+        projectEnvironment?: Pipedream.ProjectEnvironment | undefined;
         /** Additional headers to include in the request. */
         headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
     }
@@ -67,7 +68,7 @@ export class PipedreamClient {
             ..._options,
             headers: mergeHeaders(
                 {
-                    "x-pd-environment": _options?.xPdEnvironment,
+                    "x-pd-environment": _options?.projectEnvironment,
                     "X-Fern-Language": "JavaScript",
                     "X-Fern-SDK-Name": "@pipedream/sdk",
                     "X-Fern-SDK-Version": "1.7.1",

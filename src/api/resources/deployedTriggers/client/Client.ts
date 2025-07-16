@@ -16,7 +16,7 @@ export declare namespace DeployedTriggers {
         projectId: string;
         token?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-pd-environment header */
-        xPdEnvironment?: core.Supplier<string | undefined>;
+        projectEnvironment?: core.Supplier<Pipedream.ProjectEnvironment | undefined>;
         /** Additional headers to include in requests. */
         headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
     }
@@ -29,7 +29,7 @@ export declare namespace DeployedTriggers {
         /** A hook to abort the request. */
         abortSignal?: AbortSignal;
         /** Override the x-pd-environment header */
-        xPdEnvironment?: string | undefined;
+        projectEnvironment?: Pipedream.ProjectEnvironment | undefined;
         /** Additional headers to include in the request. */
         headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
     }
@@ -83,7 +83,7 @@ export class DeployedTriggers {
                         this._options?.headers,
                         mergeOnlyDefinedHeaders({
                             Authorization: await this._getAuthorizationHeader(),
-                            "x-pd-environment": requestOptions?.xPdEnvironment,
+                            "x-pd-environment": requestOptions?.projectEnvironment,
                         }),
                         requestOptions?.headers,
                     ),
@@ -177,7 +177,7 @@ export class DeployedTriggers {
                 this._options?.headers,
                 mergeOnlyDefinedHeaders({
                     Authorization: await this._getAuthorizationHeader(),
-                    "x-pd-environment": requestOptions?.xPdEnvironment,
+                    "x-pd-environment": requestOptions?.projectEnvironment,
                 }),
                 requestOptions?.headers,
             ),
@@ -255,7 +255,7 @@ export class DeployedTriggers {
                 this._options?.headers,
                 mergeOnlyDefinedHeaders({
                     Authorization: await this._getAuthorizationHeader(),
-                    "x-pd-environment": requestOptions?.xPdEnvironment,
+                    "x-pd-environment": requestOptions?.projectEnvironment,
                 }),
                 requestOptions?.headers,
             ),
@@ -340,7 +340,7 @@ export class DeployedTriggers {
                 this._options?.headers,
                 mergeOnlyDefinedHeaders({
                     Authorization: await this._getAuthorizationHeader(),
-                    "x-pd-environment": requestOptions?.xPdEnvironment,
+                    "x-pd-environment": requestOptions?.projectEnvironment,
                 }),
                 requestOptions?.headers,
             ),
@@ -422,7 +422,7 @@ export class DeployedTriggers {
                 this._options?.headers,
                 mergeOnlyDefinedHeaders({
                     Authorization: await this._getAuthorizationHeader(),
-                    "x-pd-environment": requestOptions?.xPdEnvironment,
+                    "x-pd-environment": requestOptions?.projectEnvironment,
                 }),
                 requestOptions?.headers,
             ),
@@ -500,7 +500,7 @@ export class DeployedTriggers {
                 this._options?.headers,
                 mergeOnlyDefinedHeaders({
                     Authorization: await this._getAuthorizationHeader(),
-                    "x-pd-environment": requestOptions?.xPdEnvironment,
+                    "x-pd-environment": requestOptions?.projectEnvironment,
                 }),
                 requestOptions?.headers,
             ),
@@ -582,7 +582,7 @@ export class DeployedTriggers {
                 this._options?.headers,
                 mergeOnlyDefinedHeaders({
                     Authorization: await this._getAuthorizationHeader(),
-                    "x-pd-environment": requestOptions?.xPdEnvironment,
+                    "x-pd-environment": requestOptions?.projectEnvironment,
                 }),
                 requestOptions?.headers,
             ),
@@ -666,7 +666,7 @@ export class DeployedTriggers {
                 this._options?.headers,
                 mergeOnlyDefinedHeaders({
                     Authorization: await this._getAuthorizationHeader(),
-                    "x-pd-environment": requestOptions?.xPdEnvironment,
+                    "x-pd-environment": requestOptions?.projectEnvironment,
                 }),
                 requestOptions?.headers,
             ),
@@ -745,7 +745,7 @@ export class DeployedTriggers {
                 this._options?.headers,
                 mergeOnlyDefinedHeaders({
                     Authorization: await this._getAuthorizationHeader(),
-                    "x-pd-environment": requestOptions?.xPdEnvironment,
+                    "x-pd-environment": requestOptions?.projectEnvironment,
                 }),
                 requestOptions?.headers,
             ),

@@ -111,7 +111,7 @@ for await (const item of response) {
 }
 
 // Or you can manually iterate page-by-page
-const page = await client.apps.list();
+let page = await client.apps.list();
 while (page.hasNextPage()) {
     page = page.getNextPage();
 }
@@ -218,7 +218,7 @@ for await (const item of response) {
 }
 
 // Or you can manually iterate page-by-page
-const page = await client.accounts.list();
+let page = await client.accounts.list();
 while (page.hasNextPage()) {
     page = page.getNextPage();
 }
@@ -531,7 +531,7 @@ for await (const item of response) {
 }
 
 // Or you can manually iterate page-by-page
-const page = await client.components.list();
+let page = await client.components.list();
 while (page.hasNextPage()) {
     page = page.getNextPage();
 }
@@ -745,7 +745,7 @@ for await (const item of response) {
 }
 
 // Or you can manually iterate page-by-page
-const page = await client.actions.list();
+let page = await client.actions.list();
 while (page.hasNextPage()) {
     page = page.getNextPage();
 }
@@ -1010,7 +1010,7 @@ for await (const item of response) {
 }
 
 // Or you can manually iterate page-by-page
-const page = await client.triggers.list();
+let page = await client.triggers.list();
 while (page.hasNextPage()) {
     page = page.getNextPage();
 }
@@ -1277,7 +1277,7 @@ for await (const item of response) {
 }
 
 // Or you can manually iterate page-by-page
-const page = await client.deployedTriggers.list({
+let page = await client.deployedTriggers.list({
     external_user_id: "external_user_id",
 });
 while (page.hasNextPage()) {
