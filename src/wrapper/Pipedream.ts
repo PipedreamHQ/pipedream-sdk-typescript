@@ -1,47 +1,29 @@
+import { ProjectEnvironment } from "../api";
 import { PipedreamClient } from "../Client";
 import * as environments from "../environments";
 
-/**
- * OAuth credentials for your Pipedream account, containing client ID and
- * secret.
- */
-export type OAuthCredentials = {
-  clientId: string;
-  clientSecret: string;
-};
-
-export type AccessToken = {
-  accessToken: string;
-};
-
-/**
- * The environment in which the server client is running.
- */
-export type ProjectEnvironment = "development" | "production";
-
 export interface BackendOpts {
-  credentials: OAuthCredentials | AccessToken;
-  environment: ProjectEnvironment;
+  clientId?: string;
+  clientSecret?: string;
+  environment?: environments.PipedreamEnvironment;
+  projectEnvironment?: ProjectEnvironment;
   projectId: string;
-  apiEnvironment?: environments.PipedreamEnvironment;
 }
 
 export class Pipedream extends PipedreamClient {
   public constructor(opts: BackendOpts) {
-    // @ts-ignore
-    const { clientId = process.env.PIPEDREAM_CLIENT_ID, clientSecret = process.env.PIPEDREAM_CLIENT_SECRET } =
-      opts.credentials;
-    if (!clientId || !clientSecret) {
-      throw new Error("OAuth client ID and secret are required");
-    }
-
     const {
-      environment: xPdEnvironment = process.env.PIPEDREAM_PROJECT_ENVIRONMENT,
+      clientId = process.env.PIPEDREAM_CLIENT_ID,
+      clientSecret = process.env.PIPEDREAM_CLIENT_SECRET,
+      environment = environments.PipedreamEnvironment.Prod,
+      projectEnvironment = process.env.PIPEDREAM_PROJECT_ENVIRONMENT ?? "production",
       projectId = process.env.PIPEDREAM_PROJECT_ID,
-      apiEnvironment: environment = environments.PipedreamEnvironment.Prod,
     } = opts;
-    if (!xPdEnvironment) {
-      throw new Error("Project environment is required");
+    if (!projectEnvironment) {
+      throw new Error("Project environment cannot be empty");
+    }
+    if (projectEnvironment !== "production" && projectEnvironment !== "development") {
+      throw new Error("Project environment must be either 'production' or 'development'");
     }
     if (!projectId) {
       throw new Error("Project ID is required");
@@ -51,7 +33,7 @@ export class Pipedream extends PipedreamClient {
       clientId,
       clientSecret,
       environment,
-      xPdEnvironment,
+      projectEnvironment,
       projectId,
     });
   }
