@@ -42,6 +42,7 @@ export * from "./ListAppsResponse.js";
 export * from "./ListAppCategoriesResponse.js";
 export * from "./PageInfo.js";
 export * from "./ProjectEnvironment.js";
+export * from "./ProjectId.js";
 export * from "./ProjectInfoResponse.js";
 export * from "./PropOption.js";
 export * from "./ProxyResponse.js";
