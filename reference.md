@@ -271,8 +271,6 @@ while (page.hasNextPage()) {
 ```typescript
 await client.accounts.create({
     app_slug: "app_slug",
-    cfmap_json: "cfmap_json",
-    connect_token: "connect_token",
 });
 ```
 
