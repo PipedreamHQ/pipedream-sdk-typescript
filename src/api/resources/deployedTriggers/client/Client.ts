@@ -14,7 +14,7 @@ export declare namespace DeployedTriggers {
         /** Specify a custom URL to connect the client to. */
         baseUrl?: core.Supplier<string>;
         projectId: string;
-        token?: core.Supplier<core.BearerToken | undefined>;
+        accessToken?: core.Supplier<core.BearerToken | undefined>;
         /** Override the x-pd-environment header */
         projectEnvironment?: core.Supplier<Pipedream.ProjectEnvironment | undefined>;
         /** Additional headers to include in requests. */
@@ -789,7 +789,7 @@ export class DeployedTriggers {
     }
 
     protected async _getAuthorizationHeader(): Promise<string | undefined> {
-        const bearer = await core.Supplier.get(this._options.token);
+        const bearer = (await core.Supplier.get(this._options.accessToken)) ?? process?.env["PIPEDREAM_ACCESS_TOKEN"];
         if (bearer != null) {
             return `Bearer ${bearer}`;
         }

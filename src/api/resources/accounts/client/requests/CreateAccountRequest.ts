@@ -5,9 +5,7 @@
 /**
  * @example
  *     {
- *         app_slug: "app_slug",
- *         cfmap_json: "cfmap_json",
- *         connect_token: "connect_token"
+ *         app_slug: "app_slug"
  *     }
  */
 export interface CreateAccountRequest {
@@ -23,9 +21,7 @@ export interface CreateAccountRequest {
     /** The app slug for the account */
     app_slug: string;
     /** JSON string containing the custom fields mapping */
-    cfmap_json: string;
-    /** The connect token for authentication */
-    connect_token: string;
+    cfmap_json?: string;
     /** Optional name for the account */
     name?: string;
 }

@@ -23,14 +23,11 @@ Instantiate and use the client with the following:
 import { PipedreamClient } from "@pipedream/sdk";
 
 const client = new PipedreamClient({
-    clientId: "YOUR_CLIENT_ID",
-    clientSecret: "YOUR_CLIENT_SECRET",
+    accessToken: "YOUR_ACCESS_TOKEN",
     projectEnvironment: "YOUR_PROJECT_ENVIRONMENT",
 });
 await client.accounts.create({
     app_slug: "app_slug",
-    cfmap_json: "cfmap_json",
-    connect_token: "connect_token",
 });
 ```
 
@@ -75,8 +72,7 @@ List endpoints are paginated. The SDK provides an iterator so that you can simpl
 import { PipedreamClient } from "@pipedream/sdk";
 
 const client = new PipedreamClient({
-    clientId: "YOUR_CLIENT_ID",
-    clientSecret: "YOUR_CLIENT_SECRET",
+    accessToken: "YOUR_ACCESS_TOKEN",
     projectEnvironment: "YOUR_PROJECT_ENVIRONMENT",
 });
 const response = await client.apps.list();
