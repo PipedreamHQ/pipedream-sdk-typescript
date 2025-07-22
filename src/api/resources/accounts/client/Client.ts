@@ -459,7 +459,7 @@ export class Accounts {
     }
 
     protected async _getAuthorizationHeader(): Promise<string | undefined> {
-        const bearer = await core.Supplier.get(this._options.token);
+        const bearer = (await core.Supplier.get(this._options.token)) ?? process?.env["PIPEDREAM_ACCESS_TOKEN"];
         if (bearer != null) {
             return `Bearer ${bearer}`;
         }

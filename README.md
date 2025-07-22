@@ -22,11 +22,7 @@ Instantiate and use the client with the following:
 ```typescript
 import { PipedreamClient } from "@pipedream/sdk";
 
-const client = new PipedreamClient({
-    clientId: "YOUR_CLIENT_ID",
-    clientSecret: "YOUR_CLIENT_SECRET",
-    projectEnvironment: "YOUR_PROJECT_ENVIRONMENT",
-});
+const client = new PipedreamClient({ token: "YOUR_TOKEN", projectEnvironment: "YOUR_PROJECT_ENVIRONMENT" });
 await client.accounts.create({
     app_slug: "app_slug",
     cfmap_json: "cfmap_json",
@@ -74,11 +70,7 @@ List endpoints are paginated. The SDK provides an iterator so that you can simpl
 ```typescript
 import { PipedreamClient } from "@pipedream/sdk";
 
-const client = new PipedreamClient({
-    clientId: "YOUR_CLIENT_ID",
-    clientSecret: "YOUR_CLIENT_SECRET",
-    projectEnvironment: "YOUR_PROJECT_ENVIRONMENT",
-});
+const client = new PipedreamClient({ token: "YOUR_TOKEN", projectEnvironment: "YOUR_PROJECT_ENVIRONMENT" });
 const response = await client.apps.list();
 for await (const item of response) {
     console.log(item);
