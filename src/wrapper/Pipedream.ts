@@ -10,12 +10,16 @@ export interface BackendOpts {
   projectId: string;
 }
 
+function expandEnvVars(template: string) {
+  return template.replace(/\$\{(\w+)\}/g, (_, key) => process.env[key] ?? "");
+}
+
 export class Pipedream extends PipedreamClient {
   public constructor(opts: BackendOpts) {
     const {
       clientId = process.env.PIPEDREAM_CLIENT_ID,
       clientSecret = process.env.PIPEDREAM_CLIENT_SECRET,
-      environment = environments.PipedreamEnvironment.Prod,
+      environment: rawEnvironment = environments.PipedreamEnvironment.Prod,
       projectEnvironment = process.env.PIPEDREAM_PROJECT_ENVIRONMENT ?? "production",
       projectId = process.env.PIPEDREAM_PROJECT_ID,
     } = opts;
@@ -28,6 +32,8 @@ export class Pipedream extends PipedreamClient {
     if (!projectId) {
       throw new Error("Project ID is required");
     }
+
+    const environment = expandEnvVars(rawEnvironment.toString());
 
     super({
       clientId,
