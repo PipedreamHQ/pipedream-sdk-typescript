@@ -57,7 +57,7 @@ export class Proxy {
         url64: string,
         request: Pipedream.ProxyGetRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): core.HttpResponsePromise<Record<string, unknown>> {
+    ): core.HttpResponsePromise<Pipedream.ProxyResponse | undefined> {
         return core.HttpResponsePromise.fromPromise(this.__get(url64, request, requestOptions));
     }
 
@@ -65,7 +65,7 @@ export class Proxy {
         url64: string,
         request: Pipedream.ProxyGetRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): Promise<core.WithRawResponse<Record<string, unknown>>> {
+    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
         const { external_user_id: externalUserId, account_id: accountId } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
@@ -92,7 +92,7 @@ export class Proxy {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return { data: _response.body as Record<string, unknown>, rawResponse: _response.rawResponse };
+            return { data: _response.body as Pipedream.ProxyResponse | undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -140,7 +140,7 @@ export class Proxy {
         url64: string,
         request: Pipedream.ProxyPostRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): core.HttpResponsePromise<Record<string, unknown>> {
+    ): core.HttpResponsePromise<Pipedream.ProxyResponse | undefined> {
         return core.HttpResponsePromise.fromPromise(this.__post(url64, request, requestOptions));
     }
 
@@ -148,7 +148,7 @@ export class Proxy {
         url64: string,
         request: Pipedream.ProxyPostRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): Promise<core.WithRawResponse<Record<string, unknown>>> {
+    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
         const { external_user_id: externalUserId, account_id: accountId, body: _body } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
@@ -178,7 +178,7 @@ export class Proxy {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return { data: _response.body as Record<string, unknown>, rawResponse: _response.rawResponse };
+            return { data: _response.body as Pipedream.ProxyResponse | undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -226,7 +226,7 @@ export class Proxy {
         url64: string,
         request: Pipedream.ProxyPutRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): core.HttpResponsePromise<Record<string, unknown>> {
+    ): core.HttpResponsePromise<Pipedream.ProxyResponse | undefined> {
         return core.HttpResponsePromise.fromPromise(this.__put(url64, request, requestOptions));
     }
 
@@ -234,7 +234,7 @@ export class Proxy {
         url64: string,
         request: Pipedream.ProxyPutRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): Promise<core.WithRawResponse<Record<string, unknown>>> {
+    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
         const { external_user_id: externalUserId, account_id: accountId, body: _body } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
@@ -264,7 +264,7 @@ export class Proxy {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return { data: _response.body as Record<string, unknown>, rawResponse: _response.rawResponse };
+            return { data: _response.body as Pipedream.ProxyResponse | undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -309,7 +309,7 @@ export class Proxy {
         url64: string,
         request: Pipedream.ProxyDeleteRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): core.HttpResponsePromise<Record<string, unknown>> {
+    ): core.HttpResponsePromise<Pipedream.ProxyResponse | undefined> {
         return core.HttpResponsePromise.fromPromise(this.__delete(url64, request, requestOptions));
     }
 
@@ -317,7 +317,7 @@ export class Proxy {
         url64: string,
         request: Pipedream.ProxyDeleteRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): Promise<core.WithRawResponse<Record<string, unknown>>> {
+    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
         const { external_user_id: externalUserId, account_id: accountId } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
@@ -344,7 +344,7 @@ export class Proxy {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return { data: _response.body as Record<string, unknown>, rawResponse: _response.rawResponse };
+            return { data: _response.body as Pipedream.ProxyResponse | undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -392,7 +392,7 @@ export class Proxy {
         url64: string,
         request: Pipedream.ProxyPatchRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): core.HttpResponsePromise<Record<string, unknown>> {
+    ): core.HttpResponsePromise<Pipedream.ProxyResponse | undefined> {
         return core.HttpResponsePromise.fromPromise(this.__patch(url64, request, requestOptions));
     }
 
@@ -400,7 +400,7 @@ export class Proxy {
         url64: string,
         request: Pipedream.ProxyPatchRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): Promise<core.WithRawResponse<Record<string, unknown>>> {
+    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
         const { external_user_id: externalUserId, account_id: accountId, body: _body } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
@@ -430,7 +430,7 @@ export class Proxy {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return { data: _response.body as Record<string, unknown>, rawResponse: _response.rawResponse };
+            return { data: _response.body as Pipedream.ProxyResponse | undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {

@@ -1827,7 +1827,7 @@ await client.projects.retrieveInfo();
 
 ## Proxy
 
-<details><summary><code>client.proxy.<a href="/src/api/resources/proxy/client/Client.ts">get</a>(url64, { ...params }) -> Record<string, unknown></code></summary>
+<details><summary><code>client.proxy.<a href="/src/api/resources/proxy/client/Client.ts">get</a>(url64, { ...params }) -> Pipedream.ProxyResponse | undefined</code></summary>
 <dl>
 <dd>
 
@@ -1886,7 +1886,7 @@ await client.proxy.get("url_64", {
 </dl>
 </details>
 
-<details><summary><code>client.proxy.<a href="/src/api/resources/proxy/client/Client.ts">post</a>(url64, { ...params }) -> Record<string, unknown></code></summary>
+<details><summary><code>client.proxy.<a href="/src/api/resources/proxy/client/Client.ts">post</a>(url64, { ...params }) -> Pipedream.ProxyResponse | undefined</code></summary>
 <dl>
 <dd>
 
@@ -1948,7 +1948,7 @@ await client.proxy.post("url_64", {
 </dl>
 </details>
 
-<details><summary><code>client.proxy.<a href="/src/api/resources/proxy/client/Client.ts">put</a>(url64, { ...params }) -> Record<string, unknown></code></summary>
+<details><summary><code>client.proxy.<a href="/src/api/resources/proxy/client/Client.ts">put</a>(url64, { ...params }) -> Pipedream.ProxyResponse | undefined</code></summary>
 <dl>
 <dd>
 
@@ -2010,7 +2010,7 @@ await client.proxy.put("url_64", {
 </dl>
 </details>
 
-<details><summary><code>client.proxy.<a href="/src/api/resources/proxy/client/Client.ts">delete</a>(url64, { ...params }) -> Record<string, unknown></code></summary>
+<details><summary><code>client.proxy.<a href="/src/api/resources/proxy/client/Client.ts">delete</a>(url64, { ...params }) -> Pipedream.ProxyResponse | undefined</code></summary>
 <dl>
 <dd>
 
@@ -2069,7 +2069,7 @@ await client.proxy.delete("url_64", {
 </dl>
 </details>
 
-<details><summary><code>client.proxy.<a href="/src/api/resources/proxy/client/Client.ts">patch</a>(url64, { ...params }) -> Record<string, unknown></code></summary>
+<details><summary><code>client.proxy.<a href="/src/api/resources/proxy/client/Client.ts">patch</a>(url64, { ...params }) -> Pipedream.ProxyResponse | undefined</code></summary>
 <dl>
 <dd>
 
