@@ -5,6 +5,6 @@
 .prettierrc.yml
 LICENSE
 
-src/api/resources/proxy/client/Client.ts
+src/api/resources/proxy/client/*
 src/index.ts
 src/wrapper
