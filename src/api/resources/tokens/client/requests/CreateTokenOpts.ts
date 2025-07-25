@@ -5,19 +5,16 @@
 /**
  * @example
  *     {
- *         external_user_id: "external_user_id",
- *         project_id: "project_id"
+ *         external_user_id: "external_user_id"
  *     }
  */
-export interface CreateTokenRequest {
+export interface CreateTokenOpts {
     /** List of allowed origins for CORS */
     allowed_origins?: string[];
     /** URI to redirect to on error */
     error_redirect_uri?: string;
     /** Your end user ID, for whom you're creating the token */
     external_user_id: string;
-    /** The ID of the project */
-    project_id: string;
     /** URI to redirect to on success */
     success_redirect_uri?: string;
     /** Webhook URI for notifications */
