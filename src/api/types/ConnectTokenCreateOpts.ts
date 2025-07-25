@@ -8,8 +8,6 @@
 export interface ConnectTokenCreateOpts {
     /** Your end user ID, for whom you're creating the token */
     external_user_id: string;
-    /** The ID of the project */
-    project_id: string;
     /** List of allowed origins for CORS */
     allowed_origins?: string[];
     /** URI to redirect to on error */
