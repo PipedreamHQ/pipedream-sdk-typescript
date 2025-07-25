@@ -30,6 +30,8 @@ export declare namespace OauthTokens {
         abortSignal?: AbortSignal;
         /** Override the x-pd-environment header */
         projectEnvironment?: Pipedream.ProjectEnvironment | undefined;
+        /** Additional query string parameters to include in the request. */
+        queryParams?: Record<string, unknown>;
         /** Additional headers to include in the request. */
         headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
     }
@@ -80,6 +82,7 @@ export class OauthTokens {
                 requestOptions?.headers,
             ),
             contentType: "application/json",
+            queryParameters: requestOptions?.queryParams,
             requestType: "json",
             body: { ...request, grant_type: "client_credentials" },
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,

@@ -289,7 +289,7 @@ await client.accounts.create({
 <dl>
 <dd>
 
-**request:** `Pipedream.CreateAccountRequest`
+**request:** `Pipedream.CreateAccountOpts`
 
 </dd>
 </dl>
@@ -2148,7 +2148,6 @@ await client.proxy.patch("url_64", {
 ```typescript
 await client.tokens.create({
     external_user_id: "external_user_id",
-    project_id: "project_id",
 });
 ```
 
@@ -2165,7 +2164,7 @@ await client.tokens.create({
 <dl>
 <dd>
 
-**request:** `Pipedream.CreateTokenRequest`
+**request:** `Pipedream.CreateTokenOpts`
 
 </dd>
 </dl>

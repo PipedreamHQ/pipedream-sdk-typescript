@@ -30,6 +30,8 @@ export declare namespace Accounts {
         abortSignal?: AbortSignal;
         /** Override the x-pd-environment header */
         projectEnvironment?: Pipedream.ProjectEnvironment | undefined;
+        /** Additional query string parameters to include in the request. */
+        queryParams?: Record<string, unknown>;
         /** Additional headers to include in the request. */
         headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
     }
@@ -104,7 +106,7 @@ export class Accounts {
                         }),
                         requestOptions?.headers,
                     ),
-                    queryParameters: _queryParams,
+                    queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
                     timeoutMs:
                         requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
                     maxRetries: requestOptions?.maxRetries,
@@ -157,7 +159,7 @@ export class Accounts {
     }
 
     /**
-     * @param {Pipedream.CreateAccountRequest} request
+     * @param {Pipedream.CreateAccountOpts} request
      * @param {Accounts.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
@@ -168,14 +170,14 @@ export class Accounts {
      *     })
      */
     public create(
-        request: Pipedream.CreateAccountRequest,
+        request: Pipedream.CreateAccountOpts,
         requestOptions?: Accounts.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.Account> {
         return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
     }
 
     private async __create(
-        request: Pipedream.CreateAccountRequest,
+        request: Pipedream.CreateAccountOpts,
         requestOptions?: Accounts.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.Account>> {
         const { app_id: appId, external_user_id: externalUserId, oauth_app_id: oauthAppId, ..._body } = request;
@@ -209,7 +211,7 @@ export class Accounts {
                 requestOptions?.headers,
             ),
             contentType: "application/json",
-            queryParameters: _queryParams,
+            queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             requestType: "json",
             body: _body,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
@@ -290,7 +292,7 @@ export class Accounts {
                 }),
                 requestOptions?.headers,
             ),
-            queryParameters: _queryParams,
+            queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -357,6 +359,7 @@ export class Accounts {
                 }),
                 requestOptions?.headers,
             ),
+            queryParameters: requestOptions?.queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -423,6 +426,7 @@ export class Accounts {
                 }),
                 requestOptions?.headers,
             ),
+            queryParameters: requestOptions?.queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,

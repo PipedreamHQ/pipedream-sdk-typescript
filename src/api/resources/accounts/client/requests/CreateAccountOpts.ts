@@ -10,7 +10,7 @@
  *         connect_token: "connect_token"
  *     }
  */
-export interface CreateAccountRequest {
+export interface CreateAccountOpts {
     /**
      * The app slug or ID to filter accounts by.
      */
