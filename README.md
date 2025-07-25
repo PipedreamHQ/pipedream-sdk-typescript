@@ -15,6 +15,11 @@ npm i -s @pipedream/sdk
 
 A full reference for this library is available [here](https://github.com/PipedreamHQ/pipedream-sdk-typescript/blob/HEAD/./reference.md).
 
+## Migration from v1.x
+
+If you are migrating from the v1.x SDK, please refer to the [migration
+guide](MIGRATE.md) for details on how to update your code.
+
 ## Usage
 
 Instantiate and use the client with the following:
