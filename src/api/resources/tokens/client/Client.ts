@@ -43,24 +43,23 @@ export class Tokens {
     }
 
     /**
-     * @param {Pipedream.CreateTokenRequest} request
+     * @param {Pipedream.CreateTokenOpts} request
      * @param {Tokens.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
      *     await client.tokens.create({
-     *         external_user_id: "external_user_id",
-     *         project_id: "project_id"
+     *         external_user_id: "external_user_id"
      *     })
      */
     public create(
-        request: Pipedream.CreateTokenRequest,
+        request: Pipedream.CreateTokenOpts,
         requestOptions?: Tokens.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.CreateTokenResponse> {
         return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
     }
 
     private async __create(
-        request: Pipedream.CreateTokenRequest,
+        request: Pipedream.CreateTokenOpts,
         requestOptions?: Tokens.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.CreateTokenResponse>> {
         const _response = await core.fetcher({
@@ -68,7 +67,7 @@ export class Tokens {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                "v1/connect/tokens",
+                `v1/connect/${encodeURIComponent(this._options.projectId)}/tokens`,
             ),
             method: "POST",
             headers: mergeHeaders(
@@ -106,7 +105,9 @@ export class Tokens {
                     rawResponse: _response.rawResponse,
                 });
             case "timeout":
-                throw new errors.PipedreamTimeoutError("Timeout exceeded when calling POST /v1/connect/tokens.");
+                throw new errors.PipedreamTimeoutError(
+                    "Timeout exceeded when calling POST /v1/connect/{project_id}/tokens.",
+                );
             case "unknown":
                 throw new errors.PipedreamError({
                     message: _response.error.errorMessage,
@@ -147,7 +148,7 @@ export class Tokens {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/tokens/${encodeURIComponent(ctok)}/validate`,
+                `v1/connect/${encodeURIComponent(this._options.projectId)}/tokens/${encodeURIComponent(ctok)}/validate`,
             ),
             method: "GET",
             headers: mergeHeaders(
@@ -184,7 +185,7 @@ export class Tokens {
                 });
             case "timeout":
                 throw new errors.PipedreamTimeoutError(
-                    "Timeout exceeded when calling GET /v1/connect/tokens/{ctok}/validate.",
+                    "Timeout exceeded when calling GET /v1/connect/{project_id}/tokens/{ctok}/validate.",
                 );
             case "unknown":
                 throw new errors.PipedreamError({
