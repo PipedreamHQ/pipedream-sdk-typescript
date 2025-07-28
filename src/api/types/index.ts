@@ -22,6 +22,7 @@ export * from "./CreateBrowserClientOpts.js";
 export * from "./CreateOAuthTokenResponse.js";
 export * from "./CreateTokenResponse.js";
 export * from "./DeleteTriggerOpts.js";
+export * from "./HTTPAuthType.js";
 export * from "./DeployedComponent.js";
 export * from "./DeployTriggerResponse.js";
 export * from "./EmittedEvent.js";
