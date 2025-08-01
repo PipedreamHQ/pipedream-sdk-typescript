@@ -13,6 +13,9 @@ LICENSE
 # References doc (we have additional use cases)
 reference.md
 
+# Migration doc
+MIGRATE.md
+
 # Custom Pipedream client files
 src/api/resources/index.ts
 src/api/types/index.ts
