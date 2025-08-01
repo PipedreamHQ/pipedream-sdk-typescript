@@ -20,7 +20,18 @@ src/index.ts
 src/wrapper
 
 # Custom Proxy files
-src/api/resources/proxy/client/*
+src/api/resources/proxy/client/requests/ProxyPutRequest.ts
+src/api/resources/proxy/client/requests/ProxyGetRequest.ts
+src/api/resources/proxy/client/requests/index.ts
+src/api/resources/proxy/client/requests/ProxyPostRequest.ts
+src/api/resources/proxy/client/requests/ProxyPatchRequest.ts
+src/api/resources/proxy/client/requests/ProxyDeleteRequest.ts
+src/api/resources/proxy/client/Client.ts
+src/api/resources/proxy/client/index.ts
 
 # Custom Workflow files
-src/api/resources/workflows/client/*
+src/api/resources/workflows/client/requests/InvokeWorkflowForExternalUserOpts.ts
+src/api/resources/workflows/client/requests/index.ts
+src/api/resources/workflows/client/requests/InvokeWorkflowOpts.ts
+src/api/resources/workflows/client/Client.ts
+src/api/resources/workflows/client/index.ts
