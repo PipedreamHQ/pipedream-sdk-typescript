@@ -59,6 +59,9 @@ the latest version.
     - [Request options](#request-options)
     - [Abort signals](#abort-signals)
     - [Raw response access](#raw-response-access)
+  - [Browser/Server Environment Separation](#browserserver-environment-separation)
+    - [Package.json Export Structure](#packagejson-export-structure)
+    - [Import Recommendations](#import-recommendations)
   - [Additional namespaces](#additional-namespaces)
   - [Partial migration](#partial-migration)
   - [Important removed functionality](#important-removed-functionality)
@@ -148,6 +151,11 @@ const frontendClient = createFrontendClient({
 
 #### v2.x (new)
 
+The v2.x SDK provides two options for browser-side usage:
+
+**Option 1: Using PipedreamClient with connect token (for simple token-based
+auth)**
+
 ```javascript
 import { PipedreamClient } from '@pipedream/sdk';
 
@@ -156,6 +164,44 @@ const frontendClient = new PipedreamClient({
   projectId: 'your-project-id',
   projectEnvironment: 'development', // or 'production'
 });
+```
+
+**Option 2: Using BrowserClient with token callback (for dynamic token
+management)**
+
+```javascript
+// Explicit browser import (recommended for browser apps)
+import { createFrontendClient, BrowserClient } from '@pipedream/sdk/browser';
+
+// Or automatic browser resolution
+import { createFrontendClient, BrowserClient } from '@pipedream/sdk';
+
+const client = createFrontendClient({
+  tokenCallback: async ({ externalUserId }) => {
+    // Call your backend to get a connect token
+    const response = await fetch('/api/pipedream/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ externalUserId })
+    });
+    return response.json();
+  },
+  externalUserId: 'user-123'
+});
+
+// Connect an account using Pipedream Connect
+client.connectAccount({
+  app: 'github',
+  onSuccess: (result) => {
+    console.log('Account connected:', result.id);
+  },
+  onError: (error) => {
+    console.error('Connection failed:', error);
+  }
+});
+
+// Get user's accounts
+const accounts = await client.getAccounts();
 ```
 
 ### Environment variables
@@ -715,6 +761,55 @@ console.log(response.data); // Parsed response data
 console.log(response.rawResponse); // Original Response object
 ```
 
+## Browser/Server Environment Separation
+
+The v2.x SDK provides proper environment separation to ensure browser-safe
+imports without Node.js dependencies.
+
+### Package.json Export Structure
+
+The SDK uses conditional exports to automatically serve the right code:
+
+```json
+{
+  "exports": {
+    ".": {
+      "browser": "./dist/esm/browser/index.mjs",  // Browser gets browser-only code
+      "import": "./dist/esm/index.mjs",           // Node.js gets full functionality
+      "require": "./dist/cjs/index.js"
+    },
+    "./browser": {
+      "import": "./dist/esm/browser/index.mjs"    // Explicit browser import
+    },
+    "./server": {
+      "import": "./dist/esm/index.mjs",           // Explicit server import
+      "require": "./dist/cjs/index.js"
+    }
+  }
+}
+```
+
+### Import Recommendations
+
+```typescript
+// For browser applications - avoids Node.js dependencies
+import { BrowserClient, createFrontendClient } from '@pipedream/sdk/browser';
+
+// For server applications - includes full functionality
+import { Pipedream } from '@pipedream/sdk/server';
+
+// Automatic resolution (recommended for most cases)
+import { Pipedream } from '@pipedream/sdk';          // Server environments
+import { BrowserClient } from '@pipedream/sdk';     // Browser environments
+```
+
+This ensures:
+
+- **Browser bundlers** automatically get the browser-safe version
+- **Node.js environments** get the full SDK with all server functionality
+- **Smaller bundle sizes** for browser applications
+- **No Node.js dependency errors** in browser builds
+
 ## Additional namespaces
 
 The v2.x SDK includes several new namespaces not available in v1.x:
@@ -740,7 +835,7 @@ incrementally without breaking your existing codebase. To do this, you can
 install the new SDK with an alias:
 
 ```bash
-npm install @pipedream/sdk-v2@npm:@pipedream/sdk@^2.0.0-rc.3 --save
+npm install @pipedream/sdk-v2@npm:@pipedream/sdk@^2.0.0-rc.4 --save
 ```
 
 Then, in your code, you can import the new SDK with the alias:

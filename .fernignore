@@ -19,6 +19,7 @@ MIGRATE.md
 # Custom Pipedream client files
 src/api/resources/index.ts
 src/api/types/index.ts
+src/browser/index.ts
 src/index.ts
 src/wrapper
 
