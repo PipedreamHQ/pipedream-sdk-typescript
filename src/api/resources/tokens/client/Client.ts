@@ -6,6 +6,7 @@ import * as environments from "../../../../environments.js";
 import * as core from "../../../../core/index.js";
 import * as Pipedream from "../../../index.js";
 import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
+import * as serializers from "../../../../serialization/index.js";
 import * as errors from "../../../../errors/index.js";
 
 export declare namespace Tokens {
@@ -50,7 +51,7 @@ export class Tokens {
      *
      * @example
      *     await client.tokens.create({
-     *         external_user_id: "external_user_id"
+     *         externalUserId: "external_user_id"
      *     })
      */
     public create(
@@ -83,13 +84,25 @@ export class Tokens {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: request,
+            body: serializers.CreateTokenOpts.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return { data: _response.body as Pipedream.CreateTokenResponse, rawResponse: _response.rawResponse };
+            return {
+                data: serializers.CreateTokenResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
@@ -143,7 +156,13 @@ export class Tokens {
         const { params } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (params != null) {
-            _queryParams["params"] = params;
+            _queryParams["params"] = serializers.ValidateTokenParams.jsonOrThrow(params, {
+                unrecognizedObjectKeys: "passthrough",
+                allowUnrecognizedUnionMembers: true,
+                allowUnrecognizedEnumValues: true,
+                omitUndefined: true,
+                breadcrumbsPrefix: ["request", "params"],
+            });
         }
 
         const _response = await core.fetcher({
@@ -168,7 +187,16 @@ export class Tokens {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return { data: _response.body as Pipedream.ValidateTokenResponse, rawResponse: _response.rawResponse };
+            return {
+                data: serializers.ValidateTokenResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {

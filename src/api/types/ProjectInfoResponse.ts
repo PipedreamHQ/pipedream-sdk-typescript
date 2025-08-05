@@ -17,7 +17,7 @@ export namespace ProjectInfoResponse {
             /** ID of the app. Only applies for OAuth apps. */
             id?: string;
             /** The name slug of the target app */
-            name_slug: string;
+            nameSlug: string;
         }
     }
 }
