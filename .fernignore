@@ -39,4 +39,5 @@ src/api/resources/workflows/client/requests/index.ts
 src/api/resources/workflows/client/requests/InvokeWorkflowOpts.ts
 src/api/resources/workflows/client/Client.ts
 src/api/resources/workflows/client/index.ts
+src/api/resources/workflows/index.ts
 src/api/types/HTTPAuthType.ts
