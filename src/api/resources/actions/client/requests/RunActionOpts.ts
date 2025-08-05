@@ -19,4 +19,13 @@ export interface RunActionOpts {
     configured_props?: Record<string, unknown>;
     /** The ID for dynamic props */
     dynamic_props_id?: string;
+    /** The ID of the File Stash to use for syncing the action's /tmp directory */
+    stash_id?: RunActionOpts.StashId;
+}
+
+export namespace RunActionOpts {
+    /**
+     * The ID of the File Stash to use for syncing the action's /tmp directory
+     */
+    export type StashId = string | boolean;
 }
