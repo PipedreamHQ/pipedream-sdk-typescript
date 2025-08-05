@@ -195,11 +195,11 @@ export class BrowserClient {
 
     // Ensure only one token request is in-flight at a time.
     this._tokenRequest = (async () => {
-      const { token, expires_at } = await tokenCallback({
+      const { token, expiresAt } = await tokenCallback({
         externalUserId: externalUserId,
       });
       this._token = token;
-      this._tokenExpiresAt = new Date(expires_at);
+      this._tokenExpiresAt = new Date(expiresAt);
       this._tokenRequest = undefined;
       return token;
     })();
