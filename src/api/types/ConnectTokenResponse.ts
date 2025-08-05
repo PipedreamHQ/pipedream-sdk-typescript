@@ -7,9 +7,9 @@
  */
 export interface ConnectTokenResponse {
     /** The Connect Link URL */
-    connect_link_url: string;
+    connectLinkUrl: string;
     /** The expiration time of the token in ISO 8601 format */
-    expires_at: string;
+    expiresAt: Date;
     /** The generated token */
     token: string;
 }

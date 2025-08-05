@@ -7,5 +7,5 @@
  */
 export interface CreateBrowserClientOpts {
     /** The API URL to use */
-    api_url?: string;
+    apiUrl?: string;
 }

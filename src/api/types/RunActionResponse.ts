@@ -10,5 +10,5 @@ export interface RunActionResponse {
     os?: unknown;
     ret?: unknown;
     /** The ID of the File Stash that was used to sync the action's /tmp directory */
-    stash_id?: string;
+    stashId?: string;
 }
