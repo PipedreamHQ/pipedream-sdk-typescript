@@ -7,13 +7,13 @@
  */
 export interface ConnectTokenCreateOpts {
     /** Your end user ID, for whom you're creating the token */
-    external_user_id: string;
+    externalUserId: string;
     /** List of allowed origins for CORS */
-    allowed_origins?: string[];
+    allowedOrigins?: string[];
     /** URI to redirect to on error */
-    error_redirect_uri?: string;
+    errorRedirectUri?: string;
     /** URI to redirect to on success */
-    success_redirect_uri?: string;
+    successRedirectUri?: string;
     /** Webhook URI for notifications */
-    webhook_uri?: string;
+    webhookUri?: string;
 }

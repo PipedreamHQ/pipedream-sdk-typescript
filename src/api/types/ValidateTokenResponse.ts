@@ -12,19 +12,19 @@ export interface ValidateTokenResponse {
     /** Error message if validation failed */
     error?: string;
     /** URI to redirect to on error */
-    error_redirect_uri?: string;
+    errorRedirectUri?: string;
     /** OAuth app ID if applicable */
-    oauth_app_id?: string;
+    oauthAppId?: string;
     /** Name of the project app */
-    project_app_name?: string;
+    projectAppName?: string;
     /** Environment of the project */
-    project_environment?: string;
+    projectEnvironment?: string;
     /** ID of the project */
-    project_id?: string;
+    projectId?: string;
     /** Support email for the project */
-    project_support_email?: string;
+    projectSupportEmail?: string;
     /** Whether the token validation was successful */
     success: boolean;
     /** URI to redirect to on success */
-    success_redirect_uri?: string;
+    successRedirectUri?: string;
 }
