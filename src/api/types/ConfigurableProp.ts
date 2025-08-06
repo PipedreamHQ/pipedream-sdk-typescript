@@ -7,8 +7,8 @@
  */
 export interface ConfigurableProp {
     /** When building `configuredProps`, make sure to use this field as the key when setting the prop value */
-    name?: string;
-    type?: string;
+    name: string;
+    type: string;
     /** Value to use as an input label. In cases where `type` is "app", should load the app via `getApp`, etc. and show `app.name` instead. */
     label?: string;
     /** A description of the prop, shown to the user when configuring the component. */
