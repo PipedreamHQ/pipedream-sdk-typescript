@@ -3,12 +3,38 @@ import { Workflows } from "../api/resources/workflows/client/Client.js";
 import { PipedreamClient } from "../Client.js";
 import { PipedreamEnvironment } from "../environments.js";
 
-export interface BackendOpts {
+/**
+ * Configuration options for initializing a Pipedream client.
+ */
+export interface PipedreamClientOpts {
+  /**
+   * Optional client ID for authentication.
+   */
   clientId?: string;
+
+  /**
+   * Optional client secret for authentication.
+   */
   clientSecret?: string;
+
+  /**
+   * The Pipedream environment to connect to.
+   */
   environment?: PipedreamEnvironment;
+
+  /**
+   * The project environment configuration.
+   */
   projectEnvironment?: ProjectEnvironment;
+
+  /**
+   * The unique identifier for the project. This field is required.
+   */
   projectId: string;
+
+  /**
+   * Optional custom domain for workflow execution.
+   */
   workflowDomain?: string;
 }
 
@@ -27,7 +53,7 @@ export class Pipedream extends PipedreamClient {
   private _workflowDomain?: string;
   private _workflows: Workflows | undefined;
 
-  public constructor(opts: BackendOpts) {
+  public constructor(opts: PipedreamClientOpts) {
     const {
       clientId = process.env.PIPEDREAM_CLIENT_ID,
       clientSecret = process.env.PIPEDREAM_CLIENT_SECRET,
