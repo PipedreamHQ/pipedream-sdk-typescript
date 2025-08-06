@@ -7,7 +7,7 @@ export interface ConfigurablePropStringArray {
     /** If true, this prop is a secret and should not be displayed in plain text. */
     secret?: boolean;
     /** When building `configuredProps`, make sure to use this field as the key when setting the prop value */
-    name?: string;
+    name: string;
     /** Value to use as an input label. In cases where `type` is "app", should load the app via `getApp`, etc. and show `app.name` instead. */
     label?: string;
     /** A description of the prop, shown to the user when configuring the component. */

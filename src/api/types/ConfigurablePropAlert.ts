@@ -9,7 +9,7 @@ export interface ConfigurablePropAlert {
     /** The content of the alert, which can include HTML or plain text. */
     content?: string;
     /** When building `configuredProps`, make sure to use this field as the key when setting the prop value */
-    name?: string;
+    name: string;
     /** Value to use as an input label. In cases where `type` is "app", should load the app via `getApp`, etc. and show `app.name` instead. */
     label?: string;
     /** A description of the prop, shown to the user when configuring the component. */
