@@ -5,16 +5,16 @@
 /**
  * @example
  *     {
- *         external_user_id: "external_user_id"
+ *         externalUserId: "external_user_id"
  *     }
  */
 export interface DeployedTriggersDeleteRequest {
     /**
      * The external user ID who owns the trigger
      */
-    external_user_id: string;
+    externalUserId: string;
     /**
      * Whether to ignore errors during deactivation hook
      */
-    ignore_hook_errors?: boolean;
+    ignoreHookErrors?: boolean;
 }

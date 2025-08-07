@@ -6,18 +6,18 @@
  * @example
  *     {
  *         id: "id",
- *         external_user_id: "external_user_id"
+ *         externalUserId: "external_user_id"
  *     }
  */
 export interface DeployTriggerOpts {
     /** The trigger component ID */
     id: string;
     /** The external user ID */
-    external_user_id: string;
+    externalUserId: string;
     /** The configured properties for the trigger */
-    configured_props?: Record<string, unknown>;
+    configuredProps?: Record<string, unknown>;
     /** The ID for dynamic props */
-    dynamic_props_id?: string;
+    dynamicPropsId?: string;
     /** Optional webhook URL to receive trigger events */
-    webhook_url?: string;
+    webhookUrl?: string;
 }
