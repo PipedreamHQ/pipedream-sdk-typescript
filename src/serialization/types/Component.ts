@@ -6,7 +6,6 @@ import * as serializers from "../index.js";
 import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import { ConfigurableProp } from "./ConfigurableProp.js";
-import { ComponentStash } from "./ComponentStash";
 
 export const Component: core.serialization.ObjectSchema<serializers.Component.Raw, Pipedream.Component> =
     core.serialization.object({
@@ -16,7 +15,7 @@ export const Component: core.serialization.ObjectSchema<serializers.Component.Ra
         configurableProps: core.serialization.property("configurable_props", core.serialization.list(ConfigurableProp)),
         description: core.serialization.string().optional(),
         componentType: core.serialization.property("component_type", core.serialization.string().optional()),
-        stash: ComponentStash.optional(),
+        stash: core.serialization.enum_(["optional", "required"]).optional(),
     });
 
 export declare namespace Component {
@@ -27,6 +26,6 @@ export declare namespace Component {
         configurable_props: ConfigurableProp.Raw[];
         description?: string | null;
         component_type?: string | null;
-        stash?: ComponentStash.Raw | null;
+        stash?: "optional" | "required" | null;
     }
 }

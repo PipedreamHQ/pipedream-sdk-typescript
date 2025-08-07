@@ -5,14 +5,13 @@
 import * as serializers from "../index.js";
 import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { ConfigurablePropAlertAlertType } from "./ConfigurablePropAlertAlertType";
 
 export const ConfigurablePropAlert: core.serialization.ObjectSchema<
     serializers.ConfigurablePropAlert.Raw,
     Pipedream.ConfigurablePropAlert
 > = core.serialization.object({
     type: core.serialization.stringLiteral("alert").optional(),
-    alertType: ConfigurablePropAlertAlertType.optional(),
+    alertType: core.serialization.enum_(["info", "neutral", "warning", "error"]).optional(),
     content: core.serialization.string().optional(),
     name: core.serialization.string().optional(),
     label: core.serialization.string().optional(),
@@ -29,7 +28,7 @@ export const ConfigurablePropAlert: core.serialization.ObjectSchema<
 export declare namespace ConfigurablePropAlert {
     export interface Raw {
         type?: "alert" | null;
-        alertType?: ConfigurablePropAlertAlertType.Raw | null;
+        alertType?: "info" | "neutral" | "warning" | "error" | null;
         content?: string | null;
         name?: string | null;
         label?: string | null;

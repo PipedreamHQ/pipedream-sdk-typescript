@@ -5,17 +5,24 @@
 import * as serializers from "../index.js";
 import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { ProjectInfoResponseAppsItem } from "./ProjectInfoResponseAppsItem";
 
 export const ProjectInfoResponse: core.serialization.ObjectSchema<
     serializers.ProjectInfoResponse.Raw,
     Pipedream.ProjectInfoResponse
 > = core.serialization.object({
-    apps: core.serialization.list(ProjectInfoResponseAppsItem),
+    apps: core.serialization.list(
+        core.serialization.object({
+            id: core.serialization.string().optional(),
+            nameSlug: core.serialization.property("name_slug", core.serialization.string()),
+        }),
+    ),
 });
 
 export declare namespace ProjectInfoResponse {
     export interface Raw {
-        apps: ProjectInfoResponseAppsItem.Raw[];
+        apps: Array<{
+            id?: string | null;
+            name_slug: string;
+        }>;
     }
 }

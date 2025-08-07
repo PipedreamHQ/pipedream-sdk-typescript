@@ -5,13 +5,12 @@
 import * as serializers from "../index.js";
 import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { AppAuthType } from "./AppAuthType";
 
 export const App: core.serialization.ObjectSchema<serializers.App.Raw, Pipedream.App> = core.serialization.object({
     id: core.serialization.string().optional(),
     nameSlug: core.serialization.property("name_slug", core.serialization.string()),
     name: core.serialization.string(),
-    authType: core.serialization.property("auth_type", AppAuthType.optional()),
+    authType: core.serialization.property("auth_type", core.serialization.enum_(["keys", "oauth", "none"]).optional()),
     description: core.serialization.string().optional(),
     imgSrc: core.serialization.property("img_src", core.serialization.string()),
     customFieldsJson: core.serialization.property("custom_fields_json", core.serialization.string().optional()),
@@ -24,7 +23,7 @@ export declare namespace App {
         id?: string | null;
         name_slug: string;
         name: string;
-        auth_type?: AppAuthType.Raw | null;
+        auth_type?: "keys" | "oauth" | "none" | null;
         description?: string | null;
         img_src: string;
         custom_fields_json?: string | null;
