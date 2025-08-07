@@ -5,6 +5,7 @@
 .github/workflows/ci.yml
 
 .gitignore
+.prettierignore
 .prettierrc.yml
 
 # Our own license

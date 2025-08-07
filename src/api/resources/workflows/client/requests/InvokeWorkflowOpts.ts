@@ -3,20 +3,20 @@
  */
 
 export interface InvokeWorkflowOpts {
-  /**
-   * The URL of the workflow's HTTP interface, or the ID of the endpoint.
-   */
-  urlOrEndpoint: string;
-  /**
-   * The body of the request. It must be a JSON-serializable value (e.g. an object, null, a string, etc.).
-   */
-  body?: unknown;
-  /**
-   * HTTP method to use for the request (defaults to POST if not specified).
-   */
-  method?: string;
-  /**
-   * Additional headers to include in the request.
-   */
-  headers?: Record<string, string>;
+    /**
+     * The URL of the workflow's HTTP interface, or the ID of the endpoint.
+     */
+    urlOrEndpoint: string;
+    /**
+     * The body of the request. It must be a JSON-serializable value (e.g. an object, null, a string, etc.).
+     */
+    body?: unknown;
+    /**
+     * HTTP method to use for the request (defaults to POST if not specified).
+     */
+    method?: string;
+    /**
+     * Additional headers to include in the request.
+     */
+    headers?: Record<string, string>;
 }
