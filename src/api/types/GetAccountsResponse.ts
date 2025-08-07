@@ -9,5 +9,5 @@ import * as Pipedream from "../index.js";
  */
 export interface GetAccountsResponse {
     data: Pipedream.Account[];
-    page_info: Pipedream.PageInfo;
+    pageInfo: Pipedream.PageInfo;
 }

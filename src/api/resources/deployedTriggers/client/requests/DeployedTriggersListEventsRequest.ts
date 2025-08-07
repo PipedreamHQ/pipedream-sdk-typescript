@@ -5,14 +5,14 @@
 /**
  * @example
  *     {
- *         external_user_id: "external_user_id"
+ *         externalUserId: "external_user_id"
  *     }
  */
 export interface DeployedTriggersListEventsRequest {
     /**
      * Your end user ID, for whom you deployed the trigger
      */
-    external_user_id: string;
+    externalUserId: string;
     /**
      * The number of events to retrieve (defaults to 20 if not provided)
      */

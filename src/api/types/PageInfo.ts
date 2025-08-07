@@ -4,7 +4,7 @@
 
 export interface PageInfo {
     count?: number;
-    total_count?: number;
-    start_cursor?: string;
-    end_cursor?: string;
+    totalCount?: number;
+    startCursor?: string;
+    endCursor?: string;
 }

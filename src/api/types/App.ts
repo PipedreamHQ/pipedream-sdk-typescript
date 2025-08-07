@@ -9,21 +9,21 @@ export interface App {
     /** ID of the app. Only applies for OAuth apps. */
     id?: string;
     /** The name slug of the target app (see https://pipedream.com/docs/connect/quickstart#find-your-apps-name-slug) */
-    name_slug: string;
+    nameSlug: string;
     /** The human-readable name of the app */
     name: string;
     /** The authentication type used by the app */
-    auth_type?: App.AuthType;
+    authType?: App.AuthType;
     /** A short description of the app */
     description?: string;
     /** The URL to the app's logo */
-    img_src: string;
+    imgSrc: string;
     /** A JSON string representing the custom fields for the app */
-    custom_fields_json?: string;
+    customFieldsJson?: string;
     /** Categories associated with the app */
     categories: string[];
     /** A rough directional ordering of app popularity, subject to changes by Pipedream */
-    featured_weight: number;
+    featuredWeight: number;
 }
 
 export namespace App {
