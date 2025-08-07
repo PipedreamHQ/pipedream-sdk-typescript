@@ -3,3 +3,5 @@ printWidth: 120
 singleAttributePerLine: true
 tabWidth: 4
 trailingComma: all
+semi: true
+singleQuote: false

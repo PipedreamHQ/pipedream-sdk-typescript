@@ -5,13 +5,15 @@
 
 // Browser-specific imports that avoid Node.js dependencies
 export type * from "../api/types/index.js";
-import type { AccountsListRequest, CreateTokenResponse, ListAccountsResponse } from "api/index.js";
+import { ConnectTokenProvider, TokenCallback } from "../core/auth/index.js";
+import { type Account, type App, PipedreamClient as BackendClient, PipedreamEnvironment } from "../index.js";
+import { PipedreamClientOpts as BackendClientOpts } from "../wrapper/Pipedream.js";
 
 /**
  * Options for creating a browser-side client. This is used to configure the
- * BrowserClient instance.
+ * PipedreamClient instance.
  */
-export interface CreateBrowserClientOpts {
+export type PipedreamClientOpts = Omit<BackendClientOpts, "clientId" | "clientSecret" | "tokenProvider"> & {
     /**
      * The frontend host URL. Used by Pipedream employees only. Defaults to
      * "pipedream.com" if not provided.
@@ -19,16 +21,10 @@ export interface CreateBrowserClientOpts {
     frontendHost?: string;
 
     /**
-     * The API host URL. Used by Pipedream employees. Defaults to
-     * "api.pipedream.com" if not provided.
-     */
-    apiHost?: string;
-
-    /**
      * Will be called whenever we need a new token.
      *
      * The callback function should return the response from
-     * `serverClient.createConnectToken`.
+     * `serverClient.tokens.create`.
      */
     tokenCallback?: TokenCallback;
 
@@ -36,36 +32,27 @@ export interface CreateBrowserClientOpts {
      * An external user ID associated with the token.
      */
     externalUserId?: string;
-}
-
-export type TokenCallback = (opts: { externalUserId: string }) => Promise<CreateTokenResponse>;
-
-/**
- * The name slug for an app, a unique, human-readable identifier like "github"
- * or "google_sheets". Find this in the Authentication section for any app's
- * page at https://pipedream.com/apps. For more information about name slugs,
- * see https://pipedream.com/docs/connect/quickstart#find-your-apps-name-slug.
- */
-type AppNameSlug = string;
+};
 
 /**
  * The result of a successful connection.
  */
-type ConnectResult = {
+export type ConnectResult = {
     /**
      * The unique identifier of the connected account.
      */
-    id: string;
+    id: Account["id"];
 };
 
 /**
  * The status when the Connect dialog is closed.
  */
-type ConnectStatus = {
+export type ConnectStatus = {
     /**
      * Whether the connection was successful (account was connected).
      */
     successful: boolean;
+
     /**
      * Whether the connection process was completed (vs user closing early).
      */
@@ -75,7 +62,7 @@ type ConnectStatus = {
 /**
  * Custom error class for handling connection errors.
  */
-class ConnectError extends Error {}
+export class ConnectError extends Error {}
 
 /**
  * Options for starting the connection process.
@@ -84,19 +71,19 @@ export type StartConnectOpts = {
     /**
      * The token used for authenticating the connection.
      *
-     * Optional if client already initialized with token
+     * Optional if the client was already initialized with a token
      */
     token?: string;
 
     /**
-     * The app to connect to, either as an ID or an object containing the ID.
+     * The app to connect to
      */
-    app: AppNameSlug;
+    app: App["nameSlug"];
 
     /**
      * The OAuth app ID to connect to.
      */
-    oauthAppId?: string;
+    oauthAppId?: App["id"];
 
     /**
      * Callback function to be called upon successful connection.
@@ -121,7 +108,7 @@ export type StartConnectOpts = {
 };
 
 /**
- * Creates a new instance of `BrowserClient` with the provided options.
+ * Creates a new instance of `PipedreamClient` with the provided options.
  *
  * @example
  * ```typescript
@@ -131,86 +118,79 @@ export type StartConnectOpts = {
     });
  * ```
  * @param opts - The options for creating the browser client.
- * @returns A new instance of `BrowserClient`.
+ * @returns A new instance of `PipedreamClient`.
  */
-export function createFrontendClient(opts: CreateBrowserClientOpts = {}) {
-    return new BrowserClient(opts);
+export function createFrontendClient(
+    opts: PipedreamClientOpts & {
+        /**
+         * The Connect token used for authenticating the connection. Useful if you
+         * don't need to refresh it (e.g. if the client will be used in read-only
+         * requests).
+         */
+        token?: string;
+    },
+) {
+    const {
+        // These are some dummy values that would produce a blank Connect token,
+        // in case the user does not need to make any API requests other than
+        // connecting an external user's account.
+        externalUserId = "",
+        token = "",
+        tokenCallback = () => Promise.resolve({ token, expiresAt: new Date(), connectLinkUrl: "" }),
+    } = opts || {};
+    return new PipedreamClient({
+        ...opts,
+        externalUserId,
+        tokenCallback,
+    });
 }
 
 /**
  * A client for interacting with the Pipedream Connect API from the browser.
  */
-export class BrowserClient {
+export class PipedreamClient extends BackendClient {
     private baseURL: string;
     private iframeURL: string;
     private iframe?: HTMLIFrameElement;
     private iframeId = 0;
-    private tokenCallback?: TokenCallback;
-    private _token?: string;
-    private _tokenExpiresAt?: Date;
-    private _tokenRequest?: Promise<string>;
-    private apiHost: string;
-    private baseApiUrl: string;
-    public externalUserId?: string;
 
     /**
-     * Constructs a new `BrowserClient` instance.
+     * Constructs a new `PipedreamClient` instance.
      *
      * @param opts - The options for configuring the browser client.
      */
-    constructor(opts: CreateBrowserClientOpts) {
+    constructor(opts: PipedreamClientOpts) {
+        const {
+            environment = PipedreamEnvironment.Prod,
+            externalUserId,
+            projectEnvironment,
+            tokenCallback,
+            workflowDomain,
+        } = opts || {};
+
+        if (!externalUserId) {
+            throw new Error("The external user ID cannot be blank");
+        }
+
+        if (typeof tokenCallback !== "function") {
+            throw new Error("The token callback must be a function");
+        }
+
+        const tokenProvider = new ConnectTokenProvider({
+            externalUserId,
+            tokenCallback,
+        });
+
+        super({
+            environment,
+            projectEnvironment,
+            projectId: "",
+            tokenProvider,
+            workflowDomain,
+        });
+
         this.baseURL = `https://${opts.frontendHost || "pipedream.com"}`;
         this.iframeURL = `${this.baseURL}/_static/connect.html`;
-        this.tokenCallback = opts.tokenCallback;
-        this.externalUserId = opts.externalUserId;
-        this.apiHost = opts.apiHost || "api.pipedream.com";
-        this.baseApiUrl = `https://${this.apiHost}/v1`;
-    }
-
-    private async token() {
-        if (this._token && this._tokenExpiresAt && this._tokenExpiresAt > new Date()) {
-            return this._token;
-        }
-
-        if (this._tokenRequest) {
-            return this._tokenRequest;
-        }
-
-        const tokenCallback = this.tokenCallback;
-        const externalUserId = this.externalUserId;
-
-        if (!tokenCallback) {
-            throw new Error("No token callback provided");
-        }
-        if (!externalUserId) {
-            throw new Error("No external user ID provided");
-        }
-
-        // Ensure only one token request is in-flight at a time.
-        this._tokenRequest = (async () => {
-            const { token, expiresAt } = await tokenCallback({
-                externalUserId: externalUserId,
-            });
-            this._token = token;
-            this._tokenExpiresAt = new Date(expiresAt);
-            this._tokenRequest = undefined;
-            return token;
-        })();
-
-        return this._tokenRequest;
-    }
-
-    private refreshToken() {
-        this._token = undefined;
-    }
-
-    /**
-     * Retrieves the raw token string.
-     *
-     * @return {string} The raw token value.
-     */
-    public rawToken(): string | undefined {
-        return this._token;
     }
 
     /**
@@ -273,7 +253,10 @@ export class BrowserClient {
         } catch (err) {
             opts.onError?.(err as ConnectError);
         }
-        this.refreshToken(); // token expires once it's used to create a connected account. We need to get a new token for the next requests.
+
+        // The token expires once it's used to create a connected account. We
+        // need to get a new token for the next requests.
+        (this._tokenProvider as ConnectTokenProvider).refresh();
     }
 
     /**
@@ -296,7 +279,7 @@ export class BrowserClient {
      * @throws {ConnectError} If the app option is not a string.
      */
     private async createIframe(opts: StartConnectOpts) {
-        const token = opts.token || (await this.token());
+        const token = opts.token || (await this._tokenProvider.getToken());
         const qp = new URLSearchParams({
             token,
         });
@@ -324,130 +307,5 @@ export class BrowserClient {
         };
 
         document.body.appendChild(iframe);
-    }
-
-    private async authHeaders(): Promise<string> {
-        if (!(await this.token())) {
-            throw new Error("No token provided");
-        }
-        return `Bearer ${await this.token()}`;
-    }
-
-    /**
-     * Makes an HTTP request to the Pipedream API
-     *
-     * @template T - The expected response type.
-     * @param path - The API endpoint path.
-     * @param opts - The options for the request.
-     * @returns A promise resolving to the API response.
-     */
-    private async makeRequest<T>(
-        path: string,
-        opts: {
-            method?: string;
-            params?: Record<string, string | boolean | number | null>;
-            headers?: Record<string, string>;
-            body?: Record<string, unknown> | string | null;
-        } = {},
-    ): Promise<T> {
-        const { params, headers: customHeaders = {}, body, method = "GET" } = opts;
-
-        const url = new URL(`${this.baseApiUrl}${path}`);
-
-        if (params) {
-            for (const [key, value] of Object.entries(params)) {
-                if (value !== undefined && value !== null) {
-                    url.searchParams.append(key, String(value));
-                }
-            }
-        }
-
-        const headers: Record<string, string> = {
-            "Content-Type": "application/json",
-            ...customHeaders,
-            Authorization: await this.authHeaders(),
-        };
-
-        let processedBody: string | null = null;
-        if (body && typeof body === "object") {
-            processedBody = JSON.stringify(body);
-        } else if (typeof body === "string") {
-            processedBody = body;
-        }
-
-        const requestOptions: RequestInit = {
-            method,
-            headers,
-        };
-
-        if (["POST", "PUT", "PATCH"].includes(method.toUpperCase()) && processedBody) {
-            requestOptions.body = processedBody;
-        }
-
-        const response = await fetch(url.toString(), requestOptions);
-        const rawBody = await response.text();
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}, body: ${rawBody}`);
-        }
-
-        const contentType = response.headers.get("Content-Type");
-        if (contentType && contentType.includes("application/json")) {
-            try {
-                return JSON.parse(rawBody) as T;
-            } catch (err) {
-                // Fall back to raw text if JSON parsing fails
-            }
-        }
-
-        return rawBody as unknown as T;
-    }
-
-    /**
-     * Makes a request to the Connect API using Connect authorization.
-     *
-     * @template T - The expected response type.
-     * @param path - The API endpoint path.
-     * @param opts - The options for the request.
-     * @returns A promise resolving to the API response.
-     */
-    private makeConnectRequest<T>(
-        path: string,
-        opts: {
-            method?: string;
-            params?: Record<string, string | boolean | number | null>;
-            headers?: Record<string, string>;
-            body?: Record<string, unknown> | string | null;
-        } = {},
-    ): Promise<T> {
-        const fullPath = `/connect${path}`;
-        return this.makeRequest(fullPath, opts);
-    }
-
-    /**
-     * Retrieves the list of accounts associated with the external user.
-     *
-     * @param params - The query parameters for retrieving accounts.
-     * @returns A promise resolving to a list of accounts.
-     *
-     * @example
-     * ```typescript
-     * const accounts = await client.getAccounts({ include_credentials: true });
-     * console.log(accounts);
-     * ```
-     */
-    public getAccounts(params?: Omit<AccountsListRequest, "external_user_id">): Promise<ListAccountsResponse> {
-        const requestParams: Record<string, string | number | boolean | null> = {
-            ...params,
-        };
-
-        if (this.externalUserId) {
-            requestParams.external_user_id = this.externalUserId;
-        }
-
-        return this.makeConnectRequest<ListAccountsResponse>("/accounts", {
-            method: "GET",
-            params: requestParams,
-        });
     }
 }

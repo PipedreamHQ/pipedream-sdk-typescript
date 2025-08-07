@@ -25,6 +25,10 @@ src/browser/index.ts
 src/index.ts
 src/wrapper
 
+# Ideally, we shouldn't. But until Fern supports the changes that we've made we
+# have to override some parts.
+src/Client.ts
+
 # Custom Proxy files
 src/api/resources/proxy/client/requests/ProxyPutRequest.ts
 src/api/resources/proxy/client/requests/ProxyGetRequest.ts

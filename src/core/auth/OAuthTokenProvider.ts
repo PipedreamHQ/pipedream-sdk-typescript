@@ -4,12 +4,13 @@
 
 import * as core from "../../core/index.js";
 import { OauthTokens } from "../../api/resources/oauthTokens/client/Client.js";
+import { TokenProvider } from "./TokenProvider.js";
 
 /**
  * The OAuthTokenProvider retrieves an OAuth access token, refreshing it as needed.
  * The access token is then used as the bearer token in every authenticated request.
  */
-export class OAuthTokenProvider {
+export class OAuthTokenProvider implements TokenProvider {
     private readonly BUFFER_IN_MINUTES = 2;
     private readonly _clientId: core.Supplier<string>;
     private readonly _clientSecret: core.Supplier<string>;

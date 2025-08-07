@@ -27,7 +27,14 @@
         },
         "./browser": {
             "types": "./dist/esm/browser/index.d.mts",
-            "import": "./dist/esm/browser/index.mjs",
+            "import": {
+                "types": "./dist/esm/browser/index.d.mts",
+                "default": "./dist/esm/browser/index.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/browser/index.d.ts",
+                "default": "./dist/cjs/browser/index.js"
+            },
             "default": "./dist/esm/browser/index.mjs"
         },
         "./serialization": {
