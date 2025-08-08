@@ -9,12 +9,12 @@ import * as Pipedream from "../../../../index.js";
  *     {
  *         body: {
  *             id: "id",
- *             external_user_id: "external_user_id",
- *             prop_name: "prop_name"
+ *             externalUserId: "external_user_id",
+ *             propName: "prop_name"
  *         }
  *     }
  */
 export interface ComponentsConfigurePropRequest {
-    "x-async-handle"?: string;
+    asyncHandle?: string;
     body: Pipedream.ConfigurePropOpts;
 }

@@ -8,8 +8,16 @@ import * as Pipedream from "../index.js";
  * Response received after configuring a component's prop
  */
 export interface ConfigurePropResponse {
-    /** Available options for the configured prop */
+    /** Available options (with labels) for the configured prop */
     options?: Pipedream.PropOption[];
+    /** Available options for the configured prop */
+    stringOptions?: string[];
+    /** Any logs produced during the configuration of the prop */
+    observations?: Record<string, unknown>;
+    /** Handle for async operations */
+    asyncHandle?: string;
+    /** New context after configuring the prop */
+    context?: Record<string, unknown>;
     /** Any errors that occurred during configuration */
     errors?: string[];
 }

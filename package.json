@@ -1,6 +1,6 @@
 {
     "name": "@pipedream/sdk",
-    "version": "2.0.0-rc.6",
+    "version": "2.0.0",
     "private": false,
     "repository": "github:PipedreamHQ/pipedream-sdk-typescript",
     "type": "commonjs",
@@ -10,11 +10,6 @@
     "exports": {
         ".": {
             "types": "./dist/cjs/index.d.ts",
-            "browser": {
-                "types": "./dist/esm/browser/index.d.mts",
-                "import": "./dist/esm/browser/index.mjs",
-                "default": "./dist/esm/browser/index.mjs"
-            },
             "import": {
                 "types": "./dist/esm/index.d.mts",
                 "default": "./dist/esm/index.mjs"
@@ -25,22 +20,17 @@
             },
             "default": "./dist/cjs/index.js"
         },
-        "./browser": {
-            "types": "./dist/esm/browser/index.d.mts",
-            "import": "./dist/esm/browser/index.mjs",
-            "default": "./dist/esm/browser/index.mjs"
-        },
-        "./server": {
-            "types": "./dist/cjs/index.d.ts",
+        "./serialization": {
+            "types": "./dist/cjs/serialization/index.d.ts",
             "import": {
-                "types": "./dist/esm/index.d.mts",
-                "default": "./dist/esm/index.mjs"
+                "types": "./dist/esm/serialization/index.d.mts",
+                "default": "./dist/esm/serialization/index.mjs"
             },
             "require": {
-                "types": "./dist/cjs/index.d.ts",
-                "default": "./dist/cjs/index.js"
+                "types": "./dist/cjs/serialization/index.d.ts",
+                "default": "./dist/cjs/serialization/index.js"
             },
-            "default": "./dist/cjs/index.js"
+            "default": "./dist/cjs/serialization/index.js"
         },
         "./package.json": "./package.json"
     },
