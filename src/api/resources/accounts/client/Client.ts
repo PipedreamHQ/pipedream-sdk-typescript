@@ -6,6 +6,7 @@ import * as environments from "../../../../environments.js";
 import * as core from "../../../../core/index.js";
 import * as Pipedream from "../../../index.js";
 import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
+import * as serializers from "../../../../serialization/index.js";
 import * as errors from "../../../../errors/index.js";
 
 export declare namespace Accounts {
@@ -59,15 +60,7 @@ export class Accounts {
             async (
                 request: Pipedream.AccountsListRequest,
             ): Promise<core.WithRawResponse<Pipedream.ListAccountsResponse>> => {
-                const {
-                    app_id: appId,
-                    external_user_id: externalUserId,
-                    oauth_app_id: oauthAppId,
-                    after,
-                    before,
-                    limit,
-                    include_credentials: includeCredentials,
-                } = request;
+                const { appId, externalUserId, oauthAppId, after, before, limit, includeCredentials } = request;
                 const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
                 if (appId != null) {
                     _queryParams["app_id"] = appId;
@@ -114,7 +107,13 @@ export class Accounts {
                 });
                 if (_response.ok) {
                     return {
-                        data: _response.body as Pipedream.ListAccountsResponse,
+                        data: serializers.ListAccountsResponse.parseOrThrow(_response.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
                         rawResponse: _response.rawResponse,
                     };
                 }
@@ -149,11 +148,11 @@ export class Accounts {
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
-                response?.page_info?.end_cursor != null &&
-                !(typeof response?.page_info?.end_cursor === "string" && response?.page_info?.end_cursor === ""),
+                response?.pageInfo?.endCursor != null &&
+                !(typeof response?.pageInfo?.endCursor === "string" && response?.pageInfo?.endCursor === ""),
             getItems: (response) => response?.data ?? [],
             loadPage: (response) => {
-                return list(core.setObjectProperty(request, "after", response?.page_info?.end_cursor));
+                return list(core.setObjectProperty(request, "after", response?.pageInfo?.endCursor));
             },
         });
     }
@@ -164,9 +163,9 @@ export class Accounts {
      *
      * @example
      *     await client.accounts.create({
-     *         app_slug: "app_slug",
-     *         cfmap_json: "cfmap_json",
-     *         connect_token: "connect_token"
+     *         appSlug: "app_slug",
+     *         cfmapJson: "cfmap_json",
+     *         connectToken: "connect_token"
      *     })
      */
     public create(
@@ -180,7 +179,7 @@ export class Accounts {
         request: Pipedream.CreateAccountOpts,
         requestOptions?: Accounts.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.Account>> {
-        const { app_id: appId, external_user_id: externalUserId, oauth_app_id: oauthAppId, ..._body } = request;
+        const { appId, externalUserId, oauthAppId, ..._body } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (appId != null) {
             _queryParams["app_id"] = appId;
@@ -213,13 +212,25 @@ export class Accounts {
             contentType: "application/json",
             queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             requestType: "json",
-            body: _body,
+            body: serializers.CreateAccountOpts.jsonOrThrow(_body, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return { data: _response.body as Pipedream.Account, rawResponse: _response.rawResponse };
+            return {
+                data: serializers.Account.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
@@ -270,7 +281,7 @@ export class Accounts {
         request: Pipedream.AccountsRetrieveRequest = {},
         requestOptions?: Accounts.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.Account>> {
-        const { include_credentials: includeCredentials } = request;
+        const { includeCredentials } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (includeCredentials != null) {
             _queryParams["include_credentials"] = includeCredentials.toString();
@@ -298,7 +309,16 @@ export class Accounts {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return { data: _response.body as Pipedream.Account, rawResponse: _response.rawResponse };
+            return {
+                data: serializers.Account.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {

@@ -7,9 +7,9 @@
  */
 export interface BackendClientOpts {
     /** The client ID for authentication */
-    client_id?: string;
+    clientId?: string;
     /** The client secret for authentication */
-    client_secret?: string;
+    clientSecret?: string;
     /** The API URL to use */
-    api_url?: string;
+    apiUrl?: string;
 }

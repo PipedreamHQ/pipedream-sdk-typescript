@@ -6,6 +6,7 @@ import * as environments from "../../../../environments.js";
 import * as core from "../../../../core/index.js";
 import * as Pipedream from "../../../index.js";
 import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
+import * as serializers from "../../../../serialization/index.js";
 import * as errors from "../../../../errors/index.js";
 
 export declare namespace OauthTokens {
@@ -50,8 +51,8 @@ export class OauthTokens {
      *
      * @example
      *     await client.oauthTokens.create({
-     *         client_id: "client_id",
-     *         client_secret: "client_secret"
+     *         clientId: "client_id",
+     *         clientSecret: "client_secret"
      *     })
      */
     public create(
@@ -84,13 +85,28 @@ export class OauthTokens {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: { ...request, grant_type: "client_credentials" },
+            body: {
+                ...serializers.CreateOAuthTokenOpts.jsonOrThrow(request, {
+                    unrecognizedObjectKeys: "strip",
+                    omitUndefined: true,
+                }),
+                grant_type: "client_credentials",
+            },
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return { data: _response.body as Pipedream.CreateOAuthTokenResponse, rawResponse: _response.rawResponse };
+            return {
+                data: serializers.CreateOAuthTokenResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {

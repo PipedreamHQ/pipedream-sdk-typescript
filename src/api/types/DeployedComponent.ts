@@ -11,22 +11,22 @@ export interface DeployedComponent {
     /** The unique ID of the deployed component */
     id: string;
     /** The ID of the owner */
-    owner_id: string;
+    ownerId: string;
     /** The ID of the component that was deployed */
-    component_id: string;
+    componentId: string;
     /** The configurable properties of the component */
-    configurable_props: Pipedream.ConfigurableProp[];
+    configurableProps: Pipedream.ConfigurableProp[];
     /** The configured properties of the component */
-    configured_props: Record<string, unknown>;
+    configuredProps: Record<string, unknown>;
     /** Whether the deployed component is active */
     active: boolean;
     /** The timestamp when the component was deployed (epoch milliseconds) */
-    created_at: number;
+    createdAt: number;
     /** The timestamp when the component was last updated (epoch milliseconds) */
-    updated_at: number;
+    updatedAt: number;
     /** The name of the deployed component */
     name: string;
     /** The name slug of the deployed component */
-    name_slug: string;
-    callback_observations?: unknown;
+    nameSlug: string;
+    callbackObservations?: unknown;
 }
