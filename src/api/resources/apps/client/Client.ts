@@ -5,6 +5,7 @@
 import * as environments from "../../../../environments.js";
 import * as core from "../../../../core/index.js";
 import * as Pipedream from "../../../index.js";
+import * as serializers from "../../../../serialization/index.js";
 import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
 import * as errors from "../../../../errors/index.js";
 
@@ -57,15 +58,7 @@ export class Apps {
     ): Promise<core.Page<Pipedream.App>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (request: Pipedream.AppsListRequest): Promise<core.WithRawResponse<Pipedream.ListAppsResponse>> => {
-                const {
-                    after,
-                    before,
-                    limit,
-                    q,
-                    sort_key: sortKey,
-                    sort_direction: sortDirection,
-                    category_ids: categoryIds,
-                } = request;
+                const { after, before, limit, q, sortKey, sortDirection, categoryIds } = request;
                 const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
                 if (after != null) {
                     _queryParams["after"] = after;
@@ -80,10 +73,16 @@ export class Apps {
                     _queryParams["q"] = q;
                 }
                 if (sortKey != null) {
-                    _queryParams["sort_key"] = sortKey;
+                    _queryParams["sort_key"] = serializers.AppsListRequestSortKey.jsonOrThrow(sortKey, {
+                        unrecognizedObjectKeys: "strip",
+                        omitUndefined: true,
+                    });
                 }
                 if (sortDirection != null) {
-                    _queryParams["sort_direction"] = sortDirection;
+                    _queryParams["sort_direction"] = serializers.AppsListRequestSortDirection.jsonOrThrow(
+                        sortDirection,
+                        { unrecognizedObjectKeys: "strip", omitUndefined: true },
+                    );
                 }
                 if (categoryIds != null) {
                     if (Array.isArray(categoryIds)) {
@@ -115,7 +114,16 @@ export class Apps {
                     abortSignal: requestOptions?.abortSignal,
                 });
                 if (_response.ok) {
-                    return { data: _response.body as Pipedream.ListAppsResponse, rawResponse: _response.rawResponse };
+                    return {
+                        data: serializers.ListAppsResponse.parseOrThrow(_response.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        rawResponse: _response.rawResponse,
+                    };
                 }
                 if (_response.error.reason === "status-code") {
                     throw new errors.PipedreamError({
@@ -146,11 +154,11 @@ export class Apps {
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
-                response?.page_info?.end_cursor != null &&
-                !(typeof response?.page_info?.end_cursor === "string" && response?.page_info?.end_cursor === ""),
+                response?.pageInfo?.endCursor != null &&
+                !(typeof response?.pageInfo?.endCursor === "string" && response?.pageInfo?.endCursor === ""),
             getItems: (response) => response?.data ?? [],
             loadPage: (response) => {
-                return list(core.setObjectProperty(request, "after", response?.page_info?.end_cursor));
+                return list(core.setObjectProperty(request, "after", response?.pageInfo?.endCursor));
             },
         });
     }
@@ -195,7 +203,16 @@ export class Apps {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return { data: _response.body as Pipedream.GetAppResponse, rawResponse: _response.rawResponse };
+            return {
+                data: serializers.GetAppResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {

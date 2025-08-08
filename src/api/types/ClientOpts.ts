@@ -7,9 +7,9 @@
  */
 export interface ClientOpts {
     /** The client ID for authentication */
-    client_id?: string;
+    clientId?: string;
     /** The client secret for authentication */
-    client_secret?: string;
+    clientSecret?: string;
     /** The API URL to use (defaults to https://api.pipedream.com/) */
-    api_url?: string;
+    apiUrl?: string;
 }
