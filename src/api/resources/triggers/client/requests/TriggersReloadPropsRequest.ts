@@ -9,11 +9,11 @@ import * as Pipedream from "../../../../index.js";
  *     {
  *         body: {
  *             id: "id",
- *             external_user_id: "external_user_id"
+ *             externalUserId: "external_user_id"
  *         }
  *     }
  */
 export interface TriggersReloadPropsRequest {
-    "x-async-handle"?: string;
+    asyncHandle?: string;
     body: Pipedream.ReloadPropsOpts;
 }

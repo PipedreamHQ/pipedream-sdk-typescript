@@ -35,7 +35,7 @@ const client = new PipedreamClient({
 });
 await client.actions.run({
     id: "id",
-    external_user_id: "external_user_id",
+    externalUserId: "external_user_id",
 });
 ```
 

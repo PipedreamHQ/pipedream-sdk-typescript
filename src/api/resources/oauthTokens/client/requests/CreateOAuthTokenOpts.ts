@@ -5,11 +5,11 @@
 /**
  * @example
  *     {
- *         client_id: "client_id",
- *         client_secret: "client_secret"
+ *         clientId: "client_id",
+ *         clientSecret: "client_secret"
  *     }
  */
 export interface CreateOAuthTokenOpts {
-    client_id: string;
-    client_secret: string;
+    clientId: string;
+    clientSecret: string;
 }
