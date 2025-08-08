@@ -4,15 +4,8 @@
 // operations, like connecting accounts via Pipedream Connect.
 
 // Browser-specific imports that avoid Node.js dependencies
-import type { AccountsListRequest } from "../api/resources/accounts/client/requests/AccountsListRequest.js";
-import type { ConnectTokenResponse } from "../api/types/ConnectTokenResponse.js";
-import type { ListAccountsResponse } from "../api/types/ListAccountsResponse.js";
-
 export type * from "../api/types/index.js";
-export type { AccountsListRequest } from "../api/resources/accounts/client/requests/AccountsListRequest.js";
-export type { ConnectTokenResponse } from "../api/types/ConnectTokenResponse.js";
-export type { ListAccountsResponse } from "../api/types/ListAccountsResponse.js";
-export { PipedreamError, PipedreamTimeoutError } from "../errors/index.js";
+import type { AccountsListRequest, CreateTokenResponse, ListAccountsResponse } from "api/index.js";
 
 /**
  * Options for creating a browser-side client. This is used to configure the
@@ -45,7 +38,7 @@ export interface CreateBrowserClientOpts {
     externalUserId?: string;
 }
 
-export type TokenCallback = (opts: { externalUserId: string }) => Promise<ConnectTokenResponse>;
+export type TokenCallback = (opts: { externalUserId: string }) => Promise<CreateTokenResponse>;
 
 /**
  * The name slug for an app, a unique, human-readable identifier like "github"
@@ -195,11 +188,11 @@ export class BrowserClient {
 
         // Ensure only one token request is in-flight at a time.
         this._tokenRequest = (async () => {
-            const { token, expires_at } = await tokenCallback({
+            const { token, expiresAt } = await tokenCallback({
                 externalUserId: externalUserId,
             });
             this._token = token;
-            this._tokenExpiresAt = new Date(expires_at);
+            this._tokenExpiresAt = new Date(expiresAt);
             this._tokenRequest = undefined;
             return token;
         })();
