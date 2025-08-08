@@ -9,5 +9,5 @@ import * as Pipedream from "../index.js";
  */
 export interface GetAppsResponse {
     data: Pipedream.App[];
-    page_info: Pipedream.PageInfo;
+    pageInfo: Pipedream.PageInfo;
 }

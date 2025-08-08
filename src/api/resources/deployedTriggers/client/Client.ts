@@ -6,6 +6,7 @@ import * as environments from "../../../../environments.js";
 import * as core from "../../../../core/index.js";
 import * as Pipedream from "../../../index.js";
 import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
+import * as serializers from "../../../../serialization/index.js";
 import * as errors from "../../../../errors/index.js";
 
 export declare namespace DeployedTriggers {
@@ -50,7 +51,7 @@ export class DeployedTriggers {
      *
      * @example
      *     await client.deployedTriggers.list({
-     *         external_user_id: "external_user_id"
+     *         externalUserId: "external_user_id"
      *     })
      */
     public async list(
@@ -61,7 +62,7 @@ export class DeployedTriggers {
             async (
                 request: Pipedream.DeployedTriggersListRequest,
             ): Promise<core.WithRawResponse<Pipedream.GetTriggersResponse>> => {
-                const { after, before, limit, external_user_id: externalUserId } = request;
+                const { after, before, limit, externalUserId } = request;
                 const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
                 if (after != null) {
                     _queryParams["after"] = after;
@@ -97,7 +98,13 @@ export class DeployedTriggers {
                 });
                 if (_response.ok) {
                     return {
-                        data: _response.body as Pipedream.GetTriggersResponse,
+                        data: serializers.GetTriggersResponse.parseOrThrow(_response.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
                         rawResponse: _response.rawResponse,
                     };
                 }
@@ -132,11 +139,11 @@ export class DeployedTriggers {
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
-                response?.page_info?.end_cursor != null &&
-                !(typeof response?.page_info?.end_cursor === "string" && response?.page_info?.end_cursor === ""),
+                response?.pageInfo?.endCursor != null &&
+                !(typeof response?.pageInfo?.endCursor === "string" && response?.pageInfo?.endCursor === ""),
             getItems: (response) => response?.data ?? [],
             loadPage: (response) => {
-                return list(core.setObjectProperty(request, "after", response?.page_info?.end_cursor));
+                return list(core.setObjectProperty(request, "after", response?.pageInfo?.endCursor));
             },
         });
     }
@@ -148,7 +155,7 @@ export class DeployedTriggers {
      *
      * @example
      *     await client.deployedTriggers.retrieve("trigger_id", {
-     *         external_user_id: "external_user_id"
+     *         externalUserId: "external_user_id"
      *     })
      */
     public retrieve(
@@ -164,7 +171,7 @@ export class DeployedTriggers {
         request: Pipedream.DeployedTriggersRetrieveRequest,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetTriggerResponse>> {
-        const { external_user_id: externalUserId } = request;
+        const { externalUserId } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
         const _response = await core.fetcher({
@@ -189,7 +196,16 @@ export class DeployedTriggers {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return { data: _response.body as Pipedream.GetTriggerResponse, rawResponse: _response.rawResponse };
+            return {
+                data: serializers.GetTriggerResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
@@ -226,7 +242,7 @@ export class DeployedTriggers {
      *
      * @example
      *     await client.deployedTriggers.update("trigger_id", {
-     *         external_user_id: "external_user_id"
+     *         externalUserId: "external_user_id"
      *     })
      */
     public update(
@@ -242,7 +258,7 @@ export class DeployedTriggers {
         request: Pipedream.UpdateTriggerOpts,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetTriggerResponse>> {
-        const { external_user_id: externalUserId, ..._body } = request;
+        const { externalUserId, ..._body } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
         const _response = await core.fetcher({
@@ -264,13 +280,25 @@ export class DeployedTriggers {
             contentType: "application/json",
             queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             requestType: "json",
-            body: _body,
+            body: serializers.UpdateTriggerOpts.jsonOrThrow(_body, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return { data: _response.body as Pipedream.GetTriggerResponse, rawResponse: _response.rawResponse };
+            return {
+                data: serializers.GetTriggerResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
@@ -307,7 +335,7 @@ export class DeployedTriggers {
      *
      * @example
      *     await client.deployedTriggers.delete("trigger_id", {
-     *         external_user_id: "external_user_id"
+     *         externalUserId: "external_user_id"
      *     })
      */
     public delete(
@@ -323,7 +351,7 @@ export class DeployedTriggers {
         request: Pipedream.DeployedTriggersDeleteRequest,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
-        const { external_user_id: externalUserId, ignore_hook_errors: ignoreHookErrors } = request;
+        const { externalUserId, ignoreHookErrors } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
         if (ignoreHookErrors != null) {
@@ -389,7 +417,7 @@ export class DeployedTriggers {
      *
      * @example
      *     await client.deployedTriggers.listEvents("trigger_id", {
-     *         external_user_id: "external_user_id"
+     *         externalUserId: "external_user_id"
      *     })
      */
     public listEvents(
@@ -405,7 +433,7 @@ export class DeployedTriggers {
         request: Pipedream.DeployedTriggersListEventsRequest,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetTriggerEventsResponse>> {
-        const { external_user_id: externalUserId, n } = request;
+        const { externalUserId, n } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
         if (n != null) {
@@ -434,7 +462,16 @@ export class DeployedTriggers {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return { data: _response.body as Pipedream.GetTriggerEventsResponse, rawResponse: _response.rawResponse };
+            return {
+                data: serializers.GetTriggerEventsResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
@@ -471,7 +508,7 @@ export class DeployedTriggers {
      *
      * @example
      *     await client.deployedTriggers.listWorkflows("trigger_id", {
-     *         external_user_id: "external_user_id"
+     *         externalUserId: "external_user_id"
      *     })
      */
     public listWorkflows(
@@ -487,7 +524,7 @@ export class DeployedTriggers {
         request: Pipedream.DeployedTriggersListWorkflowsRequest,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetTriggerWorkflowsResponse>> {
-        const { external_user_id: externalUserId } = request;
+        const { externalUserId } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
         const _response = await core.fetcher({
@@ -513,7 +550,13 @@ export class DeployedTriggers {
         });
         if (_response.ok) {
             return {
-                data: _response.body as Pipedream.GetTriggerWorkflowsResponse,
+                data: serializers.GetTriggerWorkflowsResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
                 rawResponse: _response.rawResponse,
             };
         }
@@ -552,8 +595,8 @@ export class DeployedTriggers {
      *
      * @example
      *     await client.deployedTriggers.updateWorkflows("trigger_id", {
-     *         external_user_id: "external_user_id",
-     *         workflow_ids: ["workflow_ids"]
+     *         externalUserId: "external_user_id",
+     *         workflowIds: ["workflow_ids"]
      *     })
      */
     public updateWorkflows(
@@ -569,7 +612,7 @@ export class DeployedTriggers {
         request: Pipedream.UpdateTriggerWorkflowsOpts,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetTriggerWorkflowsResponse>> {
-        const { external_user_id: externalUserId, ..._body } = request;
+        const { externalUserId, ..._body } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
         const _response = await core.fetcher({
@@ -591,14 +634,23 @@ export class DeployedTriggers {
             contentType: "application/json",
             queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             requestType: "json",
-            body: _body,
+            body: serializers.UpdateTriggerWorkflowsOpts.jsonOrThrow(_body, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
             return {
-                data: _response.body as Pipedream.GetTriggerWorkflowsResponse,
+                data: serializers.GetTriggerWorkflowsResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
                 rawResponse: _response.rawResponse,
             };
         }
@@ -637,7 +689,7 @@ export class DeployedTriggers {
      *
      * @example
      *     await client.deployedTriggers.listWebhooks("trigger_id", {
-     *         external_user_id: "external_user_id"
+     *         externalUserId: "external_user_id"
      *     })
      */
     public listWebhooks(
@@ -653,7 +705,7 @@ export class DeployedTriggers {
         request: Pipedream.DeployedTriggersListWebhooksRequest,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetTriggerWebhooksResponse>> {
-        const { external_user_id: externalUserId } = request;
+        const { externalUserId } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
         const _response = await core.fetcher({
@@ -678,7 +730,16 @@ export class DeployedTriggers {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return { data: _response.body as Pipedream.GetTriggerWebhooksResponse, rawResponse: _response.rawResponse };
+            return {
+                data: serializers.GetTriggerWebhooksResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
@@ -715,8 +776,8 @@ export class DeployedTriggers {
      *
      * @example
      *     await client.deployedTriggers.updateWebhooks("trigger_id", {
-     *         external_user_id: "external_user_id",
-     *         webhook_urls: ["webhook_urls"]
+     *         externalUserId: "external_user_id",
+     *         webhookUrls: ["webhook_urls"]
      *     })
      */
     public updateWebhooks(
@@ -732,7 +793,7 @@ export class DeployedTriggers {
         request: Pipedream.UpdateTriggerWebhooksOpts,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetTriggerWebhooksResponse>> {
-        const { external_user_id: externalUserId, ..._body } = request;
+        const { externalUserId, ..._body } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
         const _response = await core.fetcher({
@@ -754,13 +815,25 @@ export class DeployedTriggers {
             contentType: "application/json",
             queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             requestType: "json",
-            body: _body,
+            body: serializers.UpdateTriggerWebhooksOpts.jsonOrThrow(_body, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return { data: _response.body as Pipedream.GetTriggerWebhooksResponse, rawResponse: _response.rawResponse };
+            return {
+                data: serializers.GetTriggerWebhooksResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
         }
 
         if (_response.error.reason === "status-code") {
