@@ -5,12 +5,12 @@
 /**
  * @example
  *     {
- *         externalUserId: "external_user_id"
+ *         external_user_id: "external_user_id"
  *     }
  */
 export interface DeployedTriggersRetrieveRequest {
     /**
      * Your end user ID, for whom you deployed the trigger
      */
-    externalUserId: string;
+    external_user_id: string;
 }

@@ -7,7 +7,7 @@
  */
 export interface ValidateTokenParams {
     /** The app ID to validate against */
-    appId: string;
+    app_id: string;
     /** The OAuth app ID */
-    oauthAppId?: string;
+    oauth_app_id?: string;
 }
