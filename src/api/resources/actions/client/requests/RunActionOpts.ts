@@ -12,7 +12,6 @@ import * as Pipedream from "../../../../index.js";
  *     }
  */
 export interface RunActionOpts {
-    asyncHandle?: string;
     /** The action component ID */
     id: string;
     /** The external user ID */

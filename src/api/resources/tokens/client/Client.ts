@@ -138,11 +138,13 @@ export class Tokens {
      * @param {Tokens.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
-     *     await client.tokens.validate("ctok")
+     *     await client.tokens.validate("ctok", {
+     *         appId: "app_id"
+     *     })
      */
     public validate(
         ctok: Pipedream.ConnectToken,
-        request: Pipedream.TokensValidateRequest = {},
+        request: Pipedream.TokensValidateRequest,
         requestOptions?: Tokens.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.ValidateTokenResponse> {
         return core.HttpResponsePromise.fromPromise(this.__validate(ctok, request, requestOptions));
@@ -150,19 +152,14 @@ export class Tokens {
 
     private async __validate(
         ctok: Pipedream.ConnectToken,
-        request: Pipedream.TokensValidateRequest = {},
+        request: Pipedream.TokensValidateRequest,
         requestOptions?: Tokens.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ValidateTokenResponse>> {
-        const { params } = request;
+        const { appId, oauthAppId } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
-        if (params != null) {
-            _queryParams["params"] = serializers.ValidateTokenParams.jsonOrThrow(params, {
-                unrecognizedObjectKeys: "passthrough",
-                allowUnrecognizedUnionMembers: true,
-                allowUnrecognizedEnumValues: true,
-                omitUndefined: true,
-                breadcrumbsPrefix: ["request", "params"],
-            });
+        _queryParams["app_id"] = appId;
+        if (oauthAppId != null) {
+            _queryParams["oauth_app_id"] = oauthAppId;
         }
 
         const _response = await core.fetcher({

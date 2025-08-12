@@ -5,16 +5,15 @@
 import * as serializers from "../index.js";
 import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
+import { ConfigurablePropSqlAuth } from "./ConfigurablePropSqlAuth.js";
 
-export const ConfigurablePropInteger: core.serialization.ObjectSchema<
-    serializers.ConfigurablePropInteger.Raw,
-    Pipedream.ConfigurablePropInteger
+export const ConfigurablePropSql: core.serialization.ObjectSchema<
+    serializers.ConfigurablePropSql.Raw,
+    Pipedream.ConfigurablePropSql
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("integer").optional(),
-    min: core.serialization.number().optional(),
-    max: core.serialization.number().optional(),
-    default: core.serialization.number().optional(),
-    options: core.serialization.list(core.serialization.number()).optional(),
+    type: core.serialization.stringLiteral("sql").optional(),
+    auth: ConfigurablePropSqlAuth.optional(),
+    default: core.serialization.string().optional(),
     name: core.serialization.string(),
     label: core.serialization.string().optional(),
     description: core.serialization.string().optional(),
@@ -27,13 +26,11 @@ export const ConfigurablePropInteger: core.serialization.ObjectSchema<
     withLabel: core.serialization.boolean().optional(),
 });
 
-export declare namespace ConfigurablePropInteger {
+export declare namespace ConfigurablePropSql {
     export interface Raw {
-        type?: "integer" | null;
-        min?: number | null;
-        max?: number | null;
-        default?: number | null;
-        options?: number[] | null;
+        type?: "sql" | null;
+        auth?: ConfigurablePropSqlAuth.Raw | null;
+        default?: string | null;
         name: string;
         label?: string | null;
         description?: string | null;

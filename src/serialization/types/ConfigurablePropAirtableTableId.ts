@@ -6,15 +6,12 @@ import * as serializers from "../index.js";
 import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 
-export const ConfigurablePropInteger: core.serialization.ObjectSchema<
-    serializers.ConfigurablePropInteger.Raw,
-    Pipedream.ConfigurablePropInteger
+export const ConfigurablePropAirtableTableId: core.serialization.ObjectSchema<
+    serializers.ConfigurablePropAirtableTableId.Raw,
+    Pipedream.ConfigurablePropAirtableTableId
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("integer").optional(),
-    min: core.serialization.number().optional(),
-    max: core.serialization.number().optional(),
-    default: core.serialization.number().optional(),
-    options: core.serialization.list(core.serialization.number()).optional(),
+    type: core.serialization.stringLiteral("$.airtable.tableId").optional(),
+    baseIdProp: core.serialization.string().optional(),
     name: core.serialization.string(),
     label: core.serialization.string().optional(),
     description: core.serialization.string().optional(),
@@ -27,13 +24,10 @@ export const ConfigurablePropInteger: core.serialization.ObjectSchema<
     withLabel: core.serialization.boolean().optional(),
 });
 
-export declare namespace ConfigurablePropInteger {
+export declare namespace ConfigurablePropAirtableTableId {
     export interface Raw {
-        type?: "integer" | null;
-        min?: number | null;
-        max?: number | null;
-        default?: number | null;
-        options?: number[] | null;
+        type?: "$.airtable.tableId" | null;
+        baseIdProp?: string | null;
         name: string;
         label?: string | null;
         description?: string | null;
