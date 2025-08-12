@@ -5,27 +5,27 @@
 /**
  * @example
  *     {
- *         appSlug: "app_slug",
- *         cfmapJson: "cfmap_json",
- *         connectToken: "connect_token"
+ *         app_slug: "app_slug",
+ *         cfmap_json: "cfmap_json",
+ *         connect_token: "connect_token"
  *     }
  */
 export interface CreateAccountOpts {
     /**
      * The app slug or ID to filter accounts by.
      */
-    appId?: string;
-    externalUserId?: string;
+    app_id?: string;
+    external_user_id?: string;
     /**
      * The OAuth app ID to filter by, if applicable
      */
-    oauthAppId?: string;
+    oauth_app_id?: string;
     /** The app slug for the account */
-    appSlug: string;
+    app_slug: string;
     /** JSON string containing the custom fields mapping */
-    cfmapJson: string;
+    cfmap_json: string;
     /** The connect token for authentication */
-    connectToken: string;
+    connect_token: string;
     /** Optional name for the account */
     name?: string;
 }

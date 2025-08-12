@@ -13,24 +13,24 @@ export interface Account {
     /** The custom name of the account if set. */
     name?: string;
     /** The external ID associated with the account. */
-    externalId?: string;
+    external_id?: string;
     /** Indicates if the account is healthy. Pipedream will periodically retry token refresh and test requests for unhealthy accounts */
     healthy?: boolean;
     /** Indicates if the account is no longer active */
     dead?: boolean;
     app?: Pipedream.App;
     /** The date and time the account was created, an ISO 8601 formatted string */
-    createdAt?: Date;
+    created_at?: string;
     /** The date and time the account was last updated, an ISO 8601 formatted string */
-    updatedAt?: Date;
+    updated_at?: string;
     /** The credentials associated with the account, if the `include_credentials` parameter was set to true in the request */
     credentials?: Record<string, unknown>;
     /** The date and time the account's credentials expiration, an ISO 8601 formatted string */
-    expiresAt?: Date;
+    expires_at?: string;
     /** The error message if the account is unhealthy or dead, null otherwise */
     error?: string;
     /** The date and time the account was last refreshed, an ISO 8601 formatted string */
-    lastRefreshedAt?: Date;
+    last_refreshed_at?: string;
     /** The date and time the account will next be refreshed, an ISO 8601 formatted string */
-    nextRefreshAt?: Date;
+    next_refresh_at?: string;
 }
