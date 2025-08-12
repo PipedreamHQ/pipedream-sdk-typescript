@@ -231,30 +231,27 @@ export class Components {
     }
 
     /**
-     * @param {Pipedream.ComponentsConfigurePropRequest} request
+     * @param {Pipedream.ConfigurePropOpts} request
      * @param {Components.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
      *     await client.components.configureProp({
-     *         body: {
-     *             id: "id",
-     *             externalUserId: "external_user_id",
-     *             propName: "prop_name"
-     *         }
+     *         id: "id",
+     *         externalUserId: "external_user_id",
+     *         propName: "prop_name"
      *     })
      */
     public configureProp(
-        request: Pipedream.ComponentsConfigurePropRequest,
+        request: Pipedream.ConfigurePropOpts,
         requestOptions?: Components.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.ConfigurePropResponse> {
         return core.HttpResponsePromise.fromPromise(this.__configureProp(request, requestOptions));
     }
 
     private async __configureProp(
-        request: Pipedream.ComponentsConfigurePropRequest,
+        request: Pipedream.ConfigurePropOpts,
         requestOptions?: Components.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ConfigurePropResponse>> {
-        const { asyncHandle, body: _body } = request;
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -267,7 +264,6 @@ export class Components {
                 this._options?.headers,
                 mergeOnlyDefinedHeaders({
                     Authorization: await this._getAuthorizationHeader(),
-                    "x-async-handle": asyncHandle != null ? asyncHandle : undefined,
                     "x-pd-environment": requestOptions?.projectEnvironment,
                 }),
                 requestOptions?.headers,
@@ -275,7 +271,7 @@ export class Components {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.ConfigurePropOpts.jsonOrThrow(_body, {
+            body: serializers.ConfigurePropOpts.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
@@ -324,29 +320,26 @@ export class Components {
     }
 
     /**
-     * @param {Pipedream.ComponentsReloadPropsRequest} request
+     * @param {Pipedream.ReloadPropsOpts} request
      * @param {Components.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
      *     await client.components.reloadProps({
-     *         body: {
-     *             id: "id",
-     *             externalUserId: "external_user_id"
-     *         }
+     *         id: "id",
+     *         externalUserId: "external_user_id"
      *     })
      */
     public reloadProps(
-        request: Pipedream.ComponentsReloadPropsRequest,
+        request: Pipedream.ReloadPropsOpts,
         requestOptions?: Components.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.ReloadPropsResponse> {
         return core.HttpResponsePromise.fromPromise(this.__reloadProps(request, requestOptions));
     }
 
     private async __reloadProps(
-        request: Pipedream.ComponentsReloadPropsRequest,
+        request: Pipedream.ReloadPropsOpts,
         requestOptions?: Components.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ReloadPropsResponse>> {
-        const { asyncHandle, body: _body } = request;
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -359,7 +352,6 @@ export class Components {
                 this._options?.headers,
                 mergeOnlyDefinedHeaders({
                     Authorization: await this._getAuthorizationHeader(),
-                    "x-async-handle": asyncHandle != null ? asyncHandle : undefined,
                     "x-pd-environment": requestOptions?.projectEnvironment,
                 }),
                 requestOptions?.headers,
@@ -367,7 +359,7 @@ export class Components {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.ReloadPropsOpts.jsonOrThrow(_body, {
+            body: serializers.ReloadPropsOpts.jsonOrThrow(request, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
