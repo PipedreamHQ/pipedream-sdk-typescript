@@ -19,7 +19,7 @@ export * from "./ConfigurablePropApphook.js";
 export * from "./ConfigurablePropBoolean.js";
 export * from "./ConfigurablePropDb.js";
 export * from "./ConfigurablePropDiscord.js";
-export * from "./ConfigurablePropDiscordChannel";
+export * from "./ConfigurablePropDiscordChannel.js";
 export * from "./ConfigurablePropDiscordChannelArray.js";
 export * from "./ConfigurablePropHttp.js";
 export * from "./ConfigurablePropInteger.js";
