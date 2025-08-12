@@ -6,15 +6,15 @@ import * as serializers from "../index.js";
 import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 
-export const ConfigurablePropInteger: core.serialization.ObjectSchema<
-    serializers.ConfigurablePropInteger.Raw,
-    Pipedream.ConfigurablePropInteger
+export const ConfigurablePropApphook: core.serialization.ObjectSchema<
+    serializers.ConfigurablePropApphook.Raw,
+    Pipedream.ConfigurablePropApphook
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("integer").optional(),
-    min: core.serialization.number().optional(),
-    max: core.serialization.number().optional(),
-    default: core.serialization.number().optional(),
-    options: core.serialization.list(core.serialization.number()).optional(),
+    type: core.serialization.stringLiteral("$.interface.apphook").optional(),
+    appProp: core.serialization.string().optional(),
+    eventNames: core.serialization.list(core.serialization.string()).optional(),
+    remote: core.serialization.boolean().optional(),
+    static: core.serialization.list(core.serialization.unknown()).optional(),
     name: core.serialization.string(),
     label: core.serialization.string().optional(),
     description: core.serialization.string().optional(),
@@ -27,13 +27,13 @@ export const ConfigurablePropInteger: core.serialization.ObjectSchema<
     withLabel: core.serialization.boolean().optional(),
 });
 
-export declare namespace ConfigurablePropInteger {
+export declare namespace ConfigurablePropApphook {
     export interface Raw {
-        type?: "integer" | null;
-        min?: number | null;
-        max?: number | null;
-        default?: number | null;
-        options?: number[] | null;
+        type?: "$.interface.apphook" | null;
+        appProp?: string | null;
+        eventNames?: string[] | null;
+        remote?: boolean | null;
+        static?: unknown[] | null;
         name: string;
         label?: string | null;
         description?: string | null;

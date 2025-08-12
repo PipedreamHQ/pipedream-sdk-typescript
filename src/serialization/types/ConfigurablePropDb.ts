@@ -6,15 +6,11 @@ import * as serializers from "../index.js";
 import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 
-export const ConfigurablePropInteger: core.serialization.ObjectSchema<
-    serializers.ConfigurablePropInteger.Raw,
-    Pipedream.ConfigurablePropInteger
+export const ConfigurablePropDb: core.serialization.ObjectSchema<
+    serializers.ConfigurablePropDb.Raw,
+    Pipedream.ConfigurablePropDb
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("integer").optional(),
-    min: core.serialization.number().optional(),
-    max: core.serialization.number().optional(),
-    default: core.serialization.number().optional(),
-    options: core.serialization.list(core.serialization.number()).optional(),
+    type: core.serialization.stringLiteral("$.service.db").optional(),
     name: core.serialization.string(),
     label: core.serialization.string().optional(),
     description: core.serialization.string().optional(),
@@ -27,13 +23,9 @@ export const ConfigurablePropInteger: core.serialization.ObjectSchema<
     withLabel: core.serialization.boolean().optional(),
 });
 
-export declare namespace ConfigurablePropInteger {
+export declare namespace ConfigurablePropDb {
     export interface Raw {
-        type?: "integer" | null;
-        min?: number | null;
-        max?: number | null;
-        default?: number | null;
-        options?: number[] | null;
+        type?: "$.service.db" | null;
         name: string;
         label?: string | null;
         description?: string | null;
