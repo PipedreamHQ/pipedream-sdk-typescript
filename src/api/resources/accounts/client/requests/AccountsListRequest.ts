@@ -10,12 +10,12 @@ export interface AccountsListRequest {
     /**
      * The app slug or ID to filter accounts by.
      */
-    appId?: string;
-    externalUserId?: string;
+    app_id?: string;
+    external_user_id?: string;
     /**
      * The OAuth app ID to filter by, if applicable
      */
-    oauthAppId?: string;
+    oauth_app_id?: string;
     /**
      * The cursor to start from for pagination
      */
@@ -31,5 +31,5 @@ export interface AccountsListRequest {
     /**
      * Whether to retrieve the account's credentials or not
      */
-    includeCredentials?: boolean;
+    include_credentials?: boolean;
 }

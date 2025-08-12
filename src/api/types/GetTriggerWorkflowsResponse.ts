@@ -6,5 +6,5 @@
  * Response received when retrieving trigger workflows
  */
 export interface GetTriggerWorkflowsResponse {
-    workflowIds: string[];
+    workflow_ids: string[];
 }

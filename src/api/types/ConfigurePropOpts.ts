@@ -9,21 +9,21 @@ export interface ConfigurePropOpts {
     /** The component ID */
     id: string;
     /** The external user ID */
-    externalUserId: string;
+    external_user_id: string;
     /** The name of the prop to configure */
-    propName: string;
+    prop_name: string;
     /** Whether this operation should block until completion */
     blocking?: boolean;
     /** The configured properties for the component */
-    configuredProps?: Record<string, unknown>;
+    configured_props?: Record<string, unknown>;
     /** The ID for dynamic props */
-    dynamicPropsId?: string;
+    dynamic_props_id?: string;
     /** Handle for async operations */
-    asyncHandle?: string;
+    async_handle?: string;
     /** Page number for paginated results */
     page?: number;
     /** Previous context for pagination */
-    prevContext?: Record<string, unknown>;
+    prev_context?: Record<string, unknown>;
     /** Search query for filtering options */
     query?: string;
 }

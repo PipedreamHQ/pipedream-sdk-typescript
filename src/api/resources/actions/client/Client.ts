@@ -6,7 +6,6 @@ import * as environments from "../../../../environments.js";
 import * as core from "../../../../core/index.js";
 import * as Pipedream from "../../../index.js";
 import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
-import * as serializers from "../../../../serialization/index.js";
 import * as errors from "../../../../errors/index.js";
 
 export declare namespace Actions {
@@ -101,13 +100,7 @@ export class Actions {
                 });
                 if (_response.ok) {
                     return {
-                        data: serializers.GetComponentsResponse.parseOrThrow(_response.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
+                        data: _response.body as Pipedream.GetComponentsResponse,
                         rawResponse: _response.rawResponse,
                     };
                 }
@@ -142,11 +135,11 @@ export class Actions {
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
-                response?.pageInfo?.endCursor != null &&
-                !(typeof response?.pageInfo?.endCursor === "string" && response?.pageInfo?.endCursor === ""),
+                response?.page_info?.end_cursor != null &&
+                !(typeof response?.page_info?.end_cursor === "string" && response?.page_info?.end_cursor === ""),
             getItems: (response) => response?.data ?? [],
             loadPage: (response) => {
-                return list(core.setObjectProperty(request, "after", response?.pageInfo?.endCursor));
+                return list(core.setObjectProperty(request, "after", response?.page_info?.end_cursor));
             },
         });
     }
@@ -191,16 +184,7 @@ export class Actions {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.GetComponentResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: _response.body as Pipedream.GetComponentResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -231,27 +215,30 @@ export class Actions {
     }
 
     /**
-     * @param {Pipedream.ConfigurePropOpts} request
+     * @param {Pipedream.ActionsConfigurePropRequest} request
      * @param {Actions.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
      *     await client.actions.configureProp({
-     *         id: "id",
-     *         externalUserId: "external_user_id",
-     *         propName: "prop_name"
+     *         body: {
+     *             id: "id",
+     *             external_user_id: "external_user_id",
+     *             prop_name: "prop_name"
+     *         }
      *     })
      */
     public configureProp(
-        request: Pipedream.ConfigurePropOpts,
+        request: Pipedream.ActionsConfigurePropRequest,
         requestOptions?: Actions.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.ConfigurePropResponse> {
         return core.HttpResponsePromise.fromPromise(this.__configureProp(request, requestOptions));
     }
 
     private async __configureProp(
-        request: Pipedream.ConfigurePropOpts,
+        request: Pipedream.ActionsConfigurePropRequest,
         requestOptions?: Actions.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ConfigurePropResponse>> {
+        const { "x-async-handle": asyncHandle, body: _body } = request;
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -264,6 +251,7 @@ export class Actions {
                 this._options?.headers,
                 mergeOnlyDefinedHeaders({
                     Authorization: await this._getAuthorizationHeader(),
+                    "x-async-handle": asyncHandle != null ? asyncHandle : undefined,
                     "x-pd-environment": requestOptions?.projectEnvironment,
                 }),
                 requestOptions?.headers,
@@ -271,25 +259,13 @@ export class Actions {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.ConfigurePropOpts.jsonOrThrow(request, {
-                unrecognizedObjectKeys: "strip",
-                omitUndefined: true,
-            }),
+            body: _body,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.ConfigurePropResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: _response.body as Pipedream.ConfigurePropResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -320,26 +296,29 @@ export class Actions {
     }
 
     /**
-     * @param {Pipedream.ReloadPropsOpts} request
+     * @param {Pipedream.ActionsReloadPropsRequest} request
      * @param {Actions.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
      *     await client.actions.reloadProps({
-     *         id: "id",
-     *         externalUserId: "external_user_id"
+     *         body: {
+     *             id: "id",
+     *             external_user_id: "external_user_id"
+     *         }
      *     })
      */
     public reloadProps(
-        request: Pipedream.ReloadPropsOpts,
+        request: Pipedream.ActionsReloadPropsRequest,
         requestOptions?: Actions.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.ReloadPropsResponse> {
         return core.HttpResponsePromise.fromPromise(this.__reloadProps(request, requestOptions));
     }
 
     private async __reloadProps(
-        request: Pipedream.ReloadPropsOpts,
+        request: Pipedream.ActionsReloadPropsRequest,
         requestOptions?: Actions.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ReloadPropsResponse>> {
+        const { "x-async-handle": asyncHandle, body: _body } = request;
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -352,6 +331,7 @@ export class Actions {
                 this._options?.headers,
                 mergeOnlyDefinedHeaders({
                     Authorization: await this._getAuthorizationHeader(),
+                    "x-async-handle": asyncHandle != null ? asyncHandle : undefined,
                     "x-pd-environment": requestOptions?.projectEnvironment,
                 }),
                 requestOptions?.headers,
@@ -359,25 +339,13 @@ export class Actions {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.ReloadPropsOpts.jsonOrThrow(request, {
-                unrecognizedObjectKeys: "strip",
-                omitUndefined: true,
-            }),
+            body: _body,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.ReloadPropsResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: _response.body as Pipedream.ReloadPropsResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -414,7 +382,7 @@ export class Actions {
      * @example
      *     await client.actions.run({
      *         id: "id",
-     *         externalUserId: "external_user_id"
+     *         external_user_id: "external_user_id"
      *     })
      */
     public run(
@@ -428,6 +396,7 @@ export class Actions {
         request: Pipedream.RunActionOpts,
         requestOptions?: Actions.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.RunActionResponse>> {
+        const { "x-async-handle": asyncHandle, ..._body } = request;
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -440,6 +409,7 @@ export class Actions {
                 this._options?.headers,
                 mergeOnlyDefinedHeaders({
                     Authorization: await this._getAuthorizationHeader(),
+                    "x-async-handle": asyncHandle != null ? asyncHandle : undefined,
                     "x-pd-environment": requestOptions?.projectEnvironment,
                 }),
                 requestOptions?.headers,
@@ -447,25 +417,13 @@ export class Actions {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.RunActionOpts.jsonOrThrow(request, {
-                unrecognizedObjectKeys: "strip",
-                omitUndefined: true,
-            }),
+            body: _body,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.RunActionResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: _response.body as Pipedream.RunActionResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {

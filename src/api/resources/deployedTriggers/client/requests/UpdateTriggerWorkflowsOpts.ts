@@ -5,15 +5,15 @@
 /**
  * @example
  *     {
- *         externalUserId: "external_user_id",
- *         workflowIds: ["workflow_ids"]
+ *         external_user_id: "external_user_id",
+ *         workflow_ids: ["workflow_ids"]
  *     }
  */
 export interface UpdateTriggerWorkflowsOpts {
     /**
      * The external user ID who owns the trigger
      */
-    externalUserId: string;
+    external_user_id: string;
     /** Array of workflow IDs to set */
-    workflowIds: string[];
+    workflow_ids: string[];
 }
