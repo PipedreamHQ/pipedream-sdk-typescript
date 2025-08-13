@@ -28,13 +28,13 @@ export interface AppsListRequest {
     /**
      * The key to sort the apps by
      */
-    sortKey?: Pipedream.AppsListRequestSortKey;
+    sort_key?: Pipedream.AppsListRequestSortKey;
     /**
      * The direction to sort the apps
      */
-    sortDirection?: Pipedream.AppsListRequestSortDirection;
+    sort_direction?: Pipedream.AppsListRequestSortDirection;
     /**
      * Only return apps in these categories
      */
-    categoryIds?: string | string[];
+    category_ids?: string | string[];
 }
