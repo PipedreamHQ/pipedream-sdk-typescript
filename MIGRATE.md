@@ -83,16 +83,18 @@ changes:
 - **Namespaced Methods**: Methods are now namespaced by the resource they act
   upon. For example, instead of using `client.runAction()`, you now use
   `client.actions.run()`.
-- **Snake Case Naming Convention**: Method arguments now follow the `snake_case`
-  naming convention to align with our [OpenAPI
+- **Automatic Snake Case Conversion**: While the TypeScript interfaces use
+  `camelCase` for better developer experience, the SDK automatically converts
+  these to `snake_case` when making API calls to align with our [OpenAPI
   spec](https://api.pipedream.com/api-docs/swagger.json).
 - **Client Initialization**: The `createBackendClient()` and
   `createFrontendClient()` methods have been replaced with a new
-  `PipedreamClient` class.
+  `PipedreamClient` class. Note: The v1.x `BrowserClient` class has been
+  replaced with `PipedreamClient` in the browser context.
 - **TypeScript Types**: All TypeScript types are now exported for better type
   safety.
-- **Authentication Changes**: The `rawAccessToken()` method has been replaced
-  with the `oauthTokens.create()` namespace.
+- **Authentication Changes**: The `rawAccessToken()` method is now available as
+  a `rawAccessToken` getter property on the server-side SDK.
 - **Environment Variables**: The SDK now supports automatic configuration via
   environment variables (see below).
 
@@ -126,6 +128,13 @@ import { PipedreamClient } from '@pipedream/sdk';
 const client = new PipedreamClient({
   clientId: 'your-client-id',
   clientSecret: 'your-client-secret',
+  projectId: 'your-project-id',
+  projectEnvironment: 'development', // or 'production'
+});
+
+// Alternative: Use with a connect token (for simpler authentication)
+const clientWithToken = new PipedreamClient({
+  token: 'connect-token',
   projectId: 'your-project-id',
   projectEnvironment: 'development', // or 'production'
 });
@@ -166,15 +175,15 @@ const frontendClient = new PipedreamClient({
 });
 ```
 
-**Option 2: Using BrowserClient with token callback (for dynamic token
+**Option 2: Using createFrontendClient with token callback (for dynamic token
 management)**
 
 ```javascript
 // Explicit browser import (recommended for browser apps)
-import { createFrontendClient, BrowserClient } from '@pipedream/sdk/browser';
+import { createFrontendClient, PipedreamClient } from '@pipedream/sdk/browser';
 
 // Or automatic browser resolution
-import { createFrontendClient, BrowserClient } from '@pipedream/sdk';
+import { createFrontendClient, PipedreamClient } from '@pipedream/sdk';
 
 const client = createFrontendClient({
   tokenCallback: async ({ externalUserId }) => {
@@ -219,23 +228,31 @@ The v2.x SDK supports automatic configuration via environment variables:
 const client = new PipedreamClient({
   projectId: 'your-project-id', // Can also come from PIPEDREAM_PROJECT_ID
 });
+
+// If environment variables are set, you can even do:
+const client = new PipedreamClient();
+// This will use PIPEDREAM_CLIENT_ID, PIPEDREAM_CLIENT_SECRET, and PIPEDREAM_PROJECT_ID
 ```
 
 ## Method migration
 
 ### Method and parameter naming
 
-In v2.x, all methods are namespaced and all method parameters are in
-`snake_case`. For example, `client.runAction({ externalUserId: '...' })` becomes
-`client.actions.run({ external_user_id: '...' })`. This aligns to what's stated
-the [OpenAPI spec](https://api.pipedream.com/api-docs/swagger.json), but does
+In v2.x, all methods are namespaced. While you write TypeScript code using
+`camelCase` (e.g., `externalUserId`), the SDK automatically converts these to
+`snake_case` (e.g., `external_user_id`) when making API calls. For example,
+`client.runAction({ externalUserId: '...' })` becomes
+`client.actions.run({ externalUserId: '...' })` in your code, but the SDK sends
+`external_user_id` to the API. This automatic conversion aligns with the
+[OpenAPI spec](https://api.pipedream.com/api-docs/swagger.json), but does
 **not apply** to the following arguments:
 
-1. Client constructor parameters like `clientId`, `clientSecret`, and
-   `projectId`.
-2. The props listed under `configured_props` (the naming follows whatever the
+1. Client constructor parameters like `clientId`, `clientSecret`, `projectId`,
+   `projectEnvironment`, and `workflowDomain`.
+2. The props listed under `configuredProps` (the naming follows whatever the
    corresponding component defines).
-3. Request meta-arguments like `timeoutInSeconds`, `maxRetries`, and `headers`.
+3. Request options like `timeoutInSeconds`, `maxRetries`, and `headers` (these
+   remain in camelCase as they are not part of the API request body).
 
 ### Migration examples
 
@@ -259,9 +276,9 @@ const result = await client.runAction({
 
 ```javascript
 const result = await client.actions.run({
-  external_user_id: 'jverce',
+  externalUserId: 'jverce',
   id: 'gitlab-list-commits',
-  configured_props: {
+  configuredProps: {
     gitlab: { authProvisionId: 'apn_kVh9AoD' },
     projectId: 45672541,
     refName: 'main',
@@ -291,15 +308,15 @@ const trigger = await client.deployTrigger({
 
 ```javascript
 const trigger = await client.triggers.deploy({
-  external_user_id: 'jverce',
+  externalUserId: 'jverce',
   id: 'gitlab-new-issue',
-  configured_props: {
+  configuredProps: {
     gitlab: {
       authProvisionId: 'apn_kVh9AoD',
     },
     projectId: 45672541,
   },
-  webhook_url: 'https://events.example.com/gitlab-new-issue',
+  webhookUrl: 'https://events.example.com/gitlab-new-issue',
 });
 ```
 
@@ -325,13 +342,13 @@ const account = await client.getAccountById('apn_kVh9AoD', {
 ```javascript
 // List accounts
 const accounts = await client.accounts.list({
-  external_user_id: 'jverce',
-  include_credentials: true,
+  externalUserId: 'jverce',
+  includeCredentials: true,
 });
 
 // Get specific account
 const account = await client.accounts.retrieve('apn_kVh9AoD', {
-  include_credentials: true,
+  includeCredentials: true,
 });
 ```
 
@@ -349,7 +366,7 @@ const token = await client.createConnectToken({
 
 ```javascript
 const token = await client.tokens.create({
-  external_user_id: 'jverce',
+  externalUserId: 'jverce',
 });
 ```
 
@@ -391,10 +408,10 @@ const response = await client.configureComponent({
 
 ```javascript
 const response = await client.components.configureProp({
-  external_user_id: 'jverce',
+  externalUserId: 'jverce',
   id: 'gitlab-new-issue',
-  prop_name: 'projectId',
-  configured_props: {
+  propName: 'projectId',
+  configuredProps: {
     gitlab: { authProvisionId: 'apn_kVh9AoD' },
   },
 });
@@ -426,7 +443,7 @@ await client.accounts.delete('account-id');
 
 // Delete external user - use users namespace
 await client.users.delete({
-  external_user_id: 'jverce',
+  externalUserId: 'jverce',
 });
 ```
 
@@ -490,8 +507,8 @@ const postResponse = await client.makeProxyRequest({
 ```javascript
 // v2.x uses separate methods for each HTTP verb
 const response = await client.proxy.get({
-  external_user_id: 'jverce',
-  account_id: 'apn_kVh9AoD',
+  externalUserId: 'jverce',
+  accountId: 'apn_kVh9AoD',
   url: 'https://api.example.com/data',
   headers: {
     'Accept': 'application/json',
@@ -501,8 +518,8 @@ const response = await client.proxy.get({
 
 // POST request with body
 const postResponse = await client.proxy.post({
-  external_user_id: 'jverce',
-  account_id: 'apn_kVh9AoD',
+  externalUserId: 'jverce',
+  accountId: 'apn_kVh9AoD',
   url: 'https://api.example.com/users',
   body: { name: 'John Doe' }, // Body is passed as an object, not a string
   headers: {
@@ -572,39 +589,39 @@ const response = await client.workflows.invokeForExternalUser({
 
 Here's a complete list of how v1.x methods map to v2.x namespaced methods:
 
-| v1.x Method                       | v2.x Method                          |
-| --------------------------------- | ------------------------------------ |
-| `runAction()`                     | `actions.run()`                      |
-| `getAccounts()`                   | `accounts.list()`                    |
-| `getAccountById()`                | `accounts.retrieve()`                |
-| `deleteAccount()`                 | `accounts.delete()`                  |
-| `deleteAccountsByApp()`           | Not available (use list + delete)    |
-| `deleteExternalUser()`            | `users.delete()`                     |
-| `createConnectToken()`            | `tokens.create()`                    |
-| `validateConnectToken()`          | `tokens.validate()`                  |
-| `deployTrigger()`                 | `triggers.deploy()`                  |
-| `getDeployedTriggers()`           | `deployedTriggers.list()`            |
-| `getDeployedTrigger()`            | `deployedTriggers.retrieve()`        |
-| `updateDeployedTrigger()`         | `deployedTriggers.update()`          |
-| `deleteDeployedTrigger()`         | `deployedTriggers.delete()`          |
-| `getTriggerEvents()`              | `deployedTriggers.listEvents()`      |
-| `getTriggerWebhooks()`            | `deployedTriggers.listWebhooks()`    |
-| `updateTriggerWebhooks()`         | `deployedTriggers.updateWebhooks()`  |
-| `getTriggerWorkflows()`           | `deployedTriggers.listWorkflows()`   |
-| `updateTriggerWorkflows()`        | `deployedTriggers.updateWorkflows()` |
-| `getUsers()`                      | `users.list()`                       |
-| `getUser()`                       | `users.retrieve()`                   |
-| `getApps()`                       | `apps.list()`                        |
-| `getApp()`                        | `apps.retrieve()`                    |
-| `getComponents()`                 | `components.list()`                  |
-| `getComponent()`                  | `components.retrieve()`              |
-| `configureComponent()`            | `components.configureProp()`         |
-| `reloadComponentProps()`          | `components.reloadProps()`           |
-| `getProjectInfo()`                | `projects.retrieve()`                |
-| `makeProxyRequest()`              | `proxy.get()`, `proxy.post()`, etc.  |
-| `invokeWorkflow()`                | `workflows.invoke()`                 |
-| `invokeWorkflowForExternalUser()` | `workflows.invokeForExternalUser()`  |
-| `rawAccessToken()`                | Not available (managed internally)   |
+| v1.x Method                       | v2.x Method                                      |
+| --------------------------------- | ------------------------------------------------ |
+| `runAction()`                     | `actions.run()`                                  |
+| `getAccounts()`                   | `accounts.list()`                                |
+| `getAccountById()`                | `accounts.retrieve()`                            |
+| `deleteAccount()`                 | `accounts.delete()`                              |
+| `deleteAccountsByApp()`           | Not available (use list + delete)                |
+| `deleteExternalUser()`            | `users.delete()`                                 |
+| `createConnectToken()`            | `tokens.create()`                                |
+| `validateConnectToken()`          | `tokens.validate()`                              |
+| `deployTrigger()`                 | `triggers.deploy()`                              |
+| `getDeployedTriggers()`           | `deployedTriggers.list()`                        |
+| `getDeployedTrigger()`            | `deployedTriggers.retrieve()`                    |
+| `updateDeployedTrigger()`         | `deployedTriggers.update()`                      |
+| `deleteDeployedTrigger()`         | `deployedTriggers.delete()`                      |
+| `getTriggerEvents()`              | `deployedTriggers.listEvents()`                  |
+| `getTriggerWebhooks()`            | `deployedTriggers.listWebhooks()`                |
+| `updateTriggerWebhooks()`         | `deployedTriggers.updateWebhooks()`              |
+| `getTriggerWorkflows()`           | `deployedTriggers.listWorkflows()`               |
+| `updateTriggerWorkflows()`        | `deployedTriggers.updateWorkflows()`             |
+| `getUsers()`                      | `users.list()`                                   |
+| `getUser()`                       | `users.retrieve()`                               |
+| `getApps()`                       | `apps.list()`                                    |
+| `getApp()`                        | `apps.retrieve()`                                |
+| `getComponents()`                 | `components.list()`                              |
+| `getComponent()`                  | `components.retrieve()`                          |
+| `configureComponent()`            | `components.configureProp()`                     |
+| `reloadComponentProps()`          | `components.reloadProps()`                       |
+| `getProjectInfo()`                | `projects.retrieve()`                            |
+| `makeProxyRequest()`              | `proxy.get()`, `proxy.post()`, etc.              |
+| `invokeWorkflow()`                | `workflows.invoke()`                             |
+| `invokeWorkflowForExternalUser()` | `workflows.invokeForExternalUser()`              |
+| `rawAccessToken()`                | `rawAccessToken` (getter property in server SDK) |
 
 ## New features in v2.x
 
@@ -616,9 +633,9 @@ The v2.x SDK includes several new features not available in v1.x:
 import { type RunActionResponse } from '@pipedream/sdk';
 
 const result: RunActionResponse = await client.actions.run({
-  external_user_id: 'jverce',
+  externalUserId: 'jverce',
   id: 'gitlab-list-commits',
-  configured_props: {
+  configuredProps: {
     gitlab: { authProvisionId: 'apn_kVh9AoD' },
     projectId: 45672541,
     refName: 'main',
@@ -631,14 +648,14 @@ const result: RunActionResponse = await client.actions.run({
 ```javascript
 // Automatic pagination
 for await (const account of client.accounts.list({
-  external_user_id: 'jverce',
+  externalUserId: 'jverce',
 })) {
   console.log(account);
 }
 
 // Manual pagination
 const firstPage = await client.accounts.list({
-  external_user_id: 'jverce',
+  externalUserId: 'jverce',
   limit: 20,
 });
 
@@ -655,9 +672,9 @@ import { PipedreamError } from '@pipedream/sdk';
 
 try {
   await client.actions.run({
-    external_user_id: 'jverce',
+    externalUserId: 'jverce',
     id: 'gitlab-list-commits',
-    configured_props: {
+    configuredProps: {
       gitlab: { authProvisionId: 'apn_kVh9AoD' },
       projectId: 45672541,
       refName: 'main',
@@ -675,9 +692,9 @@ try {
 ```javascript
 // Custom timeout
 const result = await client.actions.run({
-  external_user_id: 'jverce',
+  externalUserId: 'jverce',
   id: 'gitlab-list-commits',
-  configured_props: {
+  configuredProps: {
     gitlab: { authProvisionId: 'apn_kVh9AoD' },
     projectId: 45672541,
     refName: 'main',
@@ -688,9 +705,9 @@ const result = await client.actions.run({
 
 // Retry configuration
 const result = await client.actions.run({
-  external_user_id: 'jverce',
+  externalUserId: 'jverce',
   id: 'gitlab-list-commits',
-  configured_props: {
+  configuredProps: {
     gitlab: { authProvisionId: 'apn_kVh9AoD' },
     projectId: 45672541,
     refName: 'main',
@@ -701,9 +718,9 @@ const result = await client.actions.run({
 
 // Custom headers
 const result = await client.actions.run({
-  external_user_id: 'jverce',
+  externalUserId: 'jverce',
   id: 'gitlab-list-commits',
-  configured_props: {
+  configuredProps: {
     gitlab: { authProvisionId: 'apn_kVh9AoD' },
     projectId: 45672541,
     refName: 'main',
@@ -725,9 +742,9 @@ setTimeout(() => controller.abort(), 5000);
 
 try {
   const result = await client.actions.run({
-    external_user_id: 'jverce',
+    externalUserId: 'jverce',
     id: 'gitlab-list-commits',
-    configured_props: {
+    configuredProps: {
       gitlab: { authProvisionId: 'apn_kVh9AoD' },
       projectId: 45672541,
       refName: 'main',
@@ -746,16 +763,14 @@ try {
 
 ```javascript
 const response = await client.actions.run({
-  external_user_id: 'jverce',
+  externalUserId: 'jverce',
   id: 'gitlab-list-commits',
-  configured_props: {
+  configuredProps: {
     gitlab: { authProvisionId: 'apn_kVh9AoD' },
     projectId: 45672541,
     refName: 'main',
   },
-}, {
-  includeRawResponse: true,
-});
+}).withRawResponse();
 
 console.log(response.data); // Parsed response data
 console.log(response.rawResponse); // Original Response object
@@ -793,14 +808,13 @@ The SDK uses conditional exports to automatically serve the right code:
 
 ```typescript
 // For browser applications - avoids Node.js dependencies
-import { BrowserClient, createFrontendClient } from '@pipedream/sdk/browser';
+import { PipedreamClient, createFrontendClient } from '@pipedream/sdk/browser';
 
 // For server applications - includes full functionality
-import { Pipedream } from '@pipedream/sdk/server';
+import { PipedreamClient } from '@pipedream/sdk/server';
 
 // Automatic resolution (recommended for most cases)
-import { Pipedream } from '@pipedream/sdk';          // Server environments
-import { BrowserClient } from '@pipedream/sdk';     // Browser environments
+import { PipedreamClient } from '@pipedream/sdk';
 ```
 
 This ensures:
@@ -873,9 +887,9 @@ const oldResult = await client.runAction({
 
 // Use new client for migrated code
 const newResult = await newClient.actions.run({
-  external_user_id: 'jverce',
+  externalUserId: 'jverce',
   id: 'gitlab-list-commits',
-  configured_props: {
+  configuredProps: {
     gitlab: { authProvisionId: 'apn_kVh9AoD' },
     projectId: 45672541,
     refName: 'main',
@@ -891,17 +905,27 @@ Some methods from v1.x have been removed or changed significantly in v2.x:
    available. You'll need to list accounts for an app and delete them
    individually.
 
-2. **`rawAccessToken()`** - Direct access token retrieval has been removed. The
-   v2.x SDK manages OAuth tokens internally and doesn't expose them directly. If
-   you need to make authenticated requests, use the built-in methods or the
-   proxy namespace.
+2. **`rawAccessToken()`** - The method has been changed to a getter property.
+   For the server-side SDK (`Pipedream` class from `@pipedream/sdk/server` or
+   the wrapper), you can access the raw access token via the `rawAccessToken`
+   getter property which returns a Promise:
+
+   ```javascript
+   // v1.x (old)
+   const token = await client.rawAccessToken();
+
+   // v2.x (new)
+   const token = await client.rawAccessToken;
+   ```
+
+   For the base `PipedreamClient` class, token management is handled internally.
 
 3. **Alternative method names** - The v1.x SDK provided alternative method names
    (e.g., `actionRun()` as an alias for `runAction()`). These are no longer
    available in v2.x.
 
 4. **`userId` parameter** - The deprecated `userId` parameter has been removed.
-   Always use `external_user_id` instead.
+   Always use `externalUserId` instead.
 
 ## Migration checklist
 
@@ -911,13 +935,16 @@ Some methods from v1.x have been removed or changed significantly in v2.x:
   server-side and browser-side.
 - [ ] Convert all method calls to use namespaced format (e.g.,
   `client.actions.run()`).
-- [ ] Update all parameter names from camelCase to snake_case.
-- [ ] Pass `external_user_id` to methods instead of setting it on the client.
+- [ ] Keep parameter names in camelCase in your TypeScript/JavaScript code (the
+  SDK handles conversion to snake_case automatically).
+- [ ] Pass `externalUserId` to methods instead of setting it on the client.
 - [ ] Update error handling to use `PipedreamError` type.
 - [ ] Review and implement new features like pagination and request options
   where beneficial.
 - [ ] Replace any usage of removed methods with their alternatives.
-- [ ] Update any code using `rawAccessToken()` to use the OAuth tokens
-  namespace.
+- [ ] Update any code using `rawAccessToken()` - for server-side code, you can
+  access `client.rawAccessToken` as a getter property that returns a Promise.
+- [ ] For raw response access, use `.withRawResponse()` method chaining instead
+  of passing `includeRawResponse` option.
 - [ ] Test all migrated code thoroughly.
 - [ ] Remove the old SDK dependency once migration is complete.
