@@ -5,12 +5,12 @@
 /**
  * @example
  *     {
- *         externalUserId: "external_user_id"
+ *         external_user_id: "external_user_id"
  *     }
  */
 export interface DeployedTriggersListWorkflowsRequest {
     /**
      * The external user ID who owns the trigger
      */
-    externalUserId: string;
+    external_user_id: string;
 }

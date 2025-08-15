@@ -10,5 +10,5 @@ export interface AccountsRetrieveRequest {
     /**
      * Whether to retrieve the account's credentials or not
      */
-    includeCredentials?: boolean;
+    include_credentials?: boolean;
 }

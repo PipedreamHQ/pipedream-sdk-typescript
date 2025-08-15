@@ -51,7 +51,7 @@ export declare namespace PipedreamClient {
 
 export class PipedreamClient {
     protected readonly _options: PipedreamClient.Options;
-    protected readonly _oauthTokenProvider: core.OAuthTokenProvider;
+    private readonly _oauthTokenProvider: core.OAuthTokenProvider;
     protected _appCategories: AppCategories | undefined;
     protected _apps: Apps | undefined;
     protected _accounts: Accounts | undefined;
@@ -73,8 +73,8 @@ export class PipedreamClient {
                     "x-pd-environment": _options?.projectEnvironment,
                     "X-Fern-Language": "JavaScript",
                     "X-Fern-SDK-Name": "@pipedream/sdk",
-                    "X-Fern-SDK-Version": "2.0.0-rc.8",
-                    "User-Agent": "@pipedream/sdk/2.0.0-rc.8",
+                    "X-Fern-SDK-Version": "1.8.1",
+                    "User-Agent": "@pipedream/sdk/1.8.1",
                     "X-Fern-Runtime": core.RUNTIME.type,
                     "X-Fern-Runtime-Version": core.RUNTIME.version,
                 },
