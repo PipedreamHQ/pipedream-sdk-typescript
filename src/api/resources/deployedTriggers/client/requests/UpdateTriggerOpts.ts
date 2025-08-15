@@ -5,18 +5,18 @@
 /**
  * @example
  *     {
- *         externalUserId: "external_user_id"
+ *         external_user_id: "external_user_id"
  *     }
  */
 export interface UpdateTriggerOpts {
     /**
      * The external user ID who owns the trigger
      */
-    externalUserId: string;
+    external_user_id: string;
     /** Whether the trigger should be active */
     active?: boolean;
     /** The configured properties for the trigger */
-    configuredProps?: Record<string, unknown>;
+    configured_props?: Record<string, unknown>;
     /** The name of the trigger */
     name?: string;
 }
