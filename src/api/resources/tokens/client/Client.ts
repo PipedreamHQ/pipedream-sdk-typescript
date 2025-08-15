@@ -6,7 +6,6 @@ import * as environments from "../../../../environments.js";
 import * as core from "../../../../core/index.js";
 import * as Pipedream from "../../../index.js";
 import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
-import * as serializers from "../../../../serialization/index.js";
 import * as errors from "../../../../errors/index.js";
 
 export declare namespace Tokens {
@@ -51,7 +50,7 @@ export class Tokens {
      *
      * @example
      *     await client.tokens.create({
-     *         externalUserId: "external_user_id"
+     *         external_user_id: "external_user_id"
      *     })
      */
     public create(
@@ -84,25 +83,13 @@ export class Tokens {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.CreateTokenOpts.jsonOrThrow(request, {
-                unrecognizedObjectKeys: "strip",
-                omitUndefined: true,
-            }),
+            body: request,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.CreateTokenResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: _response.body as Pipedream.CreateTokenResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -133,33 +120,30 @@ export class Tokens {
     }
 
     /**
-     * @param {Pipedream.ConnectToken} ctok
+     * @param {string} ctok
      * @param {Pipedream.TokensValidateRequest} request
      * @param {Tokens.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
-     *     await client.tokens.validate("ctok", {
-     *         appId: "app_id"
-     *     })
+     *     await client.tokens.validate("ctok")
      */
     public validate(
-        ctok: Pipedream.ConnectToken,
-        request: Pipedream.TokensValidateRequest,
+        ctok: string,
+        request: Pipedream.TokensValidateRequest = {},
         requestOptions?: Tokens.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.ValidateTokenResponse> {
         return core.HttpResponsePromise.fromPromise(this.__validate(ctok, request, requestOptions));
     }
 
     private async __validate(
-        ctok: Pipedream.ConnectToken,
-        request: Pipedream.TokensValidateRequest,
+        ctok: string,
+        request: Pipedream.TokensValidateRequest = {},
         requestOptions?: Tokens.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ValidateTokenResponse>> {
-        const { appId, oauthAppId } = request;
+        const { params } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
-        _queryParams["app_id"] = appId;
-        if (oauthAppId != null) {
-            _queryParams["oauth_app_id"] = oauthAppId;
+        if (params != null) {
+            _queryParams["params"] = params;
         }
 
         const _response = await core.fetcher({
@@ -167,7 +151,7 @@ export class Tokens {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/tokens/${encodeURIComponent(serializers.ConnectToken.jsonOrThrow(ctok, { omitUndefined: true }))}/validate`,
+                `v1/connect/${encodeURIComponent(this._options.projectId)}/tokens/${encodeURIComponent(ctok)}/validate`,
             ),
             method: "GET",
             headers: mergeHeaders(
@@ -184,16 +168,7 @@ export class Tokens {
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.ValidateTokenResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: _response.body as Pipedream.ValidateTokenResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -213,7 +188,7 @@ export class Tokens {
                 });
             case "timeout":
                 throw new errors.PipedreamTimeoutError(
-                    "Timeout exceeded when calling GET /v1/connect/tokens/{ctok}/validate.",
+                    "Timeout exceeded when calling GET /v1/connect/{project_id}/tokens/{ctok}/validate.",
                 );
             case "unknown":
                 throw new errors.PipedreamError({

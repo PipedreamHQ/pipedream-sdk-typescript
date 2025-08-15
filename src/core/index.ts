@@ -5,4 +5,3 @@ export * as url from "./url/index.js";
 export * from "./base64.js";
 export * from "./utils/index.js";
 export * from "./pagination/index.js";
-export * as serialization from "./schemas/index.js";
