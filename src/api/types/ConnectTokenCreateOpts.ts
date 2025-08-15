@@ -3,18 +3,15 @@
  */
 
 /**
- * @example
- *     {
- *         external_user_id: "external_user_id"
- *     }
+ * Options for creating a Connect token
  */
-export interface CreateTokenOpts {
+export interface ConnectTokenCreateOpts {
+    /** Your end user ID, for whom you're creating the token */
+    external_user_id: string;
     /** List of allowed origins for CORS */
     allowed_origins?: string[];
     /** URI to redirect to on error */
     error_redirect_uri?: string;
-    /** Your end user ID, for whom you're creating the token */
-    external_user_id: string;
     /** URI to redirect to on success */
     success_redirect_uri?: string;
     /** Webhook URI for notifications */
