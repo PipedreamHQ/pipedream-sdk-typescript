@@ -5,7 +5,7 @@
 /**
  * Response received after creating a connect token
  */
-export interface CreateTokenResponse {
+export interface ConnectTokenResponse {
     /** The Connect Link URL */
     connect_link_url: string;
     /** The expiration time of the token in ISO 8601 format */

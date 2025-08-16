@@ -6,7 +6,7 @@
  * Response object for creating an OAuth token
  */
 export interface CreateOAuthTokenResponse {
-    accessToken: string;
-    tokenType: string;
-    expiresIn: number;
+    access_token: string;
+    token_type: string;
+    expires_in: number;
 }

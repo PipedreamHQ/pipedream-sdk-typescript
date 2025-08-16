@@ -12,18 +12,12 @@ export function withJson(expectedBody: unknown, resolver: HttpResponseResolver):
         const { request } = args;
 
         let clonedRequest: Request;
-        let bodyText: string | undefined;
         let actualBody: unknown;
         try {
             clonedRequest = request.clone();
-            bodyText = await clonedRequest.text();
-            if (bodyText === "") {
-                console.error("Request body is empty, expected a JSON object.");
-                return passthrough();
-            }
-            actualBody = fromJson(bodyText);
+            actualBody = fromJson(await clonedRequest.text());
         } catch (error) {
-            console.error(`Error processing request body:\n\tError: ${error}\n\tBody: ${bodyText}`);
+            console.error("Error processing request body:", error);
             return passthrough();
         }
 

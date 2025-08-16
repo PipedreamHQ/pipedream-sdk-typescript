@@ -6,7 +6,6 @@ import * as environments from "../../../../environments.js";
 import * as core from "../../../../core/index.js";
 import * as Pipedream from "../../../index.js";
 import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
-import * as serializers from "../../../../serialization/index.js";
 import * as errors from "../../../../errors/index.js";
 
 export declare namespace AppCategories {
@@ -60,14 +59,6 @@ export class AppCategories {
     private async __list(
         requestOptions?: AppCategories.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ListAppCategoriesResponse>> {
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -76,23 +67,21 @@ export class AppCategories {
                 "v1/connect/app_categories",
             ),
             method: "GET",
-            headers: _headers,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "x-pd-environment": requestOptions?.projectEnvironment,
+                }),
+                requestOptions?.headers,
+            ),
             queryParameters: requestOptions?.queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.ListAppCategoriesResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: _response.body as Pipedream.ListAppCategoriesResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -138,14 +127,6 @@ export class AppCategories {
         id: string,
         requestOptions?: AppCategories.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetAppCategoryResponse>> {
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -154,23 +135,21 @@ export class AppCategories {
                 `v1/connect/app_categories/${encodeURIComponent(id)}`,
             ),
             method: "GET",
-            headers: _headers,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "x-pd-environment": requestOptions?.projectEnvironment,
+                }),
+                requestOptions?.headers,
+            ),
             queryParameters: requestOptions?.queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.GetAppCategoryResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: _response.body as Pipedream.GetAppCategoryResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {

@@ -11,10 +11,22 @@ export interface Component {
     name: string;
     /** The latest version of the component, in SemVer format. */
     version: string;
-    configurableProps: Pipedream.ConfigurableProp[];
+    configurable_props: Pipedream.ConfigurableProp[];
     /** A description of the component */
     description?: string;
     /** The type of component (trigger or action) */
-    componentType?: string;
-    stash?: Pipedream.ComponentStash;
+    component_type?: string;
+    /** Indicates if a File Stash ID is optional or required to run the component */
+    stash?: Component.Stash;
+}
+
+export namespace Component {
+    /**
+     * Indicates if a File Stash ID is optional or required to run the component
+     */
+    export type Stash = "optional" | "required";
+    export const Stash = {
+        Optional: "optional",
+        Required: "required",
+    } as const;
 }

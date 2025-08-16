@@ -7,14 +7,24 @@
  *     {}
  */
 export interface ActionsListRequest {
-    /** The cursor to start from for pagination */
+    /**
+     * The cursor to start from for pagination
+     */
     after?: string;
-    /** The cursor to end before for pagination */
+    /**
+     * The cursor to end before for pagination
+     */
     before?: string;
-    /** The maximum number of results to return */
+    /**
+     * The maximum number of results to return
+     */
     limit?: number;
-    /** A search query to filter the actions */
+    /**
+     * A search query to filter the actions
+     */
     q?: string;
-    /** The ID or name slug of the app to filter the actions */
+    /**
+     * The ID or name slug of the app to filter the actions
+     */
     app?: string;
 }

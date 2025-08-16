@@ -62,14 +62,6 @@ export class Users {
         externalUserId: string,
         requestOptions?: Users.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -78,7 +70,14 @@ export class Users {
                 `v1/connect/${encodeURIComponent(this._options.projectId)}/users/${encodeURIComponent(externalUserId)}`,
             ),
             method: "DELETE",
-            headers: _headers,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "x-pd-environment": requestOptions?.projectEnvironment,
+                }),
+                requestOptions?.headers,
+            ),
             queryParameters: requestOptions?.queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,

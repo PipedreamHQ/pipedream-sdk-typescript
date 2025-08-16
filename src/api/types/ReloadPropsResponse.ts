@@ -9,5 +9,5 @@ import * as Pipedream from "../index.js";
  */
 export interface ReloadPropsResponse {
     /** The updated configurable properties */
-    configurableProps?: Pipedream.ConfigurableProp[];
+    configurable_props?: Pipedream.ConfigurableProp[];
 }

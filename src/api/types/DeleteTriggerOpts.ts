@@ -7,5 +7,5 @@
  */
 export interface DeleteTriggerOpts {
     /** Whether to ignore errors during deactivation hook */
-    ignoreHookErrors?: boolean;
+    ignore_hook_errors?: boolean;
 }

@@ -6,7 +6,6 @@ import * as environments from "../../../../environments.js";
 import * as core from "../../../../core/index.js";
 import * as Pipedream from "../../../index.js";
 import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
-import * as serializers from "../../../../serialization/index.js";
 import * as errors from "../../../../errors/index.js";
 
 export declare namespace Components {
@@ -77,14 +76,6 @@ export class Components {
                 if (app != null) {
                     _queryParams["app"] = app;
                 }
-                var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-                    this._options?.headers,
-                    mergeOnlyDefinedHeaders({
-                        Authorization: await this._getAuthorizationHeader(),
-                        "x-pd-environment": requestOptions?.projectEnvironment,
-                    }),
-                    requestOptions?.headers,
-                );
                 const _response = await core.fetcher({
                     url: core.url.join(
                         (await core.Supplier.get(this._options.baseUrl)) ??
@@ -93,7 +84,14 @@ export class Components {
                         `v1/connect/${encodeURIComponent(this._options.projectId)}/components`,
                     ),
                     method: "GET",
-                    headers: _headers,
+                    headers: mergeHeaders(
+                        this._options?.headers,
+                        mergeOnlyDefinedHeaders({
+                            Authorization: await this._getAuthorizationHeader(),
+                            "x-pd-environment": requestOptions?.projectEnvironment,
+                        }),
+                        requestOptions?.headers,
+                    ),
                     queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
                     timeoutMs:
                         requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
@@ -102,13 +100,7 @@ export class Components {
                 });
                 if (_response.ok) {
                     return {
-                        data: serializers.GetComponentsResponse.parseOrThrow(_response.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
+                        data: _response.body as Pipedream.GetComponentsResponse,
                         rawResponse: _response.rawResponse,
                     };
                 }
@@ -143,11 +135,11 @@ export class Components {
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
-                response?.pageInfo?.endCursor != null &&
-                !(typeof response?.pageInfo?.endCursor === "string" && response?.pageInfo?.endCursor === ""),
+                response?.page_info?.end_cursor != null &&
+                !(typeof response?.page_info?.end_cursor === "string" && response?.page_info?.end_cursor === ""),
             getItems: (response) => response?.data ?? [],
             loadPage: (response) => {
-                return list(core.setObjectProperty(request, "after", response?.pageInfo?.endCursor));
+                return list(core.setObjectProperty(request, "after", response?.page_info?.end_cursor));
             },
         });
     }
@@ -170,14 +162,6 @@ export class Components {
         componentId: string,
         requestOptions?: Components.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetComponentResponse>> {
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -186,23 +170,21 @@ export class Components {
                 `v1/connect/${encodeURIComponent(this._options.projectId)}/components/${encodeURIComponent(componentId)}`,
             ),
             method: "GET",
-            headers: _headers,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "x-pd-environment": requestOptions?.projectEnvironment,
+                }),
+                requestOptions?.headers,
+            ),
             queryParameters: requestOptions?.queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.GetComponentResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: _response.body as Pipedream.GetComponentResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -233,35 +215,30 @@ export class Components {
     }
 
     /**
-     * @param {Pipedream.ConfigurePropOpts} request
+     * @param {Pipedream.ComponentsConfigurePropRequest} request
      * @param {Components.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
      *     await client.components.configureProp({
-     *         id: "id",
-     *         externalUserId: "external_user_id",
-     *         propName: "prop_name"
+     *         body: {
+     *             id: "id",
+     *             external_user_id: "external_user_id",
+     *             prop_name: "prop_name"
+     *         }
      *     })
      */
     public configureProp(
-        request: Pipedream.ConfigurePropOpts,
+        request: Pipedream.ComponentsConfigurePropRequest,
         requestOptions?: Components.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.ConfigurePropResponse> {
         return core.HttpResponsePromise.fromPromise(this.__configureProp(request, requestOptions));
     }
 
     private async __configureProp(
-        request: Pipedream.ConfigurePropOpts,
+        request: Pipedream.ComponentsConfigurePropRequest,
         requestOptions?: Components.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ConfigurePropResponse>> {
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
-            }),
-            requestOptions?.headers,
-        );
+        const { "x-async-handle": asyncHandle, body: _body } = request;
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -270,29 +247,25 @@ export class Components {
                 `v1/connect/${encodeURIComponent(this._options.projectId)}/components/configure`,
             ),
             method: "POST",
-            headers: _headers,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "x-async-handle": asyncHandle != null ? asyncHandle : undefined,
+                    "x-pd-environment": requestOptions?.projectEnvironment,
+                }),
+                requestOptions?.headers,
+            ),
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.ConfigurePropOpts.jsonOrThrow(request, {
-                unrecognizedObjectKeys: "strip",
-                omitUndefined: true,
-            }),
+            body: _body,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.ConfigurePropResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: _response.body as Pipedream.ConfigurePropResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -323,34 +296,29 @@ export class Components {
     }
 
     /**
-     * @param {Pipedream.ReloadPropsOpts} request
+     * @param {Pipedream.ComponentsReloadPropsRequest} request
      * @param {Components.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
      *     await client.components.reloadProps({
-     *         id: "id",
-     *         externalUserId: "external_user_id"
+     *         body: {
+     *             id: "id",
+     *             external_user_id: "external_user_id"
+     *         }
      *     })
      */
     public reloadProps(
-        request: Pipedream.ReloadPropsOpts,
+        request: Pipedream.ComponentsReloadPropsRequest,
         requestOptions?: Components.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.ReloadPropsResponse> {
         return core.HttpResponsePromise.fromPromise(this.__reloadProps(request, requestOptions));
     }
 
     private async __reloadProps(
-        request: Pipedream.ReloadPropsOpts,
+        request: Pipedream.ComponentsReloadPropsRequest,
         requestOptions?: Components.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ReloadPropsResponse>> {
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
-            }),
-            requestOptions?.headers,
-        );
+        const { "x-async-handle": asyncHandle, body: _body } = request;
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -359,29 +327,25 @@ export class Components {
                 `v1/connect/${encodeURIComponent(this._options.projectId)}/components/props`,
             ),
             method: "POST",
-            headers: _headers,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "x-async-handle": asyncHandle != null ? asyncHandle : undefined,
+                    "x-pd-environment": requestOptions?.projectEnvironment,
+                }),
+                requestOptions?.headers,
+            ),
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.ReloadPropsOpts.jsonOrThrow(request, {
-                unrecognizedObjectKeys: "strip",
-                omitUndefined: true,
-            }),
+            body: _body,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.ReloadPropsResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: _response.body as Pipedream.ReloadPropsResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {

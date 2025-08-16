@@ -6,5 +6,5 @@
  * Response received when retrieving trigger webhooks
  */
 export interface GetTriggerWebhooksResponse {
-    webhookUrls: string[];
+    webhook_urls: string[];
 }
