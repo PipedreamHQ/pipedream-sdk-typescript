@@ -5,13 +5,15 @@
 /**
  * @example
  *     {
- *         externalUserId: "external_user_id",
- *         webhookUrls: ["webhook_urls"]
+ *         external_user_id: "external_user_id",
+ *         webhook_urls: ["webhook_urls"]
  *     }
  */
 export interface UpdateTriggerWebhooksOpts {
-    /** The external user ID who owns the trigger */
-    externalUserId: string;
+    /**
+     * The external user ID who owns the trigger
+     */
+    external_user_id: string;
     /** Array of webhook URLs to set */
-    webhookUrls: string[];
+    webhook_urls: string[];
 }

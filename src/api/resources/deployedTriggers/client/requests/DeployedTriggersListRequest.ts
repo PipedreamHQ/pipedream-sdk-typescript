@@ -5,16 +5,24 @@
 /**
  * @example
  *     {
- *         externalUserId: "external_user_id"
+ *         external_user_id: "external_user_id"
  *     }
  */
 export interface DeployedTriggersListRequest {
-    /** The cursor to start from for pagination */
+    /**
+     * The cursor to start from for pagination
+     */
     after?: string;
-    /** The cursor to end before for pagination */
+    /**
+     * The cursor to end before for pagination
+     */
     before?: string;
-    /** The maximum number of results to return */
+    /**
+     * The maximum number of results to return
+     */
     limit?: number;
-    /** Your end user ID, for whom you deployed the trigger */
-    externalUserId: string;
+    /**
+     * Your end user ID, for whom you deployed the trigger
+     */
+    external_user_id: string;
 }

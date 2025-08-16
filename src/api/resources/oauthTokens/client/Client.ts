@@ -6,7 +6,6 @@ import * as environments from "../../../../environments.js";
 import * as core from "../../../../core/index.js";
 import * as Pipedream from "../../../index.js";
 import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
-import * as serializers from "../../../../serialization/index.js";
 import * as errors from "../../../../errors/index.js";
 
 export declare namespace OauthTokens {
@@ -51,8 +50,8 @@ export class OauthTokens {
      *
      * @example
      *     await client.oauthTokens.create({
-     *         clientId: "client_id",
-     *         clientSecret: "client_secret"
+     *         client_id: "client_id",
+     *         client_secret: "client_secret"
      *     })
      */
     public create(
@@ -66,14 +65,6 @@ export class OauthTokens {
         request: Pipedream.CreateOAuthTokenOpts,
         requestOptions?: OauthTokens.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.CreateOAuthTokenResponse>> {
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -82,32 +73,24 @@ export class OauthTokens {
                 "v1/oauth/token",
             ),
             method: "POST",
-            headers: _headers,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "x-pd-environment": requestOptions?.projectEnvironment,
+                }),
+                requestOptions?.headers,
+            ),
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: {
-                ...serializers.CreateOAuthTokenOpts.jsonOrThrow(request, {
-                    unrecognizedObjectKeys: "strip",
-                    omitUndefined: true,
-                }),
-                grant_type: "client_credentials",
-            },
+            body: { ...request, grant_type: "client_credentials" },
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.CreateOAuthTokenResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: _response.body as Pipedream.CreateOAuthTokenResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {

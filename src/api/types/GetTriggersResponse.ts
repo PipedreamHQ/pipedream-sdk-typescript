@@ -9,5 +9,5 @@ import * as Pipedream from "../index.js";
  */
 export interface GetTriggersResponse {
     data: Pipedream.DeployedComponent[];
-    pageInfo: Pipedream.PageInfo;
+    page_info: Pipedream.PageInfo;
 }

@@ -6,7 +6,6 @@ import * as environments from "../../../../environments.js";
 import * as core from "../../../../core/index.js";
 import * as Pipedream from "../../../index.js";
 import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
-import * as serializers from "../../../../serialization/index.js";
 import * as errors from "../../../../errors/index.js";
 
 export declare namespace DeployedTriggers {
@@ -51,7 +50,7 @@ export class DeployedTriggers {
      *
      * @example
      *     await client.deployedTriggers.list({
-     *         externalUserId: "external_user_id"
+     *         external_user_id: "external_user_id"
      *     })
      */
     public async list(
@@ -62,7 +61,7 @@ export class DeployedTriggers {
             async (
                 request: Pipedream.DeployedTriggersListRequest,
             ): Promise<core.WithRawResponse<Pipedream.GetTriggersResponse>> => {
-                const { after, before, limit, externalUserId } = request;
+                const { after, before, limit, external_user_id: externalUserId } = request;
                 const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
                 if (after != null) {
                     _queryParams["after"] = after;
@@ -74,14 +73,6 @@ export class DeployedTriggers {
                     _queryParams["limit"] = limit.toString();
                 }
                 _queryParams["external_user_id"] = externalUserId;
-                var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-                    this._options?.headers,
-                    mergeOnlyDefinedHeaders({
-                        Authorization: await this._getAuthorizationHeader(),
-                        "x-pd-environment": requestOptions?.projectEnvironment,
-                    }),
-                    requestOptions?.headers,
-                );
                 const _response = await core.fetcher({
                     url: core.url.join(
                         (await core.Supplier.get(this._options.baseUrl)) ??
@@ -90,7 +81,14 @@ export class DeployedTriggers {
                         `v1/connect/${encodeURIComponent(this._options.projectId)}/deployed-triggers`,
                     ),
                     method: "GET",
-                    headers: _headers,
+                    headers: mergeHeaders(
+                        this._options?.headers,
+                        mergeOnlyDefinedHeaders({
+                            Authorization: await this._getAuthorizationHeader(),
+                            "x-pd-environment": requestOptions?.projectEnvironment,
+                        }),
+                        requestOptions?.headers,
+                    ),
                     queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
                     timeoutMs:
                         requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
@@ -99,13 +97,7 @@ export class DeployedTriggers {
                 });
                 if (_response.ok) {
                     return {
-                        data: serializers.GetTriggersResponse.parseOrThrow(_response.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
+                        data: _response.body as Pipedream.GetTriggersResponse,
                         rawResponse: _response.rawResponse,
                     };
                 }
@@ -140,11 +132,11 @@ export class DeployedTriggers {
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
-                response?.pageInfo?.endCursor != null &&
-                !(typeof response?.pageInfo?.endCursor === "string" && response?.pageInfo?.endCursor === ""),
+                response?.page_info?.end_cursor != null &&
+                !(typeof response?.page_info?.end_cursor === "string" && response?.page_info?.end_cursor === ""),
             getItems: (response) => response?.data ?? [],
             loadPage: (response) => {
-                return list(core.setObjectProperty(request, "after", response?.pageInfo?.endCursor));
+                return list(core.setObjectProperty(request, "after", response?.page_info?.end_cursor));
             },
         });
     }
@@ -156,7 +148,7 @@ export class DeployedTriggers {
      *
      * @example
      *     await client.deployedTriggers.retrieve("trigger_id", {
-     *         externalUserId: "external_user_id"
+     *         external_user_id: "external_user_id"
      *     })
      */
     public retrieve(
@@ -172,17 +164,9 @@ export class DeployedTriggers {
         request: Pipedream.DeployedTriggersRetrieveRequest,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetTriggerResponse>> {
-        const { externalUserId } = request;
+        const { external_user_id: externalUserId } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -191,23 +175,21 @@ export class DeployedTriggers {
                 `v1/connect/${encodeURIComponent(this._options.projectId)}/deployed-triggers/${encodeURIComponent(triggerId)}`,
             ),
             method: "GET",
-            headers: _headers,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "x-pd-environment": requestOptions?.projectEnvironment,
+                }),
+                requestOptions?.headers,
+            ),
             queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.GetTriggerResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: _response.body as Pipedream.GetTriggerResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -244,7 +226,7 @@ export class DeployedTriggers {
      *
      * @example
      *     await client.deployedTriggers.update("trigger_id", {
-     *         externalUserId: "external_user_id"
+     *         external_user_id: "external_user_id"
      *     })
      */
     public update(
@@ -260,17 +242,9 @@ export class DeployedTriggers {
         request: Pipedream.UpdateTriggerOpts,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetTriggerResponse>> {
-        const { externalUserId, ..._body } = request;
+        const { external_user_id: externalUserId, ..._body } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -279,29 +253,24 @@ export class DeployedTriggers {
                 `v1/connect/${encodeURIComponent(this._options.projectId)}/deployed-triggers/${encodeURIComponent(triggerId)}`,
             ),
             method: "PUT",
-            headers: _headers,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "x-pd-environment": requestOptions?.projectEnvironment,
+                }),
+                requestOptions?.headers,
+            ),
             contentType: "application/json",
             queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             requestType: "json",
-            body: serializers.UpdateTriggerOpts.jsonOrThrow(_body, {
-                unrecognizedObjectKeys: "strip",
-                omitUndefined: true,
-            }),
+            body: _body,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.GetTriggerResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: _response.body as Pipedream.GetTriggerResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -338,7 +307,7 @@ export class DeployedTriggers {
      *
      * @example
      *     await client.deployedTriggers.delete("trigger_id", {
-     *         externalUserId: "external_user_id"
+     *         external_user_id: "external_user_id"
      *     })
      */
     public delete(
@@ -354,21 +323,13 @@ export class DeployedTriggers {
         request: Pipedream.DeployedTriggersDeleteRequest,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
-        const { externalUserId, ignoreHookErrors } = request;
+        const { external_user_id: externalUserId, ignore_hook_errors: ignoreHookErrors } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
         if (ignoreHookErrors != null) {
             _queryParams["ignore_hook_errors"] = ignoreHookErrors.toString();
         }
 
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -377,7 +338,14 @@ export class DeployedTriggers {
                 `v1/connect/${encodeURIComponent(this._options.projectId)}/deployed-triggers/${encodeURIComponent(triggerId)}`,
             ),
             method: "DELETE",
-            headers: _headers,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "x-pd-environment": requestOptions?.projectEnvironment,
+                }),
+                requestOptions?.headers,
+            ),
             queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
@@ -421,7 +389,7 @@ export class DeployedTriggers {
      *
      * @example
      *     await client.deployedTriggers.listEvents("trigger_id", {
-     *         externalUserId: "external_user_id"
+     *         external_user_id: "external_user_id"
      *     })
      */
     public listEvents(
@@ -437,21 +405,13 @@ export class DeployedTriggers {
         request: Pipedream.DeployedTriggersListEventsRequest,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetTriggerEventsResponse>> {
-        const { externalUserId, n } = request;
+        const { external_user_id: externalUserId, n } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
         if (n != null) {
             _queryParams["n"] = n.toString();
         }
 
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -460,23 +420,21 @@ export class DeployedTriggers {
                 `v1/connect/${encodeURIComponent(this._options.projectId)}/deployed-triggers/${encodeURIComponent(triggerId)}/events`,
             ),
             method: "GET",
-            headers: _headers,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "x-pd-environment": requestOptions?.projectEnvironment,
+                }),
+                requestOptions?.headers,
+            ),
             queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.GetTriggerEventsResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: _response.body as Pipedream.GetTriggerEventsResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -513,7 +471,7 @@ export class DeployedTriggers {
      *
      * @example
      *     await client.deployedTriggers.listWorkflows("trigger_id", {
-     *         externalUserId: "external_user_id"
+     *         external_user_id: "external_user_id"
      *     })
      */
     public listWorkflows(
@@ -529,17 +487,9 @@ export class DeployedTriggers {
         request: Pipedream.DeployedTriggersListWorkflowsRequest,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetTriggerWorkflowsResponse>> {
-        const { externalUserId } = request;
+        const { external_user_id: externalUserId } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -548,7 +498,14 @@ export class DeployedTriggers {
                 `v1/connect/${encodeURIComponent(this._options.projectId)}/deployed-triggers/${encodeURIComponent(triggerId)}/pipelines`,
             ),
             method: "GET",
-            headers: _headers,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "x-pd-environment": requestOptions?.projectEnvironment,
+                }),
+                requestOptions?.headers,
+            ),
             queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
@@ -556,13 +513,7 @@ export class DeployedTriggers {
         });
         if (_response.ok) {
             return {
-                data: serializers.GetTriggerWorkflowsResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
+                data: _response.body as Pipedream.GetTriggerWorkflowsResponse,
                 rawResponse: _response.rawResponse,
             };
         }
@@ -601,8 +552,8 @@ export class DeployedTriggers {
      *
      * @example
      *     await client.deployedTriggers.updateWorkflows("trigger_id", {
-     *         externalUserId: "external_user_id",
-     *         workflowIds: ["workflow_ids"]
+     *         external_user_id: "external_user_id",
+     *         workflow_ids: ["workflow_ids"]
      *     })
      */
     public updateWorkflows(
@@ -618,17 +569,9 @@ export class DeployedTriggers {
         request: Pipedream.UpdateTriggerWorkflowsOpts,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetTriggerWorkflowsResponse>> {
-        const { externalUserId, ..._body } = request;
+        const { external_user_id: externalUserId, ..._body } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -637,27 +580,25 @@ export class DeployedTriggers {
                 `v1/connect/${encodeURIComponent(this._options.projectId)}/deployed-triggers/${encodeURIComponent(triggerId)}/pipelines`,
             ),
             method: "PUT",
-            headers: _headers,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "x-pd-environment": requestOptions?.projectEnvironment,
+                }),
+                requestOptions?.headers,
+            ),
             contentType: "application/json",
             queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             requestType: "json",
-            body: serializers.UpdateTriggerWorkflowsOpts.jsonOrThrow(_body, {
-                unrecognizedObjectKeys: "strip",
-                omitUndefined: true,
-            }),
+            body: _body,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
             return {
-                data: serializers.GetTriggerWorkflowsResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
+                data: _response.body as Pipedream.GetTriggerWorkflowsResponse,
                 rawResponse: _response.rawResponse,
             };
         }
@@ -696,7 +637,7 @@ export class DeployedTriggers {
      *
      * @example
      *     await client.deployedTriggers.listWebhooks("trigger_id", {
-     *         externalUserId: "external_user_id"
+     *         external_user_id: "external_user_id"
      *     })
      */
     public listWebhooks(
@@ -712,17 +653,9 @@ export class DeployedTriggers {
         request: Pipedream.DeployedTriggersListWebhooksRequest,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetTriggerWebhooksResponse>> {
-        const { externalUserId } = request;
+        const { external_user_id: externalUserId } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -731,23 +664,21 @@ export class DeployedTriggers {
                 `v1/connect/${encodeURIComponent(this._options.projectId)}/deployed-triggers/${encodeURIComponent(triggerId)}/webhooks`,
             ),
             method: "GET",
-            headers: _headers,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "x-pd-environment": requestOptions?.projectEnvironment,
+                }),
+                requestOptions?.headers,
+            ),
             queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.GetTriggerWebhooksResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: _response.body as Pipedream.GetTriggerWebhooksResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -784,8 +715,8 @@ export class DeployedTriggers {
      *
      * @example
      *     await client.deployedTriggers.updateWebhooks("trigger_id", {
-     *         externalUserId: "external_user_id",
-     *         webhookUrls: ["webhook_urls"]
+     *         external_user_id: "external_user_id",
+     *         webhook_urls: ["webhook_urls"]
      *     })
      */
     public updateWebhooks(
@@ -801,17 +732,9 @@ export class DeployedTriggers {
         request: Pipedream.UpdateTriggerWebhooksOpts,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetTriggerWebhooksResponse>> {
-        const { externalUserId, ..._body } = request;
+        const { external_user_id: externalUserId, ..._body } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
-            }),
-            requestOptions?.headers,
-        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -820,29 +743,24 @@ export class DeployedTriggers {
                 `v1/connect/${encodeURIComponent(this._options.projectId)}/deployed-triggers/${encodeURIComponent(triggerId)}/webhooks`,
             ),
             method: "PUT",
-            headers: _headers,
+            headers: mergeHeaders(
+                this._options?.headers,
+                mergeOnlyDefinedHeaders({
+                    Authorization: await this._getAuthorizationHeader(),
+                    "x-pd-environment": requestOptions?.projectEnvironment,
+                }),
+                requestOptions?.headers,
+            ),
             contentType: "application/json",
             queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             requestType: "json",
-            body: serializers.UpdateTriggerWebhooksOpts.jsonOrThrow(_body, {
-                unrecognizedObjectKeys: "strip",
-                omitUndefined: true,
-            }),
+            body: _body,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.GetTriggerWebhooksResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: _response.body as Pipedream.GetTriggerWebhooksResponse, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
