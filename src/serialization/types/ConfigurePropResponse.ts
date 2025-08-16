@@ -17,7 +17,6 @@ export const ConfigurePropResponse: core.serialization.ObjectSchema<
         core.serialization.list(core.serialization.string()).optional(),
     ),
     observations: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
-    asyncHandle: core.serialization.property("async_handle", core.serialization.string().optional()),
     context: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
     errors: core.serialization.list(core.serialization.string()).optional(),
 });
@@ -27,7 +26,6 @@ export declare namespace ConfigurePropResponse {
         options?: PropOption.Raw[] | null;
         string_options?: string[] | null;
         observations?: Record<string, unknown> | null;
-        async_handle?: string | null;
         context?: Record<string, unknown> | null;
         errors?: string[] | null;
     }

@@ -77,6 +77,14 @@ export class Triggers {
                 if (app != null) {
                     _queryParams["app"] = app;
                 }
+                var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+                    this._options?.headers,
+                    mergeOnlyDefinedHeaders({
+                        Authorization: await this._getAuthorizationHeader(),
+                        "x-pd-environment": requestOptions?.projectEnvironment,
+                    }),
+                    requestOptions?.headers,
+                );
                 const _response = await core.fetcher({
                     url: core.url.join(
                         (await core.Supplier.get(this._options.baseUrl)) ??
@@ -85,14 +93,7 @@ export class Triggers {
                         `v1/connect/${encodeURIComponent(this._options.projectId)}/triggers`,
                     ),
                     method: "GET",
-                    headers: mergeHeaders(
-                        this._options?.headers,
-                        mergeOnlyDefinedHeaders({
-                            Authorization: await this._getAuthorizationHeader(),
-                            "x-pd-environment": requestOptions?.projectEnvironment,
-                        }),
-                        requestOptions?.headers,
-                    ),
+                    headers: _headers,
                     queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
                     timeoutMs:
                         requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
@@ -169,6 +170,14 @@ export class Triggers {
         componentId: string,
         requestOptions?: Triggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetComponentResponse>> {
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "x-pd-environment": requestOptions?.projectEnvironment,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -177,14 +186,7 @@ export class Triggers {
                 `v1/connect/${encodeURIComponent(this._options.projectId)}/triggers/${encodeURIComponent(componentId)}`,
             ),
             method: "GET",
-            headers: mergeHeaders(
-                this._options?.headers,
-                mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
-                    "x-pd-environment": requestOptions?.projectEnvironment,
-                }),
-                requestOptions?.headers,
-            ),
+            headers: _headers,
             queryParameters: requestOptions?.queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
@@ -252,6 +254,14 @@ export class Triggers {
         request: Pipedream.ConfigurePropOpts,
         requestOptions?: Triggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ConfigurePropResponse>> {
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "x-pd-environment": requestOptions?.projectEnvironment,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -260,14 +270,7 @@ export class Triggers {
                 `v1/connect/${encodeURIComponent(this._options.projectId)}/triggers/configure`,
             ),
             method: "POST",
-            headers: mergeHeaders(
-                this._options?.headers,
-                mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
-                    "x-pd-environment": requestOptions?.projectEnvironment,
-                }),
-                requestOptions?.headers,
-            ),
+            headers: _headers,
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
@@ -340,6 +343,14 @@ export class Triggers {
         request: Pipedream.ReloadPropsOpts,
         requestOptions?: Triggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ReloadPropsResponse>> {
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "x-pd-environment": requestOptions?.projectEnvironment,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -348,14 +359,7 @@ export class Triggers {
                 `v1/connect/${encodeURIComponent(this._options.projectId)}/triggers/props`,
             ),
             method: "POST",
-            headers: mergeHeaders(
-                this._options?.headers,
-                mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
-                    "x-pd-environment": requestOptions?.projectEnvironment,
-                }),
-                requestOptions?.headers,
-            ),
+            headers: _headers,
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
@@ -428,6 +432,14 @@ export class Triggers {
         request: Pipedream.DeployTriggerOpts,
         requestOptions?: Triggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.DeployTriggerResponse>> {
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "x-pd-environment": requestOptions?.projectEnvironment,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -436,14 +448,7 @@ export class Triggers {
                 `v1/connect/${encodeURIComponent(this._options.projectId)}/triggers/deploy`,
             ),
             method: "POST",
-            headers: mergeHeaders(
-                this._options?.headers,
-                mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
-                    "x-pd-environment": requestOptions?.projectEnvironment,
-                }),
-                requestOptions?.headers,
-            ),
+            headers: _headers,
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",

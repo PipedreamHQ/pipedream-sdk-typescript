@@ -18,7 +18,6 @@ export const ReloadPropsOpts: core.serialization.ObjectSchema<
         core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
     ),
     dynamicPropsId: core.serialization.property("dynamic_props_id", core.serialization.string().optional()),
-    asyncHandle: core.serialization.property("async_handle", core.serialization.string().optional()),
 });
 
 export declare namespace ReloadPropsOpts {
@@ -28,6 +27,5 @@ export declare namespace ReloadPropsOpts {
         blocking?: boolean | null;
         configured_props?: Record<string, unknown> | null;
         dynamic_props_id?: string | null;
-        async_handle?: string | null;
     }
 }

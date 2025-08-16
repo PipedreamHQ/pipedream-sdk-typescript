@@ -7,8 +7,6 @@
  *     {}
  */
 export interface AccountsRetrieveRequest {
-    /**
-     * Whether to retrieve the account's credentials or not
-     */
+    /** Whether to retrieve the account's credentials or not */
     includeCredentials?: boolean;
 }

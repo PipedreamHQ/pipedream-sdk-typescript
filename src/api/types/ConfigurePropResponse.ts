@@ -14,8 +14,6 @@ export interface ConfigurePropResponse {
     stringOptions?: string[];
     /** Any logs produced during the configuration of the prop */
     observations?: Record<string, unknown>;
-    /** Handle for async operations */
-    asyncHandle?: string;
     /** New context after configuring the prop */
     context?: Record<string, unknown>;
     /** Any errors that occurred during configuration */

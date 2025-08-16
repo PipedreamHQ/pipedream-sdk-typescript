@@ -83,6 +83,14 @@ export class Accounts {
                 if (includeCredentials != null) {
                     _queryParams["include_credentials"] = includeCredentials.toString();
                 }
+                var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+                    this._options?.headers,
+                    mergeOnlyDefinedHeaders({
+                        Authorization: await this._getAuthorizationHeader(),
+                        "x-pd-environment": requestOptions?.projectEnvironment,
+                    }),
+                    requestOptions?.headers,
+                );
                 const _response = await core.fetcher({
                     url: core.url.join(
                         (await core.Supplier.get(this._options.baseUrl)) ??
@@ -91,14 +99,7 @@ export class Accounts {
                         `v1/connect/${encodeURIComponent(this._options.projectId)}/accounts`,
                     ),
                     method: "GET",
-                    headers: mergeHeaders(
-                        this._options?.headers,
-                        mergeOnlyDefinedHeaders({
-                            Authorization: await this._getAuthorizationHeader(),
-                            "x-pd-environment": requestOptions?.projectEnvironment,
-                        }),
-                        requestOptions?.headers,
-                    ),
+                    headers: _headers,
                     queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
                     timeoutMs:
                         requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
@@ -193,6 +194,14 @@ export class Accounts {
             _queryParams["oauth_app_id"] = oauthAppId;
         }
 
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "x-pd-environment": requestOptions?.projectEnvironment,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -201,14 +210,7 @@ export class Accounts {
                 `v1/connect/${encodeURIComponent(this._options.projectId)}/accounts`,
             ),
             method: "POST",
-            headers: mergeHeaders(
-                this._options?.headers,
-                mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
-                    "x-pd-environment": requestOptions?.projectEnvironment,
-                }),
-                requestOptions?.headers,
-            ),
+            headers: _headers,
             contentType: "application/json",
             queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             requestType: "json",
@@ -287,6 +289,14 @@ export class Accounts {
             _queryParams["include_credentials"] = includeCredentials.toString();
         }
 
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "x-pd-environment": requestOptions?.projectEnvironment,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -295,14 +305,7 @@ export class Accounts {
                 `v1/connect/${encodeURIComponent(this._options.projectId)}/accounts/${encodeURIComponent(accountId)}`,
             ),
             method: "GET",
-            headers: mergeHeaders(
-                this._options?.headers,
-                mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
-                    "x-pd-environment": requestOptions?.projectEnvironment,
-                }),
-                requestOptions?.headers,
-            ),
+            headers: _headers,
             queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
@@ -363,6 +366,14 @@ export class Accounts {
         accountId: string,
         requestOptions?: Accounts.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "x-pd-environment": requestOptions?.projectEnvironment,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -371,14 +382,7 @@ export class Accounts {
                 `v1/connect/${encodeURIComponent(this._options.projectId)}/accounts/${encodeURIComponent(accountId)}`,
             ),
             method: "DELETE",
-            headers: mergeHeaders(
-                this._options?.headers,
-                mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
-                    "x-pd-environment": requestOptions?.projectEnvironment,
-                }),
-                requestOptions?.headers,
-            ),
+            headers: _headers,
             queryParameters: requestOptions?.queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
@@ -430,6 +434,14 @@ export class Accounts {
         appId: string,
         requestOptions?: Accounts.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "x-pd-environment": requestOptions?.projectEnvironment,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -438,14 +450,7 @@ export class Accounts {
                 `v1/connect/${encodeURIComponent(this._options.projectId)}/apps/${encodeURIComponent(appId)}/accounts`,
             ),
             method: "DELETE",
-            headers: mergeHeaders(
-                this._options?.headers,
-                mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
-                    "x-pd-environment": requestOptions?.projectEnvironment,
-                }),
-                requestOptions?.headers,
-            ),
+            headers: _headers,
             queryParameters: requestOptions?.queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,

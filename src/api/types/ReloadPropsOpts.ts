@@ -16,6 +16,4 @@ export interface ReloadPropsOpts {
     configuredProps?: Record<string, unknown>;
     /** The ID for dynamic props */
     dynamicPropsId?: string;
-    /** Handle for async operations */
-    asyncHandle?: string;
 }

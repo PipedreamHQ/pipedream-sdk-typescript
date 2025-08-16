@@ -65,6 +65,14 @@ export class Tokens {
         request: Pipedream.CreateTokenOpts,
         requestOptions?: Tokens.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.CreateTokenResponse>> {
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "x-pd-environment": requestOptions?.projectEnvironment,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -73,14 +81,7 @@ export class Tokens {
                 `v1/connect/${encodeURIComponent(this._options.projectId)}/tokens`,
             ),
             method: "POST",
-            headers: mergeHeaders(
-                this._options?.headers,
-                mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
-                    "x-pd-environment": requestOptions?.projectEnvironment,
-                }),
-                requestOptions?.headers,
-            ),
+            headers: _headers,
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
@@ -162,6 +163,14 @@ export class Tokens {
             _queryParams["oauth_app_id"] = oauthAppId;
         }
 
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "x-pd-environment": requestOptions?.projectEnvironment,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -170,14 +179,7 @@ export class Tokens {
                 `v1/connect/tokens/${encodeURIComponent(serializers.ConnectToken.jsonOrThrow(ctok, { omitUndefined: true }))}/validate`,
             ),
             method: "GET",
-            headers: mergeHeaders(
-                this._options?.headers,
-                mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
-                    "x-pd-environment": requestOptions?.projectEnvironment,
-                }),
-                requestOptions?.headers,
-            ),
+            headers: _headers,
             queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,

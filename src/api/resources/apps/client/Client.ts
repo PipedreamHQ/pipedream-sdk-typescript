@@ -91,6 +91,14 @@ export class Apps {
                         _queryParams["category_ids"] = categoryIds;
                     }
                 }
+                var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+                    this._options?.headers,
+                    mergeOnlyDefinedHeaders({
+                        Authorization: await this._getAuthorizationHeader(),
+                        "x-pd-environment": requestOptions?.projectEnvironment,
+                    }),
+                    requestOptions?.headers,
+                );
                 const _response = await core.fetcher({
                     url: core.url.join(
                         (await core.Supplier.get(this._options.baseUrl)) ??
@@ -99,14 +107,7 @@ export class Apps {
                         "v1/connect/apps",
                     ),
                     method: "GET",
-                    headers: mergeHeaders(
-                        this._options?.headers,
-                        mergeOnlyDefinedHeaders({
-                            Authorization: await this._getAuthorizationHeader(),
-                            "x-pd-environment": requestOptions?.projectEnvironment,
-                        }),
-                        requestOptions?.headers,
-                    ),
+                    headers: _headers,
                     queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
                     timeoutMs:
                         requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
@@ -181,6 +182,14 @@ export class Apps {
         appId: string,
         requestOptions?: Apps.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetAppResponse>> {
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "x-pd-environment": requestOptions?.projectEnvironment,
+            }),
+            requestOptions?.headers,
+        );
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -189,14 +198,7 @@ export class Apps {
                 `v1/connect/apps/${encodeURIComponent(appId)}`,
             ),
             method: "GET",
-            headers: mergeHeaders(
-                this._options?.headers,
-                mergeOnlyDefinedHeaders({
-                    Authorization: await this._getAuthorizationHeader(),
-                    "x-pd-environment": requestOptions?.projectEnvironment,
-                }),
-                requestOptions?.headers,
-            ),
+            headers: _headers,
             queryParameters: requestOptions?.queryParams,
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
