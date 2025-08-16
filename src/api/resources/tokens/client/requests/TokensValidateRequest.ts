@@ -9,12 +9,8 @@
  *     }
  */
 export interface TokensValidateRequest {
-    /**
-     * The app ID to validate against
-     */
+    /** The app ID to validate against */
     appId: string;
-    /**
-     * The OAuth app ID to validate against (if the token is for an OAuth app)
-     */
+    /** The OAuth app ID to validate against (if the token is for an OAuth app) */
     oauthAppId?: string;
 }

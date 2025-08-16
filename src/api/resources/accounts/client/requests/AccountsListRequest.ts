@@ -7,29 +7,17 @@
  *     {}
  */
 export interface AccountsListRequest {
-    /**
-     * The app slug or ID to filter accounts by.
-     */
+    /** The app slug or ID to filter accounts by. */
     appId?: string;
     externalUserId?: string;
-    /**
-     * The OAuth app ID to filter by, if applicable
-     */
+    /** The OAuth app ID to filter by, if applicable */
     oauthAppId?: string;
-    /**
-     * The cursor to start from for pagination
-     */
+    /** The cursor to start from for pagination */
     after?: string;
-    /**
-     * The cursor to end before for pagination
-     */
+    /** The cursor to end before for pagination */
     before?: string;
-    /**
-     * The maximum number of results to return
-     */
+    /** The maximum number of results to return */
     limit?: number;
-    /**
-     * Whether to retrieve the account's credentials or not
-     */
+    /** Whether to retrieve the account's credentials or not */
     includeCredentials?: boolean;
 }

@@ -18,8 +18,6 @@ export interface ConfigurePropOpts {
     configuredProps?: Record<string, unknown>;
     /** The ID for dynamic props */
     dynamicPropsId?: string;
-    /** Handle for async operations */
-    asyncHandle?: string;
     /** Page number for paginated results */
     page?: number;
     /** Previous context for pagination */

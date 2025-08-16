@@ -10,9 +10,7 @@
  *     }
  */
 export interface UpdateTriggerWorkflowsOpts {
-    /**
-     * The external user ID who owns the trigger
-     */
+    /** The external user ID who owns the trigger */
     externalUserId: string;
     /** Array of workflow IDs to set */
     workflowIds: string[];

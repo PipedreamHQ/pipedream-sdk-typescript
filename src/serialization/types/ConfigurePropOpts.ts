@@ -19,7 +19,6 @@ export const ConfigurePropOpts: core.serialization.ObjectSchema<
         core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
     ),
     dynamicPropsId: core.serialization.property("dynamic_props_id", core.serialization.string().optional()),
-    asyncHandle: core.serialization.property("async_handle", core.serialization.string().optional()),
     page: core.serialization.number().optional(),
     prevContext: core.serialization.property(
         "prev_context",
@@ -36,7 +35,6 @@ export declare namespace ConfigurePropOpts {
         blocking?: boolean | null;
         configured_props?: Record<string, unknown> | null;
         dynamic_props_id?: string | null;
-        async_handle?: string | null;
         page?: number | null;
         prev_context?: Record<string, unknown> | null;
         query?: string | null;

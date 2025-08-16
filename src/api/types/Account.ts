@@ -9,7 +9,7 @@ import * as Pipedream from "../index.js";
  */
 export interface Account {
     /** The unique ID of the account. */
-    id?: string;
+    id: string;
     /** The custom name of the account if set. */
     name?: string;
     /** The external ID associated with the account. */
