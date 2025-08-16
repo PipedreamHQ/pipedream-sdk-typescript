@@ -30,6 +30,7 @@ src/wrapper
 src/Client.ts
 
 # Custom auth files
+src/core/auth/index.ts
 src/core/auth/ConnectTokenProvider.ts
 src/core/auth/StaticTokenProvider.ts
 src/core/auth/TokenProvider.ts
