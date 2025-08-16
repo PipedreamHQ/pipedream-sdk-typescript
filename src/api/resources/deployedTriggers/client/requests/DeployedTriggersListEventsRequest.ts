@@ -9,12 +9,8 @@
  *     }
  */
 export interface DeployedTriggersListEventsRequest {
-    /**
-     * Your end user ID, for whom you deployed the trigger
-     */
+    /** Your end user ID, for whom you deployed the trigger */
     externalUserId: string;
-    /**
-     * The number of events to retrieve (defaults to 20 if not provided)
-     */
+    /** The number of events to retrieve (defaults to 20 if not provided) */
     n?: number;
 }

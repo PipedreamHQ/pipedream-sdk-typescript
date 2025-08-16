@@ -9,12 +9,8 @@
  *     }
  */
 export interface DeployedTriggersDeleteRequest {
-    /**
-     * The external user ID who owns the trigger
-     */
+    /** The external user ID who owns the trigger */
     externalUserId: string;
-    /**
-     * Whether to ignore errors during deactivation hook
-     */
+    /** Whether to ignore errors during deactivation hook */
     ignoreHookErrors?: boolean;
 }

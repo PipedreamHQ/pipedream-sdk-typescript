@@ -9,8 +9,6 @@
  *     }
  */
 export interface DeployedTriggersRetrieveRequest {
-    /**
-     * Your end user ID, for whom you deployed the trigger
-     */
+    /** Your end user ID, for whom you deployed the trigger */
     externalUserId: string;
 }

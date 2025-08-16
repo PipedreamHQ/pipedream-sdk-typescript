@@ -9,32 +9,18 @@ import * as Pipedream from "../../../../index.js";
  *     {}
  */
 export interface AppsListRequest {
-    /**
-     * The cursor to start from for pagination
-     */
+    /** The cursor to start from for pagination */
     after?: string;
-    /**
-     * The cursor to end before for pagination
-     */
+    /** The cursor to end before for pagination */
     before?: string;
-    /**
-     * The maximum number of results to return
-     */
+    /** The maximum number of results to return */
     limit?: number;
-    /**
-     * A search query to filter the apps
-     */
+    /** A search query to filter the apps */
     q?: string;
-    /**
-     * The key to sort the apps by
-     */
+    /** The key to sort the apps by */
     sortKey?: Pipedream.AppsListRequestSortKey;
-    /**
-     * The direction to sort the apps
-     */
+    /** The direction to sort the apps */
     sortDirection?: Pipedream.AppsListRequestSortDirection;
-    /**
-     * Only return apps in these categories
-     */
+    /** Only return apps in these categories */
     categoryIds?: string | string[];
 }
