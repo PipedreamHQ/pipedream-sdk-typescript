@@ -8,8 +8,8 @@ import * as core from "../../../../../core/index.js";
  * @example
  *     {
  *         url: "https://api.example.com/endpoint",
- *         external_user_id: "external_user_id",
- *         account_id: "account_id",
+ *         externalUserId: "external_user_id",
+ *         accountId: "account_id",
  *         params: { page: "1", limit: "10" },
  *         headers: { "X-Custom-Header": "value" }
  *     }
@@ -22,11 +22,11 @@ export interface ProxyGetRequest {
     /**
      * The external user ID for the proxy request
      */
-    external_user_id: string;
+    externalUserId: string;
     /**
      * The account ID to use for authentication
      */
-    account_id: string;
+    accountId: string;
     /**
      * Query parameters to forward
      */

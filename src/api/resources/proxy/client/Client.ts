@@ -65,8 +65,8 @@ export class Proxy {
      * @example
      *     await client.proxy.get({
      *         url: "https://api.example.com/endpoint",
-     *         external_user_id: "external_user_id",
-     *         account_id: "account_id",
+     *         externalUserId: "external_user_id",
+     *         accountId: "account_id",
      *         params: { key: "value" },
      *         headers: { "X-Custom-Header": "value" }
      *     })
@@ -82,7 +82,7 @@ export class Proxy {
         request: Pipedream.ProxyGetRequest,
         requestOptions?: Proxy.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
-        const { url, external_user_id: externalUserId, account_id: accountId, params, headers } = request;
+        const { url, externalUserId, accountId, params, headers } = request;
         const url64 = base64Encode(url);
         const transformedHeaders = this.transformProxyHeaders(headers);
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {
@@ -150,8 +150,8 @@ export class Proxy {
      * @example
      *     await client.proxy.post({
      *         url: "https://api.example.com/endpoint",
-     *         external_user_id: "external_user_id",
-     *         account_id: "account_id",
+     *         externalUserId: "external_user_id",
+     *         accountId: "account_id",
      *         body: { "key": "value" },
      *         params: { key: "value" },
      *         headers: { "X-Custom-Header": "value" }
@@ -168,7 +168,7 @@ export class Proxy {
         request: Pipedream.ProxyPostRequest,
         requestOptions?: Proxy.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
-        const { url, external_user_id: externalUserId, account_id: accountId, body, params, headers } = request;
+        const { url, externalUserId, accountId, body, params, headers } = request;
         const url64 = base64Encode(url);
         const transformedHeaders = this.transformProxyHeaders(headers);
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {
@@ -239,8 +239,8 @@ export class Proxy {
      * @example
      *     await client.proxy.put({
      *         url: "https://api.example.com/endpoint",
-     *         external_user_id: "external_user_id",
-     *         account_id: "account_id",
+     *         externalUserId: "external_user_id",
+     *         accountId: "account_id",
      *         body: { "key": "value" },
      *         params: { key: "value" },
      *         headers: { "X-Custom-Header": "value" }
@@ -257,7 +257,7 @@ export class Proxy {
         request: Pipedream.ProxyPutRequest,
         requestOptions?: Proxy.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
-        const { url, external_user_id: externalUserId, account_id: accountId, body, params, headers } = request;
+        const { url, externalUserId, accountId, body, params, headers } = request;
         const url64 = base64Encode(url);
         const transformedHeaders = this.transformProxyHeaders(headers);
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {
@@ -328,8 +328,8 @@ export class Proxy {
      * @example
      *     await client.proxy.delete({
      *         url: "https://api.example.com/endpoint",
-     *         external_user_id: "external_user_id",
-     *         account_id: "account_id",
+     *         externalUserId: "external_user_id",
+     *         accountId: "account_id",
      *         params: { key: "value" },
      *         headers: { "X-Custom-Header": "value" }
      *     })
@@ -345,7 +345,7 @@ export class Proxy {
         request: Pipedream.ProxyDeleteRequest,
         requestOptions?: Proxy.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
-        const { url, external_user_id: externalUserId, account_id: accountId, params, headers } = request;
+        const { url, externalUserId, accountId, params, headers } = request;
         const url64 = base64Encode(url);
         const transformedHeaders = this.transformProxyHeaders(headers);
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {
@@ -413,8 +413,8 @@ export class Proxy {
      * @example
      *     await client.proxy.patch({
      *         url: "https://api.example.com/endpoint",
-     *         external_user_id: "external_user_id",
-     *         account_id: "account_id",
+     *         externalUserId: "external_user_id",
+     *         accountId: "account_id",
      *         body: { "key": "value" },
      *         params: { key: "value" },
      *         headers: { "X-Custom-Header": "value" }
@@ -431,7 +431,7 @@ export class Proxy {
         request: Pipedream.ProxyPatchRequest,
         requestOptions?: Proxy.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
-        const { url, external_user_id: externalUserId, account_id: accountId, body, params, headers } = request;
+        const { url, externalUserId, accountId, body, params, headers } = request;
         const url64 = base64Encode(url);
         const transformedHeaders = this.transformProxyHeaders(headers);
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {
