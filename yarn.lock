@@ -301,9 +301,9 @@
     tough-cookie "^4.1.4"
 
 "@inquirer/confirm@^5.0.0":
-  version "5.1.14"
-  resolved "https://registry.yarnpkg.com/@inquirer/confirm/-/confirm-5.1.14.tgz#e6321edf51a3a5f54dc548b80ef6ba89891351ad"
-  integrity sha512-5yR4IBfe0kXe59r1YCTG8WXkUbl7Z35HK87Sw+WUyGD8wNUx7JvY7laahzeytyE1oLn74bQnL7hstctQxisQ8Q==
+  version "5.1.15"
+  resolved "https://registry.yarnpkg.com/@inquirer/confirm/-/confirm-5.1.15.tgz#c502d5c642fdba0669b17442b40794c97bdbccb4"
+  integrity sha512-SwHMGa8Z47LawQN0rog0sT+6JpiL0B7eW9p1Bb7iCeKDGTI5Ez25TSc2l8kw52VV7hA4sX/C78CGkMrKXfuspA==
   dependencies:
     "@inquirer/core" "^10.1.15"
     "@inquirer/type" "^3.0.8"
@@ -1096,12 +1096,12 @@ braces@^3.0.3:
     fill-range "^7.1.1"
 
 browserslist@^4.24.0:
-  version "4.25.2"
-  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.25.2.tgz#90c1507143742d743544ae6e92bca3348adff667"
-  integrity sha512-0si2SJK3ooGzIawRu61ZdPCO1IncZwS8IzuX73sPZsXW6EQ/w/DAfPyKI8l1ETTCr2MnvqWitmlCUxgdul45jA==
+  version "4.25.3"
+  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.25.3.tgz#9167c9cbb40473f15f75f85189290678b99b16c5"
+  integrity sha512-cDGv1kkDI4/0e5yON9yM5G/0A5u8sf5TnmdX5C9qHzI9PPu++sQ9zjm1k9NiOrf3riY4OkK0zSGqfvJyJsgCBQ==
   dependencies:
-    caniuse-lite "^1.0.30001733"
-    electron-to-chromium "^1.5.199"
+    caniuse-lite "^1.0.30001735"
+    electron-to-chromium "^1.5.204"
     node-releases "^2.0.19"
     update-browserslist-db "^1.1.3"
 
@@ -1147,7 +1147,7 @@ camelcase@^6.2.0:
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-6.3.0.tgz#5685b95eb209ac9c0c177467778c9c84df58ba9a"
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
-caniuse-lite@^1.0.30001733:
+caniuse-lite@^1.0.30001735:
   version "1.0.30001735"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001735.tgz#ba658fd3fd24a4106fd68d5ce472a2c251494dbe"
   integrity sha512-EV/laoX7Wq2J9TQlyIXRxTJqIw4sxfXS4OYgudGxBYRuTv0q7AM6yMEpU/Vo1I94thg9U6EZ2NfZx9GJq83u7w==
@@ -1344,10 +1344,10 @@ dunder-proto@^1.0.1:
     es-errors "^1.3.0"
     gopd "^1.2.0"
 
-electron-to-chromium@^1.5.199:
-  version "1.5.202"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.202.tgz#e243716943a2cab144604a81b9ebaa87b4e8c1d4"
-  integrity sha512-NxbYjRmiHcHXV1Ws3fWUW+SLb62isauajk45LUJ/HgIOkUA7jLZu/X2Iif+X9FBNK8QkF9Zb4Q2mcwXCcY30mg==
+electron-to-chromium@^1.5.204:
+  version "1.5.204"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.204.tgz#45ffed15ea3ca5d43e3205b52082721bc988d0ba"
+  integrity sha512-s9VbBXWxfDrl67PlO4avwh0/GU2vcwx8Fph3wlR8LJl7ySGYId59EFE17VWVcuC3sLWNPENm6Z/uGqKbkPCcXA==
 
 emittery@^0.13.1:
   version "0.13.1"
@@ -1843,9 +1843,9 @@ istanbul-lib-source-maps@^4.0.0:
     source-map "^0.6.1"
 
 istanbul-reports@^3.1.3:
-  version "3.1.7"
-  resolved "https://registry.yarnpkg.com/istanbul-reports/-/istanbul-reports-3.1.7.tgz#daed12b9e1dca518e15c056e1e537e741280fa0b"
-  integrity sha512-BewmUXImeuRk2YY0PVbxgKAysvhRPUQE0h5QRM++nVWyubKGV0l8qQ5op8+B2DOmwSe63Jivj0BjkPQVf8fP5g==
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/istanbul-reports/-/istanbul-reports-3.2.0.tgz#cb4535162b5784aa623cee21a7252cf2c807ac93"
+  integrity sha512-HGYWWS/ehqTV3xN10i23tkPkpH46MLCIMFNCaaKNavAXTF1RkqxawEPtnjnGZ6XKSInBKkiOA5BKS+aZiY3AvA==
   dependencies:
     html-escaper "^2.0.0"
     istanbul-lib-report "^3.0.0"
@@ -3053,9 +3053,9 @@ webpack-sources@^3.3.3:
   integrity sha512-yd1RBzSGanHkitROoPFd6qsrxt+oFhg/129YzheDGqeustzX0vTZJZsSsQjVQC4yzBQ56K55XU8gaNCtIzOnTg==
 
 webpack@^5.97.1:
-  version "5.101.2"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.101.2.tgz#08c222b7acfce7da95c593e2f88ea1638a07b344"
-  integrity sha512-4JLXU0tD6OZNVqlwzm3HGEhAHufSiyv+skb7q0d2367VDMzrU1Q/ZeepvkcHH0rZie6uqEtTQQe0OEOOluH3Mg==
+  version "5.101.3"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.101.3.tgz#3633b2375bb29ea4b06ffb1902734d977bc44346"
+  integrity sha512-7b0dTKR3Ed//AD/6kkx/o7duS8H3f1a4w3BYpIriX4BzIhjkn4teo05cptsxvLesHFKK5KObnadmCHBwGc+51A==
   dependencies:
     "@types/eslint-scope" "^3.7.7"
     "@types/estree" "^1.0.8"
