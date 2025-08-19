@@ -46,6 +46,8 @@ export class Components {
     }
 
     /**
+     * Retrieve available components with optional search and app filtering
+     *
      * @param {Pipedream.ComponentsListRequest} request
      * @param {Components.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -153,6 +155,8 @@ export class Components {
     }
 
     /**
+     * Get detailed configuration for a specific component by its key
+     *
      * @param {string} componentId - The key that uniquely identifies the component (e.g., 'slack-send-message')
      * @param {Components.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -233,6 +237,8 @@ export class Components {
     }
 
     /**
+     * Retrieve remote options for a given prop for a component
+     *
      * @param {Pipedream.ConfigurePropOpts} request
      * @param {Components.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -323,6 +329,8 @@ export class Components {
     }
 
     /**
+     * Reload the prop definition based on the currently configured props
+     *
      * @param {Pipedream.ReloadPropsOpts} request
      * @param {Components.RequestOptions} requestOptions - Request-specific configuration.
      *

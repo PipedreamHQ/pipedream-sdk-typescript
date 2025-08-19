@@ -46,6 +46,8 @@ export class OauthTokens {
     }
 
     /**
+     * Exchange OAuth credentials for an access token
+     *
      * @param {Pipedream.CreateOAuthTokenOpts} request
      * @param {OauthTokens.RequestOptions} requestOptions - Request-specific configuration.
      *

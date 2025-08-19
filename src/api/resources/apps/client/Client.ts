@@ -46,6 +46,8 @@ export class Apps {
     }
 
     /**
+     * Retrieve all available apps with optional filtering and sorting
+     *
      * @param {Pipedream.AppsListRequest} request
      * @param {Apps.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -165,6 +167,8 @@ export class Apps {
     }
 
     /**
+     * Get detailed information about a specific app by ID or name slug
+     *
      * @param {string} appId - The name slug or ID of the app (e.g., 'slack', 'github')
      * @param {Apps.RequestOptions} requestOptions - Request-specific configuration.
      *

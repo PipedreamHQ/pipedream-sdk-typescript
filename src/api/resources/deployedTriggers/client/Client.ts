@@ -46,6 +46,8 @@ export class DeployedTriggers {
     }
 
     /**
+     * Retrieve all deployed triggers for a specific external user
+     *
      * @param {Pipedream.DeployedTriggersListRequest} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -150,6 +152,8 @@ export class DeployedTriggers {
     }
 
     /**
+     * Get details of a specific deployed trigger by its ID
+     *
      * @param {string} triggerId
      * @param {Pipedream.DeployedTriggersRetrieveRequest} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
@@ -238,6 +242,8 @@ export class DeployedTriggers {
     }
 
     /**
+     * Modify the configuration of a deployed trigger, including active status
+     *
      * @param {string} triggerId
      * @param {Pipedream.UpdateTriggerOpts} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
@@ -332,6 +338,8 @@ export class DeployedTriggers {
     }
 
     /**
+     * Remove a deployed trigger and stop receiving events
+     *
      * @param {string} triggerId
      * @param {Pipedream.DeployedTriggersDeleteRequest} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
@@ -415,6 +423,8 @@ export class DeployedTriggers {
     }
 
     /**
+     * Retrieve recent events emitted by a deployed trigger
+     *
      * @param {string} triggerId
      * @param {Pipedream.DeployedTriggersListEventsRequest} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
@@ -507,6 +517,8 @@ export class DeployedTriggers {
     }
 
     /**
+     * Get workflows connected to receive events from this trigger
+     *
      * @param {string} triggerId
      * @param {Pipedream.DeployedTriggersListWorkflowsRequest} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
@@ -595,6 +607,8 @@ export class DeployedTriggers {
     }
 
     /**
+     * Connect or disconnect workflows to receive trigger events
+     *
      * @param {string} triggerId
      * @param {Pipedream.UpdateTriggerWorkflowsOpts} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
@@ -690,6 +704,8 @@ export class DeployedTriggers {
     }
 
     /**
+     * Get webhook URLs configured to receive trigger events
+     *
      * @param {string} triggerId
      * @param {Pipedream.DeployedTriggersListWebhooksRequest} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
@@ -778,6 +794,8 @@ export class DeployedTriggers {
     }
 
     /**
+     * Configure webhook URLs to receive trigger events
+     *
      * @param {string} triggerId
      * @param {Pipedream.UpdateTriggerWebhooksOpts} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.

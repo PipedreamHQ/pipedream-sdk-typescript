@@ -46,6 +46,8 @@ export class Triggers {
     }
 
     /**
+     * Retrieve available triggers with optional search and app filtering
+     *
      * @param {Pipedream.TriggersListRequest} request
      * @param {Triggers.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -153,6 +155,8 @@ export class Triggers {
     }
 
     /**
+     * Get detailed configuration for a specific trigger by its key
+     *
      * @param {string} componentId - The key that uniquely identifies the component (e.g., 'slack-send-message')
      * @param {Triggers.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -233,6 +237,8 @@ export class Triggers {
     }
 
     /**
+     * Retrieve remote options for a given prop for a trigger
+     *
      * @param {Pipedream.ConfigurePropOpts} request
      * @param {Triggers.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -323,6 +329,8 @@ export class Triggers {
     }
 
     /**
+     * Reload the prop definition based on the currently configured props
+     *
      * @param {Pipedream.ReloadPropsOpts} request
      * @param {Triggers.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -412,6 +420,8 @@ export class Triggers {
     }
 
     /**
+     * Deploy a trigger to listen for and emit events
+     *
      * @param {Pipedream.DeployTriggerOpts} request
      * @param {Triggers.RequestOptions} requestOptions - Request-specific configuration.
      *

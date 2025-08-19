@@ -46,6 +46,8 @@ export class Accounts {
     }
 
     /**
+     * Retrieve all connected accounts for the project with optional filtering
+     *
      * @param {Pipedream.AccountsListRequest} request
      * @param {Accounts.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -159,6 +161,8 @@ export class Accounts {
     }
 
     /**
+     * Connect a new account for an external user in the project
+     *
      * @param {Pipedream.CreateAccountOpts} request
      * @param {Accounts.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -263,6 +267,8 @@ export class Accounts {
     }
 
     /**
+     * Get the details for a specific connected account
+     *
      * @param {string} accountId
      * @param {Pipedream.AccountsRetrieveRequest} request
      * @param {Accounts.RequestOptions} requestOptions - Request-specific configuration.
@@ -352,6 +358,8 @@ export class Accounts {
     }
 
     /**
+     * Remove a connected account and its associated credentials
+     *
      * @param {string} accountId
      * @param {Accounts.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -420,6 +428,8 @@ export class Accounts {
     }
 
     /**
+     * Remove all connected accounts for a specific app
+     *
      * @param {string} appId
      * @param {Accounts.RequestOptions} requestOptions - Request-specific configuration.
      *
