@@ -45,6 +45,8 @@ export class Users {
     }
 
     /**
+     * Remove an external user and all their associated accounts and resources
+     *
      * @param {string} externalUserId
      * @param {Users.RequestOptions} requestOptions - Request-specific configuration.
      *

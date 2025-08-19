@@ -46,6 +46,8 @@ export class Actions {
     }
 
     /**
+     * Retrieve available actions with optional search and app filtering
+     *
      * @param {Pipedream.ActionsListRequest} request
      * @param {Actions.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -153,6 +155,8 @@ export class Actions {
     }
 
     /**
+     * Get detailed configuration for a specific action by its key
+     *
      * @param {string} componentId - The key that uniquely identifies the component (e.g., 'slack-send-message')
      * @param {Actions.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -233,6 +237,8 @@ export class Actions {
     }
 
     /**
+     * Retrieve remote options for a given prop for a action
+     *
      * @param {Pipedream.ConfigurePropOpts} request
      * @param {Actions.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -323,6 +329,8 @@ export class Actions {
     }
 
     /**
+     * Reload the prop definition based on the currently configured props
+     *
      * @param {Pipedream.ReloadPropsOpts} request
      * @param {Actions.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -412,6 +420,8 @@ export class Actions {
     }
 
     /**
+     * Execute an action with the provided configuration and return results
+     *
      * @param {Pipedream.RunActionOpts} request
      * @param {Actions.RequestOptions} requestOptions - Request-specific configuration.
      *

@@ -46,6 +46,8 @@ export class Tokens {
     }
 
     /**
+     * Generate a Connect token to use for client-side authentication
+     *
      * @param {Pipedream.CreateTokenOpts} request
      * @param {Tokens.RequestOptions} requestOptions - Request-specific configuration.
      *
@@ -134,6 +136,8 @@ export class Tokens {
     }
 
     /**
+     * Confirm the validity of a Connect token
+     *
      * @param {Pipedream.ConnectToken} ctok
      * @param {Pipedream.TokensValidateRequest} request
      * @param {Tokens.RequestOptions} requestOptions - Request-specific configuration.
