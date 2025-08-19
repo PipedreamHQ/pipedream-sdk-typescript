@@ -43,6 +43,7 @@ export * from "./CreateTokenResponse.js";
 export * from "./DeleteTriggerOpts.js";
 export * from "./DeployedComponent.js";
 export * from "./DeployTriggerResponse.js";
+export * from "./DynamicProps.js";
 export * from "./EmittedEvent.js";
 export * from "./ErrorResponse.js";
 export * from "./GetAccountsResponse.js";

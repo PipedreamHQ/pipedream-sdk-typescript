@@ -46,6 +46,8 @@ export class AppCategories {
     }
 
     /**
+     * Retrieve all available categories for integrated apps
+     *
      * @param {AppCategories.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
@@ -121,6 +123,8 @@ export class AppCategories {
     }
 
     /**
+     * Get details of a specific app category by its ID
+     *
      * @param {string} id - The ID of the app category to retrieve
      * @param {AppCategories.RequestOptions} requestOptions - Request-specific configuration.
      *
