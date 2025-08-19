@@ -46,6 +46,8 @@ export class Projects {
     }
 
     /**
+     * Retrieve project configuration and environment details
+     *
      * @param {Projects.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example

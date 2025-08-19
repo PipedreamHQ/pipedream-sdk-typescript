@@ -39,6 +39,7 @@ export * from "./ConnectToken.js";
 export * from "./CreateOAuthTokenResponse.js";
 export * from "./CreateTokenResponse.js";
 export * from "./DeleteTriggerOpts.js";
+export * from "./DynamicProps.js";
 export * from "./HTTPAuthType.js";
 export * from "./DeployedComponent.js";
 export * from "./DeployTriggerResponse.js";
