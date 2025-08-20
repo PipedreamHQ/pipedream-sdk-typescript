@@ -1,4 +1,4 @@
-import { TokenProvider } from "../core/auth/TokenProvider.js";
+import type { TokenProvider } from "../core/auth/TokenProvider.js";
 import { ProjectEnvironment } from "../api/index.js";
 import { Workflows } from "../api/resources/workflows/client/Client.js";
 import { PipedreamClient } from "../Client.js";

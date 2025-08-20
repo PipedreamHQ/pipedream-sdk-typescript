@@ -1,4 +1,4 @@
-import { TokenProvider } from "./TokenProvider";
+import type { TokenProvider } from "./TokenProvider.js";
 
 export class StaticTokenProvider implements TokenProvider {
     private readonly _token: string;

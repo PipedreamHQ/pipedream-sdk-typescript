@@ -1,5 +1,5 @@
-import { CreateTokenResponse } from "api";
-import { TokenProvider } from "./TokenProvider";
+import type { CreateTokenResponse } from "../../api/index.js";
+import type { TokenProvider } from "./TokenProvider.js";
 
 export type TokenCallback = (opts: { externalUserId: string }) => Promise<CreateTokenResponse>;
 
