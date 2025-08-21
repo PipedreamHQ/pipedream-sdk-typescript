@@ -131,13 +131,6 @@ const client = new PipedreamClient({
   projectId: 'your-project-id',
   projectEnvironment: 'development', // or 'production'
 });
-
-// Alternative: Use with a connect token (for simpler authentication)
-const clientWithToken = new PipedreamClient({
-  token: 'connect-token',
-  projectId: 'your-project-id',
-  projectEnvironment: 'development', // or 'production'
-});
 ```
 
 ### Browser-side
@@ -162,39 +155,41 @@ const frontendClient = createFrontendClient({
 
 The v2.x SDK provides two options for browser-side usage:
 
-**Option 1: Using PipedreamClient with connect token (for simple token-based
-auth)**
+**Option 1: Using `PipedreamClient` with token callback (for dynamic token
+management)**
 
 ```javascript
 import { PipedreamClient } from '@pipedream/sdk';
 
-const frontendClient = new PipedreamClient({
-  token: 'connect-token-from-backend',
+const tokenCallback = async ({ externalUserId }) => {
+  // Call your backend to get a connect token
+  const response = await fetch('/api/pipedream/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ externalUserId })
+  });
+  return response.json();
+};
+const clientWithToken = new PipedreamClient({
+  tokenCallback,
   projectId: 'your-project-id',
   projectEnvironment: 'development', // or 'production'
 });
 ```
 
-**Option 2: Using createFrontendClient with token callback (for dynamic token
-management)**
+**Option 2: Using `createFrontendClient` with connect token (for simple token-based
+auth)**
 
 ```javascript
 // Explicit browser import (recommended for browser apps)
-import { createFrontendClient, PipedreamClient } from '@pipedream/sdk/browser';
+import { createFrontendClient, type PipedreamClient } from '@pipedream/sdk/browser';
 
 // Or automatic browser resolution
-import { createFrontendClient, PipedreamClient } from '@pipedream/sdk';
+import { createFrontendClient, type PipedreamClient } from '@pipedream/sdk';
 
-const client = createFrontendClient({
-  tokenCallback: async ({ externalUserId }) => {
-    // Call your backend to get a connect token
-    const response = await fetch('/api/pipedream/token', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ externalUserId })
-    });
-    return response.json();
-  },
+// `tokenCallback` is also supported here
+const client: PipedreamClient = createFrontendClient({
+  token: 'connect-token',
   externalUserId: 'user-123'
 });
 
