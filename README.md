@@ -3,7 +3,7 @@
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2FPipedreamHQ%2Fpipedream-sdk-typescript)
 [![npm shield](https://img.shields.io/npm/v/@pipedream/sdk)](https://www.npmjs.com/package/@pipedream/sdk)
 
-The Pipedream TypeScript library provides convenient access to the Pipedream API from TypeScript.
+The Pipedream TypeScript library provides convenient access to the Pipedream APIs from TypeScript.
 
 ## Installation
 
