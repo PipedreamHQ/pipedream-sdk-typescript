@@ -5,6 +5,7 @@
 import * as serializers from "../index.js";
 import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
+import { ConfigurePropOptsConfiguredPropsValue } from "./ConfigurePropOptsConfiguredPropsValue.js";
 
 export const ConfigurePropOpts: core.serialization.ObjectSchema<
     serializers.ConfigurePropOpts.Raw,
@@ -16,7 +17,7 @@ export const ConfigurePropOpts: core.serialization.ObjectSchema<
     blocking: core.serialization.boolean().optional(),
     configuredProps: core.serialization.property(
         "configured_props",
-        core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
+        core.serialization.record(core.serialization.string(), ConfigurePropOptsConfiguredPropsValue).optional(),
     ),
     dynamicPropsId: core.serialization.property("dynamic_props_id", core.serialization.string().optional()),
     page: core.serialization.number().optional(),
@@ -33,7 +34,7 @@ export declare namespace ConfigurePropOpts {
         external_user_id: string;
         prop_name: string;
         blocking?: boolean | null;
-        configured_props?: Record<string, unknown> | null;
+        configured_props?: Record<string, ConfigurePropOptsConfiguredPropsValue.Raw> | null;
         dynamic_props_id?: string | null;
         page?: number | null;
         prev_context?: Record<string, unknown> | null;
