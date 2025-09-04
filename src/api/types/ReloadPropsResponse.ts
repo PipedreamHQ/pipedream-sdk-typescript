@@ -8,8 +8,7 @@ import * as Pipedream from "../index.js";
  * Response from reloading component props
  */
 export interface ReloadPropsResponse {
-    /** Any logs produced during the configuration of the prop */
-    observations?: Record<string, unknown>;
+    observations?: Pipedream.Observation[];
     /** Any errors that occurred during configuration */
     errors?: string[];
     dynamicProps?: Pipedream.DynamicProps;
