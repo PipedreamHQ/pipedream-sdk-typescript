@@ -34,6 +34,7 @@ export * from "./ConfigurablePropTimer.js";
 export * from "./ConfigurablePropTimerDefault.js";
 export * from "./ConfigurablePropTimerOption.js";
 export * from "./ConfigurablePropTimerStatic.js";
+export * from "./ConfigurablePropType.js";
 export * from "./ConfiguredProps.js";
 export * from "./ConfiguredPropValue.js";
 export * from "./ConfiguredPropValueAny.js";
