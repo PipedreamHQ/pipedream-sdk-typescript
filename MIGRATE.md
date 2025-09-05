@@ -844,7 +844,7 @@ incrementally without breaking your existing codebase. To do this, you can
 install the new SDK with an alias:
 
 ```bash
-npm install @pipedream/sdk-v2@npm:@pipedream/sdk@^2.0.0-rc.14 --save
+npm install @pipedream/sdk-v2@npm:@pipedream/sdk@^2.0.0-rc.15 --save
 ```
 
 Then, in your code, you can import the new SDK with the alias:
