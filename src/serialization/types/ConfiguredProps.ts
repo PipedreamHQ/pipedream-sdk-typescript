@@ -7,8 +7,10 @@ import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import { ConfiguredPropValue } from "./ConfiguredPropValue.js";
 
-export const ConfiguredProps: core.serialization.Schema<serializers.ConfiguredProps.Raw, Pipedream.ConfiguredProps> =
-    core.serialization.record(core.serialization.string(), ConfiguredPropValue);
+export const ConfiguredProps: core.serialization.Schema<
+    serializers.ConfiguredProps.Raw,
+    Pipedream.ConfiguredProps<any>
+> = core.serialization.record(core.serialization.string(), ConfiguredPropValue) as any;
 
 export declare namespace ConfiguredProps {
     export type Raw = Record<string, ConfiguredPropValue.Raw>;
