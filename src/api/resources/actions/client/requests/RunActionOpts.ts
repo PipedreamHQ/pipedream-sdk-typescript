@@ -16,8 +16,7 @@ export interface RunActionOpts {
     id: string;
     /** The external user ID */
     externalUserId: string;
-    /** The configured properties for the action */
-    configuredProps?: Record<string, unknown>;
+    configuredProps?: Pipedream.ConfiguredProps;
     /** The ID for dynamic props */
     dynamicPropsId?: string;
     stashId?: Pipedream.RunActionOptsStashId;

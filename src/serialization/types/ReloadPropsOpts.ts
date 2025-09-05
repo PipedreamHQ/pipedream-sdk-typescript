@@ -5,6 +5,8 @@
 import * as serializers from "../index.js";
 import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
+import { ConfiguredProps } from "./ConfiguredProps.js";
+import { ConfiguredPropValue } from "./ConfiguredPropValue.js";
 
 export const ReloadPropsOpts: core.serialization.ObjectSchema<
     serializers.ReloadPropsOpts.Raw,
@@ -13,10 +15,7 @@ export const ReloadPropsOpts: core.serialization.ObjectSchema<
     id: core.serialization.string(),
     externalUserId: core.serialization.property("external_user_id", core.serialization.string()),
     blocking: core.serialization.boolean().optional(),
-    configuredProps: core.serialization.property(
-        "configured_props",
-        core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
-    ),
+    configuredProps: core.serialization.property("configured_props", ConfiguredProps.optional()),
     dynamicPropsId: core.serialization.property("dynamic_props_id", core.serialization.string().optional()),
 });
 
@@ -25,7 +24,7 @@ export declare namespace ReloadPropsOpts {
         id: string;
         external_user_id: string;
         blocking?: boolean | null;
-        configured_props?: Record<string, unknown> | null;
+        configured_props?: ConfiguredProps.Raw | null;
         dynamic_props_id?: string | null;
     }
 }
