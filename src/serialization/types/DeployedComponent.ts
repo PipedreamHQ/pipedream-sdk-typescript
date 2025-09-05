@@ -6,6 +6,8 @@ import * as serializers from "../index.js";
 import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import { ConfigurableProp } from "./ConfigurableProp.js";
+import { ConfiguredProps } from "./ConfiguredProps.js";
+import { ConfiguredPropValue } from "./ConfiguredPropValue.js";
 
 export const DeployedComponent: core.serialization.ObjectSchema<
     serializers.DeployedComponent.Raw,
@@ -15,10 +17,7 @@ export const DeployedComponent: core.serialization.ObjectSchema<
     ownerId: core.serialization.property("owner_id", core.serialization.string()),
     componentId: core.serialization.property("component_id", core.serialization.string()),
     configurableProps: core.serialization.property("configurable_props", core.serialization.list(ConfigurableProp)),
-    configuredProps: core.serialization.property(
-        "configured_props",
-        core.serialization.record(core.serialization.string(), core.serialization.unknown()),
-    ),
+    configuredProps: core.serialization.property("configured_props", ConfiguredProps),
     active: core.serialization.boolean(),
     createdAt: core.serialization.property("created_at", core.serialization.number()),
     updatedAt: core.serialization.property("updated_at", core.serialization.number()),
@@ -33,7 +32,7 @@ export declare namespace DeployedComponent {
         owner_id: string;
         component_id: string;
         configurable_props: ConfigurableProp.Raw[];
-        configured_props: Record<string, unknown>;
+        configured_props: ConfiguredProps.Raw;
         active: boolean;
         created_at: number;
         updated_at: number;
