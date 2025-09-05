@@ -5,13 +5,14 @@
 import * as serializers from "../index.js";
 import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
+import { ConfigurablePropType } from "./ConfigurablePropType.js";
 
 export const ConfigurableProp: core.serialization.ObjectSchema<
     serializers.ConfigurableProp.Raw,
     Pipedream.ConfigurableProp
 > = core.serialization.object({
     name: core.serialization.string(),
-    type: core.serialization.string().optional(),
+    type: ConfigurablePropType,
     label: core.serialization.string().optional(),
     description: core.serialization.string().optional(),
     optional: core.serialization.boolean().optional(),
@@ -26,7 +27,7 @@ export const ConfigurableProp: core.serialization.ObjectSchema<
 export declare namespace ConfigurableProp {
     export interface Raw {
         name: string;
-        type?: string | null;
+        type: ConfigurablePropType.Raw;
         label?: string | null;
         description?: string | null;
         optional?: boolean | null;

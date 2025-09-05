@@ -9,6 +9,7 @@ export * from "./Component.js";
 export * from "./ComponentStash.js";
 export * from "./TimerInterval.js";
 export * from "./TimerCron.js";
+export * from "./ConfigurablePropType.js";
 export * from "./ConfigurableProp.js";
 export * from "./ConfigurablePropAlert.js";
 export * from "./ConfigurablePropAlertType.js";
