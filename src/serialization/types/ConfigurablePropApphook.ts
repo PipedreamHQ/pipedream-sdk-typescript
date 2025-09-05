@@ -10,7 +10,7 @@ export const ConfigurablePropApphook: core.serialization.ObjectSchema<
     serializers.ConfigurablePropApphook.Raw,
     Pipedream.ConfigurablePropApphook
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("$.interface.apphook").optional(),
+    type: core.serialization.stringLiteral("$.interface.apphook"),
     appProp: core.serialization.string().optional(),
     eventNames: core.serialization.list(core.serialization.string()).optional(),
     remote: core.serialization.boolean().optional(),
@@ -29,7 +29,7 @@ export const ConfigurablePropApphook: core.serialization.ObjectSchema<
 
 export declare namespace ConfigurablePropApphook {
     export interface Raw {
-        type?: "$.interface.apphook" | null;
+        type: "$.interface.apphook";
         appProp?: string | null;
         eventNames?: string[] | null;
         remote?: boolean | null;

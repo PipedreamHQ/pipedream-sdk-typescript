@@ -3,7 +3,7 @@
  */
 
 export interface ConfigurablePropAirtableBaseId {
-    type?: "$.airtable.baseId";
+    type: "$.airtable.baseId";
     /** The name of the app prop that provides Airtable authentication */
     appProp?: string;
     /** When building `configuredProps`, make sure to use this field as the key when setting the prop value */

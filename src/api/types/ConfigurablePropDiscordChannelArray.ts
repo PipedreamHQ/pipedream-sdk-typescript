@@ -3,7 +3,7 @@
  */
 
 export interface ConfigurablePropDiscordChannelArray {
-    type?: "$.discord.channel[]";
+    type: "$.discord.channel[]";
     /** The name of the app prop that provides Discord authentication */
     appProp?: string;
     /** When building `configuredProps`, make sure to use this field as the key when setting the prop value */
