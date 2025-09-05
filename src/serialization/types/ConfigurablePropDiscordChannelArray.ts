@@ -10,7 +10,7 @@ export const ConfigurablePropDiscordChannelArray: core.serialization.ObjectSchem
     serializers.ConfigurablePropDiscordChannelArray.Raw,
     Pipedream.ConfigurablePropDiscordChannelArray
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("$.discord.channel[]").optional(),
+    type: core.serialization.stringLiteral("$.discord.channel[]"),
     appProp: core.serialization.string().optional(),
     name: core.serialization.string(),
     label: core.serialization.string().optional(),
@@ -26,7 +26,7 @@ export const ConfigurablePropDiscordChannelArray: core.serialization.ObjectSchem
 
 export declare namespace ConfigurablePropDiscordChannelArray {
     export interface Raw {
-        type?: "$.discord.channel[]" | null;
+        type: "$.discord.channel[]";
         appProp?: string | null;
         name: string;
         label?: string | null;

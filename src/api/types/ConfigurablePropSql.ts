@@ -5,7 +5,7 @@
 import * as Pipedream from "../index.js";
 
 export interface ConfigurablePropSql {
-    type?: "sql";
+    type: "sql";
     auth?: Pipedream.ConfigurablePropSqlAuth;
     /** Default SQL query */
     default?: string;

@@ -10,7 +10,7 @@ export const ConfigurablePropStringArray: core.serialization.ObjectSchema<
     serializers.ConfigurablePropStringArray.Raw,
     Pipedream.ConfigurablePropStringArray
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("string[]").optional(),
+    type: core.serialization.stringLiteral("string[]"),
     secret: core.serialization.boolean().optional(),
     name: core.serialization.string(),
     label: core.serialization.string().optional(),
@@ -26,7 +26,7 @@ export const ConfigurablePropStringArray: core.serialization.ObjectSchema<
 
 export declare namespace ConfigurablePropStringArray {
     export interface Raw {
-        type?: "string[]" | null;
+        type: "string[]";
         secret?: boolean | null;
         name: string;
         label?: string | null;

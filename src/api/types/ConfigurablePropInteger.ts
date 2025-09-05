@@ -3,7 +3,7 @@
  */
 
 export interface ConfigurablePropInteger {
-    type?: "integer";
+    type: "integer";
     /** The minimum value for this integer prop. */
     min?: number;
     /** The maximum value for this integer prop. */

@@ -3,7 +3,7 @@
  */
 
 export interface ConfigurablePropAirtableTableId {
-    type?: "$.airtable.tableId";
+    type: "$.airtable.tableId";
     /** The name of the prop that provides the Airtable base ID */
     baseIdProp?: string;
     /** When building `configuredProps`, make sure to use this field as the key when setting the prop value */

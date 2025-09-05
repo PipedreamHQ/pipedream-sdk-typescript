@@ -10,7 +10,7 @@ export const ConfigurablePropDb: core.serialization.ObjectSchema<
     serializers.ConfigurablePropDb.Raw,
     Pipedream.ConfigurablePropDb
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("$.service.db").optional(),
+    type: core.serialization.stringLiteral("$.service.db"),
     name: core.serialization.string(),
     label: core.serialization.string().optional(),
     description: core.serialization.string().optional(),
@@ -25,7 +25,7 @@ export const ConfigurablePropDb: core.serialization.ObjectSchema<
 
 export declare namespace ConfigurablePropDb {
     export interface Raw {
-        type?: "$.service.db" | null;
+        type: "$.service.db";
         name: string;
         label?: string | null;
         description?: string | null;

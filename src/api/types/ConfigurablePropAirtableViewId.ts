@@ -3,7 +3,7 @@
  */
 
 export interface ConfigurablePropAirtableViewId {
-    type?: "$.airtable.viewId";
+    type: "$.airtable.viewId";
     /** The name of the prop that provides the Airtable table ID */
     tableIdProp?: string;
     /** When building `configuredProps`, make sure to use this field as the key when setting the prop value */
