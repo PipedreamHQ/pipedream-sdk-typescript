@@ -67,11 +67,11 @@ export class Tokens {
         request: Pipedream.CreateTokenOpts,
         requestOptions?: Tokens.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.CreateTokenResponse>> {
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
             }),
             requestOptions?.headers,
         );
@@ -167,11 +167,11 @@ export class Tokens {
             _queryParams["oauth_app_id"] = oauthAppId;
         }
 
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
             }),
             requestOptions?.headers,
         );

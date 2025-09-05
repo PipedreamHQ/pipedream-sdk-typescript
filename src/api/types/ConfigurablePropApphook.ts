@@ -5,7 +5,7 @@
 export interface ConfigurablePropApphook {
     type: "$.interface.apphook";
     /** The name of the app prop that this apphook depends on */
-    appProp?: string;
+    appProp: string;
     /** List of event names to listen for */
     eventNames?: string[];
     /** Whether this apphook is remote */

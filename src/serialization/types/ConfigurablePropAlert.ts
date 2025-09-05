@@ -13,7 +13,7 @@ export const ConfigurablePropAlert: core.serialization.ObjectSchema<
 > = core.serialization.object({
     type: core.serialization.stringLiteral("alert"),
     alertType: ConfigurablePropAlertType.optional(),
-    content: core.serialization.string().optional(),
+    content: core.serialization.string(),
     name: core.serialization.string(),
     label: core.serialization.string().optional(),
     description: core.serialization.string().optional(),
@@ -30,7 +30,7 @@ export declare namespace ConfigurablePropAlert {
     export interface Raw {
         type: "alert";
         alertType?: ConfigurablePropAlertType.Raw | null;
-        content?: string | null;
+        content: string;
         name: string;
         label?: string | null;
         description?: string | null;

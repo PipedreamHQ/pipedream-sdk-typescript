@@ -93,11 +93,11 @@ export class Apps {
                         _queryParams["category_ids"] = categoryIds;
                     }
                 }
-                var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+                let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
                     this._options?.headers,
                     mergeOnlyDefinedHeaders({
                         Authorization: await this._getAuthorizationHeader(),
-                        "x-pd-environment": requestOptions?.projectEnvironment,
+                        "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
                     }),
                     requestOptions?.headers,
                 );
@@ -186,11 +186,11 @@ export class Apps {
         appId: string,
         requestOptions?: Apps.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetAppResponse>> {
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
             }),
             requestOptions?.headers,
         );

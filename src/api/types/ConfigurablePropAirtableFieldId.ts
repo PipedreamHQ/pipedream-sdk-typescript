@@ -5,7 +5,7 @@
 export interface ConfigurablePropAirtableFieldId {
     type: "$.airtable.fieldId";
     /** The name of the prop that provides the Airtable table ID */
-    tableIdProp?: string;
+    tableIdProp: string;
     /** When building `configuredProps`, make sure to use this field as the key when setting the prop value */
     name: string;
     /** Value to use as an input label. In cases where `type` is "app", should load the app via `getApp`, etc. and show `app.name` instead. */
