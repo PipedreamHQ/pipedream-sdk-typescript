@@ -3,45 +3,45 @@
  */
 
 export type ConfigurablePropType =
-    | "app"
+    | "$.airtable.baseId"
+    | "$.airtable.fieldId"
+    | "$.airtable.tableId"
+    | "$.airtable.viewId"
+    | "$.discord.channel"
     | "$.interface.apphook"
     | "$.interface.http"
     | "$.interface.timer"
-    | "data_store"
     | "$.service.db"
+    | "alert"
+    | "any"
+    | "app"
     | "boolean"
+    | "data_store"
+    | "dir"
+    | "http_request"
     | "integer"
     | "object"
-    | "any"
-    | "string"
-    | "$.airtable.baseId"
-    | "$.airtable.tableId"
-    | "$.airtable.viewId"
-    | "$.airtable.fieldId"
-    | "$.discord.channel"
-    | "http_request"
     | "sql"
-    | "alert"
-    | "dir";
+    | "string";
 export const ConfigurablePropType = {
-    App: "app",
+    AirtableBaseId: "$.airtable.baseId",
+    AirtableFieldId: "$.airtable.fieldId",
+    AirtableTableId: "$.airtable.tableId",
+    AirtableViewId: "$.airtable.viewId",
+    DiscordChannel: "$.discord.channel",
     InterfaceApphook: "$.interface.apphook",
     InterfaceHttp: "$.interface.http",
     InterfaceTimer: "$.interface.timer",
-    DataStore: "data_store",
     ServiceDb: "$.service.db",
+    Alert: "alert",
+    Any: "any",
+    App: "app",
     Boolean: "boolean",
+    DataStore: "data_store",
+    Dir: "dir",
+    HttpRequest: "http_request",
     Integer: "integer",
     Object: "object",
-    Any: "any",
-    String: "string",
-    AirtableBaseId: "$.airtable.baseId",
-    AirtableTableId: "$.airtable.tableId",
-    AirtableViewId: "$.airtable.viewId",
-    AirtableFieldId: "$.airtable.fieldId",
-    DiscordChannel: "$.discord.channel",
-    HttpRequest: "http_request",
     Sql: "sql",
-    Alert: "alert",
-    Dir: "dir",
+    String: "string",
 } as const;
