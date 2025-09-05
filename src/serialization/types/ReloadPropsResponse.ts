@@ -5,20 +5,21 @@
 import * as serializers from "../index.js";
 import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
+import { Observation } from "./Observation.js";
 import { DynamicProps } from "./DynamicProps.js";
 
 export const ReloadPropsResponse: core.serialization.ObjectSchema<
     serializers.ReloadPropsResponse.Raw,
     Pipedream.ReloadPropsResponse
 > = core.serialization.object({
-    observations: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
+    observations: core.serialization.list(Observation).optional(),
     errors: core.serialization.list(core.serialization.string()).optional(),
     dynamicProps: DynamicProps.optional(),
 });
 
 export declare namespace ReloadPropsResponse {
     export interface Raw {
-        observations?: Record<string, unknown> | null;
+        observations?: Observation.Raw[] | null;
         errors?: string[] | null;
         dynamicProps?: DynamicProps.Raw | null;
     }
