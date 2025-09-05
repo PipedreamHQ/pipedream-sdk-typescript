@@ -5,27 +5,29 @@
 import * as serializers from "../index.js";
 import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { PropOption } from "./PropOption.js";
+import { ConfigurePropOption } from "./ConfigurePropOption.js";
+import { Observation } from "./Observation.js";
+import { ConfigurePropOptionItem } from "./ConfigurePropOptionItem.js";
 
 export const ConfigurePropResponse: core.serialization.ObjectSchema<
     serializers.ConfigurePropResponse.Raw,
     Pipedream.ConfigurePropResponse
 > = core.serialization.object({
-    options: core.serialization.list(PropOption).optional(),
+    options: ConfigurePropOption.optional(),
     stringOptions: core.serialization.property(
         "string_options",
         core.serialization.list(core.serialization.string()).optional(),
     ),
-    observations: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
+    observations: core.serialization.list(Observation).optional(),
     context: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
     errors: core.serialization.list(core.serialization.string()).optional(),
 });
 
 export declare namespace ConfigurePropResponse {
     export interface Raw {
-        options?: PropOption.Raw[] | null;
+        options?: (ConfigurePropOption.Raw | undefined) | null;
         string_options?: string[] | null;
-        observations?: Record<string, unknown> | null;
+        observations?: Observation.Raw[] | null;
         context?: Record<string, unknown> | null;
         errors?: string[] | null;
     }
