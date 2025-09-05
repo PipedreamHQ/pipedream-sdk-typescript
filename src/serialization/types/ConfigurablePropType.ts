@@ -10,48 +10,48 @@ export const ConfigurablePropType: core.serialization.Schema<
     serializers.ConfigurablePropType.Raw,
     Pipedream.ConfigurablePropType
 > = core.serialization.enum_([
-    "app",
+    "$.airtable.baseId",
+    "$.airtable.fieldId",
+    "$.airtable.tableId",
+    "$.airtable.viewId",
+    "$.discord.channel",
     "$.interface.apphook",
     "$.interface.http",
     "$.interface.timer",
-    "data_store",
     "$.service.db",
+    "alert",
+    "any",
+    "app",
     "boolean",
+    "data_store",
+    "dir",
+    "http_request",
     "integer",
     "object",
-    "any",
-    "string",
-    "$.airtable.baseId",
-    "$.airtable.tableId",
-    "$.airtable.viewId",
-    "$.airtable.fieldId",
-    "$.discord.channel",
-    "http_request",
     "sql",
-    "alert",
-    "dir",
+    "string",
 ]);
 
 export declare namespace ConfigurablePropType {
     export type Raw =
-        | "app"
+        | "$.airtable.baseId"
+        | "$.airtable.fieldId"
+        | "$.airtable.tableId"
+        | "$.airtable.viewId"
+        | "$.discord.channel"
         | "$.interface.apphook"
         | "$.interface.http"
         | "$.interface.timer"
-        | "data_store"
         | "$.service.db"
+        | "alert"
+        | "any"
+        | "app"
         | "boolean"
+        | "data_store"
+        | "dir"
+        | "http_request"
         | "integer"
         | "object"
-        | "any"
-        | "string"
-        | "$.airtable.baseId"
-        | "$.airtable.tableId"
-        | "$.airtable.viewId"
-        | "$.airtable.fieldId"
-        | "$.discord.channel"
-        | "http_request"
         | "sql"
-        | "alert"
-        | "dir";
+        | "string";
 }
