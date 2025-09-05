@@ -11,7 +11,7 @@ export const ConfigurablePropAlert: core.serialization.ObjectSchema<
     serializers.ConfigurablePropAlert.Raw,
     Pipedream.ConfigurablePropAlert
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("alert"),
+    type: core.serialization.stringLiteral("alert").optional(),
     alertType: ConfigurablePropAlertType.optional(),
     content: core.serialization.string().optional(),
     name: core.serialization.string(),
@@ -28,7 +28,7 @@ export const ConfigurablePropAlert: core.serialization.ObjectSchema<
 
 export declare namespace ConfigurablePropAlert {
     export interface Raw {
-        type: "alert";
+        type?: "alert" | null;
         alertType?: ConfigurablePropAlertType.Raw | null;
         content?: string | null;
         name: string;

@@ -5,7 +5,7 @@
 import * as Pipedream from "../index.js";
 
 export interface ConfigurablePropAlert {
-    type: "alert";
+    type?: "alert";
     alertType?: Pipedream.ConfigurablePropAlertType;
     /** The content of the alert, which can include HTML or plain text. */
     content?: string;

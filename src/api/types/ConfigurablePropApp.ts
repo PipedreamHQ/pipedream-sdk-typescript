@@ -3,7 +3,7 @@
  */
 
 export interface ConfigurablePropApp {
-    type: "app";
+    type?: "app";
     /** The name slug of the app, e.g. 'github', 'slack', etc. This is used to identify the app for which the account is being configured. */
     app?: string;
     /** When building `configuredProps`, make sure to use this field as the key when setting the prop value */

@@ -3,7 +3,7 @@
  */
 
 export interface ConfigurablePropApphook {
-    type: "$.interface.apphook";
+    type?: "$.interface.apphook";
     /** The name of the app prop that this apphook depends on */
     appProp?: string;
     /** List of event names to listen for */

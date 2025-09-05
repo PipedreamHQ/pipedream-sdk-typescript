@@ -10,7 +10,7 @@ export const ConfigurablePropString: core.serialization.ObjectSchema<
     serializers.ConfigurablePropString.Raw,
     Pipedream.ConfigurablePropString
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("string"),
+    type: core.serialization.stringLiteral("string").optional(),
     secret: core.serialization.boolean().optional(),
     name: core.serialization.string(),
     label: core.serialization.string().optional(),
@@ -26,7 +26,7 @@ export const ConfigurablePropString: core.serialization.ObjectSchema<
 
 export declare namespace ConfigurablePropString {
     export interface Raw {
-        type: "string";
+        type?: "string" | null;
         secret?: boolean | null;
         name: string;
         label?: string | null;

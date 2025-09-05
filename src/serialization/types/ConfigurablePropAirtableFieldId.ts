@@ -10,7 +10,7 @@ export const ConfigurablePropAirtableFieldId: core.serialization.ObjectSchema<
     serializers.ConfigurablePropAirtableFieldId.Raw,
     Pipedream.ConfigurablePropAirtableFieldId
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("$.airtable.fieldId"),
+    type: core.serialization.stringLiteral("$.airtable.fieldId").optional(),
     tableIdProp: core.serialization.string().optional(),
     name: core.serialization.string(),
     label: core.serialization.string().optional(),
@@ -26,7 +26,7 @@ export const ConfigurablePropAirtableFieldId: core.serialization.ObjectSchema<
 
 export declare namespace ConfigurablePropAirtableFieldId {
     export interface Raw {
-        type: "$.airtable.fieldId";
+        type?: "$.airtable.fieldId" | null;
         tableIdProp?: string | null;
         name: string;
         label?: string | null;

@@ -3,7 +3,7 @@
  */
 
 export interface ConfigurablePropStringArray {
-    type: "string[]";
+    type?: "string[]";
     /** If true, this prop is a secret and should not be displayed in plain text. */
     secret?: boolean;
     /** When building `configuredProps`, make sure to use this field as the key when setting the prop value */
