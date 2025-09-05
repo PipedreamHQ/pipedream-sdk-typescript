@@ -76,11 +76,11 @@ export class DeployedTriggers {
                     _queryParams["limit"] = limit.toString();
                 }
                 _queryParams["external_user_id"] = externalUserId;
-                var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+                let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
                     this._options?.headers,
                     mergeOnlyDefinedHeaders({
                         Authorization: await this._getAuthorizationHeader(),
-                        "x-pd-environment": requestOptions?.projectEnvironment,
+                        "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
                     }),
                     requestOptions?.headers,
                 );
@@ -179,11 +179,11 @@ export class DeployedTriggers {
         const { externalUserId } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
             }),
             requestOptions?.headers,
         );
@@ -269,11 +269,11 @@ export class DeployedTriggers {
         const { externalUserId, ..._body } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
             }),
             requestOptions?.headers,
         );
@@ -369,11 +369,11 @@ export class DeployedTriggers {
             _queryParams["ignore_hook_errors"] = ignoreHookErrors.toString();
         }
 
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
             }),
             requestOptions?.headers,
         );
@@ -454,11 +454,11 @@ export class DeployedTriggers {
             _queryParams["n"] = n.toString();
         }
 
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
             }),
             requestOptions?.headers,
         );
@@ -544,11 +544,11 @@ export class DeployedTriggers {
         const { externalUserId } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
             }),
             requestOptions?.headers,
         );
@@ -635,11 +635,11 @@ export class DeployedTriggers {
         const { externalUserId, ..._body } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
             }),
             requestOptions?.headers,
         );
@@ -731,11 +731,11 @@ export class DeployedTriggers {
         const { externalUserId } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
             }),
             requestOptions?.headers,
         );
@@ -822,11 +822,11 @@ export class DeployedTriggers {
         const { externalUserId, ..._body } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["external_user_id"] = externalUserId;
-        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
             }),
             requestOptions?.headers,
         );
