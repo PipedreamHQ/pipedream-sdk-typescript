@@ -8,6 +8,7 @@ export type ConfigurablePropType =
     | "$.airtable.tableId"
     | "$.airtable.viewId"
     | "$.discord.channel"
+    | "$.discord.channel[]"
     | "$.interface.apphook"
     | "$.interface.http"
     | "$.interface.timer"
@@ -20,15 +21,18 @@ export type ConfigurablePropType =
     | "dir"
     | "http_request"
     | "integer"
+    | "integer[]"
     | "object"
     | "sql"
-    | "string";
+    | "string"
+    | "string[]";
 export const ConfigurablePropType = {
     AirtableBaseId: "$.airtable.baseId",
     AirtableFieldId: "$.airtable.fieldId",
     AirtableTableId: "$.airtable.tableId",
     AirtableViewId: "$.airtable.viewId",
     DiscordChannel: "$.discord.channel",
+    DiscordChannelArray: "$.discord.channel[]",
     InterfaceApphook: "$.interface.apphook",
     InterfaceHttp: "$.interface.http",
     InterfaceTimer: "$.interface.timer",
@@ -41,7 +45,9 @@ export const ConfigurablePropType = {
     Dir: "dir",
     HttpRequest: "http_request",
     Integer: "integer",
+    IntegerArray: "integer[]",
     Object: "object",
     Sql: "sql",
     String: "string",
+    StringArray: "string[]",
 } as const;
