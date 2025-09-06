@@ -7,6 +7,7 @@ export * from "./BackendClientOpts.js";
 export * from "./ClientOpts.js";
 export * from "./Component.js";
 export * from "./ComponentStash.js";
+export * from "./ComponentType.js";
 export * from "./TimerInterval.js";
 export * from "./TimerCron.js";
 export * from "./ConfigurablePropType.js";

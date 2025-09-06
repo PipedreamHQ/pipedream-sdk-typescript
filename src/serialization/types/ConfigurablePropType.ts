@@ -15,6 +15,7 @@ export const ConfigurablePropType: core.serialization.Schema<
     "$.airtable.tableId",
     "$.airtable.viewId",
     "$.discord.channel",
+    "$.discord.channel[]",
     "$.interface.apphook",
     "$.interface.http",
     "$.interface.timer",
@@ -27,9 +28,11 @@ export const ConfigurablePropType: core.serialization.Schema<
     "dir",
     "http_request",
     "integer",
+    "integer[]",
     "object",
     "sql",
     "string",
+    "string[]",
 ]);
 
 export declare namespace ConfigurablePropType {
@@ -39,6 +42,7 @@ export declare namespace ConfigurablePropType {
         | "$.airtable.tableId"
         | "$.airtable.viewId"
         | "$.discord.channel"
+        | "$.discord.channel[]"
         | "$.interface.apphook"
         | "$.interface.http"
         | "$.interface.timer"
@@ -51,7 +55,9 @@ export declare namespace ConfigurablePropType {
         | "dir"
         | "http_request"
         | "integer"
+        | "integer[]"
         | "object"
         | "sql"
-        | "string";
+        | "string"
+        | "string[]";
 }
