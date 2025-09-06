@@ -36,9 +36,7 @@ src/core/auth/StaticTokenProvider.ts
 src/core/auth/TokenProvider.ts
 
 # Custom configuration props files
-src/api/types/ConfigurablePropType.ts
 src/api/types/ConfiguredProps.ts
-src/serialization/types/ConfigurablePropType.ts
 src/serialization/types/ConfiguredProps.ts
 
 # Custom Proxy files
