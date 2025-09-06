@@ -7,7 +7,6 @@
 .gitignore
 .prettierignore
 .prettierrc.yml
-package.json
 
 # Our own license
 LICENSE
