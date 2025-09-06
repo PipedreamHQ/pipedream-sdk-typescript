@@ -18,6 +18,7 @@ import { DeployedTriggers } from "./api/resources/deployedTriggers/client/Client
 import { Projects } from "./api/resources/projects/client/Client.js";
 import { Proxy } from "./api/resources/proxy/client/Client.js";
 import { Tokens } from "./api/resources/tokens/client/Client.js";
+import { SDK_VERSION } from "version.js";
 
 export declare namespace PipedreamClient {
     export interface Options {
@@ -74,8 +75,8 @@ export class PipedreamClient {
                     "x-pd-environment": _options?.projectEnvironment,
                     "X-Fern-Language": "JavaScript",
                     "X-Fern-SDK-Name": "@pipedream/sdk",
-                    "X-Fern-SDK-Version": "2.0.0",
-                    "User-Agent": "@pipedream/sdk/2.0.0",
+                    "X-Fern-SDK-Version": SDK_VERSION,
+                    "User-Agent": `@pipedream/sdk/${SDK_VERSION}`,
                     "X-Fern-Runtime": core.RUNTIME.type,
                     "X-Fern-Runtime-Version": core.RUNTIME.version,
                 },
