@@ -11,6 +11,7 @@ export const ConfigurablePropBoolean: core.serialization.ObjectSchema<
     Pipedream.ConfigurablePropBoolean
 > = core.serialization.object({
     type: core.serialization.stringLiteral("boolean"),
+    default: core.serialization.boolean().optional(),
     name: core.serialization.string(),
     label: core.serialization.string().optional(),
     description: core.serialization.string().optional(),
@@ -26,6 +27,7 @@ export const ConfigurablePropBoolean: core.serialization.ObjectSchema<
 export declare namespace ConfigurablePropBoolean {
     export interface Raw {
         type: "boolean";
+        default?: boolean | null;
         name: string;
         label?: string | null;
         description?: string | null;
