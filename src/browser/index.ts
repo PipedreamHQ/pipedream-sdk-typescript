@@ -33,12 +33,12 @@ export type PipedreamClientOpts = Omit<BackendClientOpts, "clientId" | "clientSe
      * The callback function should return the response from
      * `serverClient.tokens.create`.
      */
-    tokenCallback?: TokenCallback;
+    tokenCallback: TokenCallback;
 
     /**
      * An external user ID associated with the token.
      */
-    externalUserId?: string;
+    externalUserId: string;
 };
 
 /**
