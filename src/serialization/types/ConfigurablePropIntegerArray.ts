@@ -10,7 +10,7 @@ export const ConfigurablePropIntegerArray: core.serialization.ObjectSchema<
     serializers.ConfigurablePropIntegerArray.Raw,
     Pipedream.ConfigurablePropIntegerArray
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("integer[]"),
+    type: core.serialization.stringLiteral("integer[]").optional(),
     min: core.serialization.number().optional(),
     max: core.serialization.number().optional(),
     default: core.serialization.list(core.serialization.number()).optional(),
@@ -29,7 +29,7 @@ export const ConfigurablePropIntegerArray: core.serialization.ObjectSchema<
 
 export declare namespace ConfigurablePropIntegerArray {
     export interface Raw {
-        type: "integer[]";
+        type?: "integer[]" | null;
         min?: number | null;
         max?: number | null;
         default?: number[] | null;

@@ -85,11 +85,11 @@ export class Accounts {
                 if (includeCredentials != null) {
                     _queryParams["include_credentials"] = includeCredentials.toString();
                 }
-                let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+                var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
                     this._options?.headers,
                     mergeOnlyDefinedHeaders({
                         Authorization: await this._getAuthorizationHeader(),
-                        "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+                        "x-pd-environment": requestOptions?.projectEnvironment,
                     }),
                     requestOptions?.headers,
                 );
@@ -198,11 +198,11 @@ export class Accounts {
             _queryParams["oauth_app_id"] = oauthAppId;
         }
 
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment,
             }),
             requestOptions?.headers,
         );
@@ -295,11 +295,11 @@ export class Accounts {
             _queryParams["include_credentials"] = includeCredentials.toString();
         }
 
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment,
             }),
             requestOptions?.headers,
         );
@@ -374,11 +374,11 @@ export class Accounts {
         accountId: string,
         requestOptions?: Accounts.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment,
             }),
             requestOptions?.headers,
         );
@@ -444,11 +444,11 @@ export class Accounts {
         appId: string,
         requestOptions?: Accounts.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment,
             }),
             requestOptions?.headers,
         );
