@@ -9,6 +9,13 @@ import { ConnectTokenProvider, TokenCallback } from "../core/auth/index.js";
 import { type Account, type App, PipedreamClient as BackendClient, PipedreamEnvironment } from "../index.js";
 import { PipedreamClientOpts as BackendClientOpts } from "../wrapper/Pipedream.js";
 
+if (typeof process === "undefined") {
+    // We're in the browser
+    globalThis.process ||= {
+        env: {},
+    } as NodeJS.Process;
+}
+
 /**
  * Options for creating a browser-side client. This is used to configure the
  * PipedreamClient instance.
