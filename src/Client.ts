@@ -18,7 +18,7 @@ import { DeployedTriggers } from "./api/resources/deployedTriggers/client/Client
 import { Projects } from "./api/resources/projects/client/Client.js";
 import { Proxy } from "./api/resources/proxy/client/Client.js";
 import { Tokens } from "./api/resources/tokens/client/Client.js";
-import { SDK_VERSION } from "version.js";
+import { SDK_VERSION } from "./version.js";
 
 export declare namespace PipedreamClient {
     export interface Options {
