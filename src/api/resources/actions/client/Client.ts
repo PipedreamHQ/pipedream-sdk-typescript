@@ -79,11 +79,11 @@ export class Actions {
                 if (app != null) {
                     _queryParams["app"] = app;
                 }
-                let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+                var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
                     this._options?.headers,
                     mergeOnlyDefinedHeaders({
                         Authorization: await this._getAuthorizationHeader(),
-                        "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+                        "x-pd-environment": requestOptions?.projectEnvironment,
                     }),
                     requestOptions?.headers,
                 );
@@ -174,11 +174,11 @@ export class Actions {
         componentId: string,
         requestOptions?: Actions.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetComponentResponse>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment,
             }),
             requestOptions?.headers,
         );
@@ -260,11 +260,11 @@ export class Actions {
         request: Pipedream.ConfigurePropOpts,
         requestOptions?: Actions.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ConfigurePropResponse>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment,
             }),
             requestOptions?.headers,
         );
@@ -351,11 +351,11 @@ export class Actions {
         request: Pipedream.ReloadPropsOpts,
         requestOptions?: Actions.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ReloadPropsResponse>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment,
             }),
             requestOptions?.headers,
         );
@@ -442,11 +442,11 @@ export class Actions {
         request: Pipedream.RunActionOpts,
         requestOptions?: Actions.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.RunActionResponse>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment,
             }),
             requestOptions?.headers,
         );
