@@ -5,8 +5,8 @@
 import * as environments from "../../../../environments.js";
 import * as core from "../../../../core/index.js";
 import * as Pipedream from "../../../index.js";
-import * as serializers from "../../../../serialization/index.js";
 import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
+import * as serializers from "../../../../serialization/index.js";
 import * as errors from "../../../../errors/index.js";
 
 export declare namespace Components {
@@ -62,7 +62,7 @@ export class Components {
             async (
                 request: Pipedream.ComponentsListRequest,
             ): Promise<core.WithRawResponse<Pipedream.GetComponentsResponse>> => {
-                const { after, before, limit, q, app, componentType } = request;
+                const { after, before, limit, q, app } = request;
                 const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
                 if (after != null) {
                     _queryParams["after"] = after;
@@ -79,17 +79,11 @@ export class Components {
                 if (app != null) {
                     _queryParams["app"] = app;
                 }
-                if (componentType != null) {
-                    _queryParams["component_type"] = serializers.ComponentType.jsonOrThrow(componentType, {
-                        unrecognizedObjectKeys: "strip",
-                        omitUndefined: true,
-                    });
-                }
-                let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+                var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
                     this._options?.headers,
                     mergeOnlyDefinedHeaders({
                         Authorization: await this._getAuthorizationHeader(),
-                        "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+                        "x-pd-environment": requestOptions?.projectEnvironment,
                     }),
                     requestOptions?.headers,
                 );
@@ -180,11 +174,11 @@ export class Components {
         componentId: string,
         requestOptions?: Components.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetComponentResponse>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment,
             }),
             requestOptions?.headers,
         );
@@ -266,11 +260,11 @@ export class Components {
         request: Pipedream.ConfigurePropOpts,
         requestOptions?: Components.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ConfigurePropResponse>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment,
             }),
             requestOptions?.headers,
         );
@@ -357,11 +351,11 @@ export class Components {
         request: Pipedream.ReloadPropsOpts,
         requestOptions?: Components.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ReloadPropsResponse>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment,
             }),
             requestOptions?.headers,
         );
