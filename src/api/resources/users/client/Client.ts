@@ -64,11 +64,11 @@ export class Users {
         externalUserId: string,
         requestOptions?: Users.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment,
             }),
             requestOptions?.headers,
         );
