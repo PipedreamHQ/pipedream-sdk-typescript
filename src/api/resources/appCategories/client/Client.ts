@@ -62,11 +62,11 @@ export class AppCategories {
     private async __list(
         requestOptions?: AppCategories.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ListAppCategoriesResponse>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment,
             }),
             requestOptions?.headers,
         );
@@ -142,11 +142,11 @@ export class AppCategories {
         id: string,
         requestOptions?: AppCategories.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetAppCategoryResponse>> {
-        let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+        var _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
-                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+                "x-pd-environment": requestOptions?.projectEnvironment,
             }),
             requestOptions?.headers,
         );

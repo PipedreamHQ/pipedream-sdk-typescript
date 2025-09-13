@@ -11,7 +11,7 @@ export const ConfigurablePropSql: core.serialization.ObjectSchema<
     serializers.ConfigurablePropSql.Raw,
     Pipedream.ConfigurablePropSql
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("sql"),
+    type: core.serialization.stringLiteral("sql").optional(),
     auth: ConfigurablePropSqlAuth.optional(),
     default: core.serialization.string().optional(),
     name: core.serialization.string(),
@@ -28,7 +28,7 @@ export const ConfigurablePropSql: core.serialization.ObjectSchema<
 
 export declare namespace ConfigurablePropSql {
     export interface Raw {
-        type: "sql";
+        type?: "sql" | null;
         auth?: ConfigurablePropSqlAuth.Raw | null;
         default?: string | null;
         name: string;
