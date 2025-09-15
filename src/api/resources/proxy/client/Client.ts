@@ -19,7 +19,7 @@ export declare namespace Proxy {
         /** Override the x-pd-environment header */
         projectEnvironment?: core.Supplier<Pipedream.ProjectEnvironment | undefined>;
         /** Additional headers to include in requests. */
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
     }
 
     export interface RequestOptions {
@@ -32,7 +32,7 @@ export declare namespace Proxy {
         /** Override the x-pd-environment header */
         projectEnvironment?: Pipedream.ProjectEnvironment | undefined;
         /** Additional headers to include in the request. */
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
     }
 }
 
@@ -47,11 +47,11 @@ export class Proxy {
      * Transform headers by prefixing each key with 'x-pd-proxy-'
      */
     private transformProxyHeaders(
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>,
-    ): Record<string, string | core.Supplier<string | undefined> | undefined> | undefined {
+        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>,
+    ): Record<string, string | core.Supplier<string | null | undefined> | null | undefined> | undefined {
         if (!headers) return undefined;
 
-        const transformed: Record<string, string | core.Supplier<string | undefined> | undefined> = {};
+        const transformed: Record<string, string | core.Supplier<string | null | undefined> | null | undefined> = {};
         for (const [key, value] of Object.entries(headers)) {
             transformed[`x-pd-proxy-${key}`] = value;
         }

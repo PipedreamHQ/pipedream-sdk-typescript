@@ -19,7 +19,7 @@ export declare namespace Components {
         /** Override the x-pd-environment header */
         projectEnvironment?: core.Supplier<Pipedream.ProjectEnvironment | undefined>;
         /** Additional headers to include in requests. */
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
     }
 
     export interface RequestOptions {
@@ -34,7 +34,7 @@ export declare namespace Components {
         /** Additional query string parameters to include in the request. */
         queryParams?: Record<string, unknown>;
         /** Additional headers to include in the request. */
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
     }
 }
 
@@ -50,6 +50,8 @@ export class Components {
      *
      * @param {Pipedream.ComponentsListRequest} request
      * @param {Components.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.components.list()
@@ -121,11 +123,16 @@ export class Components {
                     };
                 }
                 if (_response.error.reason === "status-code") {
-                    throw new errors.PipedreamError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
+                    switch (_response.error.statusCode) {
+                        case 429:
+                            throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                        default:
+                            throw new errors.PipedreamError({
+                                statusCode: _response.error.statusCode,
+                                body: _response.error.body,
+                                rawResponse: _response.rawResponse,
+                            });
+                    }
                 }
                 switch (_response.error.reason) {
                     case "non-json":
@@ -165,6 +172,8 @@ export class Components {
      *
      * @param {string} componentId - The key that uniquely identifies the component (e.g., 'slack-send-message')
      * @param {Components.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.components.retrieve("component_id")
@@ -216,11 +225,16 @@ export class Components {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.PipedreamError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -247,6 +261,8 @@ export class Components {
      *
      * @param {Pipedream.ConfigurePropOpts} request
      * @param {Components.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.components.configureProp({
@@ -308,11 +324,16 @@ export class Components {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.PipedreamError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -339,6 +360,8 @@ export class Components {
      *
      * @param {Pipedream.ReloadPropsOpts} request
      * @param {Components.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.components.reloadProps({
@@ -399,11 +422,16 @@ export class Components {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.PipedreamError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         switch (_response.error.reason) {

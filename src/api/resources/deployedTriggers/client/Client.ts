@@ -19,7 +19,7 @@ export declare namespace DeployedTriggers {
         /** Override the x-pd-environment header */
         projectEnvironment?: core.Supplier<Pipedream.ProjectEnvironment | undefined>;
         /** Additional headers to include in requests. */
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
     }
 
     export interface RequestOptions {
@@ -34,7 +34,7 @@ export declare namespace DeployedTriggers {
         /** Additional query string parameters to include in the request. */
         queryParams?: Record<string, unknown>;
         /** Additional headers to include in the request. */
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
     }
 }
 
@@ -50,6 +50,8 @@ export class DeployedTriggers {
      *
      * @param {Pipedream.DeployedTriggersListRequest} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.deployedTriggers.list({
@@ -112,11 +114,16 @@ export class DeployedTriggers {
                     };
                 }
                 if (_response.error.reason === "status-code") {
-                    throw new errors.PipedreamError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
+                    switch (_response.error.statusCode) {
+                        case 429:
+                            throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                        default:
+                            throw new errors.PipedreamError({
+                                statusCode: _response.error.statusCode,
+                                body: _response.error.body,
+                                rawResponse: _response.rawResponse,
+                            });
+                    }
                 }
                 switch (_response.error.reason) {
                     case "non-json":
@@ -157,6 +164,8 @@ export class DeployedTriggers {
      * @param {string} triggerId
      * @param {Pipedream.DeployedTriggersRetrieveRequest} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.deployedTriggers.retrieve("trigger_id", {
@@ -215,11 +224,16 @@ export class DeployedTriggers {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.PipedreamError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -247,6 +261,8 @@ export class DeployedTriggers {
      * @param {string} triggerId
      * @param {Pipedream.UpdateTriggerOpts} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.deployedTriggers.update("trigger_id", {
@@ -311,11 +327,16 @@ export class DeployedTriggers {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.PipedreamError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -343,6 +364,8 @@ export class DeployedTriggers {
      * @param {string} triggerId
      * @param {Pipedream.DeployedTriggersDeleteRequest} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.deployedTriggers.delete("trigger_id", {
@@ -396,11 +419,16 @@ export class DeployedTriggers {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.PipedreamError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -428,6 +456,8 @@ export class DeployedTriggers {
      * @param {string} triggerId
      * @param {Pipedream.DeployedTriggersListEventsRequest} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.deployedTriggers.listEvents("trigger_id", {
@@ -490,11 +520,16 @@ export class DeployedTriggers {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.PipedreamError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -522,6 +557,8 @@ export class DeployedTriggers {
      * @param {string} triggerId
      * @param {Pipedream.DeployedTriggersListWorkflowsRequest} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.deployedTriggers.listWorkflows("trigger_id", {
@@ -580,11 +617,16 @@ export class DeployedTriggers {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.PipedreamError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -612,6 +654,8 @@ export class DeployedTriggers {
      * @param {string} triggerId
      * @param {Pipedream.UpdateTriggerWorkflowsOpts} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.deployedTriggers.updateWorkflows("trigger_id", {
@@ -677,11 +721,16 @@ export class DeployedTriggers {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.PipedreamError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -709,6 +758,8 @@ export class DeployedTriggers {
      * @param {string} triggerId
      * @param {Pipedream.DeployedTriggersListWebhooksRequest} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.deployedTriggers.listWebhooks("trigger_id", {
@@ -767,11 +818,16 @@ export class DeployedTriggers {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.PipedreamError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -799,6 +855,8 @@ export class DeployedTriggers {
      * @param {string} triggerId
      * @param {Pipedream.UpdateTriggerWebhooksOpts} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.deployedTriggers.updateWebhooks("trigger_id", {
@@ -864,11 +922,16 @@ export class DeployedTriggers {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.PipedreamError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
