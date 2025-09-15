@@ -19,7 +19,7 @@ export declare namespace Accounts {
         /** Override the x-pd-environment header */
         projectEnvironment?: core.Supplier<Pipedream.ProjectEnvironment | undefined>;
         /** Additional headers to include in requests. */
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
     }
 
     export interface RequestOptions {
@@ -34,7 +34,7 @@ export declare namespace Accounts {
         /** Additional query string parameters to include in the request. */
         queryParams?: Record<string, unknown>;
         /** Additional headers to include in the request. */
-        headers?: Record<string, string | core.Supplier<string | undefined> | undefined>;
+        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>;
     }
 }
 
@@ -50,6 +50,8 @@ export class Accounts {
      *
      * @param {Pipedream.AccountsListRequest} request
      * @param {Accounts.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.accounts.list()
@@ -121,11 +123,16 @@ export class Accounts {
                     };
                 }
                 if (_response.error.reason === "status-code") {
-                    throw new errors.PipedreamError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
+                    switch (_response.error.statusCode) {
+                        case 429:
+                            throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                        default:
+                            throw new errors.PipedreamError({
+                                statusCode: _response.error.statusCode,
+                                body: _response.error.body,
+                                rawResponse: _response.rawResponse,
+                            });
+                    }
                 }
                 switch (_response.error.reason) {
                     case "non-json":
@@ -165,6 +172,8 @@ export class Accounts {
      *
      * @param {Pipedream.CreateAccountOpts} request
      * @param {Accounts.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.accounts.create({
@@ -240,11 +249,16 @@ export class Accounts {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.PipedreamError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -272,6 +286,8 @@ export class Accounts {
      * @param {string} accountId
      * @param {Pipedream.AccountsRetrieveRequest} request
      * @param {Accounts.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.accounts.retrieve("account_id")
@@ -331,11 +347,16 @@ export class Accounts {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.PipedreamError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -362,6 +383,8 @@ export class Accounts {
      *
      * @param {string} accountId
      * @param {Accounts.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.accounts.delete("account_id")
@@ -401,11 +424,16 @@ export class Accounts {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.PipedreamError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
@@ -432,6 +460,8 @@ export class Accounts {
      *
      * @param {string} appId
      * @param {Accounts.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.accounts.deleteByApp("app_id")
@@ -471,11 +501,16 @@ export class Accounts {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.PipedreamError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         switch (_response.error.reason) {
