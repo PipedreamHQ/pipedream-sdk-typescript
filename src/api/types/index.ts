@@ -91,4 +91,5 @@ export * from "./StartConnectOpts.js";
 export * from "./StashId.js";
 export * from "./TimerCron.js";
 export * from "./TimerInterval.js";
+export * from "./TooManyRequestsErrorBody.js";
 export * from "./ValidateTokenResponse.js";
