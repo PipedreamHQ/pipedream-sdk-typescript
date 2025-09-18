@@ -84,6 +84,7 @@ export * from "./ProjectInfoResponse.js";
 export * from "./ProjectInfoResponseApp.js";
 export * from "./PropOption.js";
 export * from "./PropOptionNested.js";
+export * from "./PropOptionValue.js";
 export * from "./ProxyResponse.js";
 export * from "./ReloadPropsOpts.js";
 export * from "./ReloadPropsResponse.js";
