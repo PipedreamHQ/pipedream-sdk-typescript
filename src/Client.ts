@@ -15,6 +15,7 @@ import { Components } from "./api/resources/components/client/Client.js";
 import { Actions } from "./api/resources/actions/client/Client.js";
 import { Triggers } from "./api/resources/triggers/client/Client.js";
 import { DeployedTriggers } from "./api/resources/deployedTriggers/client/Client.js";
+import { FileStash } from "./api/resources/fileStash/client/Client.js";
 import { Projects } from "./api/resources/projects/client/Client.js";
 import { Proxy } from "./api/resources/proxy/client/Client.js";
 import { Tokens } from "./api/resources/tokens/client/Client.js";
@@ -62,6 +63,7 @@ export class PipedreamClient {
     protected _actions: Actions | undefined;
     protected _triggers: Triggers | undefined;
     protected _deployedTriggers: DeployedTriggers | undefined;
+    protected _fileStash: FileStash | undefined;
     protected _projects: Projects | undefined;
     protected _proxy: Proxy | undefined;
     protected _tokens: Tokens | undefined;
@@ -163,6 +165,13 @@ export class PipedreamClient {
 
     public get deployedTriggers(): DeployedTriggers {
         return (this._deployedTriggers ??= new DeployedTriggers({
+            ...this._options,
+            token: async () => await this._tokenProvider.getToken(),
+        }));
+    }
+
+    public get fileStash(): FileStash {
+        return (this._fileStash ??= new FileStash({
             ...this._options,
             token: async () => await this._tokenProvider.getToken(),
         }));
