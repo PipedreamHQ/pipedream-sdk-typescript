@@ -8,7 +8,8 @@ import * as Pipedream from "../index.js";
  * End user account data, returned from the API.
  */
 export interface Account {
-    id: Pipedream.AccountId;
+    /** The unique ID of the account. */
+    id: string;
     /** The custom name of the account if set. */
     name?: string;
     /** The external ID associated with the account. */
