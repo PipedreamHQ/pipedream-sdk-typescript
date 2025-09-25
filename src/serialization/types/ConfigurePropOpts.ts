@@ -5,8 +5,6 @@
 import * as serializers from "../index.js";
 import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { ConfiguredProps } from "./ConfiguredProps.js";
-import { ConfiguredPropValue } from "./ConfiguredPropValue.js";
 
 export const ConfigurePropOpts: core.serialization.ObjectSchema<
     serializers.ConfigurePropOpts.Raw,
@@ -16,7 +14,10 @@ export const ConfigurePropOpts: core.serialization.ObjectSchema<
     externalUserId: core.serialization.property("external_user_id", core.serialization.string()),
     propName: core.serialization.property("prop_name", core.serialization.string()),
     blocking: core.serialization.boolean().optional(),
-    configuredProps: core.serialization.property("configured_props", ConfiguredProps.optional()),
+    configuredProps: core.serialization.property(
+        "configured_props",
+        core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
+    ),
     dynamicPropsId: core.serialization.property("dynamic_props_id", core.serialization.string().optional()),
     page: core.serialization.number().optional(),
     prevContext: core.serialization.property(
@@ -32,7 +33,7 @@ export declare namespace ConfigurePropOpts {
         external_user_id: string;
         prop_name: string;
         blocking?: boolean | null;
-        configured_props?: ConfiguredProps.Raw | null;
+        configured_props?: Record<string, unknown> | null;
         dynamic_props_id?: string | null;
         page?: number | null;
         prev_context?: Record<string, unknown> | null;
