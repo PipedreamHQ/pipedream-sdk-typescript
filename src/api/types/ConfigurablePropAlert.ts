@@ -5,10 +5,10 @@
 import * as Pipedream from "../index.js";
 
 export interface ConfigurablePropAlert {
-    type: "alert";
+    type?: "alert";
     alertType?: Pipedream.ConfigurablePropAlertType;
     /** The content of the alert, which can include HTML or plain text. */
-    content: string;
+    content?: string;
     /** When building `configuredProps`, make sure to use this field as the key when setting the prop value */
     name: string;
     /** Value to use as an input label. In cases where `type` is "app", should load the app via `getApp`, etc. and show `app.name` instead. */
