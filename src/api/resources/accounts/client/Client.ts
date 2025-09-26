@@ -193,10 +193,10 @@ export class Accounts {
         request: Pipedream.CreateAccountOpts,
         requestOptions?: Accounts.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.Account>> {
-        const { app, externalUserId, oauthAppId, ..._body } = request;
+        const { appId, externalUserId, oauthAppId, ..._body } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
-        if (app != null) {
-            _queryParams["app"] = app;
+        if (appId != null) {
+            _queryParams["app_id"] = appId;
         }
 
         if (externalUserId != null) {
