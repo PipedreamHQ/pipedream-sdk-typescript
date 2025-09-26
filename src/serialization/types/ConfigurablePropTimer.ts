@@ -13,7 +13,7 @@ export const ConfigurablePropTimer: core.serialization.ObjectSchema<
     serializers.ConfigurablePropTimer.Raw,
     Pipedream.ConfigurablePropTimer
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("$.interface.timer"),
+    type: core.serialization.stringLiteral("$.interface.timer").optional(),
     static: ConfigurablePropTimerStatic.optional(),
     default: ConfigurablePropTimerDefault.optional(),
     options: core.serialization.list(ConfigurablePropTimerOption.optional()).optional(),
@@ -31,7 +31,7 @@ export const ConfigurablePropTimer: core.serialization.ObjectSchema<
 
 export declare namespace ConfigurablePropTimer {
     export interface Raw {
-        type: "$.interface.timer";
+        type?: "$.interface.timer" | null;
         static?: ConfigurablePropTimerStatic.Raw | null;
         default?: ConfigurablePropTimerDefault.Raw | null;
         options?: (ConfigurablePropTimerOption.Raw | null | undefined)[] | null;

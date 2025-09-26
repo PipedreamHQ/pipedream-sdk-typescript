@@ -5,7 +5,7 @@
 import * as Pipedream from "../index.js";
 
 export interface ConfigurablePropTimer {
-    type: "$.interface.timer";
+    type?: "$.interface.timer";
     static?: Pipedream.ConfigurablePropTimerStatic;
     default?: Pipedream.ConfigurablePropTimerDefault;
     /** Available timer configuration options */
