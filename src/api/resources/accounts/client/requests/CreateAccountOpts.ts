@@ -12,7 +12,7 @@
  */
 export interface CreateAccountOpts {
     /** The app slug or ID to filter accounts by. */
-    appId?: string;
+    app?: string;
     externalUserId?: string;
     /** The OAuth app ID to filter by, if applicable */
     oauthAppId?: string;
