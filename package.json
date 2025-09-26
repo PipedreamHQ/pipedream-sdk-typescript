@@ -1,6 +1,6 @@
 {
     "name": "@pipedream/sdk",
-    "version": "2.0.7",
+    "version": "2.0.8",
     "private": false,
     "repository": "github:PipedreamHQ/pipedream-sdk-typescript",
     "type": "commonjs",
