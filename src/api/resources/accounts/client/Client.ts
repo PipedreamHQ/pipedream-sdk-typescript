@@ -64,10 +64,10 @@ export class Accounts {
             async (
                 request: Pipedream.AccountsListRequest,
             ): Promise<core.WithRawResponse<Pipedream.ListAccountsResponse>> => {
-                const { appId, externalUserId, oauthAppId, after, before, limit, includeCredentials } = request;
+                const { app, externalUserId, oauthAppId, after, before, limit, includeCredentials } = request;
                 const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
-                if (appId != null) {
-                    _queryParams["app_id"] = appId;
+                if (app != null) {
+                    _queryParams["app"] = app;
                 }
                 if (externalUserId != null) {
                     _queryParams["external_user_id"] = externalUserId;
@@ -193,10 +193,10 @@ export class Accounts {
         request: Pipedream.CreateAccountOpts,
         requestOptions?: Accounts.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.Account>> {
-        const { appId, externalUserId, oauthAppId, ..._body } = request;
+        const { app, externalUserId, oauthAppId, ..._body } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
-        if (appId != null) {
-            _queryParams["app_id"] = appId;
+        if (app != null) {
+            _queryParams["app"] = app;
         }
 
         if (externalUserId != null) {
