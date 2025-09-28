@@ -5,17 +5,17 @@
 import * as serializers from "../index.js";
 import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { DeployedComponent } from "./DeployedComponent.js";
+import { DeployTriggerResponseData } from "./DeployTriggerResponseData.js";
 
 export const DeployTriggerResponse: core.serialization.ObjectSchema<
     serializers.DeployTriggerResponse.Raw,
     Pipedream.DeployTriggerResponse
 > = core.serialization.object({
-    data: DeployedComponent,
+    data: DeployTriggerResponseData,
 });
 
 export declare namespace DeployTriggerResponse {
     export interface Raw {
-        data: DeployedComponent.Raw;
+        data: DeployTriggerResponseData.Raw;
     }
 }
