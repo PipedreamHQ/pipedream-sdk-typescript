@@ -7,6 +7,7 @@ import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import { ConfigurableProp } from "./ConfigurableProp.js";
 import { ComponentStash } from "./ComponentStash.js";
+import { ToolAnnotations } from "./ToolAnnotations.js";
 
 export const Component: core.serialization.ObjectSchema<serializers.Component.Raw, Pipedream.Component> =
     core.serialization.object({
@@ -17,6 +18,7 @@ export const Component: core.serialization.ObjectSchema<serializers.Component.Ra
         description: core.serialization.string().optional(),
         componentType: core.serialization.property("component_type", core.serialization.string().optional()),
         stash: ComponentStash.optional(),
+        annotations: ToolAnnotations.optional(),
     });
 
 export declare namespace Component {
@@ -28,5 +30,6 @@ export declare namespace Component {
         description?: string | null;
         component_type?: string | null;
         stash?: ComponentStash.Raw | null;
+        annotations?: ToolAnnotations.Raw | null;
     }
 }
