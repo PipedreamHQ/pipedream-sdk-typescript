@@ -11,8 +11,6 @@
  *     }
  */
 export interface CreateAccountOpts {
-    /** The app slug or ID to filter accounts by. */
-    appId?: string;
     externalUserId?: string;
     /** The OAuth app ID to filter by, if applicable */
     oauthAppId?: string;

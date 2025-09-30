@@ -3,7 +3,7 @@
  */
 
 export interface ConfigurablePropIntegerArray {
-    type: "integer[]";
+    type?: "integer[]";
     /** The minimum value for integers in this array */
     min?: number;
     /** The maximum value for integers in this array */

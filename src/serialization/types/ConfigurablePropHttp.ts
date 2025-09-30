@@ -10,7 +10,7 @@ export const ConfigurablePropHttp: core.serialization.ObjectSchema<
     serializers.ConfigurablePropHttp.Raw,
     Pipedream.ConfigurablePropHttp
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("$.interface.http"),
+    type: core.serialization.stringLiteral("$.interface.http").optional(),
     customResponse: core.serialization.boolean().optional(),
     name: core.serialization.string(),
     label: core.serialization.string().optional(),
@@ -26,7 +26,7 @@ export const ConfigurablePropHttp: core.serialization.ObjectSchema<
 
 export declare namespace ConfigurablePropHttp {
     export interface Raw {
-        type: "$.interface.http";
+        type?: "$.interface.http" | null;
         customResponse?: boolean | null;
         name: string;
         label?: string | null;
