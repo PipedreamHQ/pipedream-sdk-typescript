@@ -4,7 +4,9 @@
 
 /**
  * @example
- *     {}
+ *     {
+ *         includeCredentials: true
+ *     }
  */
 export interface AccountsRetrieveRequest {
     /** Whether to retrieve the account's credentials or not */

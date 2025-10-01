@@ -6,7 +6,14 @@ import * as Pipedream from "../../../../index.js";
 
 /**
  * @example
- *     {}
+ *     {
+ *         after: "after",
+ *         before: "before",
+ *         limit: 1,
+ *         q: "q",
+ *         app: "app",
+ *         componentType: "trigger"
+ *     }
  */
 export interface ComponentsListRequest {
     /** The cursor to start from for pagination */
