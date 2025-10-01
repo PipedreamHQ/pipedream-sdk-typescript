@@ -153,7 +153,8 @@ export class Tokens {
      *
      * @example
      *     await client.tokens.validate("ctok", {
-     *         appId: "app_id"
+     *         appId: "app_id",
+     *         oauthAppId: "oauth_app_id"
      *     })
      */
     public validate(

@@ -17,4 +17,5 @@ export interface Component {
     /** The type of component (trigger or action) */
     componentType?: string;
     stash?: Pipedream.ComponentStash;
+    annotations?: Pipedream.ToolAnnotations;
 }
