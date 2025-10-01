@@ -5,17 +5,16 @@
 import * as serializers from "../index.js";
 import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { PropOptionValue } from "./PropOptionValue.js";
 
 export const PropOption: core.serialization.ObjectSchema<serializers.PropOption.Raw, Pipedream.PropOption> =
     core.serialization.object({
         label: core.serialization.string(),
-        value: PropOptionValue.optional(),
+        value: core.serialization.unknown(),
     });
 
 export declare namespace PropOption {
     export interface Raw {
         label: string;
-        value?: PropOptionValue.Raw | null;
+        value?: unknown;
     }
 }
