@@ -54,7 +54,14 @@ export class Components {
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.components.list()
+     *     await client.components.list({
+     *         after: "after",
+     *         before: "before",
+     *         limit: 1,
+     *         q: "q",
+     *         app: "app",
+     *         componentType: "trigger"
+     *     })
      */
     public async list(
         request: Pipedream.ComponentsListRequest = {},
@@ -158,11 +165,11 @@ export class Components {
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
-                response?.pageInfo?.endCursor != null &&
-                !(typeof response?.pageInfo?.endCursor === "string" && response?.pageInfo?.endCursor === ""),
+                response?.pageInfo.endCursor != null &&
+                !(typeof response?.pageInfo.endCursor === "string" && response?.pageInfo.endCursor === ""),
             getItems: (response) => response?.data ?? [],
             loadPage: (response) => {
-                return list(core.setObjectProperty(request, "after", response?.pageInfo?.endCursor));
+                return list(core.setObjectProperty(request, "after", response?.pageInfo.endCursor));
             },
         });
     }
