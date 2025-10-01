@@ -23,6 +23,10 @@ export class ConnectTokenProvider implements TokenProvider {
         this._tokenCallback = tokenCallback;
     }
 
+    get externalUserId(): string | undefined {
+        return this._externalUserId;
+    }
+
     public async getToken(): Promise<string> {
         if (this._token && this._tokenExpiresAt && this._tokenExpiresAt > new Date()) {
             return this._token;

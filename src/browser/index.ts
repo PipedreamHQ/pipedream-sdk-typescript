@@ -5,6 +5,8 @@
 
 // Browser-specific imports that avoid Node.js dependencies
 export type * from "../api/types/index.js";
+export * from "../index.js";
+
 import { ConnectTokenProvider, TokenCallback } from "../core/auth/index.js";
 import { type Account, type App, PipedreamClient as BackendClient, PipedreamEnvironment } from "../index.js";
 import { PipedreamClientOpts as BackendClientOpts } from "../wrapper/Pipedream.js";
@@ -198,6 +200,10 @@ export class PipedreamClient extends BackendClient {
 
         this.baseURL = `https://${opts.frontendHost || "pipedream.com"}`;
         this.iframeURL = `${this.baseURL}/_static/connect.html`;
+    }
+
+    get externalUserId(): string | undefined {
+        return (this._tokenProvider as ConnectTokenProvider).externalUserId;
     }
 
     /**
