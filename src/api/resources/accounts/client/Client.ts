@@ -54,7 +54,15 @@ export class Accounts {
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.accounts.list()
+     *     await client.accounts.list({
+     *         externalUserId: "external_user_id",
+     *         oauthAppId: "oauth_app_id",
+     *         after: "after",
+     *         before: "before",
+     *         limit: 1,
+     *         app: "app",
+     *         includeCredentials: true
+     *     })
      */
     public async list(
         request: Pipedream.AccountsListRequest = {},
@@ -64,11 +72,8 @@ export class Accounts {
             async (
                 request: Pipedream.AccountsListRequest,
             ): Promise<core.WithRawResponse<Pipedream.ListAccountsResponse>> => {
-                const { app, externalUserId, oauthAppId, after, before, limit, includeCredentials } = request;
+                const { externalUserId, oauthAppId, after, before, limit, app, includeCredentials } = request;
                 const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
-                if (app != null) {
-                    _queryParams["app"] = app;
-                }
                 if (externalUserId != null) {
                     _queryParams["external_user_id"] = externalUserId;
                 }
@@ -83,6 +88,9 @@ export class Accounts {
                 }
                 if (limit != null) {
                     _queryParams["limit"] = limit.toString();
+                }
+                if (app != null) {
+                    _queryParams["app"] = app;
                 }
                 if (includeCredentials != null) {
                     _queryParams["include_credentials"] = includeCredentials.toString();
@@ -158,11 +166,11 @@ export class Accounts {
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
-                response?.pageInfo?.endCursor != null &&
-                !(typeof response?.pageInfo?.endCursor === "string" && response?.pageInfo?.endCursor === ""),
+                response?.pageInfo.endCursor != null &&
+                !(typeof response?.pageInfo.endCursor === "string" && response?.pageInfo.endCursor === ""),
             getItems: (response) => response?.data ?? [],
             loadPage: (response) => {
-                return list(core.setObjectProperty(request, "after", response?.pageInfo?.endCursor));
+                return list(core.setObjectProperty(request, "after", response?.pageInfo.endCursor));
             },
         });
     }
@@ -177,6 +185,8 @@ export class Accounts {
      *
      * @example
      *     await client.accounts.create({
+     *         externalUserId: "external_user_id",
+     *         oauthAppId: "oauth_app_id",
      *         appSlug: "app_slug",
      *         cfmapJson: "cfmap_json",
      *         connectToken: "connect_token"
@@ -193,12 +203,8 @@ export class Accounts {
         request: Pipedream.CreateAccountOpts,
         requestOptions?: Accounts.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.Account>> {
-        const { appId, externalUserId, oauthAppId, ..._body } = request;
+        const { externalUserId, oauthAppId, ..._body } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
-        if (appId != null) {
-            _queryParams["app_id"] = appId;
-        }
-
         if (externalUserId != null) {
             _queryParams["external_user_id"] = externalUserId;
         }
@@ -290,7 +296,9 @@ export class Accounts {
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.accounts.retrieve("account_id")
+     *     await client.accounts.retrieve("account_id", {
+     *         includeCredentials: true
+     *     })
      */
     public retrieve(
         accountId: string,
