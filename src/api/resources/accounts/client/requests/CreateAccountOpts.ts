@@ -5,14 +5,14 @@
 /**
  * @example
  *     {
+ *         externalUserId: "external_user_id",
+ *         oauthAppId: "oauth_app_id",
  *         appSlug: "app_slug",
  *         cfmapJson: "cfmap_json",
  *         connectToken: "connect_token"
  *     }
  */
 export interface CreateAccountOpts {
-    /** The app slug or ID to filter accounts by. */
-    appId?: string;
     externalUserId?: string;
     /** The OAuth app ID to filter by, if applicable */
     oauthAppId?: string;
