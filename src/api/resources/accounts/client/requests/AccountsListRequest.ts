@@ -7,8 +7,6 @@
  *     {}
  */
 export interface AccountsListRequest {
-    /** The app slug or ID to filter accounts by. */
-    app?: string;
     externalUserId?: string;
     /** The OAuth app ID to filter by, if applicable */
     oauthAppId?: string;
@@ -18,6 +16,8 @@ export interface AccountsListRequest {
     before?: string;
     /** The maximum number of results to return */
     limit?: number;
+    /** The app slug or ID to filter accounts by. */
+    app?: string;
     /** Whether to retrieve the account's credentials or not */
     includeCredentials?: boolean;
 }
