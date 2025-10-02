@@ -8,5 +8,5 @@ import * as Pipedream from "../index.js";
  * Response received when retrieving a deployed trigger
  */
 export interface GetTriggerResponse {
-    data: Pipedream.DeployedComponent;
+    data: Pipedream.GetTriggerResponseData;
 }

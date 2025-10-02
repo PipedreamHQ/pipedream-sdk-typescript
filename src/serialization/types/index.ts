@@ -79,6 +79,7 @@ export * from "./GetAppsResponse.js";
 export * from "./GetComponentResponse.js";
 export * from "./GetComponentsResponse.js";
 export * from "./GetTriggerEventsResponse.js";
+export * from "./GetTriggerResponseData.js";
 export * from "./GetTriggerResponse.js";
 export * from "./GetTriggerWebhooksResponse.js";
 export * from "./GetTriggerWorkflowsResponse.js";
