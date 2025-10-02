@@ -51,8 +51,10 @@ export type PipedreamClientOpts = {
  * @param environment - The Pipedream environment string.
  * @returns The base URL for the Pipedream API.
  */
-const getBaseUrl = (environment: PipedreamEnvironment) =>
-    environment.replace(/\$\{(\w+)\}/g, (_, name) => process.env[name] ?? "");
+const getBaseUrl = (environment: PipedreamEnvironment) => {
+    const replacements = { DEV_NAMESPACE: process.env.DEV_NAMESPACE};
+    environment.replace(/\$\{(\w+)}/g, (_, name: keyof typeof replacements) => replacements[name] ?? "");
+}
 
 export class Pipedream extends PipedreamClient {
     private _workflowDomain?: string;
