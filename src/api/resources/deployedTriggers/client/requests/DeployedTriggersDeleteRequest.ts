@@ -5,8 +5,7 @@
 /**
  * @example
  *     {
- *         externalUserId: "external_user_id",
- *         ignoreHookErrors: true
+ *         externalUserId: "external_user_id"
  *     }
  */
 export interface DeployedTriggersDeleteRequest {

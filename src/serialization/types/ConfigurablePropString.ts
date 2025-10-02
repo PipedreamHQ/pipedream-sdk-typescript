@@ -5,17 +5,13 @@
 import * as serializers from "../index.js";
 import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { ConfiguredPropValueString } from "./ConfiguredPropValueString.js";
-import { ConfigurablePropStringOptionsItem } from "./ConfigurablePropStringOptionsItem.js";
 
 export const ConfigurablePropString: core.serialization.ObjectSchema<
     serializers.ConfigurablePropString.Raw,
     Pipedream.ConfigurablePropString
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("string"),
+    type: core.serialization.stringLiteral("string").optional(),
     secret: core.serialization.boolean().optional(),
-    default: ConfiguredPropValueString.optional(),
-    options: core.serialization.list(ConfigurablePropStringOptionsItem).optional(),
     name: core.serialization.string(),
     label: core.serialization.string().optional(),
     description: core.serialization.string().optional(),
@@ -30,10 +26,8 @@ export const ConfigurablePropString: core.serialization.ObjectSchema<
 
 export declare namespace ConfigurablePropString {
     export interface Raw {
-        type: "string";
+        type?: "string" | null;
         secret?: boolean | null;
-        default?: ConfiguredPropValueString.Raw | null;
-        options?: ConfigurablePropStringOptionsItem.Raw[] | null;
         name: string;
         label?: string | null;
         description?: string | null;

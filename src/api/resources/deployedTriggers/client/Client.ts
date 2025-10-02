@@ -55,9 +55,6 @@ export class DeployedTriggers {
      *
      * @example
      *     await client.deployedTriggers.list({
-     *         after: "after",
-     *         before: "before",
-     *         limit: 1,
      *         externalUserId: "external_user_id"
      *     })
      */
@@ -152,11 +149,11 @@ export class DeployedTriggers {
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
-                response?.pageInfo.endCursor != null &&
-                !(typeof response?.pageInfo.endCursor === "string" && response?.pageInfo.endCursor === ""),
+                response?.pageInfo?.endCursor != null &&
+                !(typeof response?.pageInfo?.endCursor === "string" && response?.pageInfo?.endCursor === ""),
             getItems: (response) => response?.data ?? [],
             loadPage: (response) => {
-                return list(core.setObjectProperty(request, "after", response?.pageInfo.endCursor));
+                return list(core.setObjectProperty(request, "after", response?.pageInfo?.endCursor));
             },
         });
     }
@@ -372,8 +369,7 @@ export class DeployedTriggers {
      *
      * @example
      *     await client.deployedTriggers.delete("trigger_id", {
-     *         externalUserId: "external_user_id",
-     *         ignoreHookErrors: true
+     *         externalUserId: "external_user_id"
      *     })
      */
     public delete(
@@ -465,8 +461,7 @@ export class DeployedTriggers {
      *
      * @example
      *     await client.deployedTriggers.listEvents("trigger_id", {
-     *         externalUserId: "external_user_id",
-     *         n: 1
+     *         externalUserId: "external_user_id"
      *     })
      */
     public listEvents(

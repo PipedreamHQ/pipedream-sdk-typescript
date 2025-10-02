@@ -5,8 +5,6 @@
 /**
  * @example
  *     {
- *         externalUserId: "external_user_id",
- *         oauthAppId: "oauth_app_id",
  *         appSlug: "app_slug",
  *         cfmapJson: "cfmap_json",
  *         connectToken: "connect_token"

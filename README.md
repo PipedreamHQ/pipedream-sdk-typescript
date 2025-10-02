@@ -475,27 +475,13 @@ const client = new PipedreamClient({
     projectEnvironment: "YOUR_PROJECT_ENVIRONMENT",
     projectId: "YOUR_PROJECT_ID",
 });
-const response = await client.apps.list({
-    after: "after",
-    before: "before",
-    limit: 1,
-    q: "q",
-    sortKey: "name",
-    sortDirection: "asc",
-});
+const response = await client.apps.list();
 for await (const item of response) {
     console.log(item);
 }
 
 // Or you can manually iterate page-by-page
-let page = await client.apps.list({
-    after: "after",
-    before: "before",
-    limit: 1,
-    q: "q",
-    sortKey: "name",
-    sortDirection: "asc",
-});
+let page = await client.apps.list();
 while (page.hasNextPage()) {
     page = page.getNextPage();
 }

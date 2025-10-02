@@ -6,17 +6,14 @@ import * as serializers from "../index.js";
 import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import { ConfigurablePropSqlAuth } from "./ConfigurablePropSqlAuth.js";
-import { ConfiguredPropValueSql } from "./ConfiguredPropValueSql.js";
-import { ConfigurablePropSqlOptionsItem } from "./ConfigurablePropSqlOptionsItem.js";
 
 export const ConfigurablePropSql: core.serialization.ObjectSchema<
     serializers.ConfigurablePropSql.Raw,
     Pipedream.ConfigurablePropSql
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("sql"),
+    type: core.serialization.stringLiteral("sql").optional(),
     auth: ConfigurablePropSqlAuth.optional(),
-    default: ConfiguredPropValueSql.optional(),
-    options: core.serialization.list(ConfigurablePropSqlOptionsItem).optional(),
+    default: core.serialization.string().optional(),
     name: core.serialization.string(),
     label: core.serialization.string().optional(),
     description: core.serialization.string().optional(),
@@ -31,10 +28,9 @@ export const ConfigurablePropSql: core.serialization.ObjectSchema<
 
 export declare namespace ConfigurablePropSql {
     export interface Raw {
-        type: "sql";
+        type?: "sql" | null;
         auth?: ConfigurablePropSqlAuth.Raw | null;
-        default?: ConfiguredPropValueSql.Raw | null;
-        options?: ConfigurablePropSqlOptionsItem.Raw[] | null;
+        default?: string | null;
         name: string;
         label?: string | null;
         description?: string | null;

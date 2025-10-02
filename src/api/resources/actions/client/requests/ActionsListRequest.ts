@@ -4,13 +4,7 @@
 
 /**
  * @example
- *     {
- *         after: "after",
- *         before: "before",
- *         limit: 1,
- *         q: "q",
- *         app: "app"
- *     }
+ *     {}
  */
 export interface ActionsListRequest {
     /** The cursor to start from for pagination */
