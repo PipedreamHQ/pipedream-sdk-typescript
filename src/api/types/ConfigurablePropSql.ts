@@ -5,10 +5,10 @@
 import * as Pipedream from "../index.js";
 
 export interface ConfigurablePropSql {
-    type: "sql";
+    type?: "sql";
     auth?: Pipedream.ConfigurablePropSqlAuth;
-    default?: Pipedream.ConfiguredPropValueSql;
-    options?: Pipedream.ConfigurablePropSqlOptionsItem[];
+    /** Default SQL query */
+    default?: string;
     /** When building `configuredProps`, make sure to use this field as the key when setting the prop value */
     name: string;
     /** Value to use as an input label. In cases where `type` is "app", should load the app via `getApp`, etc. and show `app.name` instead. */

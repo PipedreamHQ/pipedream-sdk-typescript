@@ -52,14 +52,7 @@ export class Apps {
      * @param {Apps.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
-     *     await client.apps.list({
-     *         after: "after",
-     *         before: "before",
-     *         limit: 1,
-     *         q: "q",
-     *         sortKey: "name",
-     *         sortDirection: "asc"
-     *     })
+     *     await client.apps.list()
      */
     public async list(
         request: Pipedream.AppsListRequest = {},
@@ -164,11 +157,11 @@ export class Apps {
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
-                response?.pageInfo.endCursor != null &&
-                !(typeof response?.pageInfo.endCursor === "string" && response?.pageInfo.endCursor === ""),
+                response?.pageInfo?.endCursor != null &&
+                !(typeof response?.pageInfo?.endCursor === "string" && response?.pageInfo?.endCursor === ""),
             getItems: (response) => response?.data ?? [],
             loadPage: (response) => {
-                return list(core.setObjectProperty(request, "after", response?.pageInfo.endCursor));
+                return list(core.setObjectProperty(request, "after", response?.pageInfo?.endCursor));
             },
         });
     }

@@ -16,7 +16,8 @@ export interface DeployedComponent {
     componentId: string;
     /** The configurable properties of the component */
     configurableProps: Pipedream.ConfigurableProp[];
-    configuredProps: Pipedream.ConfiguredProps;
+    /** The configured properties of the component */
+    configuredProps: Record<string, unknown>;
     /** Whether the deployed component is active */
     active: boolean;
     /** The timestamp when the component was deployed (epoch milliseconds) */

@@ -5,12 +5,11 @@
 import * as serializers from "../index.js";
 import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { AccountId } from "./AccountId.js";
 import { App } from "./App.js";
 
 export const Account: core.serialization.ObjectSchema<serializers.Account.Raw, Pipedream.Account> =
     core.serialization.object({
-        id: AccountId,
+        id: core.serialization.string(),
         name: core.serialization.string().optional(),
         externalId: core.serialization.property("external_id", core.serialization.string().optional()),
         healthy: core.serialization.boolean().optional(),
@@ -27,7 +26,7 @@ export const Account: core.serialization.ObjectSchema<serializers.Account.Raw, P
 
 export declare namespace Account {
     export interface Raw {
-        id: AccountId.Raw;
+        id: string;
         name?: string | null;
         external_id?: string | null;
         healthy?: boolean | null;

@@ -3,7 +3,7 @@
  */
 
 export interface ConfigurablePropHttp {
-    type: "$.interface.http";
+    type?: "$.interface.http";
     /** Whether this HTTP interface allows custom responses */
     customResponse?: boolean;
     /** When building `configuredProps`, make sure to use this field as the key when setting the prop value */

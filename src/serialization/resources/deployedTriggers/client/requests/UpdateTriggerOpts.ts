@@ -5,22 +5,23 @@
 import * as serializers from "../../../../index.js";
 import * as Pipedream from "../../../../../api/index.js";
 import * as core from "../../../../../core/index.js";
-import { ConfiguredProps } from "../../../../types/ConfiguredProps.js";
-import { ConfiguredPropValue } from "../../../../types/ConfiguredPropValue.js";
 
 export const UpdateTriggerOpts: core.serialization.Schema<
     serializers.UpdateTriggerOpts.Raw,
     Omit<Pipedream.UpdateTriggerOpts, "externalUserId">
 > = core.serialization.object({
     active: core.serialization.boolean().optional(),
-    configuredProps: core.serialization.property("configured_props", ConfiguredProps.optional()),
+    configuredProps: core.serialization.property(
+        "configured_props",
+        core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
+    ),
     name: core.serialization.string().optional(),
 });
 
 export declare namespace UpdateTriggerOpts {
     export interface Raw {
         active?: boolean | null;
-        configured_props?: ConfiguredProps.Raw | null;
+        configured_props?: Record<string, unknown> | null;
         name?: string | null;
     }
 }

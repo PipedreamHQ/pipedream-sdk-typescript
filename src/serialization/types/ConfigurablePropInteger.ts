@@ -5,18 +5,16 @@
 import * as serializers from "../index.js";
 import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { ConfiguredPropValueInteger } from "./ConfiguredPropValueInteger.js";
-import { ConfigurablePropIntegerOptionsItem } from "./ConfigurablePropIntegerOptionsItem.js";
 
 export const ConfigurablePropInteger: core.serialization.ObjectSchema<
     serializers.ConfigurablePropInteger.Raw,
     Pipedream.ConfigurablePropInteger
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("integer"),
+    type: core.serialization.stringLiteral("integer").optional(),
     min: core.serialization.number().optional(),
     max: core.serialization.number().optional(),
-    default: ConfiguredPropValueInteger.optional(),
-    options: core.serialization.list(ConfigurablePropIntegerOptionsItem).optional(),
+    default: core.serialization.number().optional(),
+    options: core.serialization.list(core.serialization.number()).optional(),
     name: core.serialization.string(),
     label: core.serialization.string().optional(),
     description: core.serialization.string().optional(),
@@ -31,11 +29,11 @@ export const ConfigurablePropInteger: core.serialization.ObjectSchema<
 
 export declare namespace ConfigurablePropInteger {
     export interface Raw {
-        type: "integer";
+        type?: "integer" | null;
         min?: number | null;
         max?: number | null;
-        default?: ConfiguredPropValueInteger.Raw | null;
-        options?: ConfigurablePropIntegerOptionsItem.Raw[] | null;
+        default?: number | null;
+        options?: number[] | null;
         name: string;
         label?: string | null;
         description?: string | null;

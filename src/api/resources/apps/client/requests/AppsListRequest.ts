@@ -6,14 +6,7 @@ import * as Pipedream from "../../../../index.js";
 
 /**
  * @example
- *     {
- *         after: "after",
- *         before: "before",
- *         limit: 1,
- *         q: "q",
- *         sortKey: "name",
- *         sortDirection: "asc"
- *     }
+ *     {}
  */
 export interface AppsListRequest {
     /** The cursor to start from for pagination */

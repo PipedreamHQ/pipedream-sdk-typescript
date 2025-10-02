@@ -5,8 +5,6 @@
 import * as serializers from "../../../../index.js";
 import * as Pipedream from "../../../../../api/index.js";
 import * as core from "../../../../../core/index.js";
-import { ConfiguredProps } from "../../../../types/ConfiguredProps.js";
-import { ConfiguredPropValue } from "../../../../types/ConfiguredPropValue.js";
 
 export const DeployTriggerOpts: core.serialization.Schema<
     serializers.DeployTriggerOpts.Raw,
@@ -14,7 +12,10 @@ export const DeployTriggerOpts: core.serialization.Schema<
 > = core.serialization.object({
     id: core.serialization.string(),
     externalUserId: core.serialization.property("external_user_id", core.serialization.string()),
-    configuredProps: core.serialization.property("configured_props", ConfiguredProps.optional()),
+    configuredProps: core.serialization.property(
+        "configured_props",
+        core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
+    ),
     dynamicPropsId: core.serialization.property("dynamic_props_id", core.serialization.string().optional()),
     webhookUrl: core.serialization.property("webhook_url", core.serialization.string().optional()),
 });
@@ -23,7 +24,7 @@ export declare namespace DeployTriggerOpts {
     export interface Raw {
         id: string;
         external_user_id: string;
-        configured_props?: ConfiguredProps.Raw | null;
+        configured_props?: Record<string, unknown> | null;
         dynamic_props_id?: string | null;
         webhook_url?: string | null;
     }

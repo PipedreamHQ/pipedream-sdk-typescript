@@ -10,8 +10,8 @@ export const ConfigurablePropAirtableBaseId: core.serialization.ObjectSchema<
     serializers.ConfigurablePropAirtableBaseId.Raw,
     Pipedream.ConfigurablePropAirtableBaseId
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("$.airtable.baseId"),
-    appProp: core.serialization.string(),
+    type: core.serialization.stringLiteral("$.airtable.baseId").optional(),
+    appProp: core.serialization.string().optional(),
     name: core.serialization.string(),
     label: core.serialization.string().optional(),
     description: core.serialization.string().optional(),
@@ -26,8 +26,8 @@ export const ConfigurablePropAirtableBaseId: core.serialization.ObjectSchema<
 
 export declare namespace ConfigurablePropAirtableBaseId {
     export interface Raw {
-        type: "$.airtable.baseId";
-        appProp: string;
+        type?: "$.airtable.baseId" | null;
+        appProp?: string | null;
         name: string;
         label?: string | null;
         description?: string | null;

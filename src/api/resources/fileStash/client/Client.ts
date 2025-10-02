@@ -46,19 +46,28 @@ export class FileStash {
 
     /**
      * Download a file from File Stash
+     *
+     * @param {Pipedream.FileStashDownloadFileRequest} request
+     * @param {FileStash.RequestOptions} requestOptions - Request-specific configuration.
+     *
      * @throws {@link Pipedream.TooManyRequestsError}
+     *
+     * @example
+     *     await client.fileStash.downloadFile({
+     *         s3Key: "s3_key"
+     *     })
      */
     public downloadFile(
         request: Pipedream.FileStashDownloadFileRequest,
         requestOptions?: FileStash.RequestOptions,
-    ): core.HttpResponsePromise<core.BinaryResponse> {
+    ): core.HttpResponsePromise<void> {
         return core.HttpResponsePromise.fromPromise(this.__downloadFile(request, requestOptions));
     }
 
     private async __downloadFile(
         request: Pipedream.FileStashDownloadFileRequest,
         requestOptions?: FileStash.RequestOptions,
-    ): Promise<core.WithRawResponse<core.BinaryResponse>> {
+    ): Promise<core.WithRawResponse<void>> {
         const { s3Key } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams["s3_key"] = s3Key;
@@ -70,7 +79,7 @@ export class FileStash {
             }),
             requestOptions?.headers,
         );
-        const _response = await core.fetcher<core.BinaryResponse>({
+        const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
@@ -80,13 +89,12 @@ export class FileStash {
             method: "GET",
             headers: _headers,
             queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
-            responseType: "binary-response",
             timeoutMs: requestOptions?.timeoutInSeconds != null ? requestOptions.timeoutInSeconds * 1000 : 60000,
             maxRetries: requestOptions?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return { data: _response.body, rawResponse: _response.rawResponse };
+            return { data: undefined, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {

@@ -54,15 +54,7 @@ export class Accounts {
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.accounts.list({
-     *         externalUserId: "external_user_id",
-     *         oauthAppId: "oauth_app_id",
-     *         after: "after",
-     *         before: "before",
-     *         limit: 1,
-     *         app: "app",
-     *         includeCredentials: true
-     *     })
+     *     await client.accounts.list()
      */
     public async list(
         request: Pipedream.AccountsListRequest = {},
@@ -166,11 +158,11 @@ export class Accounts {
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
-                response?.pageInfo.endCursor != null &&
-                !(typeof response?.pageInfo.endCursor === "string" && response?.pageInfo.endCursor === ""),
+                response?.pageInfo?.endCursor != null &&
+                !(typeof response?.pageInfo?.endCursor === "string" && response?.pageInfo?.endCursor === ""),
             getItems: (response) => response?.data ?? [],
             loadPage: (response) => {
-                return list(core.setObjectProperty(request, "after", response?.pageInfo.endCursor));
+                return list(core.setObjectProperty(request, "after", response?.pageInfo?.endCursor));
             },
         });
     }
@@ -185,8 +177,6 @@ export class Accounts {
      *
      * @example
      *     await client.accounts.create({
-     *         externalUserId: "external_user_id",
-     *         oauthAppId: "oauth_app_id",
      *         appSlug: "app_slug",
      *         cfmapJson: "cfmap_json",
      *         connectToken: "connect_token"
@@ -296,9 +286,7 @@ export class Accounts {
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.accounts.retrieve("account_id", {
-     *         includeCredentials: true
-     *     })
+     *     await client.accounts.retrieve("account_id")
      */
     public retrieve(
         accountId: string,
