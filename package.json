@@ -1,6 +1,6 @@
 {
     "name": "@pipedream/sdk",
-    "version": "2.0.12",
+    "version": "2.0.13",
     "private": false,
     "repository": "github:PipedreamHQ/pipedream-sdk-typescript",
     "type": "commonjs",
@@ -93,6 +93,8 @@
         "webpack": "^5.97.1"
     },
     "browser": {
+        "./dist/cjs/wrapper/utils/getBaseUrl.js": "./dist/cjs/wrapper/utils/getBaseUrl.browser.js",
+        "./dist/esm/wrapper/utils/getBaseUrl.mjs": "./dist/esm/wrapper/utils/getBaseUrl.browser.mjs",
         "fs": false,
         "os": false,
         "path": false,

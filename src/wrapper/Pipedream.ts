@@ -3,6 +3,7 @@ import { ProjectEnvironment } from "../api/index.js";
 import { Workflows } from "../api/resources/workflows/client/Client.js";
 import { PipedreamClient } from "../Client.js";
 import { PipedreamEnvironment } from "../environments.js";
+import { getBaseUrl } from "./utils/getBaseUrl.js";
 
 export type PipedreamClientOpts = {
     /**
@@ -42,17 +43,6 @@ export type PipedreamClientOpts = {
      */
     workflowDomain?: string;
 };
-
-/**
- * Returns the base URL for the Pipedream API based on the provided environment.
- * It replaces any placeholders in the environment string with corresponding
- * environment variables.
- *
- * @param environment - The Pipedream environment string.
- * @returns The base URL for the Pipedream API.
- */
-const getBaseUrl = (environment: PipedreamEnvironment) =>
-    environment.replace(/\$\{(\w+)\}/g, (_, name) => process.env[name] ?? "");
 
 export class Pipedream extends PipedreamClient {
     private _workflowDomain?: string;
