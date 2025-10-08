@@ -1,102 +1,55 @@
 {
     "name": "@pipedream/sdk",
-    "version": "2.0.12",
+    "version": "2.0.13",
     "private": false,
     "repository": "github:PipedreamHQ/pipedream-sdk-typescript",
-    "type": "commonjs",
-    "main": "./dist/cjs/index.js",
-    "module": "./dist/esm/index.mjs",
-    "types": "./dist/cjs/index.d.ts",
-    "exports": {
-        ".": {
-            "types": "./dist/cjs/index.d.ts",
-            "browser": {
-                "types": "./dist/esm/browser/index.d.mts",
-                "import": "./dist/esm/browser/index.mjs",
-                "default": "./dist/esm/browser/index.mjs"
-            },
-            "import": {
-                "types": "./dist/esm/index.d.mts",
-                "default": "./dist/esm/index.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/index.d.ts",
-                "default": "./dist/cjs/index.js"
-            },
-            "default": "./dist/cjs/index.js"
-        },
-        "./browser": {
-            "types": "./dist/esm/browser/index.d.mts",
-            "import": {
-                "types": "./dist/esm/browser/index.d.mts",
-                "default": "./dist/esm/browser/index.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/browser/index.d.ts",
-                "default": "./dist/cjs/browser/index.js"
-            },
-            "default": "./dist/esm/browser/index.mjs"
-        },
-        "./serialization": {
-            "types": "./dist/cjs/serialization/index.d.ts",
-            "import": {
-                "types": "./dist/esm/serialization/index.d.mts",
-                "default": "./dist/esm/serialization/index.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/serialization/index.d.ts",
-                "default": "./dist/cjs/serialization/index.js"
-            },
-            "default": "./dist/cjs/serialization/index.js"
-        },
-        "./server": {
-            "types": "./dist/cjs/index.d.ts",
-            "import": {
-                "types": "./dist/esm/index.d.mts",
-                "default": "./dist/esm/index.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/index.d.ts",
-                "default": "./dist/cjs/index.js"
-            },
-            "default": "./dist/cjs/index.js"
-        },
-        "./package.json": "./package.json"
+    "scripts": {
+        "format": "prettier . --write --ignore-unknown",
+        "compile": "tsc",
+        "bundle": "node build.js",
+        "build": "yarn compile && yarn bundle"
     },
     "files": [
         "dist",
-        "reference.md",
-        "README.md",
-        "LICENSE"
+        "types",
+        "serialization.d.ts"
     ],
-    "scripts": {
-        "format": "prettier . --write --ignore-unknown",
-        "build": "yarn build:cjs && yarn build:esm",
-        "build:cjs": "tsc --project ./tsconfig.cjs.json",
-        "build:esm": "tsc --project ./tsconfig.esm.json && node scripts/rename-to-esm-files.js dist/esm",
-        "test": "jest --config jest.config.mjs",
-        "test:unit": "jest --selectProjects unit",
-        "test:browser": "jest --selectProjects browser",
-        "test:wire": "jest --selectProjects wire"
+    "exports": {
+        ".": {
+            "node": "./dist/node/index.js",
+            "import": "./dist/browser/esm/index.js",
+            "require": "./dist/browser/cjs/index.js",
+            "default": "./dist/browser/cjs/index.js",
+            "types": "./types/index.d.ts"
+        },
+        "./serialization": {
+            "node": "./dist/node/serialization.js",
+            "import": "./dist/browser/esm/serialization.js",
+            "require": "./dist/browser/cjs/serialization.js",
+            "default": "./dist/browser/cjs/serialization.js",
+            "types": "./types/serialization/index.d.ts"
+        },
+        "./package.json": "./package.json"
     },
+    "types": "./types/index.d.ts",
     "devDependencies": {
+        "webpack": "^5.97.1",
+        "ts-loader": "^9.5.1",
+        "jest": "^29.7.0",
         "@jest/globals": "^29.7.0",
         "@types/jest": "^29.5.14",
-        "@types/node": "^18.19.70",
-        "jest": "^29.7.0",
+        "ts-jest": "^29.3.4",
         "jest-environment-jsdom": "^29.7.0",
         "msw": "^2.8.4",
+        "@types/node": "^18.19.70",
+        "esbuild": "~0.24.2",
         "prettier": "^3.4.2",
-        "ts-jest": "^29.3.4",
-        "ts-loader": "^9.5.1",
-        "typescript": "~5.7.2",
-        "webpack": "^5.97.1"
+        "typescript": "~5.7.2"
     },
     "browser": {
         "fs": false,
         "os": false,
-        "path": false,
-        "stream": false
+        "path": false
     },
     "packageManager": "yarn@1.22.22",
     "engines": {
