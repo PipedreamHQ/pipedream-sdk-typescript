@@ -5,8 +5,7 @@
 /**
  * @example
  *     {
- *         externalUserId: "external_user_id",
- *         n: 1
+ *         externalUserId: "external_user_id"
  *     }
  */
 export interface DeployedTriggersListEventsRequest {

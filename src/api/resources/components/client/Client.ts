@@ -5,8 +5,8 @@
 import * as environments from "../../../../environments.js";
 import * as core from "../../../../core/index.js";
 import * as Pipedream from "../../../index.js";
-import * as serializers from "../../../../serialization/index.js";
 import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
+import * as serializers from "../../../../serialization/index.js";
 import * as errors from "../../../../errors/index.js";
 
 export declare namespace Components {
@@ -54,14 +54,7 @@ export class Components {
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.components.list({
-     *         after: "after",
-     *         before: "before",
-     *         limit: 1,
-     *         q: "q",
-     *         app: "app",
-     *         componentType: "trigger"
-     *     })
+     *     await client.components.list()
      */
     public async list(
         request: Pipedream.ComponentsListRequest = {},
@@ -71,7 +64,7 @@ export class Components {
             async (
                 request: Pipedream.ComponentsListRequest,
             ): Promise<core.WithRawResponse<Pipedream.GetComponentsResponse>> => {
-                const { after, before, limit, q, app, componentType } = request;
+                const { after, before, limit, q, app } = request;
                 const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
                 if (after != null) {
                     _queryParams["after"] = after;
@@ -87,12 +80,6 @@ export class Components {
                 }
                 if (app != null) {
                     _queryParams["app"] = app;
-                }
-                if (componentType != null) {
-                    _queryParams["component_type"] = serializers.ComponentType.jsonOrThrow(componentType, {
-                        unrecognizedObjectKeys: "strip",
-                        omitUndefined: true,
-                    });
                 }
                 let _headers: core.Fetcher.Args["headers"] = mergeHeaders(
                     this._options?.headers,
@@ -165,11 +152,11 @@ export class Components {
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
-                response?.pageInfo.endCursor != null &&
-                !(typeof response?.pageInfo.endCursor === "string" && response?.pageInfo.endCursor === ""),
+                response?.pageInfo?.endCursor != null &&
+                !(typeof response?.pageInfo?.endCursor === "string" && response?.pageInfo?.endCursor === ""),
             getItems: (response) => response?.data ?? [],
             loadPage: (response) => {
-                return list(core.setObjectProperty(request, "after", response?.pageInfo.endCursor));
+                return list(core.setObjectProperty(request, "after", response?.pageInfo?.endCursor));
             },
         });
     }

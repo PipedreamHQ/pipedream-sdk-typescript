@@ -5,16 +5,12 @@
 import * as serializers from "../index.js";
 import * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
-import { ConfiguredPropValueAny } from "./ConfiguredPropValueAny.js";
-import { ConfigurablePropAnyOptionsItem } from "./ConfigurablePropAnyOptionsItem.js";
 
 export const ConfigurablePropAny: core.serialization.ObjectSchema<
     serializers.ConfigurablePropAny.Raw,
     Pipedream.ConfigurablePropAny
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("any"),
-    default: ConfiguredPropValueAny.optional(),
-    options: core.serialization.list(ConfigurablePropAnyOptionsItem).optional(),
+    type: core.serialization.stringLiteral("any").optional(),
     name: core.serialization.string(),
     label: core.serialization.string().optional(),
     description: core.serialization.string().optional(),
@@ -29,9 +25,7 @@ export const ConfigurablePropAny: core.serialization.ObjectSchema<
 
 export declare namespace ConfigurablePropAny {
     export interface Raw {
-        type: "any";
-        default?: (ConfiguredPropValueAny.Raw | undefined) | null;
-        options?: ConfigurablePropAnyOptionsItem.Raw[] | null;
+        type?: "any" | null;
         name: string;
         label?: string | null;
         description?: string | null;

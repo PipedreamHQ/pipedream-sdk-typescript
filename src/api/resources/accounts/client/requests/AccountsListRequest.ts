@@ -4,15 +4,7 @@
 
 /**
  * @example
- *     {
- *         externalUserId: "external_user_id",
- *         oauthAppId: "oauth_app_id",
- *         after: "after",
- *         before: "before",
- *         limit: 1,
- *         app: "app",
- *         includeCredentials: true
- *     }
+ *     {}
  */
 export interface AccountsListRequest {
     externalUserId?: string;

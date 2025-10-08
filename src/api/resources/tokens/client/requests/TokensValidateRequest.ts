@@ -5,8 +5,7 @@
 /**
  * @example
  *     {
- *         appId: "app_id",
- *         oauthAppId: "oauth_app_id"
+ *         appId: "app_id"
  *     }
  */
 export interface TokensValidateRequest {

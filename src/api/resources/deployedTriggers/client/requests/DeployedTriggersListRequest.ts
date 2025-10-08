@@ -5,9 +5,6 @@
 /**
  * @example
  *     {
- *         after: "after",
- *         before: "before",
- *         limit: 1,
  *         externalUserId: "external_user_id"
  *     }
  */
