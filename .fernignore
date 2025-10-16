@@ -2,7 +2,6 @@
 
 # Custom CI/CD
 .github/workflows/auto-close-empty-prs.yml
-.github/workflows/ci.yml
 
 .gitignore
 .prettierignore
