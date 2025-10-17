@@ -27,15 +27,10 @@ Instantiate and use the client with the following:
 ```typescript
 import { PipedreamClient } from "@pipedream/sdk";
 
-const client = new PipedreamClient({
-    clientId: "YOUR_CLIENT_ID",
-    clientSecret: "YOUR_CLIENT_SECRET",
-    projectEnvironment: "YOUR_PROJECT_ENVIRONMENT",
-    projectId: "YOUR_PROJECT_ID",
-});
+const client = new PipedreamClient({ clientId: "YOUR_CLIENT_ID", clientSecret: "YOUR_CLIENT_SECRET", projectEnvironment: "YOUR_PROJECT_ENVIRONMENT", projectId: "YOUR_PROJECT_ID" });
 await client.actions.run({
     id: "id",
-    externalUserId: "external_user_id",
+    externalUserId: "external_user_id"
 });
 ```
 
@@ -86,7 +81,6 @@ const stream: ReadableStream<Uint8Array> = response.stream();
 // If you want to check if the response body has been used, you can use the following property.
 const bodyUsed = response.bodyUsed;
 ```
-
 <details>
 <summary>Save binary response to a file</summary>
 
@@ -469,19 +463,14 @@ List endpoints are paginated. The SDK provides an iterator so that you can simpl
 ```typescript
 import { PipedreamClient } from "@pipedream/sdk";
 
-const client = new PipedreamClient({
-    clientId: "YOUR_CLIENT_ID",
-    clientSecret: "YOUR_CLIENT_SECRET",
-    projectEnvironment: "YOUR_PROJECT_ENVIRONMENT",
-    projectId: "YOUR_PROJECT_ID",
-});
+const client = new PipedreamClient({ clientId: "YOUR_CLIENT_ID", clientSecret: "YOUR_CLIENT_SECRET", projectEnvironment: "YOUR_PROJECT_ENVIRONMENT", projectId: "YOUR_PROJECT_ID" });
 const response = await client.apps.list({
     after: "after",
     before: "before",
     limit: 1,
     q: "q",
     sortKey: "name",
-    sortDirection: "asc",
+    sortDirection: "asc"
 });
 for await (const item of response) {
     console.log(item);
@@ -494,7 +483,7 @@ let page = await client.apps.list({
     limit: 1,
     q: "q",
     sortKey: "name",
-    sortDirection: "asc",
+    sortDirection: "asc"
 });
 while (page.hasNextPage()) {
     page = page.getNextPage();
@@ -583,7 +572,10 @@ console.log(rawResponse.headers['X-My-Header']);
 
 ### Runtime Compatibility
 
+
 The SDK works in the following runtimes:
+
+
 
 - Node.js 18+
 - Vercel
