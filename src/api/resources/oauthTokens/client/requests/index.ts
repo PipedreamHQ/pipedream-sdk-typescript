@@ -1,1 +1,1 @@
-export { type CreateOAuthTokenOpts } from "./CreateOAuthTokenOpts.js";
+export type { CreateOAuthTokenOpts } from "./CreateOAuthTokenOpts.js";
