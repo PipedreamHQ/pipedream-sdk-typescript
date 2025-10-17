@@ -16,6 +16,7 @@ export const DeployTriggerOpts: core.serialization.Schema<
     externalUserId: core.serialization.property("external_user_id", core.serialization.string()),
     configuredProps: core.serialization.property("configured_props", ConfiguredProps.optional()),
     dynamicPropsId: core.serialization.property("dynamic_props_id", core.serialization.string().optional()),
+    workflowId: core.serialization.property("workflow_id", core.serialization.string().optional()),
     webhookUrl: core.serialization.property("webhook_url", core.serialization.string().optional()),
 });
 
@@ -25,6 +26,7 @@ export declare namespace DeployTriggerOpts {
         external_user_id: string;
         configured_props?: ConfiguredProps.Raw | null;
         dynamic_props_id?: string | null;
+        workflow_id?: string | null;
         webhook_url?: string | null;
     }
 }
