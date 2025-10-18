@@ -15,11 +15,10 @@ import { Components } from "./api/resources/components/client/Client.js";
 import { Actions } from "./api/resources/actions/client/Client.js";
 import { Triggers } from "./api/resources/triggers/client/Client.js";
 import { DeployedTriggers } from "./api/resources/deployedTriggers/client/Client.js";
-import { FileStash } from "./api/resources/fileStash/client/Client.js";
 import { Projects } from "./api/resources/projects/client/Client.js";
+import { FileStash } from "./api/resources/fileStash/client/Client.js";
 import { Proxy } from "./api/resources/proxy/client/Client.js";
 import { Tokens } from "./api/resources/tokens/client/Client.js";
-import { SDK_VERSION } from "./version.js";
 
 export declare namespace PipedreamClient {
     export interface Options {
@@ -28,7 +27,6 @@ export declare namespace PipedreamClient {
         baseUrl?: core.Supplier<string>;
         clientId?: core.Supplier<string>;
         clientSecret?: core.Supplier<string>;
-        tokenProvider?: core.TokenProvider;
         projectId: string;
         /** Override the x-pd-environment header */
         projectEnvironment?: core.Supplier<Pipedream.ProjectEnvironment | undefined>;
@@ -54,7 +52,7 @@ export declare namespace PipedreamClient {
 
 export class PipedreamClient {
     protected readonly _options: PipedreamClient.Options;
-    protected readonly _tokenProvider: core.TokenProvider;
+    private readonly _oauthTokenProvider: core.OAuthTokenProvider;
     protected _appCategories: AppCategories | undefined;
     protected _apps: Apps | undefined;
     protected _accounts: Accounts | undefined;
@@ -63,8 +61,8 @@ export class PipedreamClient {
     protected _actions: Actions | undefined;
     protected _triggers: Triggers | undefined;
     protected _deployedTriggers: DeployedTriggers | undefined;
-    protected _fileStash: FileStash | undefined;
     protected _projects: Projects | undefined;
+    protected _fileStash: FileStash | undefined;
     protected _proxy: Proxy | undefined;
     protected _tokens: Tokens | undefined;
     protected _oauthTokens: OauthTokens | undefined;
@@ -77,8 +75,8 @@ export class PipedreamClient {
                     "x-pd-environment": _options?.projectEnvironment,
                     "X-Fern-Language": "JavaScript",
                     "X-Fern-SDK-Name": "@pipedream/sdk",
-                    "X-Fern-SDK-Version": SDK_VERSION,
-                    "User-Agent": `@pipedream/sdk/${SDK_VERSION}`,
+                    "X-Fern-SDK-Version": "2.0.14",
+                    "User-Agent": "@pipedream/sdk/2.0.14",
                     "X-Fern-Runtime": core.RUNTIME.type,
                     "X-Fern-Runtime-Version": core.RUNTIME.version,
                 },
@@ -86,10 +84,6 @@ export class PipedreamClient {
             ),
         };
 
-        this._tokenProvider = this._options.tokenProvider ?? this.newOAuthTokenProvider();
-    }
-
-    private newOAuthTokenProvider(): core.OAuthTokenProvider {
         const clientId = this._options.clientId ?? process.env["PIPEDREAM_CLIENT_ID"];
         if (clientId == null) {
             throw new Error(
@@ -104,7 +98,7 @@ export class PipedreamClient {
             );
         }
 
-        return new core.OAuthTokenProvider({
+        this._oauthTokenProvider = new core.OAuthTokenProvider({
             clientId,
             clientSecret,
             authClient: new OauthTokens({
@@ -117,91 +111,91 @@ export class PipedreamClient {
     public get appCategories(): AppCategories {
         return (this._appCategories ??= new AppCategories({
             ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
+            token: async () => await this._oauthTokenProvider.getToken(),
         }));
     }
 
     public get apps(): Apps {
         return (this._apps ??= new Apps({
             ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
+            token: async () => await this._oauthTokenProvider.getToken(),
         }));
     }
 
     public get accounts(): Accounts {
         return (this._accounts ??= new Accounts({
             ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
+            token: async () => await this._oauthTokenProvider.getToken(),
         }));
     }
 
     public get users(): Users {
         return (this._users ??= new Users({
             ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
+            token: async () => await this._oauthTokenProvider.getToken(),
         }));
     }
 
     public get components(): Components {
         return (this._components ??= new Components({
             ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
+            token: async () => await this._oauthTokenProvider.getToken(),
         }));
     }
 
     public get actions(): Actions {
         return (this._actions ??= new Actions({
             ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
+            token: async () => await this._oauthTokenProvider.getToken(),
         }));
     }
 
     public get triggers(): Triggers {
         return (this._triggers ??= new Triggers({
             ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
+            token: async () => await this._oauthTokenProvider.getToken(),
         }));
     }
 
     public get deployedTriggers(): DeployedTriggers {
         return (this._deployedTriggers ??= new DeployedTriggers({
             ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
-        }));
-    }
-
-    public get fileStash(): FileStash {
-        return (this._fileStash ??= new FileStash({
-            ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
+            token: async () => await this._oauthTokenProvider.getToken(),
         }));
     }
 
     public get projects(): Projects {
         return (this._projects ??= new Projects({
             ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
+            token: async () => await this._oauthTokenProvider.getToken(),
+        }));
+    }
+
+    public get fileStash(): FileStash {
+        return (this._fileStash ??= new FileStash({
+            ...this._options,
+            token: async () => await this._oauthTokenProvider.getToken(),
         }));
     }
 
     public get proxy(): Proxy {
         return (this._proxy ??= new Proxy({
             ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
+            token: async () => await this._oauthTokenProvider.getToken(),
         }));
     }
 
     public get tokens(): Tokens {
         return (this._tokens ??= new Tokens({
             ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
+            token: async () => await this._oauthTokenProvider.getToken(),
         }));
     }
 
     public get oauthTokens(): OauthTokens {
         return (this._oauthTokens ??= new OauthTokens({
             ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
+            token: async () => await this._oauthTokenProvider.getToken(),
         }));
     }
 }

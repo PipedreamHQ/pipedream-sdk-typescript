@@ -12,4 +12,6 @@ export interface BackendClientOpts {
     clientSecret?: string;
     /** The API URL to use */
     apiUrl?: string;
+    /** Optional space-separated scopes for the access token. Defaults to '*'. */
+    scope?: string;
 }
