@@ -14,6 +14,8 @@ export interface DeployedComponent {
     ownerId: string;
     /** The ID of the component that was deployed */
     componentId: string;
+    /** The component key (name) that was deployed */
+    componentKey?: string;
     /** The configurable properties of the component */
     configurableProps: Pipedream.ConfigurableProp[];
     configuredProps: Pipedream.ConfiguredProps;

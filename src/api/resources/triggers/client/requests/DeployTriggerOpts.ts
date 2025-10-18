@@ -19,6 +19,8 @@ export interface DeployTriggerOpts {
     configuredProps?: Pipedream.ConfiguredProps;
     /** The ID for dynamic props */
     dynamicPropsId?: string;
+    /** Optional ID of a workflow to receive trigger events */
+    workflowId?: string;
     /** Optional webhook URL to receive trigger events */
     webhookUrl?: string;
 }
