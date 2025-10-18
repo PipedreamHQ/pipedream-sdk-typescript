@@ -13,8 +13,14 @@ jobs:
       - name: Set up node
         uses: actions/setup-node@v3
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Install dependencies
+        run: pnpm install
+
       - name: Compile
-        run: yarn && yarn build
+        run: pnpm build
 
   test:
     runs-on: ubuntu-latest
@@ -26,13 +32,20 @@ jobs:
       - name: Set up node
         uses: actions/setup-node@v3
 
-      - name: Compile
-        run: yarn && yarn test
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Test
+        run: pnpm test
 
   publish:
     needs:
       - compile
       - test
+
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
 
@@ -42,12 +55,18 @@ jobs:
 
       - name: Set up node
         uses: actions/setup-node@v3
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Install dependencies
-        run: yarn install --frozen-lockfile --non-interactive
+        run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: yarn build
+        run: pnpm build
+
       - name: Set up NPM authentication
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
+
       - name: Publish
-        run: npm publish --access public --no-git-tag-version --tag latest
+        run: pnpm publish --access public

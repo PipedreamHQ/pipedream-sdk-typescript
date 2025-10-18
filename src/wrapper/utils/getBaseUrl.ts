@@ -8,5 +8,5 @@ import { PipedreamEnvironment } from "../../environments.js";
  * @param environment - The Pipedream environment string.
  * @returns The base URL for the Pipedream API.
  */
-export const getBaseUrl = (environment: PipedreamEnvironment) =>
+export const getBaseUrl = (environment: PipedreamEnvironment): string =>
     environment.replace(/\$\{(\w+)\}/g, (_, name) => process.env[name] ?? "");

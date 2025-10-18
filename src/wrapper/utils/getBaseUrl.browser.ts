@@ -6,4 +6,4 @@ import { PipedreamEnvironment } from "../../environments.js";
  *
  * @returns The base URL for the Pipedream API.
  */
-export const getBaseUrl = () => PipedreamEnvironment.Prod;
+export const getBaseUrl = (): string => PipedreamEnvironment.Prod;

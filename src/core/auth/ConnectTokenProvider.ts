@@ -60,7 +60,7 @@ export class ConnectTokenProvider implements TokenProvider {
         return this._tokenRequest;
     }
 
-    public refresh() {
+    public refresh(): void {
         this._token = undefined;
     }
 }

@@ -7,9 +7,9 @@
 export type * from "../api/types/index.js";
 export * from "../index.js";
 
-import { ConnectTokenProvider, TokenCallback } from "../core/auth/index.js";
+import { ConnectTokenProvider, type TokenCallback } from "../core/auth/index.js";
 import { type Account, type App, PipedreamClient as BackendClient, PipedreamEnvironment } from "../index.js";
-import { PipedreamClientOpts as BackendClientOpts } from "../wrapper/Pipedream.js";
+import type { PipedreamClientOpts as BackendClientOpts } from "../wrapper/Pipedream.js";
 
 if (typeof process === "undefined") {
     // We're in the browser
@@ -138,7 +138,7 @@ export function createFrontendClient(
          */
         token?: string;
     },
-) {
+): PipedreamClient {
     const {
         // These are some dummy values that would produce a blank Connect token,
         // in case the user does not need to make any API requests other than
@@ -230,7 +230,7 @@ export class PipedreamClient extends BackendClient {
      * });
      * ```
      */
-    public async connectAccount(opts: StartConnectOpts) {
+    public async connectAccount(opts: StartConnectOpts): Promise<void> {
         let connectionSuccessful = false;
         let connectionCompleted = false;
 
