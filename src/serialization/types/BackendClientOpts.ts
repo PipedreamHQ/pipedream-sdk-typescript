@@ -13,6 +13,7 @@ export const BackendClientOpts: core.serialization.ObjectSchema<
     clientId: core.serialization.property("client_id", core.serialization.string().optional()),
     clientSecret: core.serialization.property("client_secret", core.serialization.string().optional()),
     apiUrl: core.serialization.property("api_url", core.serialization.string().optional()),
+    scope: core.serialization.string().optional(),
 });
 
 export declare namespace BackendClientOpts {
@@ -20,5 +21,6 @@ export declare namespace BackendClientOpts {
         client_id?: string | null;
         client_secret?: string | null;
         api_url?: string | null;
+        scope?: string | null;
     }
 }
