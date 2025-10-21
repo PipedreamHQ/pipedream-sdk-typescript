@@ -5,7 +5,6 @@ import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.
 import * as core from "../../../../core/index.js";
 import * as environments from "../../../../environments.js";
 import * as errors from "../../../../errors/index.js";
-import { base64Encode } from "../../../../core/index.js";
 import * as serializers from "../../../../serialization/index.js";
 import * as Pipedream from "../../../index.js";
 
@@ -25,66 +24,35 @@ export class Proxy {
     }
 
     /**
-     * Transform headers by prefixing each key with 'x-pd-proxy-'
-     */
-    private transformProxyHeaders(
-        headers?: Record<string, string | core.Supplier<string | null | undefined> | null | undefined>,
-    ): Record<string, string | core.Supplier<string | null | undefined> | null | undefined> | undefined {
-        if (!headers) return undefined;
-
-        const transformed: Record<string, string | core.Supplier<string | null | undefined> | null | undefined> = {};
-        for (const [key, value] of Object.entries(headers)) {
-            transformed[`x-pd-proxy-${key}`] = value;
-        }
-        return transformed;
-    }
-
-    /**
      * Forward an authenticated GET request to an external API using an external user's account credentials
-     *
-     * @param {Pipedream.ProxyGetRequest} request
-     * @param {Proxy.RequestOptions} requestOptions - Request-specific configuration.
-     *
      * @throws {@link Pipedream.TooManyRequestsError}
-     *
-     * @example
-     *     await client.proxy.get({
-     *         url: "https://api.example.com/endpoint",
-     *         externalUserId: "external_user_id",
-     *         accountId: "account_id",
-     *         params: { key: "value" },
-     *         headers: { "X-Custom-Header": "value" }
-     *     })
      */
     public get(
+        url64: string,
         request: Pipedream.ProxyGetRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): core.HttpResponsePromise<Pipedream.ProxyResponse | undefined> {
-        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
+    ): core.HttpResponsePromise<core.BinaryResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__get(url64, request, requestOptions));
     }
 
     private async __get(
+        url64: string,
         request: Pipedream.ProxyGetRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
-        const { url, externalUserId, accountId, params, headers } = request;
-        const url64 = base64Encode(url);
-        const transformedHeaders = this.transformProxyHeaders(headers);
-        const _queryParams: Record<string, string | string[] | object | object[] | null> = {
-            external_user_id: externalUserId,
-            account_id: accountId,
-            ...(params || {}),
-        };
+    ): Promise<core.WithRawResponse<core.BinaryResponse>> {
+        const { externalUserId, accountId } = request;
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
+        _queryParams.external_user_id = externalUserId;
+        _queryParams.account_id = accountId;
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
                 "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
             }),
-            transformedHeaders,
             requestOptions?.headers,
         );
-        const _response = await core.fetcher({
+        const _response = await core.fetcher<core.BinaryResponse>({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
@@ -94,21 +62,13 @@ export class Proxy {
             method: "GET",
             headers: _headers,
             queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
+            responseType: "binary-response",
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.ProxyResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: _response.body, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -145,51 +105,34 @@ export class Proxy {
 
     /**
      * Forward an authenticated POST request to an external API using an external user's account credentials
-     *
-     * @param {Pipedream.ProxyPostRequest} request
-     * @param {Proxy.RequestOptions} requestOptions - Request-specific configuration.
-     *
      * @throws {@link Pipedream.TooManyRequestsError}
-     *
-     * @example
-     *     await client.proxy.post({
-     *         url: "https://api.example.com/endpoint",
-     *         externalUserId: "external_user_id",
-     *         accountId: "account_id",
-     *         body: { "key": "value" },
-     *         params: { key: "value" },
-     *         headers: { "X-Custom-Header": "value" }
-     *     })
      */
     public post(
+        url64: string,
         request: Pipedream.ProxyPostRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): core.HttpResponsePromise<Pipedream.ProxyResponse | undefined> {
-        return core.HttpResponsePromise.fromPromise(this.__post(request, requestOptions));
+    ): core.HttpResponsePromise<core.BinaryResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__post(url64, request, requestOptions));
     }
 
     private async __post(
+        url64: string,
         request: Pipedream.ProxyPostRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
-        const { url, externalUserId, accountId, body: _body, params, headers } = request;
-        const url64 = base64Encode(url);
-        const transformedHeaders = this.transformProxyHeaders(headers);
-        const _queryParams: Record<string, string | string[] | object | object[] | null> = {
-            external_user_id: externalUserId,
-            account_id: accountId,
-            ...(params || {}),
-        };
+    ): Promise<core.WithRawResponse<core.BinaryResponse>> {
+        const { externalUserId, accountId, body: _body } = request;
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
+        _queryParams.external_user_id = externalUserId;
+        _queryParams.account_id = accountId;
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
                 "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
             }),
-            transformedHeaders,
             requestOptions?.headers,
         );
-        const _response = await core.fetcher({
+        const _response = await core.fetcher<core.BinaryResponse>({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
@@ -205,21 +148,13 @@ export class Proxy {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
+            responseType: "binary-response",
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.ProxyResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: _response.body, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -256,51 +191,34 @@ export class Proxy {
 
     /**
      * Forward an authenticated PUT request to an external API using an external user's account credentials
-     *
-     * @param {Pipedream.ProxyPutRequest} request
-     * @param {Proxy.RequestOptions} requestOptions - Request-specific configuration.
-     *
      * @throws {@link Pipedream.TooManyRequestsError}
-     *
-     * @example
-     *     await client.proxy.put({
-     *         url: "https://api.example.com/endpoint",
-     *         externalUserId: "external_user_id",
-     *         accountId: "account_id",
-     *         body: { "key": "value" },
-     *         params: { key: "value" },
-     *         headers: { "X-Custom-Header": "value" }
-     *     })
      */
     public put(
+        url64: string,
         request: Pipedream.ProxyPutRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): core.HttpResponsePromise<Pipedream.ProxyResponse | undefined> {
-        return core.HttpResponsePromise.fromPromise(this.__put(request, requestOptions));
+    ): core.HttpResponsePromise<core.BinaryResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__put(url64, request, requestOptions));
     }
 
     private async __put(
+        url64: string,
         request: Pipedream.ProxyPutRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
-        const { url, externalUserId, accountId, body: _body, params, headers } = request;
-        const url64 = base64Encode(url);
-        const transformedHeaders = this.transformProxyHeaders(headers);
-        const _queryParams: Record<string, string | string[] | object | object[] | null> = {
-            external_user_id: externalUserId,
-            account_id: accountId,
-            ...(params || {}),
-        };
+    ): Promise<core.WithRawResponse<core.BinaryResponse>> {
+        const { externalUserId, accountId, body: _body } = request;
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
+        _queryParams.external_user_id = externalUserId;
+        _queryParams.account_id = accountId;
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
                 "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
             }),
-            transformedHeaders,
             requestOptions?.headers,
         );
-        const _response = await core.fetcher({
+        const _response = await core.fetcher<core.BinaryResponse>({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
@@ -316,21 +234,13 @@ export class Proxy {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
+            responseType: "binary-response",
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.ProxyResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: _response.body, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -367,50 +277,34 @@ export class Proxy {
 
     /**
      * Forward an authenticated DELETE request to an external API using an external user's account credentials
-     *
-     * @param {Pipedream.ProxyDeleteRequest} request
-     * @param {Proxy.RequestOptions} requestOptions - Request-specific configuration.
-     *
      * @throws {@link Pipedream.TooManyRequestsError}
-     *
-     * @example
-     *     await client.proxy.delete({
-     *         url: "https://api.example.com/endpoint",
-     *         externalUserId: "external_user_id",
-     *         accountId: "account_id",
-     *         params: { key: "value" },
-     *         headers: { "X-Custom-Header": "value" }
-     *     })
      */
     public delete(
+        url64: string,
         request: Pipedream.ProxyDeleteRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): core.HttpResponsePromise<Pipedream.ProxyResponse | undefined> {
-        return core.HttpResponsePromise.fromPromise(this.__delete(request, requestOptions));
+    ): core.HttpResponsePromise<core.BinaryResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__delete(url64, request, requestOptions));
     }
 
     private async __delete(
+        url64: string,
         request: Pipedream.ProxyDeleteRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
-        const { url, externalUserId, accountId, params, headers } = request;
-        const url64 = base64Encode(url);
-        const transformedHeaders = this.transformProxyHeaders(headers);
-        const _queryParams: Record<string, string | string[] | object | object[] | null> = {
-            external_user_id: externalUserId,
-            account_id: accountId,
-            ...(params || {}),
-        };
+    ): Promise<core.WithRawResponse<core.BinaryResponse>> {
+        const { externalUserId, accountId } = request;
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
+        _queryParams.external_user_id = externalUserId;
+        _queryParams.account_id = accountId;
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
                 "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
             }),
-            transformedHeaders,
             requestOptions?.headers,
         );
-        const _response = await core.fetcher({
+        const _response = await core.fetcher<core.BinaryResponse>({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
@@ -420,21 +314,13 @@ export class Proxy {
             method: "DELETE",
             headers: _headers,
             queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
+            responseType: "binary-response",
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.ProxyResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: _response.body, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -471,51 +357,34 @@ export class Proxy {
 
     /**
      * Forward an authenticated PATCH request to an external API using an external user's account credentials
-     *
-     * @param {Pipedream.ProxyPatchRequest} request
-     * @param {Proxy.RequestOptions} requestOptions - Request-specific configuration.
-     *
      * @throws {@link Pipedream.TooManyRequestsError}
-     *
-     * @example
-     *     await client.proxy.patch({
-     *         url: "https://api.example.com/endpoint",
-     *         externalUserId: "external_user_id",
-     *         accountId: "account_id",
-     *         body: { "key": "value" },
-     *         params: { key: "value" },
-     *         headers: { "X-Custom-Header": "value" }
-     *     })
      */
     public patch(
+        url64: string,
         request: Pipedream.ProxyPatchRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): core.HttpResponsePromise<Pipedream.ProxyResponse | undefined> {
-        return core.HttpResponsePromise.fromPromise(this.__patch(request, requestOptions));
+    ): core.HttpResponsePromise<core.BinaryResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__patch(url64, request, requestOptions));
     }
 
     private async __patch(
+        url64: string,
         request: Pipedream.ProxyPatchRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
-        const { url, externalUserId, accountId, body: _body, params, headers } = request;
-        const url64 = base64Encode(url);
-        const transformedHeaders = this.transformProxyHeaders(headers);
-        const _queryParams: Record<string, string | string[] | object | object[] | null> = {
-            external_user_id: externalUserId,
-            account_id: accountId,
-            ...(params || {}),
-        };
+    ): Promise<core.WithRawResponse<core.BinaryResponse>> {
+        const { externalUserId, accountId, body: _body } = request;
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
+        _queryParams.external_user_id = externalUserId;
+        _queryParams.account_id = accountId;
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
                 Authorization: await this._getAuthorizationHeader(),
                 "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
             }),
-            transformedHeaders,
             requestOptions?.headers,
         );
-        const _response = await core.fetcher({
+        const _response = await core.fetcher<core.BinaryResponse>({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
@@ -531,21 +400,13 @@ export class Proxy {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
+            responseType: "binary-response",
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
-            return {
-                data: serializers.ProxyResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
+            return { data: _response.body, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
