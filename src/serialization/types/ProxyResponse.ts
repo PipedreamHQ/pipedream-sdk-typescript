@@ -3,10 +3,13 @@
 import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { ProxyResponseBinary } from "./ProxyResponseBinary.js";
+import { ProxyResponseJson } from "./ProxyResponseJson.js";
+import { ProxyResponseRaw } from "./ProxyResponseRaw.js";
 
 export const ProxyResponse: core.serialization.Schema<serializers.ProxyResponse.Raw, Pipedream.ProxyResponse> =
-    core.serialization.unknown();
+    core.serialization.undiscriminatedUnion([ProxyResponseJson, ProxyResponseBinary, ProxyResponseRaw]);
 
 export declare namespace ProxyResponse {
-    export type Raw = unknown;
+    export type Raw = ProxyResponseJson.Raw | ProxyResponseBinary.Raw | ProxyResponseRaw.Raw;
 }
