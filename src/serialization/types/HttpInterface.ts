@@ -11,7 +11,7 @@ export const HttpInterface: core.serialization.ObjectSchema<serializers.HttpInte
         endpointUrl: core.serialization.property("endpoint_url", core.serialization.string()),
         customResponse: core.serialization.property("custom_response", core.serialization.boolean()),
         createdAt: core.serialization.property("created_at", core.serialization.number()),
-        updatedAt: core.serialization.property("updated_at", core.serialization.number().optional()),
+        updatedAt: core.serialization.property("updated_at", core.serialization.number()),
     });
 
 export declare namespace HttpInterface {
@@ -21,6 +21,6 @@ export declare namespace HttpInterface {
         endpoint_url: string;
         custom_response: boolean;
         created_at: number;
-        updated_at?: number | null;
+        updated_at: number;
     }
 }
