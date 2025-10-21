@@ -42,7 +42,7 @@ export class DeployedTriggers {
     public async list(
         request: Pipedream.DeployedTriggersListRequest,
         requestOptions?: DeployedTriggers.RequestOptions,
-    ): Promise<core.Page<Pipedream.DeployedComponent>> {
+    ): Promise<core.Page<Pipedream.Emitter>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (
                 request: Pipedream.DeployedTriggersListRequest,
@@ -125,7 +125,7 @@ export class DeployedTriggers {
             },
         );
         const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Pageable<Pipedream.GetTriggersResponse, Pipedream.DeployedComponent>({
+        return new core.Pageable<Pipedream.GetTriggersResponse, Pipedream.Emitter>({
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
