@@ -1,5 +1,5 @@
 import { object } from "./object.js";
-import type {
+import {
     inferParsedPropertySchema,
     inferRawObjectFromPropertySchemas,
     ObjectSchema,

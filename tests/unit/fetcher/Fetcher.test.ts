@@ -1,8 +1,9 @@
 import fs from "fs";
-import { join } from "path";
 import stream from "stream";
+import { join } from "path";
+
+import { Fetcher, fetcherImpl } from "../../../src/core/fetcher/Fetcher";
 import type { BinaryResponse } from "../../../src/core";
-import { type Fetcher, fetcherImpl } from "../../../src/core/fetcher/Fetcher";
 
 describe("Test fetcherImpl", () => {
     it("should handle successful request", async () => {
@@ -16,7 +17,7 @@ describe("Test fetcherImpl", () => {
             responseType: "json",
         };
 
-        global.fetch = vi.fn().mockResolvedValue(
+        global.fetch = jest.fn().mockResolvedValue(
             new Response(JSON.stringify({ data: "test" }), {
                 status: 200,
                 statusText: "OK",
@@ -51,7 +52,7 @@ describe("Test fetcherImpl", () => {
             body: fs.createReadStream(join(__dirname, "test-file.txt")),
         };
 
-        global.fetch = vi.fn().mockResolvedValue(
+        global.fetch = jest.fn().mockResolvedValue(
             new Response(JSON.stringify({ data: "test" }), {
                 status: 200,
                 statusText: "OK",
@@ -83,7 +84,7 @@ describe("Test fetcherImpl", () => {
             responseType: "binary-response",
         };
 
-        global.fetch = vi.fn().mockResolvedValue(
+        global.fetch = jest.fn().mockResolvedValue(
             new Response(
                 stream.Readable.toWeb(fs.createReadStream(join(__dirname, "test-file.txt"))) as ReadableStream,
                 {
@@ -128,7 +129,7 @@ describe("Test fetcherImpl", () => {
             responseType: "binary-response",
         };
 
-        global.fetch = vi.fn().mockResolvedValue(
+        global.fetch = jest.fn().mockResolvedValue(
             new Response(
                 stream.Readable.toWeb(fs.createReadStream(join(__dirname, "test-file.txt"))) as ReadableStream,
                 {
@@ -173,7 +174,7 @@ describe("Test fetcherImpl", () => {
             responseType: "binary-response",
         };
 
-        global.fetch = vi.fn().mockResolvedValue(
+        global.fetch = jest.fn().mockResolvedValue(
             new Response(
                 stream.Readable.toWeb(fs.createReadStream(join(__dirname, "test-file.txt"))) as ReadableStream,
                 {
@@ -216,7 +217,7 @@ describe("Test fetcherImpl", () => {
             responseType: "binary-response",
         };
 
-        global.fetch = vi.fn().mockResolvedValue(
+        global.fetch = jest.fn().mockResolvedValue(
             new Response(
                 stream.Readable.toWeb(fs.createReadStream(join(__dirname, "test-file.txt"))) as ReadableStream,
                 {
