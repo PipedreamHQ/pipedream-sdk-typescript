@@ -1,1 +1,1 @@
-export type { ComponentsListRequest } from "./ComponentsListRequest.js";
+export { type ComponentsListRequest } from "./ComponentsListRequest.js";

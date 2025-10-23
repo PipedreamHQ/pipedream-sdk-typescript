@@ -1,4 +1,4 @@
-import type { ValidationError } from "../../Schema.js";
+import { ValidationError } from "../../Schema.js";
 import { stringifyValidationError } from "./stringifyValidationErrors.js";
 
 export class ParseError extends Error {
