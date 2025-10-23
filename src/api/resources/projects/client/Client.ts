@@ -55,7 +55,7 @@ export class Projects {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/projects/info`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/projects/info`,
             ),
             method: "GET",
             headers: _headers,
