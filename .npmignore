@@ -4,7 +4,7 @@ tests
 .gitignore
 .github
 .fernignore
-biome.json
+.prettierrc.yml
 tsconfig.json
 yarn.lock
 pnpm-lock.yaml

@@ -9,9 +9,7 @@
         "declaration": true,
         "outDir": "dist",
         "rootDir": "src",
-        "baseUrl": "src",
-        "isolatedModules": true,
-        "isolatedDeclarations": true
+        "baseUrl": "src"
     },
     "include": ["src"],
     "exclude": []
