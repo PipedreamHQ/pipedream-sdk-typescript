@@ -78,7 +78,7 @@ export class Actions {
                         (await core.Supplier.get(this._options.baseUrl)) ??
                             (await core.Supplier.get(this._options.environment)) ??
                             environments.PipedreamEnvironment.Prod,
-                        `v1/connect/${encodeURIComponent(this._options.projectId)}/actions`,
+                        `v1/connect/${core.url.encodePathParam(this._options.projectId)}/actions`,
                     ),
                     method: "GET",
                     headers: _headers,
@@ -179,7 +179,7 @@ export class Actions {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/actions/${encodeURIComponent(componentId)}`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/actions/${core.url.encodePathParam(componentId)}`,
             ),
             method: "GET",
             headers: _headers,
@@ -272,7 +272,7 @@ export class Actions {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/actions/configure`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/actions/configure`,
             ),
             method: "POST",
             headers: _headers,
@@ -370,7 +370,7 @@ export class Actions {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/actions/props`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/actions/props`,
             ),
             method: "POST",
             headers: _headers,
@@ -468,7 +468,7 @@ export class Actions {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/actions/run`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/actions/run`,
             ),
             method: "POST",
             headers: _headers,

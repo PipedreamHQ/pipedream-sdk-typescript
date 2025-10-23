@@ -3,20 +3,20 @@
 import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { DeployedComponent } from "./DeployedComponent.js";
+import { Emitter } from "./Emitter.js";
 import { PageInfo } from "./PageInfo.js";
 
 export const GetTriggersResponse: core.serialization.ObjectSchema<
     serializers.GetTriggersResponse.Raw,
     Pipedream.GetTriggersResponse
 > = core.serialization.object({
-    data: core.serialization.list(DeployedComponent),
+    data: core.serialization.list(Emitter),
     pageInfo: core.serialization.property("page_info", PageInfo),
 });
 
 export declare namespace GetTriggersResponse {
     export interface Raw {
-        data: DeployedComponent.Raw[];
+        data: Emitter.Raw[];
         page_info: PageInfo.Raw;
     }
 }
