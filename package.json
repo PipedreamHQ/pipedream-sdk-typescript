@@ -1,6 +1,6 @@
 {
     "name": "@pipedream/sdk",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "private": false,
     "repository": "github:PipedreamHQ/pipedream-sdk-typescript",
     "type": "commonjs",
@@ -10,11 +10,6 @@
     "exports": {
         ".": {
             "types": "./dist/cjs/index.d.ts",
-            "browser": {
-                "types": "./dist/esm/browser/index.d.mts",
-                "import": "./dist/esm/browser/index.mjs",
-                "default": "./dist/esm/browser/index.mjs"
-            },
             "import": {
                 "types": "./dist/esm/index.d.mts",
                 "default": "./dist/esm/index.mjs"
@@ -24,18 +19,6 @@
                 "default": "./dist/cjs/index.js"
             },
             "default": "./dist/cjs/index.js"
-        },
-        "./browser": {
-            "types": "./dist/esm/browser/index.d.mts",
-            "import": {
-                "types": "./dist/esm/browser/index.d.mts",
-                "default": "./dist/esm/browser/index.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/browser/index.d.ts",
-                "default": "./dist/cjs/browser/index.js"
-            },
-            "default": "./dist/esm/browser/index.mjs"
         },
         "./serialization": {
             "types": "./dist/cjs/serialization/index.d.ts",
@@ -49,18 +32,6 @@
             },
             "default": "./dist/cjs/serialization/index.js"
         },
-        "./server": {
-            "types": "./dist/cjs/index.d.ts",
-            "import": {
-                "types": "./dist/esm/index.d.mts",
-                "default": "./dist/esm/index.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/index.d.ts",
-                "default": "./dist/cjs/index.js"
-            },
-            "default": "./dist/cjs/index.js"
-        },
         "./package.json": "./package.json"
     },
     "files": [
@@ -71,6 +42,9 @@
     ],
     "scripts": {
         "format": "biome format --write --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
+        "format:check": "biome format --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
+        "lint": "biome lint --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
+        "lint:fix": "biome lint --fix --unsafe --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
         "check": "biome check --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
         "check:fix": "biome check --fix --unsafe --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
         "build": "pnpm build:cjs && pnpm build:esm",
@@ -86,12 +60,10 @@
         "vitest": "^3.2.4",
         "msw": "2.11.2",
         "@types/node": "^18.19.70",
-        "@biomejs/biome": "2.2.5",
-        "typescript": "~5.7.2"
+        "typescript": "~5.7.2",
+        "@biomejs/biome": "2.2.5"
     },
     "browser": {
-        "./dist/cjs/wrapper/utils/getBaseUrl.js": "./dist/cjs/wrapper/utils/getBaseUrl.browser.js",
-        "./dist/esm/wrapper/utils/getBaseUrl.mjs": "./dist/esm/wrapper/utils/getBaseUrl.browser.mjs",
         "fs": false,
         "os": false,
         "path": false,
