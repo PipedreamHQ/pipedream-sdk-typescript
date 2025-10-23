@@ -85,7 +85,7 @@ export class Components {
                         (await core.Supplier.get(this._options.baseUrl)) ??
                             (await core.Supplier.get(this._options.environment)) ??
                             environments.PipedreamEnvironment.Prod,
-                        `v1/connect/${encodeURIComponent(this._options.projectId)}/components`,
+                        `v1/connect/${core.url.encodePathParam(this._options.projectId)}/components`,
                     ),
                     method: "GET",
                     headers: _headers,
@@ -186,7 +186,7 @@ export class Components {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/components/${encodeURIComponent(componentId)}`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/components/${core.url.encodePathParam(componentId)}`,
             ),
             method: "GET",
             headers: _headers,
@@ -279,7 +279,7 @@ export class Components {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/components/configure`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/components/configure`,
             ),
             method: "POST",
             headers: _headers,
@@ -377,7 +377,7 @@ export class Components {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/components/props`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/components/props`,
             ),
             method: "POST",
             headers: _headers,

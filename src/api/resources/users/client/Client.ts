@@ -57,7 +57,7 @@ export class Users {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/users/${encodeURIComponent(externalUserId)}`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/users/${core.url.encodePathParam(externalUserId)}`,
             ),
             method: "DELETE",
             headers: _headers,
