@@ -1,1 +1,1 @@
-export type { AppsListRequest } from "./AppsListRequest.js";
+export { type AppsListRequest } from "./AppsListRequest.js";
