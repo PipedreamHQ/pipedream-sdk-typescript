@@ -12,7 +12,7 @@ export const TimerInterface: core.serialization.ObjectSchema<serializers.TimerIn
         timezone: core.serialization.string(),
         scheduleChangedAt: core.serialization.property("schedule_changed_at", core.serialization.number()),
         createdAt: core.serialization.property("created_at", core.serialization.number()),
-        updatedAt: core.serialization.property("updated_at", core.serialization.number().optional()),
+        updatedAt: core.serialization.property("updated_at", core.serialization.number()),
     });
 
 export declare namespace TimerInterface {
@@ -23,6 +23,6 @@ export declare namespace TimerInterface {
         timezone: string;
         schedule_changed_at: number;
         created_at: number;
-        updated_at?: number | null;
+        updated_at: number;
     }
 }
