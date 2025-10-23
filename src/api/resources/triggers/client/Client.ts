@@ -78,7 +78,7 @@ export class Triggers {
                         (await core.Supplier.get(this._options.baseUrl)) ??
                             (await core.Supplier.get(this._options.environment)) ??
                             environments.PipedreamEnvironment.Prod,
-                        `v1/connect/${encodeURIComponent(this._options.projectId)}/triggers`,
+                        `v1/connect/${core.url.encodePathParam(this._options.projectId)}/triggers`,
                     ),
                     method: "GET",
                     headers: _headers,
@@ -179,7 +179,7 @@ export class Triggers {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/triggers/${encodeURIComponent(componentId)}`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/triggers/${core.url.encodePathParam(componentId)}`,
             ),
             method: "GET",
             headers: _headers,
@@ -272,7 +272,7 @@ export class Triggers {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/triggers/configure`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/triggers/configure`,
             ),
             method: "POST",
             headers: _headers,
@@ -370,7 +370,7 @@ export class Triggers {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/triggers/props`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/triggers/props`,
             ),
             method: "POST",
             headers: _headers,
@@ -468,7 +468,7 @@ export class Triggers {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/triggers/deploy`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/triggers/deploy`,
             ),
             method: "POST",
             headers: _headers,
