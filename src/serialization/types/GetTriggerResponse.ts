@@ -3,17 +3,17 @@
 import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { GetTriggerResponseData } from "./GetTriggerResponseData.js";
+import { Emitter } from "./Emitter.js";
 
 export const GetTriggerResponse: core.serialization.ObjectSchema<
     serializers.GetTriggerResponse.Raw,
     Pipedream.GetTriggerResponse
 > = core.serialization.object({
-    data: GetTriggerResponseData,
+    data: Emitter,
 });
 
 export declare namespace GetTriggerResponse {
     export interface Raw {
-        data: GetTriggerResponseData.Raw;
+        data: Emitter.Raw;
     }
 }
