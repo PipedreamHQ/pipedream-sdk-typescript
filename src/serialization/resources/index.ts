@@ -6,6 +6,7 @@ export * as apps from "./apps/index.js";
 export * from "./apps/types/index.js";
 export * from "./deployedTriggers/client/requests/index.js";
 export * as deployedTriggers from "./deployedTriggers/index.js";
+export * from "./deployedTriggers/types/index.js";
 export * from "./oauthTokens/client/requests/index.js";
 export * as oauthTokens from "./oauthTokens/index.js";
 export * as proxy from "./proxy/index.js";
