@@ -86,7 +86,7 @@ export class Accounts {
                         (await core.Supplier.get(this._options.baseUrl)) ??
                             (await core.Supplier.get(this._options.environment)) ??
                             environments.PipedreamEnvironment.Prod,
-                        `v1/connect/${encodeURIComponent(this._options.projectId)}/accounts`,
+                        `v1/connect/${core.url.encodePathParam(this._options.projectId)}/accounts`,
                     ),
                     method: "GET",
                     headers: _headers,
@@ -203,7 +203,7 @@ export class Accounts {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/accounts`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/accounts`,
             ),
             method: "POST",
             headers: _headers,
@@ -309,7 +309,7 @@ export class Accounts {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/accounts/${encodeURIComponent(accountId)}`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/accounts/${core.url.encodePathParam(accountId)}`,
             ),
             method: "GET",
             headers: _headers,
@@ -395,7 +395,7 @@ export class Accounts {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/accounts/${encodeURIComponent(accountId)}`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/accounts/${core.url.encodePathParam(accountId)}`,
             ),
             method: "DELETE",
             headers: _headers,
@@ -472,7 +472,7 @@ export class Accounts {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/apps/${encodeURIComponent(appId)}/accounts`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/apps/${core.url.encodePathParam(appId)}/accounts`,
             ),
             method: "DELETE",
             headers: _headers,

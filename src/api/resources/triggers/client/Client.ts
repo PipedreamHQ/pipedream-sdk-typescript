@@ -78,7 +78,7 @@ export class Triggers {
                         (await core.Supplier.get(this._options.baseUrl)) ??
                             (await core.Supplier.get(this._options.environment)) ??
                             environments.PipedreamEnvironment.Prod,
-                        `v1/connect/${encodeURIComponent(this._options.projectId)}/triggers`,
+                        `v1/connect/${core.url.encodePathParam(this._options.projectId)}/triggers`,
                     ),
                     method: "GET",
                     headers: _headers,
@@ -148,24 +148,35 @@ export class Triggers {
      * Get detailed configuration for a specific trigger by its key
      *
      * @param {string} componentId - The key that uniquely identifies the component (e.g., 'slack-send-message')
+     * @param {Pipedream.TriggersRetrieveRequest} request
      * @param {Triggers.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.triggers.retrieve("component_id")
+     *     await client.triggers.retrieve("component_id", {
+     *         version: "1.2.3"
+     *     })
      */
     public retrieve(
         componentId: string,
+        request: Pipedream.TriggersRetrieveRequest = {},
         requestOptions?: Triggers.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.GetComponentResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__retrieve(componentId, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__retrieve(componentId, request, requestOptions));
     }
 
     private async __retrieve(
         componentId: string,
+        request: Pipedream.TriggersRetrieveRequest = {},
         requestOptions?: Triggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetComponentResponse>> {
+        const { version } = request;
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
+        if (version != null) {
+            _queryParams.version = version;
+        }
+
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
@@ -179,11 +190,11 @@ export class Triggers {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/triggers/${encodeURIComponent(componentId)}`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/triggers/${core.url.encodePathParam(componentId)}`,
             ),
             method: "GET",
             headers: _headers,
-            queryParameters: requestOptions?.queryParams,
+            queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -272,7 +283,7 @@ export class Triggers {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/triggers/configure`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/triggers/configure`,
             ),
             method: "POST",
             headers: _headers,
@@ -370,7 +381,7 @@ export class Triggers {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/triggers/props`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/triggers/props`,
             ),
             method: "POST",
             headers: _headers,
@@ -468,7 +479,7 @@ export class Triggers {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/triggers/deploy`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/triggers/deploy`,
             ),
             method: "POST",
             headers: _headers,

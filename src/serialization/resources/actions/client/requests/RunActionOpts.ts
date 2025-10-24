@@ -9,6 +9,7 @@ import { RunActionOptsStashId } from "../../../../types/RunActionOptsStashId.js"
 export const RunActionOpts: core.serialization.Schema<serializers.RunActionOpts.Raw, Pipedream.RunActionOpts> =
     core.serialization.object({
         id: core.serialization.string(),
+        version: core.serialization.string().optional(),
         externalUserId: core.serialization.property("external_user_id", core.serialization.string()),
         configuredProps: core.serialization.property("configured_props", ConfiguredProps.optional()),
         dynamicPropsId: core.serialization.property("dynamic_props_id", core.serialization.string().optional()),
@@ -18,6 +19,7 @@ export const RunActionOpts: core.serialization.Schema<serializers.RunActionOpts.
 export declare namespace RunActionOpts {
     export interface Raw {
         id: string;
+        version?: string | null;
         external_user_id: string;
         configured_props?: ConfiguredProps.Raw | null;
         dynamic_props_id?: string | null;

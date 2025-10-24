@@ -85,7 +85,7 @@ export class Components {
                         (await core.Supplier.get(this._options.baseUrl)) ??
                             (await core.Supplier.get(this._options.environment)) ??
                             environments.PipedreamEnvironment.Prod,
-                        `v1/connect/${encodeURIComponent(this._options.projectId)}/components`,
+                        `v1/connect/${core.url.encodePathParam(this._options.projectId)}/components`,
                     ),
                     method: "GET",
                     headers: _headers,
@@ -155,24 +155,35 @@ export class Components {
      * Get detailed configuration for a specific component by its key
      *
      * @param {string} componentId - The key that uniquely identifies the component (e.g., 'slack-send-message')
+     * @param {Pipedream.ComponentsRetrieveRequest} request
      * @param {Components.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.components.retrieve("component_id")
+     *     await client.components.retrieve("component_id", {
+     *         version: "1.2.3"
+     *     })
      */
     public retrieve(
         componentId: string,
+        request: Pipedream.ComponentsRetrieveRequest = {},
         requestOptions?: Components.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.GetComponentResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__retrieve(componentId, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__retrieve(componentId, request, requestOptions));
     }
 
     private async __retrieve(
         componentId: string,
+        request: Pipedream.ComponentsRetrieveRequest = {},
         requestOptions?: Components.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetComponentResponse>> {
+        const { version } = request;
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
+        if (version != null) {
+            _queryParams.version = version;
+        }
+
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
@@ -186,11 +197,11 @@ export class Components {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/components/${encodeURIComponent(componentId)}`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/components/${core.url.encodePathParam(componentId)}`,
             ),
             method: "GET",
             headers: _headers,
-            queryParameters: requestOptions?.queryParams,
+            queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -279,7 +290,7 @@ export class Components {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/components/configure`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/components/configure`,
             ),
             method: "POST",
             headers: _headers,
@@ -377,7 +388,7 @@ export class Components {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/components/props`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/components/props`,
             ),
             method: "POST",
             headers: _headers,

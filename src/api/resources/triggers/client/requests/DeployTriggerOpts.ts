@@ -12,11 +12,15 @@ import type * as Pipedream from "../../../../index.js";
 export interface DeployTriggerOpts {
     /** The trigger component ID */
     id: string;
+    /** Optional trigger component version (in SemVer format, for example '1.0.0'), defaults to latest */
+    version?: string;
     /** The external user ID */
     externalUserId: string;
     configuredProps?: Pipedream.ConfiguredProps;
     /** The ID for dynamic props */
     dynamicPropsId?: string;
+    /** Optional ID of a workflow to receive trigger events */
+    workflowId?: string;
     /** Optional webhook URL to receive trigger events */
     webhookUrl?: string;
 }
