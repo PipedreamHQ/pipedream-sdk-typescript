@@ -6,5 +6,5 @@ import type * as Pipedream from "../index.js";
  * Response received when retrieving a deployed trigger
  */
 export interface GetTriggerResponse {
-    data: Pipedream.GetTriggerResponseData;
+    data: Pipedream.Emitter;
 }

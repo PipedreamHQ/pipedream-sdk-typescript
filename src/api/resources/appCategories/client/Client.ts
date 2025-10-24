@@ -133,7 +133,7 @@ export class AppCategories {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/app_categories/${encodeURIComponent(id)}`,
+                `v1/connect/app_categories/${core.url.encodePathParam(id)}`,
             ),
             method: "GET",
             headers: _headers,
