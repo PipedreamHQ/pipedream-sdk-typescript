@@ -60,7 +60,7 @@ export class Tokens {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/tokens`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/tokens`,
             ),
             method: "POST",
             headers: _headers,
@@ -168,7 +168,7 @@ export class Tokens {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/tokens/${encodeURIComponent(serializers.ConnectToken.jsonOrThrow(ctok, { omitUndefined: true }))}/validate`,
+                `v1/connect/tokens/${core.url.encodePathParam(serializers.ConnectToken.jsonOrThrow(ctok, { omitUndefined: true }))}/validate`,
             ),
             method: "GET",
             headers: _headers,

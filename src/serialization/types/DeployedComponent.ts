@@ -13,6 +13,7 @@ export const DeployedComponent: core.serialization.ObjectSchema<
     id: core.serialization.string(),
     ownerId: core.serialization.property("owner_id", core.serialization.string()),
     componentId: core.serialization.property("component_id", core.serialization.string()),
+    componentKey: core.serialization.property("component_key", core.serialization.string().optional()),
     configurableProps: core.serialization.property("configurable_props", core.serialization.list(ConfigurableProp)),
     configuredProps: core.serialization.property("configured_props", ConfiguredProps),
     active: core.serialization.boolean(),
@@ -28,6 +29,7 @@ export declare namespace DeployedComponent {
         id: string;
         owner_id: string;
         component_id: string;
+        component_key?: string | null;
         configurable_props: ConfigurableProp.Raw[];
         configured_props: ConfiguredProps.Raw;
         active: boolean;

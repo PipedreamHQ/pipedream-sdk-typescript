@@ -36,18 +36,19 @@ export class DeployedTriggers {
      *         after: "after",
      *         before: "before",
      *         limit: 1,
-     *         externalUserId: "external_user_id"
+     *         externalUserId: "external_user_id",
+     *         emitterType: "email"
      *     })
      */
     public async list(
         request: Pipedream.DeployedTriggersListRequest,
         requestOptions?: DeployedTriggers.RequestOptions,
-    ): Promise<core.Page<Pipedream.DeployedComponent>> {
+    ): Promise<core.Page<Pipedream.Emitter>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (
                 request: Pipedream.DeployedTriggersListRequest,
             ): Promise<core.WithRawResponse<Pipedream.GetTriggersResponse>> => {
-                const { after, before, limit, externalUserId } = request;
+                const { after, before, limit, externalUserId, emitterType } = request;
                 const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
                 if (after != null) {
                     _queryParams.after = after;
@@ -59,6 +60,12 @@ export class DeployedTriggers {
                     _queryParams.limit = limit.toString();
                 }
                 _queryParams.external_user_id = externalUserId;
+                if (emitterType != null) {
+                    _queryParams.emitter_type = serializers.EmitterType.jsonOrThrow(emitterType, {
+                        unrecognizedObjectKeys: "strip",
+                        omitUndefined: true,
+                    });
+                }
                 const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
                     this._options?.headers,
                     mergeOnlyDefinedHeaders({
@@ -72,7 +79,7 @@ export class DeployedTriggers {
                         (await core.Supplier.get(this._options.baseUrl)) ??
                             (await core.Supplier.get(this._options.environment)) ??
                             environments.PipedreamEnvironment.Prod,
-                        `v1/connect/${encodeURIComponent(this._options.projectId)}/deployed-triggers`,
+                        `v1/connect/${core.url.encodePathParam(this._options.projectId)}/deployed-triggers`,
                     ),
                     method: "GET",
                     headers: _headers,
@@ -125,7 +132,7 @@ export class DeployedTriggers {
             },
         );
         const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Pageable<Pipedream.GetTriggersResponse, Pipedream.DeployedComponent>({
+        return new core.Pageable<Pipedream.GetTriggersResponse, Pipedream.Emitter>({
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
@@ -181,7 +188,7 @@ export class DeployedTriggers {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/deployed-triggers/${encodeURIComponent(triggerId)}`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/deployed-triggers/${core.url.encodePathParam(triggerId)}`,
             ),
             method: "GET",
             headers: _headers,
@@ -278,7 +285,7 @@ export class DeployedTriggers {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/deployed-triggers/${encodeURIComponent(triggerId)}`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/deployed-triggers/${core.url.encodePathParam(triggerId)}`,
             ),
             method: "PUT",
             headers: _headers,
@@ -386,7 +393,7 @@ export class DeployedTriggers {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/deployed-triggers/${encodeURIComponent(triggerId)}`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/deployed-triggers/${core.url.encodePathParam(triggerId)}`,
             ),
             method: "DELETE",
             headers: _headers,
@@ -479,7 +486,7 @@ export class DeployedTriggers {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/deployed-triggers/${encodeURIComponent(triggerId)}/events`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/deployed-triggers/${core.url.encodePathParam(triggerId)}/events`,
             ),
             method: "GET",
             headers: _headers,
@@ -576,7 +583,7 @@ export class DeployedTriggers {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/deployed-triggers/${encodeURIComponent(triggerId)}/pipelines`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/deployed-triggers/${core.url.encodePathParam(triggerId)}/pipelines`,
             ),
             method: "GET",
             headers: _headers,
@@ -674,7 +681,7 @@ export class DeployedTriggers {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/deployed-triggers/${encodeURIComponent(triggerId)}/pipelines`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/deployed-triggers/${core.url.encodePathParam(triggerId)}/pipelines`,
             ),
             method: "PUT",
             headers: _headers,
@@ -777,7 +784,7 @@ export class DeployedTriggers {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/deployed-triggers/${encodeURIComponent(triggerId)}/webhooks`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/deployed-triggers/${core.url.encodePathParam(triggerId)}/webhooks`,
             ),
             method: "GET",
             headers: _headers,
@@ -875,7 +882,7 @@ export class DeployedTriggers {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/deployed-triggers/${encodeURIComponent(triggerId)}/webhooks`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/deployed-triggers/${core.url.encodePathParam(triggerId)}/webhooks`,
             ),
             method: "PUT",
             headers: _headers,
