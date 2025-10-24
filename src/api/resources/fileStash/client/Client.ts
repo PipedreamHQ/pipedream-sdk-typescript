@@ -53,7 +53,7 @@ export class FileStash {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/file_stash/download`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/file_stash/download`,
             ),
             method: "GET",
             headers: _headers,

@@ -13,5 +13,5 @@ export interface TimerInterface {
     /** The timestamp when the timer interface was created (epoch milliseconds) */
     createdAt: number;
     /** The timestamp when the timer interface was last updated (epoch milliseconds) */
-    updatedAt?: number;
+    updatedAt: number;
 }

@@ -12,5 +12,5 @@ export interface HttpInterface {
     /** The timestamp when the HTTP interface was created (epoch milliseconds) */
     createdAt: number;
     /** The timestamp when the HTTP interface was last updated (epoch milliseconds) */
-    updatedAt?: number;
+    updatedAt: number;
 }
