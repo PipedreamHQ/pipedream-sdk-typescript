@@ -183,7 +183,7 @@ export class Apps {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/apps/${encodeURIComponent(appId)}`,
+                `v1/connect/apps/${core.url.encodePathParam(appId)}`,
             ),
             method: "GET",
             headers: _headers,
