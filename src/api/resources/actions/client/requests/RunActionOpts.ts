@@ -12,6 +12,8 @@ import type * as Pipedream from "../../../../index.js";
 export interface RunActionOpts {
     /** The action component ID */
     id: string;
+    /** Optional action component version (in SemVer format, for example '1.0.0'), defaults to latest */
+    version?: string;
     /** The external user ID */
     externalUserId: string;
     configuredProps?: Pipedream.ConfiguredProps;

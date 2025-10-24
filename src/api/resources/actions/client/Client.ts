@@ -78,7 +78,7 @@ export class Actions {
                         (await core.Supplier.get(this._options.baseUrl)) ??
                             (await core.Supplier.get(this._options.environment)) ??
                             environments.PipedreamEnvironment.Prod,
-                        `v1/connect/${encodeURIComponent(this._options.projectId)}/actions`,
+                        `v1/connect/${core.url.encodePathParam(this._options.projectId)}/actions`,
                     ),
                     method: "GET",
                     headers: _headers,
@@ -148,24 +148,35 @@ export class Actions {
      * Get detailed configuration for a specific action by its key
      *
      * @param {string} componentId - The key that uniquely identifies the component (e.g., 'slack-send-message')
+     * @param {Pipedream.ActionsRetrieveRequest} request
      * @param {Actions.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.actions.retrieve("component_id")
+     *     await client.actions.retrieve("component_id", {
+     *         version: "1.2.3"
+     *     })
      */
     public retrieve(
         componentId: string,
+        request: Pipedream.ActionsRetrieveRequest = {},
         requestOptions?: Actions.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.GetComponentResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__retrieve(componentId, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__retrieve(componentId, request, requestOptions));
     }
 
     private async __retrieve(
         componentId: string,
+        request: Pipedream.ActionsRetrieveRequest = {},
         requestOptions?: Actions.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetComponentResponse>> {
+        const { version } = request;
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
+        if (version != null) {
+            _queryParams.version = version;
+        }
+
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
@@ -179,11 +190,11 @@ export class Actions {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/actions/${encodeURIComponent(componentId)}`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/actions/${core.url.encodePathParam(componentId)}`,
             ),
             method: "GET",
             headers: _headers,
-            queryParameters: requestOptions?.queryParams,
+            queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
@@ -272,7 +283,7 @@ export class Actions {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/actions/configure`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/actions/configure`,
             ),
             method: "POST",
             headers: _headers,
@@ -370,7 +381,7 @@ export class Actions {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/actions/props`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/actions/props`,
             ),
             method: "POST",
             headers: _headers,
@@ -468,7 +479,7 @@ export class Actions {
                 (await core.Supplier.get(this._options.baseUrl)) ??
                     (await core.Supplier.get(this._options.environment)) ??
                     environments.PipedreamEnvironment.Prod,
-                `v1/connect/${encodeURIComponent(this._options.projectId)}/actions/run`,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/actions/run`,
             ),
             method: "POST",
             headers: _headers,
