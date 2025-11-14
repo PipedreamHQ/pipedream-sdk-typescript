@@ -9,34 +9,36 @@ import { App } from "./App.js";
 export const Account: core.serialization.ObjectSchema<serializers.Account.Raw, Pipedream.Account> =
     core.serialization.object({
         id: AccountId,
-        name: core.serialization.string().optional(),
+        name: core.serialization.string().optionalNullable(),
         externalId: core.serialization.property("external_id", core.serialization.string().optional()),
         healthy: core.serialization.boolean().optional(),
-        dead: core.serialization.boolean().optional(),
+        dead: core.serialization.boolean().optionalNullable(),
         app: App.optional(),
         createdAt: core.serialization.property("created_at", core.serialization.date().optional()),
         updatedAt: core.serialization.property("updated_at", core.serialization.date().optional()),
-        credentials: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
+        credentials: core.serialization
+            .record(core.serialization.string(), core.serialization.unknown())
+            .optionalNullable(),
         expiresAt: core.serialization.property("expires_at", core.serialization.date().optional()),
-        error: core.serialization.string().optional(),
+        error: core.serialization.string().optionalNullable(),
         lastRefreshedAt: core.serialization.property("last_refreshed_at", core.serialization.date().optional()),
-        nextRefreshAt: core.serialization.property("next_refresh_at", core.serialization.date().optional()),
+        nextRefreshAt: core.serialization.property("next_refresh_at", core.serialization.date().optionalNullable()),
     });
 
 export declare namespace Account {
     export interface Raw {
         id: AccountId.Raw;
-        name?: string | null;
+        name?: (string | null | undefined) | null;
         external_id?: string | null;
         healthy?: boolean | null;
-        dead?: boolean | null;
+        dead?: (boolean | null | undefined) | null;
         app?: App.Raw | null;
         created_at?: string | null;
         updated_at?: string | null;
-        credentials?: Record<string, unknown> | null;
+        credentials?: (Record<string, unknown> | null | undefined) | null;
         expires_at?: string | null;
-        error?: string | null;
+        error?: (string | null | undefined) | null;
         last_refreshed_at?: string | null;
-        next_refresh_at?: string | null;
+        next_refresh_at?: (string | null | undefined) | null;
     }
 }

@@ -10,22 +10,22 @@ export const ConfigurePropResponse: core.serialization.ObjectSchema<
     serializers.ConfigurePropResponse.Raw,
     Pipedream.ConfigurePropResponse
 > = core.serialization.object({
-    options: ConfigurePropOptions.optional(),
+    options: ConfigurePropOptions.optionalNullable(),
     stringOptions: core.serialization.property(
         "string_options",
-        core.serialization.list(core.serialization.string()).optional(),
+        core.serialization.list(core.serialization.string()).optionalNullable(),
     ),
-    observations: core.serialization.list(Observation).optional(),
-    context: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
+    observations: core.serialization.list(Observation).optionalNullable(),
+    context: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optionalNullable(),
     errors: core.serialization.list(core.serialization.string()).optional(),
 });
 
 export declare namespace ConfigurePropResponse {
     export interface Raw {
-        options?: (ConfigurePropOptions.Raw | undefined) | null;
-        string_options?: string[] | null;
-        observations?: Observation.Raw[] | null;
-        context?: Record<string, unknown> | null;
+        options?: ((ConfigurePropOptions.Raw | undefined) | null | undefined) | null;
+        string_options?: (string[] | null | undefined) | null;
+        observations?: (Observation.Raw[] | null | undefined) | null;
+        context?: (Record<string, unknown> | null | undefined) | null;
         errors?: string[] | null;
     }
 }

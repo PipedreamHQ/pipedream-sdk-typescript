@@ -8,7 +8,7 @@ import { PropOptionValue } from "./PropOptionValue.js";
 export const PropOption: core.serialization.ObjectSchema<serializers.PropOption.Raw, Pipedream.PropOption> =
     core.serialization.object({
         label: core.serialization.string(),
-        value: PropOptionValue.optional(),
+        value: PropOptionValue.nullable(),
     });
 
 export declare namespace PropOption {

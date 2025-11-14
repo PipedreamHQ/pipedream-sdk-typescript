@@ -26,25 +26,18 @@ export class Apps {
     /**
      * Retrieve all available apps with optional filtering and sorting
      *
-     * @param {Pipedream.AppsListRequest} request
+     * @param {Pipedream.ListAppsRequest} request
      * @param {Apps.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
-     *     await client.apps.list({
-     *         after: "after",
-     *         before: "before",
-     *         limit: 1,
-     *         q: "q",
-     *         sortKey: "name",
-     *         sortDirection: "asc"
-     *     })
+     *     await client.apps.list()
      */
     public async list(
-        request: Pipedream.AppsListRequest = {},
+        request: Pipedream.ListAppsRequest = {},
         requestOptions?: Apps.RequestOptions,
-    ): Promise<core.Page<Pipedream.App>> {
+    ): Promise<core.Page<Pipedream.App, Pipedream.ListAppsResponse>> {
         const list = core.HttpResponsePromise.interceptFunction(
-            async (request: Pipedream.AppsListRequest): Promise<core.WithRawResponse<Pipedream.ListAppsResponse>> => {
+            async (request: Pipedream.ListAppsRequest): Promise<core.WithRawResponse<Pipedream.ListAppsResponse>> => {
                 const { after, before, limit, q, sortKey, sortDirection, categoryIds } = request;
                 const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
                 if (after != null) {
@@ -60,13 +53,13 @@ export class Apps {
                     _queryParams.q = q;
                 }
                 if (sortKey != null) {
-                    _queryParams.sort_key = serializers.AppsListRequestSortKey.jsonOrThrow(sortKey, {
+                    _queryParams.sort_key = serializers.ListAppsRequestSortKey.jsonOrThrow(sortKey, {
                         unrecognizedObjectKeys: "strip",
                         omitUndefined: true,
                     });
                 }
                 if (sortDirection != null) {
-                    _queryParams.sort_direction = serializers.AppsListRequestSortDirection.jsonOrThrow(sortDirection, {
+                    _queryParams.sort_direction = serializers.ListAppsRequestSortDirection.jsonOrThrow(sortDirection, {
                         unrecognizedObjectKeys: "strip",
                         omitUndefined: true,
                     });
@@ -99,6 +92,8 @@ export class Apps {
                     timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
                     maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
                     abortSignal: requestOptions?.abortSignal,
+                    fetchFn: this._options?.fetch,
+                    logging: this._options.logging,
                 });
                 if (_response.ok) {
                     return {
@@ -137,7 +132,7 @@ export class Apps {
             },
         );
         const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Pageable<Pipedream.ListAppsResponse, Pipedream.App>({
+        return new core.Page<Pipedream.App, Pipedream.ListAppsResponse>({
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
@@ -153,23 +148,26 @@ export class Apps {
     /**
      * Get detailed information about a specific app by ID or name slug
      *
-     * @param {string} appId - The name slug or ID of the app (e.g., 'slack', 'github')
+     * @param {Pipedream.RetrieveAppsRequest} request
      * @param {Apps.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
-     *     await client.apps.retrieve("app_id")
+     *     await client.apps.retrieve({
+     *         appId: "app_id"
+     *     })
      */
     public retrieve(
-        appId: string,
+        request: Pipedream.RetrieveAppsRequest,
         requestOptions?: Apps.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.GetAppResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__retrieve(appId, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__retrieve(request, requestOptions));
     }
 
     private async __retrieve(
-        appId: string,
+        request: Pipedream.RetrieveAppsRequest,
         requestOptions?: Apps.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetAppResponse>> {
+        const { appId } = request;
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
@@ -191,6 +189,8 @@ export class Apps {
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return {

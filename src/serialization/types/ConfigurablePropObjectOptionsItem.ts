@@ -10,7 +10,7 @@ import { PropOptionValue } from "./PropOptionValue.js";
 export const ConfigurablePropObjectOptionsItem: core.serialization.Schema<
     serializers.ConfigurablePropObjectOptionsItem.Raw,
     Pipedream.ConfigurablePropObjectOptionsItem
-> = core.serialization.undiscriminatedUnion([PropOption, PropOptionNested, PropOptionValue.optional()]);
+> = core.serialization.undiscriminatedUnion([PropOption, PropOptionNested, PropOptionValue.nullable()]);
 
 export declare namespace ConfigurablePropObjectOptionsItem {
     export type Raw = PropOption.Raw | PropOptionNested.Raw | (PropOptionValue.Raw | null | undefined);

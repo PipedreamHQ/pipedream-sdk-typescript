@@ -6,7 +6,7 @@ import type * as serializers from "../../../../index.js";
 
 export const CreateAccountOpts: core.serialization.Schema<
     serializers.CreateAccountOpts.Raw,
-    Omit<Pipedream.CreateAccountOpts, "externalUserId" | "oauthAppId">
+    Omit<Pipedream.CreateAccountOpts, "projectId" | "externalUserId" | "oauthAppId">
 > = core.serialization.object({
     appSlug: core.serialization.property("app_slug", core.serialization.string()),
     cfmapJson: core.serialization.property("cfmap_json", core.serialization.string()),

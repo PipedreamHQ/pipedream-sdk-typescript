@@ -8,13 +8,13 @@ export const ProjectInfoResponseApp: core.serialization.ObjectSchema<
     serializers.ProjectInfoResponseApp.Raw,
     Pipedream.ProjectInfoResponseApp
 > = core.serialization.object({
-    id: core.serialization.string().optional(),
+    id: core.serialization.string().optionalNullable(),
     nameSlug: core.serialization.property("name_slug", core.serialization.string().optional()),
 });
 
 export declare namespace ProjectInfoResponseApp {
     export interface Raw {
-        id?: string | null;
+        id?: (string | null | undefined) | null;
         name_slug?: string | null;
     }
 }
