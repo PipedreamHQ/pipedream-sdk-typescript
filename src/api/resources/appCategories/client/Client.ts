@@ -61,6 +61,8 @@ export class AppCategories {
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return {
@@ -103,23 +105,26 @@ export class AppCategories {
     /**
      * Get details of a specific app category by its ID
      *
-     * @param {string} id - The ID of the app category to retrieve
+     * @param {Pipedream.RetrieveAppCategoriesRequest} request
      * @param {AppCategories.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @example
-     *     await client.appCategories.retrieve("id")
+     *     await client.appCategories.retrieve({
+     *         id: "id"
+     *     })
      */
     public retrieve(
-        id: string,
+        request: Pipedream.RetrieveAppCategoriesRequest,
         requestOptions?: AppCategories.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.GetAppCategoryResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__retrieve(id, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__retrieve(request, requestOptions));
     }
 
     private async __retrieve(
-        id: string,
+        request: Pipedream.RetrieveAppCategoriesRequest,
         requestOptions?: AppCategories.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetAppCategoryResponse>> {
+        const { id } = request;
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
@@ -141,6 +146,8 @@ export class AppCategories {
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return {

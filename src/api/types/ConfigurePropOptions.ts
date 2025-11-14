@@ -5,4 +5,4 @@ import type * as Pipedream from "../index.js";
 /**
  * Available options (with labels) for the configured prop
  */
-export type ConfigurePropOptions = Pipedream.ConfigurePropOptionsItem[] | undefined;
+export type ConfigurePropOptions = Pipedream.ConfigurePropOptionsItem[] | null;

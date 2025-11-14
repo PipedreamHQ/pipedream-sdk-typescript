@@ -1,1 +1,1 @@
-export type { FileStashDownloadFileRequest } from "./FileStashDownloadFileRequest.js";
+export type { DownloadFileFileStashRequest } from "./DownloadFileFileStashRequest.js";

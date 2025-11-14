@@ -33,6 +33,7 @@ export class Tokens {
      *
      * @example
      *     await client.tokens.create({
+     *         projectId: "project_id",
      *         externalUserId: "external_user_id"
      *     })
      */
@@ -47,6 +48,7 @@ export class Tokens {
         request: Pipedream.CreateTokenOpts,
         requestOptions?: Tokens.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.CreateTokenResponse>> {
+        const { projectId, ..._body } = request;
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
@@ -67,13 +69,15 @@ export class Tokens {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.CreateTokenOpts.jsonOrThrow(request, {
+            body: serializers.CreateTokenOpts.jsonOrThrow(_body, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return {
@@ -123,32 +127,29 @@ export class Tokens {
     /**
      * Confirm the validity of a Connect token
      *
-     * @param {Pipedream.ConnectToken} ctok
-     * @param {Pipedream.TokensValidateRequest} request
+     * @param {Pipedream.ValidateTokensRequest} request
      * @param {Tokens.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.tokens.validate("ctok", {
-     *         appId: "app_id",
-     *         oauthAppId: "oauth_app_id"
+     *     await client.tokens.validate({
+     *         ctok: "ctok",
+     *         appId: "app_id"
      *     })
      */
     public validate(
-        ctok: Pipedream.ConnectToken,
-        request: Pipedream.TokensValidateRequest,
+        request: Pipedream.ValidateTokensRequest,
         requestOptions?: Tokens.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.ValidateTokenResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__validate(ctok, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__validate(request, requestOptions));
     }
 
     private async __validate(
-        ctok: Pipedream.ConnectToken,
-        request: Pipedream.TokensValidateRequest,
+        request: Pipedream.ValidateTokensRequest,
         requestOptions?: Tokens.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ValidateTokenResponse>> {
-        const { appId, oauthAppId } = request;
+        const { ctok, appId, oauthAppId } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams.app_id = appId;
         if (oauthAppId != null) {
@@ -176,6 +177,8 @@ export class Tokens {
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return {

@@ -9,7 +9,7 @@ export const RunActionOptsStashId: core.serialization.Schema<
     serializers.RunActionOptsStashId.Raw,
     Pipedream.RunActionOptsStashId
 > = core.serialization.undiscriminatedUnion([
-    StashId.optional(),
+    StashId.nullable(),
     core.serialization.stringLiteral("NEW"),
     core.serialization.boolean(),
 ]);

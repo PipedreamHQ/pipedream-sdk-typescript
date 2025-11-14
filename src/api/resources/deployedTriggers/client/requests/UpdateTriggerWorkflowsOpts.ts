@@ -3,11 +3,16 @@
 /**
  * @example
  *     {
+ *         projectId: "project_id",
+ *         triggerId: "trigger_id",
  *         externalUserId: "external_user_id",
  *         workflowIds: ["workflow_ids"]
  *     }
  */
 export interface UpdateTriggerWorkflowsOpts {
+    /** The project ID, which starts with 'proj_'. */
+    projectId: string;
+    triggerId: string;
     /** The external user ID who owns the trigger */
     externalUserId: string;
     /** Array of workflow IDs to set */

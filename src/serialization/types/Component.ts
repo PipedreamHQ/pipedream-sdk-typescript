@@ -13,10 +13,10 @@ export const Component: core.serialization.ObjectSchema<serializers.Component.Ra
         name: core.serialization.string(),
         version: core.serialization.string(),
         configurableProps: core.serialization.property("configurable_props", core.serialization.list(ConfigurableProp)),
-        description: core.serialization.string().optional(),
-        componentType: core.serialization.property("component_type", core.serialization.string().optional()),
-        stash: ComponentStash.optional(),
-        annotations: ToolAnnotations.optional(),
+        description: core.serialization.string().optionalNullable(),
+        componentType: core.serialization.property("component_type", core.serialization.string().optionalNullable()),
+        stash: ComponentStash.optionalNullable(),
+        annotations: ToolAnnotations.optionalNullable(),
     });
 
 export declare namespace Component {
@@ -25,9 +25,9 @@ export declare namespace Component {
         name: string;
         version: string;
         configurable_props: ConfigurableProp.Raw[];
-        description?: string | null;
-        component_type?: string | null;
-        stash?: ComponentStash.Raw | null;
-        annotations?: ToolAnnotations.Raw | null;
+        description?: (string | null | undefined) | null;
+        component_type?: (string | null | undefined) | null;
+        stash?: (ComponentStash.Raw | null | undefined) | null;
+        annotations?: (ToolAnnotations.Raw | null | undefined) | null;
     }
 }

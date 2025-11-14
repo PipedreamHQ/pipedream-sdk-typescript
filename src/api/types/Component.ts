@@ -11,9 +11,9 @@ export interface Component {
     version: string;
     configurableProps: Pipedream.ConfigurableProp[];
     /** A description of the component */
-    description?: string;
+    description?: string | null;
     /** The type of component (trigger or action) */
-    componentType?: string;
-    stash?: Pipedream.ComponentStash;
-    annotations?: Pipedream.ToolAnnotations;
+    componentType?: string | null;
+    stash?: Pipedream.ComponentStash | null;
+    annotations?: Pipedream.ToolAnnotations | null;
 }
