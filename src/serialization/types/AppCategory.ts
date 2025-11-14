@@ -8,13 +8,13 @@ export const AppCategory: core.serialization.ObjectSchema<serializers.AppCategor
     core.serialization.object({
         id: core.serialization.string().optional(),
         name: core.serialization.string().optional(),
-        description: core.serialization.string().optional(),
+        description: core.serialization.string().optionalNullable(),
     });
 
 export declare namespace AppCategory {
     export interface Raw {
         id?: string | null;
         name?: string | null;
-        description?: string | null;
+        description?: (string | null | undefined) | null;
     }
 }

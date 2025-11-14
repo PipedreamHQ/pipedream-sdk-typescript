@@ -8,5 +8,5 @@ import type * as Pipedream from "../index.js";
 export interface PropOption {
     /** The human-readable label for the option */
     label: string;
-    value?: Pipedream.PropOptionValue;
+    value: Pipedream.PropOptionValue | null;
 }

@@ -6,4 +6,4 @@ export type ConfigurablePropIntegerOptionsItem =
     | Pipedream.PropOption
     | Pipedream.PropOptionNested
     | Pipedream.PropOptionValue
-    | undefined;
+    | null;

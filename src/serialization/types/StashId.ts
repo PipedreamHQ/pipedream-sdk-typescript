@@ -6,7 +6,7 @@ import type * as serializers from "../index.js";
 
 export const StashId: core.serialization.Schema<serializers.StashId.Raw, Pipedream.StashId> = core.serialization
     .string()
-    .optional();
+    .nullable();
 
 export declare namespace StashId {
     export type Raw = string | null | undefined;

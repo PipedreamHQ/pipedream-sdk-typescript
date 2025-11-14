@@ -6,23 +6,23 @@ import type * as Pipedream from "../index.js";
  * Response received when validating a connect token
  */
 export interface ValidateTokenResponse {
-    app?: Pipedream.App;
+    app?: Pipedream.App | null;
     /** Error message if validation failed */
-    error?: string;
+    error: string | null;
     /** URI to redirect to on error */
-    errorRedirectUri?: string;
+    errorRedirectUri?: string | null;
     /** OAuth app ID if applicable */
-    oauthAppId?: string;
+    oauthAppId?: string | null;
     /** Name of the project app */
-    projectAppName?: string;
+    projectAppName?: string | null;
     /** Environment of the project */
-    projectEnvironment?: string;
+    projectEnvironment?: string | null;
     /** ID of the project */
-    projectId?: string;
+    projectId?: string | null;
     /** Support email for the project */
-    projectSupportEmail?: string;
+    projectSupportEmail?: string | null;
     /** Whether the token validation was successful */
     success: boolean;
     /** URI to redirect to on success */
-    successRedirectUri?: string;
+    successRedirectUri?: string | null;
 }

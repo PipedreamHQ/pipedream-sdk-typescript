@@ -6,4 +6,4 @@ export type ConfigurablePropSqlOptionsItem =
     | Pipedream.PropOption
     | Pipedream.PropOptionNested
     | Pipedream.PropOptionValue
-    | undefined;
+    | null;
