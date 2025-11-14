@@ -6,7 +6,7 @@ import type * as serializers from "../../../../index.js";
 
 export const UpdateTriggerWorkflowsOpts: core.serialization.Schema<
     serializers.UpdateTriggerWorkflowsOpts.Raw,
-    Omit<Pipedream.UpdateTriggerWorkflowsOpts, "externalUserId">
+    Omit<Pipedream.UpdateTriggerWorkflowsOpts, "projectId" | "triggerId" | "externalUserId">
 > = core.serialization.object({
     workflowIds: core.serialization.property("workflow_ids", core.serialization.list(core.serialization.string())),
 });

@@ -94,6 +94,7 @@ export * from "./PropOption.js";
 export * from "./PropOptionNested.js";
 export * from "./PropOptionValue.js";
 export * from "./ProxyResponse.js";
+export * from "./ProxyResponseBinary.js";
 export * from "./ReloadPropsOpts.js";
 export * from "./ReloadPropsResponse.js";
 export * from "./RunActionOptsStashId.js";

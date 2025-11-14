@@ -3,4 +3,4 @@
 /**
  * The ID of the File Stash
  */
-export type StashId = string | undefined;
+export type StashId = string | null;

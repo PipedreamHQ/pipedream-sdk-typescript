@@ -8,19 +8,19 @@ export const ToolAnnotations: core.serialization.ObjectSchema<
     serializers.ToolAnnotations.Raw,
     Pipedream.ToolAnnotations
 > = core.serialization.object({
-    destructiveHint: core.serialization.boolean().optional(),
-    idempotentHint: core.serialization.boolean().optional(),
-    openWorldHint: core.serialization.boolean().optional(),
-    readOnlyHint: core.serialization.boolean().optional(),
-    title: core.serialization.string().optional(),
+    destructiveHint: core.serialization.boolean().optionalNullable(),
+    idempotentHint: core.serialization.boolean().optionalNullable(),
+    openWorldHint: core.serialization.boolean().optionalNullable(),
+    readOnlyHint: core.serialization.boolean().optionalNullable(),
+    title: core.serialization.string().optionalNullable(),
 });
 
 export declare namespace ToolAnnotations {
     export interface Raw {
-        destructiveHint?: boolean | null;
-        idempotentHint?: boolean | null;
-        openWorldHint?: boolean | null;
-        readOnlyHint?: boolean | null;
-        title?: string | null;
+        destructiveHint?: (boolean | null | undefined) | null;
+        idempotentHint?: (boolean | null | undefined) | null;
+        openWorldHint?: (boolean | null | undefined) | null;
+        readOnlyHint?: (boolean | null | undefined) | null;
+        title?: (string | null | undefined) | null;
     }
 }

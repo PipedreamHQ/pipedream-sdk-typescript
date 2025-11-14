@@ -7,18 +7,18 @@ import type * as Pipedream from "../index.js";
  */
 export interface App {
     /** ID of the app. Only applies for OAuth apps. */
-    id?: string;
+    id?: string | null;
     /** The name slug of the target app (see https://pipedream.com/docs/connect/quickstart#find-your-apps-name-slug) */
     nameSlug: string;
     /** The human-readable name of the app */
     name: string;
-    authType?: Pipedream.AppAuthType;
+    authType?: Pipedream.AppAuthType | null;
     /** A short description of the app */
-    description?: string;
+    description?: string | null;
     /** The URL to the app's logo */
     imgSrc: string;
     /** A JSON string representing the custom fields for the app */
-    customFieldsJson?: string;
+    customFieldsJson: string | null;
     /** Categories associated with the app */
     categories: string[];
     /** A rough directional ordering of app popularity, subject to changes by Pipedream */

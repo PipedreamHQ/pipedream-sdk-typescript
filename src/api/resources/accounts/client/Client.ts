@@ -26,31 +26,26 @@ export class Accounts {
     /**
      * Retrieve all connected accounts for the project with optional filtering
      *
-     * @param {Pipedream.AccountsListRequest} request
+     * @param {Pipedream.ListAccountsRequest} request
      * @param {Accounts.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.accounts.list({
-     *         externalUserId: "external_user_id",
-     *         oauthAppId: "oauth_app_id",
-     *         after: "after",
-     *         before: "before",
-     *         limit: 1,
-     *         app: "app",
-     *         includeCredentials: true
+     *         projectId: "project_id"
      *     })
      */
     public async list(
-        request: Pipedream.AccountsListRequest = {},
+        request: Pipedream.ListAccountsRequest,
         requestOptions?: Accounts.RequestOptions,
-    ): Promise<core.Page<Pipedream.Account>> {
+    ): Promise<core.Page<Pipedream.Account, Pipedream.ListAccountsResponse>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (
-                request: Pipedream.AccountsListRequest,
+                request: Pipedream.ListAccountsRequest,
             ): Promise<core.WithRawResponse<Pipedream.ListAccountsResponse>> => {
-                const { externalUserId, oauthAppId, after, before, limit, app, includeCredentials } = request;
+                const { projectId, externalUserId, oauthAppId, after, before, limit, app, includeCredentials } =
+                    request;
                 const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
                 if (externalUserId != null) {
                     _queryParams.external_user_id = externalUserId;
@@ -94,6 +89,8 @@ export class Accounts {
                     timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
                     maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
                     abortSignal: requestOptions?.abortSignal,
+                    fetchFn: this._options?.fetch,
+                    logging: this._options.logging,
                 });
                 if (_response.ok) {
                     return {
@@ -139,7 +136,7 @@ export class Accounts {
             },
         );
         const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Pageable<Pipedream.ListAccountsResponse, Pipedream.Account>({
+        return new core.Page<Pipedream.Account, Pipedream.ListAccountsResponse>({
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
@@ -162,8 +159,7 @@ export class Accounts {
      *
      * @example
      *     await client.accounts.create({
-     *         externalUserId: "external_user_id",
-     *         oauthAppId: "oauth_app_id",
+     *         projectId: "project_id",
      *         appSlug: "app_slug",
      *         cfmapJson: "cfmap_json",
      *         connectToken: "connect_token"
@@ -180,7 +176,7 @@ export class Accounts {
         request: Pipedream.CreateAccountOpts,
         requestOptions?: Accounts.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.Account>> {
-        const { externalUserId, oauthAppId, ..._body } = request;
+        const { projectId, externalUserId, oauthAppId, ..._body } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (externalUserId != null) {
             _queryParams.external_user_id = externalUserId;
@@ -217,6 +213,8 @@ export class Accounts {
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return {
@@ -266,31 +264,29 @@ export class Accounts {
     /**
      * Get the details for a specific connected account
      *
-     * @param {string} accountId
-     * @param {Pipedream.AccountsRetrieveRequest} request
+     * @param {Pipedream.RetrieveAccountsRequest} request
      * @param {Accounts.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.accounts.retrieve("account_id", {
-     *         includeCredentials: true
+     *     await client.accounts.retrieve({
+     *         projectId: "project_id",
+     *         accountId: "account_id"
      *     })
      */
     public retrieve(
-        accountId: string,
-        request: Pipedream.AccountsRetrieveRequest = {},
+        request: Pipedream.RetrieveAccountsRequest,
         requestOptions?: Accounts.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.Account> {
-        return core.HttpResponsePromise.fromPromise(this.__retrieve(accountId, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__retrieve(request, requestOptions));
     }
 
     private async __retrieve(
-        accountId: string,
-        request: Pipedream.AccountsRetrieveRequest = {},
+        request: Pipedream.RetrieveAccountsRequest,
         requestOptions?: Accounts.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.Account>> {
-        const { includeCredentials } = request;
+        const { projectId, accountId, includeCredentials } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (includeCredentials != null) {
             _queryParams.include_credentials = includeCredentials.toString();
@@ -317,6 +313,8 @@ export class Accounts {
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return {
@@ -366,22 +364,29 @@ export class Accounts {
     /**
      * Remove a connected account and its associated credentials
      *
-     * @param {string} accountId
+     * @param {Pipedream.DeleteAccountsRequest} request
      * @param {Accounts.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.accounts.delete("account_id")
+     *     await client.accounts.delete({
+     *         projectId: "project_id",
+     *         accountId: "account_id"
+     *     })
      */
-    public delete(accountId: string, requestOptions?: Accounts.RequestOptions): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__delete(accountId, requestOptions));
+    public delete(
+        request: Pipedream.DeleteAccountsRequest,
+        requestOptions?: Accounts.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__delete(request, requestOptions));
     }
 
     private async __delete(
-        accountId: string,
+        request: Pipedream.DeleteAccountsRequest,
         requestOptions?: Accounts.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
+        const { projectId, accountId } = request;
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
@@ -403,6 +408,8 @@ export class Accounts {
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return { data: undefined, rawResponse: _response.rawResponse };
@@ -443,22 +450,29 @@ export class Accounts {
     /**
      * Remove all connected accounts for a specific app
      *
-     * @param {string} appId
+     * @param {Pipedream.DeleteByAppAccountsRequest} request
      * @param {Accounts.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.accounts.deleteByApp("app_id")
+     *     await client.accounts.deleteByApp({
+     *         projectId: "project_id",
+     *         appId: "app_id"
+     *     })
      */
-    public deleteByApp(appId: string, requestOptions?: Accounts.RequestOptions): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__deleteByApp(appId, requestOptions));
+    public deleteByApp(
+        request: Pipedream.DeleteByAppAccountsRequest,
+        requestOptions?: Accounts.RequestOptions,
+    ): core.HttpResponsePromise<void> {
+        return core.HttpResponsePromise.fromPromise(this.__deleteByApp(request, requestOptions));
     }
 
     private async __deleteByApp(
-        appId: string,
+        request: Pipedream.DeleteByAppAccountsRequest,
         requestOptions?: Accounts.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
+        const { projectId, appId } = request;
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
@@ -480,6 +494,8 @@ export class Accounts {
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return { data: undefined, rawResponse: _response.rawResponse };

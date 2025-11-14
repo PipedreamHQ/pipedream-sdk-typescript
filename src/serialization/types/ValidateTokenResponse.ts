@@ -9,29 +9,38 @@ export const ValidateTokenResponse: core.serialization.ObjectSchema<
     serializers.ValidateTokenResponse.Raw,
     Pipedream.ValidateTokenResponse
 > = core.serialization.object({
-    app: App.optional(),
-    error: core.serialization.string().optional(),
-    errorRedirectUri: core.serialization.property("error_redirect_uri", core.serialization.string().optional()),
-    oauthAppId: core.serialization.property("oauth_app_id", core.serialization.string().optional()),
-    projectAppName: core.serialization.property("project_app_name", core.serialization.string().optional()),
-    projectEnvironment: core.serialization.property("project_environment", core.serialization.string().optional()),
-    projectId: core.serialization.property("project_id", core.serialization.string().optional()),
-    projectSupportEmail: core.serialization.property("project_support_email", core.serialization.string().optional()),
+    app: App.optionalNullable(),
+    error: core.serialization.string().nullable(),
+    errorRedirectUri: core.serialization.property("error_redirect_uri", core.serialization.string().optionalNullable()),
+    oauthAppId: core.serialization.property("oauth_app_id", core.serialization.string().optionalNullable()),
+    projectAppName: core.serialization.property("project_app_name", core.serialization.string().optionalNullable()),
+    projectEnvironment: core.serialization.property(
+        "project_environment",
+        core.serialization.string().optionalNullable(),
+    ),
+    projectId: core.serialization.property("project_id", core.serialization.string().optionalNullable()),
+    projectSupportEmail: core.serialization.property(
+        "project_support_email",
+        core.serialization.string().optionalNullable(),
+    ),
     success: core.serialization.boolean(),
-    successRedirectUri: core.serialization.property("success_redirect_uri", core.serialization.string().optional()),
+    successRedirectUri: core.serialization.property(
+        "success_redirect_uri",
+        core.serialization.string().optionalNullable(),
+    ),
 });
 
 export declare namespace ValidateTokenResponse {
     export interface Raw {
-        app?: App.Raw | null;
+        app?: (App.Raw | null | undefined) | null;
         error?: string | null;
-        error_redirect_uri?: string | null;
-        oauth_app_id?: string | null;
-        project_app_name?: string | null;
-        project_environment?: string | null;
-        project_id?: string | null;
-        project_support_email?: string | null;
+        error_redirect_uri?: (string | null | undefined) | null;
+        oauth_app_id?: (string | null | undefined) | null;
+        project_app_name?: (string | null | undefined) | null;
+        project_environment?: (string | null | undefined) | null;
+        project_id?: (string | null | undefined) | null;
+        project_support_email?: (string | null | undefined) | null;
         success: boolean;
-        success_redirect_uri?: string | null;
+        success_redirect_uri?: (string | null | undefined) | null;
     }
 }

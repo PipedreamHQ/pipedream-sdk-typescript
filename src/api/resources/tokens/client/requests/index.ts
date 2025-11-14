@@ -1,2 +1,2 @@
 export type { CreateTokenOpts } from "./CreateTokenOpts.js";
-export type { TokensValidateRequest } from "./TokensValidateRequest.js";
+export type { ValidateTokensRequest } from "./ValidateTokensRequest.js";

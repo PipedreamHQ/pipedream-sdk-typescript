@@ -9,7 +9,7 @@ export interface ReloadPropsOpts {
     /** The component ID */
     id: string;
     /** Optional component version (in SemVer format, for example '1.0.0'), defaults to latest */
-    version?: string;
+    version?: string | null;
     /** The external user ID */
     externalUserId: string;
     /** Whether this operation should block until completion */

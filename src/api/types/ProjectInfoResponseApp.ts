@@ -2,7 +2,7 @@
 
 export interface ProjectInfoResponseApp {
     /** ID of the app. Only applies for OAuth apps. */
-    id?: string;
+    id?: string | null;
     /** The name slug of the target app */
     nameSlug?: string;
 }
