@@ -3,38 +3,19 @@
 import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { ConfigurablePropBase } from "./ConfigurablePropBase.js";
 
 export const ConfigurablePropAirtableBaseId: core.serialization.ObjectSchema<
     serializers.ConfigurablePropAirtableBaseId.Raw,
     Pipedream.ConfigurablePropAirtableBaseId
-> = core.serialization.object({
-    type: core.serialization.stringLiteral("$.airtable.baseId"),
-    appProp: core.serialization.string(),
-    name: core.serialization.string(),
-    label: core.serialization.string().optional(),
-    description: core.serialization.string().optional(),
-    optional: core.serialization.boolean().optional(),
-    disabled: core.serialization.boolean().optional(),
-    hidden: core.serialization.boolean().optional(),
-    remoteOptions: core.serialization.boolean().optional(),
-    useQuery: core.serialization.boolean().optional(),
-    reloadProps: core.serialization.boolean().optional(),
-    withLabel: core.serialization.boolean().optional(),
-});
+> = core.serialization
+    .object({
+        appProp: core.serialization.string(),
+    })
+    .extend(ConfigurablePropBase);
 
 export declare namespace ConfigurablePropAirtableBaseId {
-    export interface Raw {
-        type: "$.airtable.baseId";
+    export interface Raw extends ConfigurablePropBase.Raw {
         appProp: string;
-        name: string;
-        label?: string | null;
-        description?: string | null;
-        optional?: boolean | null;
-        disabled?: boolean | null;
-        hidden?: boolean | null;
-        remoteOptions?: boolean | null;
-        useQuery?: boolean | null;
-        reloadProps?: boolean | null;
-        withLabel?: boolean | null;
     }
 }

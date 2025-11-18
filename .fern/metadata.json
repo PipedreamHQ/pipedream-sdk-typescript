@@ -1,0 +1,10 @@
+{
+    "cliVersion": "1.9.0",
+    "generatorName": "fernapi/fern-typescript-node-sdk",
+    "generatorVersion": "3.31.1",
+    "generatorConfig": {
+        "includeApiReference": true,
+        "namespaceExport": "Pipedream",
+        "noSerdeLayer": false
+    }
+}
