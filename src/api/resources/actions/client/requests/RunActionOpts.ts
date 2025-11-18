@@ -5,19 +5,22 @@ import type * as Pipedream from "../../../../index.js";
 /**
  * @example
  *     {
+ *         projectId: "project_id",
  *         id: "id",
  *         externalUserId: "external_user_id"
  *     }
  */
 export interface RunActionOpts {
+    /** The project ID, which starts with 'proj_'. */
+    projectId: string;
     /** The action component ID */
     id: string;
     /** Optional action component version (in SemVer format, for example '1.0.0'), defaults to latest */
-    version?: string;
+    version?: string | null;
     /** The external user ID */
     externalUserId: string;
     configuredProps?: Pipedream.ConfiguredProps;
     /** The ID for dynamic props */
     dynamicPropsId?: string;
-    stashId?: Pipedream.RunActionOptsStashId;
+    stashId?: Pipedream.RunActionOptsStashId | null;
 }

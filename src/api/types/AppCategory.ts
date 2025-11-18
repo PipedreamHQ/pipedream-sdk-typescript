@@ -9,5 +9,5 @@ export interface AppCategory {
     /** The human-readable name of the app category */
     name?: string;
     /** A short description of the app category */
-    description?: string;
+    description?: string | null;
 }

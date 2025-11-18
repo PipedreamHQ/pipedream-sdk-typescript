@@ -27,17 +27,17 @@ export class FileStash {
      * @throws {@link Pipedream.TooManyRequestsError}
      */
     public downloadFile(
-        request: Pipedream.FileStashDownloadFileRequest,
+        request: Pipedream.DownloadFileFileStashRequest,
         requestOptions?: FileStash.RequestOptions,
     ): core.HttpResponsePromise<core.BinaryResponse> {
         return core.HttpResponsePromise.fromPromise(this.__downloadFile(request, requestOptions));
     }
 
     private async __downloadFile(
-        request: Pipedream.FileStashDownloadFileRequest,
+        request: Pipedream.DownloadFileFileStashRequest,
         requestOptions?: FileStash.RequestOptions,
     ): Promise<core.WithRawResponse<core.BinaryResponse>> {
-        const { s3Key } = request;
+        const { projectId, s3Key } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams.s3_key = s3Key;
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -62,6 +62,8 @@ export class FileStash {
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return { data: _response.body, rawResponse: _response.rawResponse };
