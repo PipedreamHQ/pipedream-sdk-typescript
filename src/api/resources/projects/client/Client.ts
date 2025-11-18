@@ -26,22 +26,28 @@ export class Projects {
     /**
      * Retrieve project configuration and environment details
      *
+     * @param {Pipedream.RetrieveInfoProjectsRequest} request
      * @param {Projects.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.projects.retrieveInfo()
+     *     await client.projects.retrieveInfo({
+     *         projectId: "project_id"
+     *     })
      */
     public retrieveInfo(
+        request: Pipedream.RetrieveInfoProjectsRequest,
         requestOptions?: Projects.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.ProjectInfoResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__retrieveInfo(requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__retrieveInfo(request, requestOptions));
     }
 
     private async __retrieveInfo(
+        request: Pipedream.RetrieveInfoProjectsRequest,
         requestOptions?: Projects.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ProjectInfoResponse>> {
+        const { projectId } = request;
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
@@ -63,6 +69,8 @@ export class Projects {
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return {

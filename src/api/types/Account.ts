@@ -8,26 +8,26 @@ import type * as Pipedream from "../index.js";
 export interface Account {
     id: Pipedream.AccountId;
     /** The custom name of the account if set. */
-    name?: string;
+    name?: string | null;
     /** The external ID associated with the account. */
     externalId?: string;
     /** Indicates if the account is healthy. Pipedream will periodically retry token refresh and test requests for unhealthy accounts */
     healthy?: boolean;
     /** Indicates if the account is no longer active */
-    dead?: boolean;
+    dead?: boolean | null;
     app?: Pipedream.App;
     /** The date and time the account was created, an ISO 8601 formatted string */
     createdAt?: Date;
     /** The date and time the account was last updated, an ISO 8601 formatted string */
     updatedAt?: Date;
     /** The credentials associated with the account, if the `include_credentials` parameter was set to true in the request */
-    credentials?: Record<string, unknown>;
+    credentials?: Record<string, unknown> | null;
     /** The date and time the account's credentials expiration, an ISO 8601 formatted string */
     expiresAt?: Date;
     /** The error message if the account is unhealthy or dead, null otherwise */
-    error?: string;
+    error?: string | null;
     /** The date and time the account was last refreshed, an ISO 8601 formatted string */
     lastRefreshedAt?: Date;
     /** The date and time the account will next be refreshed, an ISO 8601 formatted string */
-    nextRefreshAt?: Date;
+    nextRefreshAt?: Date | null;
 }

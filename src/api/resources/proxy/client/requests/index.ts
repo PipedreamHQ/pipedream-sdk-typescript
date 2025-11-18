@@ -1,5 +1,5 @@
-export type { ProxyDeleteRequest } from "./ProxyDeleteRequest.js";
-export type { ProxyGetRequest } from "./ProxyGetRequest.js";
-export type { ProxyPatchRequest } from "./ProxyPatchRequest.js";
-export type { ProxyPostRequest } from "./ProxyPostRequest.js";
-export type { ProxyPutRequest } from "./ProxyPutRequest.js";
+export type { DeleteProxyRequest } from "./DeleteProxyRequest.js";
+export type { GetProxyRequest } from "./GetProxyRequest.js";
+export type { PatchProxyRequest } from "./PatchProxyRequest.js";
+export type { PostProxyRequest } from "./PostProxyRequest.js";
+export type { PutProxyRequest } from "./PutProxyRequest.js";

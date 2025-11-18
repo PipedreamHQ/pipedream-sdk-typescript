@@ -6,7 +6,7 @@ import type * as serializers from "../../../../index.js";
 
 export const UpdateTriggerWebhooksOpts: core.serialization.Schema<
     serializers.UpdateTriggerWebhooksOpts.Raw,
-    Omit<Pipedream.UpdateTriggerWebhooksOpts, "externalUserId">
+    Omit<Pipedream.UpdateTriggerWebhooksOpts, "projectId" | "triggerId" | "externalUserId">
 > = core.serialization.object({
     webhookUrls: core.serialization.property("webhook_urls", core.serialization.list(core.serialization.string())),
 });

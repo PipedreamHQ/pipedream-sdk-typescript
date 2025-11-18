@@ -26,29 +26,25 @@ export class Actions {
     /**
      * Retrieve available actions with optional search and app filtering
      *
-     * @param {Pipedream.ActionsListRequest} request
+     * @param {Pipedream.ListActionsRequest} request
      * @param {Actions.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.actions.list({
-     *         after: "after",
-     *         before: "before",
-     *         limit: 1,
-     *         q: "q",
-     *         app: "app"
+     *         projectId: "project_id"
      *     })
      */
     public async list(
-        request: Pipedream.ActionsListRequest = {},
+        request: Pipedream.ListActionsRequest,
         requestOptions?: Actions.RequestOptions,
-    ): Promise<core.Page<Pipedream.Component>> {
+    ): Promise<core.Page<Pipedream.Component, Pipedream.GetComponentsResponse>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (
-                request: Pipedream.ActionsListRequest,
+                request: Pipedream.ListActionsRequest,
             ): Promise<core.WithRawResponse<Pipedream.GetComponentsResponse>> => {
-                const { after, before, limit, q, app } = request;
+                const { projectId, after, before, limit, q, app } = request;
                 const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
                 if (after != null) {
                     _queryParams.after = after;
@@ -86,6 +82,8 @@ export class Actions {
                     timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
                     maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
                     abortSignal: requestOptions?.abortSignal,
+                    fetchFn: this._options?.fetch,
+                    logging: this._options.logging,
                 });
                 if (_response.ok) {
                     return {
@@ -131,7 +129,7 @@ export class Actions {
             },
         );
         const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Pageable<Pipedream.GetComponentsResponse, Pipedream.Component>({
+        return new core.Page<Pipedream.Component, Pipedream.GetComponentsResponse>({
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
@@ -147,31 +145,30 @@ export class Actions {
     /**
      * Get detailed configuration for a specific action by its key
      *
-     * @param {string} componentId - The key that uniquely identifies the component (e.g., 'slack-send-message')
-     * @param {Pipedream.ActionsRetrieveRequest} request
+     * @param {Pipedream.RetrieveActionsRequest} request
      * @param {Actions.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.actions.retrieve("component_id", {
+     *     await client.actions.retrieve({
+     *         projectId: "project_id",
+     *         componentId: "component_id",
      *         version: "1.2.3"
      *     })
      */
     public retrieve(
-        componentId: string,
-        request: Pipedream.ActionsRetrieveRequest = {},
+        request: Pipedream.RetrieveActionsRequest,
         requestOptions?: Actions.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.GetComponentResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__retrieve(componentId, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__retrieve(request, requestOptions));
     }
 
     private async __retrieve(
-        componentId: string,
-        request: Pipedream.ActionsRetrieveRequest = {},
+        request: Pipedream.RetrieveActionsRequest,
         requestOptions?: Actions.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetComponentResponse>> {
-        const { version } = request;
+        const { projectId, componentId, version } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         if (version != null) {
             _queryParams.version = version;
@@ -198,6 +195,8 @@ export class Actions {
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return {
@@ -247,29 +246,33 @@ export class Actions {
     /**
      * Retrieve remote options for a given prop for a action
      *
-     * @param {Pipedream.ConfigurePropOpts} request
+     * @param {Pipedream.ConfigurePropActionsRequest} request
      * @param {Actions.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.actions.configureProp({
-     *         id: "id",
-     *         externalUserId: "external_user_id",
-     *         propName: "prop_name"
+     *         projectId: "project_id",
+     *         body: {
+     *             id: "id",
+     *             externalUserId: "external_user_id",
+     *             propName: "prop_name"
+     *         }
      *     })
      */
     public configureProp(
-        request: Pipedream.ConfigurePropOpts,
+        request: Pipedream.ConfigurePropActionsRequest,
         requestOptions?: Actions.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.ConfigurePropResponse> {
         return core.HttpResponsePromise.fromPromise(this.__configureProp(request, requestOptions));
     }
 
     private async __configureProp(
-        request: Pipedream.ConfigurePropOpts,
+        request: Pipedream.ConfigurePropActionsRequest,
         requestOptions?: Actions.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ConfigurePropResponse>> {
+        const { projectId, body: _body } = request;
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
@@ -290,13 +293,15 @@ export class Actions {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.ConfigurePropOpts.jsonOrThrow(request, {
+            body: serializers.ConfigurePropOpts.jsonOrThrow(_body, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return {
@@ -346,28 +351,32 @@ export class Actions {
     /**
      * Reload the prop definition based on the currently configured props
      *
-     * @param {Pipedream.ReloadPropsOpts} request
+     * @param {Pipedream.ReloadPropsActionsRequest} request
      * @param {Actions.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.actions.reloadProps({
-     *         id: "id",
-     *         externalUserId: "external_user_id"
+     *         projectId: "project_id",
+     *         body: {
+     *             id: "id",
+     *             externalUserId: "external_user_id"
+     *         }
      *     })
      */
     public reloadProps(
-        request: Pipedream.ReloadPropsOpts,
+        request: Pipedream.ReloadPropsActionsRequest,
         requestOptions?: Actions.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.ReloadPropsResponse> {
         return core.HttpResponsePromise.fromPromise(this.__reloadProps(request, requestOptions));
     }
 
     private async __reloadProps(
-        request: Pipedream.ReloadPropsOpts,
+        request: Pipedream.ReloadPropsActionsRequest,
         requestOptions?: Actions.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ReloadPropsResponse>> {
+        const { projectId, body: _body } = request;
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
@@ -388,13 +397,15 @@ export class Actions {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.ReloadPropsOpts.jsonOrThrow(request, {
+            body: serializers.ReloadPropsOpts.jsonOrThrow(_body, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return {
@@ -451,6 +462,7 @@ export class Actions {
      *
      * @example
      *     await client.actions.run({
+     *         projectId: "project_id",
      *         id: "id",
      *         externalUserId: "external_user_id"
      *     })
@@ -466,6 +478,7 @@ export class Actions {
         request: Pipedream.RunActionOpts,
         requestOptions?: Actions.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.RunActionResponse>> {
+        const { projectId, ..._body } = request;
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
@@ -486,13 +499,15 @@ export class Actions {
             contentType: "application/json",
             queryParameters: requestOptions?.queryParams,
             requestType: "json",
-            body: serializers.RunActionOpts.jsonOrThrow(request, {
+            body: serializers.RunActionOpts.jsonOrThrow(_body, {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return {
