@@ -3,37 +3,156 @@
 import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { ConfigurablePropType } from "./ConfigurablePropType.js";
+import { ConfigurablePropAirtableBaseId } from "./ConfigurablePropAirtableBaseId.js";
+import { ConfigurablePropAirtableFieldId } from "./ConfigurablePropAirtableFieldId.js";
+import { ConfigurablePropAirtableTableId } from "./ConfigurablePropAirtableTableId.js";
+import { ConfigurablePropAirtableViewId } from "./ConfigurablePropAirtableViewId.js";
+import { ConfigurablePropAlert } from "./ConfigurablePropAlert.js";
+import { ConfigurablePropAny } from "./ConfigurablePropAny.js";
+import { ConfigurablePropApp } from "./ConfigurablePropApp.js";
+import { ConfigurablePropApphook } from "./ConfigurablePropApphook.js";
+import { ConfigurablePropBoolean } from "./ConfigurablePropBoolean.js";
+import { ConfigurablePropDb } from "./ConfigurablePropDb.js";
+import { ConfigurablePropDiscordChannel } from "./ConfigurablePropDiscordChannel.js";
+import { ConfigurablePropDiscordChannelArray } from "./ConfigurablePropDiscordChannelArray.js";
+import { ConfigurablePropHttp } from "./ConfigurablePropHttp.js";
+import { ConfigurablePropInteger } from "./ConfigurablePropInteger.js";
+import { ConfigurablePropIntegerArray } from "./ConfigurablePropIntegerArray.js";
+import { ConfigurablePropObject } from "./ConfigurablePropObject.js";
+import { ConfigurablePropSql } from "./ConfigurablePropSql.js";
+import { ConfigurablePropString } from "./ConfigurablePropString.js";
+import { ConfigurablePropStringArray } from "./ConfigurablePropStringArray.js";
+import { ConfigurablePropTimer } from "./ConfigurablePropTimer.js";
 
-export const ConfigurableProp: core.serialization.ObjectSchema<
-    serializers.ConfigurableProp.Raw,
-    Pipedream.ConfigurableProp
-> = core.serialization.object({
-    name: core.serialization.string(),
-    type: ConfigurablePropType,
-    label: core.serialization.string().optional(),
-    description: core.serialization.string().optional(),
-    optional: core.serialization.boolean().optional(),
-    disabled: core.serialization.boolean().optional(),
-    hidden: core.serialization.boolean().optional(),
-    remoteOptions: core.serialization.boolean().optional(),
-    useQuery: core.serialization.boolean().optional(),
-    reloadProps: core.serialization.boolean().optional(),
-    withLabel: core.serialization.boolean().optional(),
-});
+export const ConfigurableProp: core.serialization.Schema<serializers.ConfigurableProp.Raw, Pipedream.ConfigurableProp> =
+    core.serialization
+        .union("type", {
+            alert: ConfigurablePropAlert,
+            any: ConfigurablePropAny,
+            app: ConfigurablePropApp,
+            boolean: ConfigurablePropBoolean,
+            "$.interface.timer": ConfigurablePropTimer,
+            "$.interface.apphook": ConfigurablePropApphook,
+            "integer[]": ConfigurablePropIntegerArray,
+            "$.interface.http": ConfigurablePropHttp,
+            "$.service.db": ConfigurablePropDb,
+            sql: ConfigurablePropSql,
+            "$.airtable.baseId": ConfigurablePropAirtableBaseId,
+            "$.airtable.tableId": ConfigurablePropAirtableTableId,
+            "$.airtable.viewId": ConfigurablePropAirtableViewId,
+            "$.airtable.fieldId": ConfigurablePropAirtableFieldId,
+            "$.discord.channel": ConfigurablePropDiscordChannel,
+            "$.discord.channel[]": ConfigurablePropDiscordChannelArray,
+            integer: ConfigurablePropInteger,
+            object: ConfigurablePropObject,
+            string: ConfigurablePropString,
+            "string[]": ConfigurablePropStringArray,
+        })
+        .transform<Pipedream.ConfigurableProp>({
+            transform: (value) => value,
+            untransform: (value) => value,
+        });
 
 export declare namespace ConfigurableProp {
-    export interface Raw {
-        name: string;
-        type: ConfigurablePropType.Raw;
-        label?: string | null;
-        description?: string | null;
-        optional?: boolean | null;
-        disabled?: boolean | null;
-        hidden?: boolean | null;
-        remoteOptions?: boolean | null;
-        useQuery?: boolean | null;
-        reloadProps?: boolean | null;
-        withLabel?: boolean | null;
+    export type Raw =
+        | ConfigurableProp.Alert
+        | ConfigurableProp.Any
+        | ConfigurableProp.App
+        | ConfigurableProp.Boolean
+        | ConfigurableProp.InterfaceTimer
+        | ConfigurableProp.InterfaceApphook
+        | ConfigurableProp.Integer
+        | ConfigurableProp.InterfaceHttp
+        | ConfigurableProp.ServiceDb
+        | ConfigurableProp.Sql
+        | ConfigurableProp.AirtableBaseId
+        | ConfigurableProp.AirtableTableId
+        | ConfigurableProp.AirtableViewId
+        | ConfigurableProp.AirtableFieldId
+        | ConfigurableProp.DiscordChannel
+        | ConfigurableProp.DiscordChannel
+        | ConfigurableProp.Integer
+        | ConfigurableProp.Object
+        | ConfigurableProp.String
+        | ConfigurableProp.String;
+
+    export interface Alert extends ConfigurablePropAlert.Raw {
+        type: "alert";
+    }
+
+    export interface Any extends ConfigurablePropAny.Raw {
+        type: "any";
+    }
+
+    export interface App extends ConfigurablePropApp.Raw {
+        type: "app";
+    }
+
+    export interface Boolean extends ConfigurablePropBoolean.Raw {
+        type: "boolean";
+    }
+
+    export interface InterfaceTimer extends ConfigurablePropTimer.Raw {
+        type: "$.interface.timer";
+    }
+
+    export interface InterfaceApphook extends ConfigurablePropApphook.Raw {
+        type: "$.interface.apphook";
+    }
+
+    export interface Integer extends ConfigurablePropIntegerArray.Raw {
+        type: "integer[]";
+    }
+
+    export interface InterfaceHttp extends ConfigurablePropHttp.Raw {
+        type: "$.interface.http";
+    }
+
+    export interface ServiceDb extends ConfigurablePropDb.Raw {
+        type: "$.service.db";
+    }
+
+    export interface Sql extends ConfigurablePropSql.Raw {
+        type: "sql";
+    }
+
+    export interface AirtableBaseId extends ConfigurablePropAirtableBaseId.Raw {
+        type: "$.airtable.baseId";
+    }
+
+    export interface AirtableTableId extends ConfigurablePropAirtableTableId.Raw {
+        type: "$.airtable.tableId";
+    }
+
+    export interface AirtableViewId extends ConfigurablePropAirtableViewId.Raw {
+        type: "$.airtable.viewId";
+    }
+
+    export interface AirtableFieldId extends ConfigurablePropAirtableFieldId.Raw {
+        type: "$.airtable.fieldId";
+    }
+
+    export interface DiscordChannel extends ConfigurablePropDiscordChannel.Raw {
+        type: "$.discord.channel";
+    }
+
+    export interface DiscordChannel extends ConfigurablePropDiscordChannelArray.Raw {
+        type: "$.discord.channel[]";
+    }
+
+    export interface Integer extends ConfigurablePropInteger.Raw {
+        type: "integer";
+    }
+
+    export interface Object extends ConfigurablePropObject.Raw {
+        type: "object";
+    }
+
+    export interface String extends ConfigurablePropString.Raw {
+        type: "string";
+    }
+
+    export interface String extends ConfigurablePropStringArray.Raw {
+        type: "string[]";
     }
 }

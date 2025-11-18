@@ -12,6 +12,7 @@ export const UpdateTriggerOpts: core.serialization.Schema<
     active: core.serialization.boolean().optional(),
     configuredProps: core.serialization.property("configured_props", ConfiguredProps.optional()),
     name: core.serialization.string().optional(),
+    emitOnDeploy: core.serialization.property("emit_on_deploy", core.serialization.boolean().optional()),
 });
 
 export declare namespace UpdateTriggerOpts {
@@ -19,5 +20,6 @@ export declare namespace UpdateTriggerOpts {
         active?: boolean | null;
         configured_props?: ConfiguredProps.Raw | null;
         name?: string | null;
+        emit_on_deploy?: boolean | null;
     }
 }

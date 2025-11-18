@@ -29,4 +29,6 @@ export interface DeployedComponent {
     nameSlug: string;
     /** Callback observations for the deployed component */
     callbackObservations?: unknown;
+    /** Whether the trigger emits events during the deploy hook execution. When false, the $emit function is disabled during deploy hook execution. Defaults to true. */
+    emitOnDeploy?: boolean;
 }

@@ -3,28 +3,108 @@
 import type * as Pipedream from "../index.js";
 
 /**
- * A configuration or input field for a component.
+ * A configuration or input field for a component. This is a discriminated union based on the type field.
  */
-export interface ConfigurableProp {
-    /** When building `configuredProps`, make sure to use this field as the key when setting the prop value */
-    name: string;
-    type: Pipedream.ConfigurablePropType;
-    /** Value to use as an input label. In cases where `type` is "app", should load the app via `getApp`, etc. and show `app.name` instead. */
-    label?: string;
-    /** A description of the prop, shown to the user when configuring the component. */
-    description?: string;
-    /** If true, this prop does not need to be specified. */
-    optional?: boolean;
-    /** If true, this prop will be ignored. */
-    disabled?: boolean;
-    /** If true, should not expose this prop to the user */
-    hidden?: boolean;
-    /** If true, call `configureComponent` for this prop to load remote options. It is safe, and preferred, given a returned list of { label: string; value: any } objects to set the prop value to { __lv: { label: string; value: any } }. This way, on load, you can access label for the value without necessarily reloading these options */
-    remoteOptions?: boolean;
-    /** If true, calls to `configureComponent` for this prop support receiving a `query` parameter to filter remote options */
-    useQuery?: boolean;
-    /** If true, after setting a value for this prop, a call to `reloadComponentProps` is required as the component has dynamic configurable props dependent on this one */
-    reloadProps?: boolean;
-    /** If true, you must save the configured prop value as a "label-value" object which should look like: { __lv: { label: string; value: any } } because the execution needs to access the label */
-    withLabel?: boolean;
+export type ConfigurableProp =
+    | Pipedream.ConfigurableProp.Alert
+    | Pipedream.ConfigurableProp.Any
+    | Pipedream.ConfigurableProp.App
+    | Pipedream.ConfigurableProp.Boolean
+    | Pipedream.ConfigurableProp.InterfaceTimer
+    | Pipedream.ConfigurableProp.InterfaceApphook
+    | Pipedream.ConfigurableProp.Integer
+    | Pipedream.ConfigurableProp.InterfaceHttp
+    | Pipedream.ConfigurableProp.ServiceDb
+    | Pipedream.ConfigurableProp.Sql
+    | Pipedream.ConfigurableProp.AirtableBaseId
+    | Pipedream.ConfigurableProp.AirtableTableId
+    | Pipedream.ConfigurableProp.AirtableViewId
+    | Pipedream.ConfigurableProp.AirtableFieldId
+    | Pipedream.ConfigurableProp.DiscordChannel
+    | Pipedream.ConfigurableProp.DiscordChannel
+    | Pipedream.ConfigurableProp.Integer
+    | Pipedream.ConfigurableProp.Object_
+    | Pipedream.ConfigurableProp.String
+    | Pipedream.ConfigurableProp.String;
+
+export namespace ConfigurableProp {
+    export interface Alert extends Pipedream.ConfigurablePropAlert {
+        type: "alert";
+    }
+
+    export interface Any extends Pipedream.ConfigurablePropAny {
+        type: "any";
+    }
+
+    export interface App extends Pipedream.ConfigurablePropApp {
+        type: "app";
+    }
+
+    export interface Boolean extends Pipedream.ConfigurablePropBoolean {
+        type: "boolean";
+    }
+
+    export interface InterfaceTimer extends Pipedream.ConfigurablePropTimer {
+        type: "$.interface.timer";
+    }
+
+    export interface InterfaceApphook extends Pipedream.ConfigurablePropApphook {
+        type: "$.interface.apphook";
+    }
+
+    export interface Integer extends Pipedream.ConfigurablePropIntegerArray {
+        type: "integer[]";
+    }
+
+    export interface InterfaceHttp extends Pipedream.ConfigurablePropHttp {
+        type: "$.interface.http";
+    }
+
+    export interface ServiceDb extends Pipedream.ConfigurablePropDb {
+        type: "$.service.db";
+    }
+
+    export interface Sql extends Pipedream.ConfigurablePropSql {
+        type: "sql";
+    }
+
+    export interface AirtableBaseId extends Pipedream.ConfigurablePropAirtableBaseId {
+        type: "$.airtable.baseId";
+    }
+
+    export interface AirtableTableId extends Pipedream.ConfigurablePropAirtableTableId {
+        type: "$.airtable.tableId";
+    }
+
+    export interface AirtableViewId extends Pipedream.ConfigurablePropAirtableViewId {
+        type: "$.airtable.viewId";
+    }
+
+    export interface AirtableFieldId extends Pipedream.ConfigurablePropAirtableFieldId {
+        type: "$.airtable.fieldId";
+    }
+
+    export interface DiscordChannel extends Pipedream.ConfigurablePropDiscordChannel {
+        type: "$.discord.channel";
+    }
+
+    export interface DiscordChannel extends Pipedream.ConfigurablePropDiscordChannelArray {
+        type: "$.discord.channel[]";
+    }
+
+    export interface Integer extends Pipedream.ConfigurablePropInteger {
+        type: "integer";
+    }
+
+    export interface Object_ extends Pipedream.ConfigurablePropObject {
+        type: "object";
+    }
+
+    export interface String extends Pipedream.ConfigurablePropString {
+        type: "string";
+    }
+
+    export interface String extends Pipedream.ConfigurablePropStringArray {
+        type: "string[]";
+    }
 }
