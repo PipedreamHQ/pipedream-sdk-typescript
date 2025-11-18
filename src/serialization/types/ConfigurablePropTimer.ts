@@ -12,36 +12,36 @@ export const ConfigurablePropTimer: core.serialization.ObjectSchema<
     Pipedream.ConfigurablePropTimer
 > = core.serialization.object({
     type: core.serialization.stringLiteral("$.interface.timer"),
-    static: ConfigurablePropTimerStatic.optional(),
-    default: ConfigurablePropTimerDefault.optional(),
-    options: core.serialization.list(ConfigurablePropTimerOption.optional()).optional(),
+    static: ConfigurablePropTimerStatic.optionalNullable(),
+    default: ConfigurablePropTimerDefault.optionalNullable(),
+    options: core.serialization.list(ConfigurablePropTimerOption.nullable()).optionalNullable(),
     name: core.serialization.string(),
-    label: core.serialization.string().optional(),
-    description: core.serialization.string().optional(),
-    optional: core.serialization.boolean().optional(),
-    disabled: core.serialization.boolean().optional(),
-    hidden: core.serialization.boolean().optional(),
-    remoteOptions: core.serialization.boolean().optional(),
-    useQuery: core.serialization.boolean().optional(),
-    reloadProps: core.serialization.boolean().optional(),
-    withLabel: core.serialization.boolean().optional(),
+    label: core.serialization.string().optionalNullable(),
+    description: core.serialization.string().optionalNullable(),
+    optional: core.serialization.boolean().optionalNullable(),
+    disabled: core.serialization.boolean().optionalNullable(),
+    hidden: core.serialization.boolean().optionalNullable(),
+    remoteOptions: core.serialization.boolean().optionalNullable(),
+    useQuery: core.serialization.boolean().optionalNullable(),
+    reloadProps: core.serialization.boolean().optionalNullable(),
+    withLabel: core.serialization.boolean().optionalNullable(),
 });
 
 export declare namespace ConfigurablePropTimer {
     export interface Raw {
         type: "$.interface.timer";
-        static?: ConfigurablePropTimerStatic.Raw | null;
-        default?: ConfigurablePropTimerDefault.Raw | null;
-        options?: (ConfigurablePropTimerOption.Raw | null | undefined)[] | null;
+        static?: (ConfigurablePropTimerStatic.Raw | null | undefined) | null;
+        default?: (ConfigurablePropTimerDefault.Raw | null | undefined) | null;
+        options?: ((ConfigurablePropTimerOption.Raw | null | undefined)[] | null | undefined) | null;
         name: string;
-        label?: string | null;
-        description?: string | null;
-        optional?: boolean | null;
-        disabled?: boolean | null;
-        hidden?: boolean | null;
-        remoteOptions?: boolean | null;
-        useQuery?: boolean | null;
-        reloadProps?: boolean | null;
-        withLabel?: boolean | null;
+        label?: (string | null | undefined) | null;
+        description?: (string | null | undefined) | null;
+        optional?: (boolean | null | undefined) | null;
+        disabled?: (boolean | null | undefined) | null;
+        hidden?: (boolean | null | undefined) | null;
+        remoteOptions?: (boolean | null | undefined) | null;
+        useQuery?: (boolean | null | undefined) | null;
+        reloadProps?: (boolean | null | undefined) | null;
+        withLabel?: (boolean | null | undefined) | null;
     }
 }

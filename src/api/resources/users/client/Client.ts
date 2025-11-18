@@ -25,25 +25,29 @@ export class Users {
     /**
      * Remove an external user and all their associated accounts and resources
      *
-     * @param {string} externalUserId
+     * @param {Pipedream.DeleteExternalUserUsersRequest} request
      * @param {Users.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.users.deleteExternalUser("external_user_id")
+     *     await client.users.deleteExternalUser({
+     *         projectId: "project_id",
+     *         externalUserId: "external_user_id"
+     *     })
      */
     public deleteExternalUser(
-        externalUserId: string,
+        request: Pipedream.DeleteExternalUserUsersRequest,
         requestOptions?: Users.RequestOptions,
     ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__deleteExternalUser(externalUserId, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__deleteExternalUser(request, requestOptions));
     }
 
     private async __deleteExternalUser(
-        externalUserId: string,
+        request: Pipedream.DeleteExternalUserUsersRequest,
         requestOptions?: Users.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
+        const { projectId, externalUserId } = request;
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
             mergeOnlyDefinedHeaders({
@@ -65,6 +69,8 @@ export class Users {
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return { data: undefined, rawResponse: _response.rawResponse };

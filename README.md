@@ -29,6 +29,7 @@ import { PipedreamClient } from "@pipedream/sdk";
 
 const client = new PipedreamClient({ clientId: "YOUR_CLIENT_ID", clientSecret: "YOUR_CLIENT_SECRET", projectEnvironment: "YOUR_PROJECT_ENVIRONMENT", projectId: "YOUR_PROJECT_ID" });
 await client.actions.run({
+    projectId: "project_id",
     id: "id",
     externalUserId: "external_user_id"
 });
@@ -42,7 +43,7 @@ following namespace:
 ```typescript
 import { Pipedream } from "@pipedream/sdk";
 
-const request: Pipedream.AppsListRequest = {
+const request: Pipedream.RetrieveAppCategoriesRequest = {
     ...
 };
 ```
@@ -464,30 +465,19 @@ List endpoints are paginated. The SDK provides an iterator so that you can simpl
 import { PipedreamClient } from "@pipedream/sdk";
 
 const client = new PipedreamClient({ clientId: "YOUR_CLIENT_ID", clientSecret: "YOUR_CLIENT_SECRET", projectEnvironment: "YOUR_PROJECT_ENVIRONMENT", projectId: "YOUR_PROJECT_ID" });
-const response = await client.apps.list({
-    after: "after",
-    before: "before",
-    limit: 1,
-    q: "q",
-    sortKey: "name",
-    sortDirection: "asc"
-});
-for await (const item of response) {
+const pageableResponse = await client.apps.list();
+for await (const item of pageableResponse) {
     console.log(item);
 }
 
 // Or you can manually iterate page-by-page
-let page = await client.apps.list({
-    after: "after",
-    before: "before",
-    limit: 1,
-    q: "q",
-    sortKey: "name",
-    sortDirection: "asc"
-});
+let page = await client.apps.list();
 while (page.hasNextPage()) {
     page = page.getNextPage();
 }
+
+// You can also access the underlying response
+const response = page.response;
 ```
 
 ## Advanced
@@ -569,6 +559,69 @@ const { data, rawResponse } = await client.actions.run(...).withRawResponse();
 console.log(data);
 console.log(rawResponse.headers['X-My-Header']);
 ```
+
+### Logging
+
+The SDK supports logging. You can configure the logger by passing in a `logging` object to the client options.
+
+```typescript
+import { PipedreamClient, logging } from "@pipedream/sdk";
+
+const client = new PipedreamClient({
+    ...
+    logging: {
+        level: logging.LogLevel.Debug, // defaults to logging.LogLevel.Info
+        logger: new logging.ConsoleLogger(), // defaults to ConsoleLogger
+        silent: false, // defaults to true, set to false to enable logging
+    }
+});
+```
+The `logging` object can have the following properties:
+- `level`: The log level to use. Defaults to `logging.LogLevel.Info`.
+- `logger`: The logger to use. Defaults to a `logging.ConsoleLogger`.
+- `silent`: Whether to silence the logger. Defaults to `true`.
+
+The `level` property can be one of the following values:
+- `logging.LogLevel.Debug`
+- `logging.LogLevel.Info`
+- `logging.LogLevel.Warn`
+- `logging.LogLevel.Error`
+
+To provide a custom logger, you can pass in an object that implements the `logging.ILogger` interface.
+
+<details>
+<summary>Custom logger examples</summary>
+
+Here's an example using the popular `winston` logging library.
+```ts
+import winston from 'winston';
+
+const winstonLogger = winston.createLogger({...});
+
+const logger: logging.ILogger = {
+    debug: (msg, ...args) => winstonLogger.debug(msg, ...args),
+    info: (msg, ...args) => winstonLogger.info(msg, ...args),
+    warn: (msg, ...args) => winstonLogger.warn(msg, ...args),
+    error: (msg, ...args) => winstonLogger.error(msg, ...args),
+};
+```
+
+Here's an example using the popular `pino` logging library.
+
+```ts
+import pino from 'pino';
+
+const pinoLogger = pino({...});
+
+const logger: logging.ILogger = {
+  debug: (msg, ...args) => pinoLogger.debug(args, msg),
+  info: (msg, ...args) => pinoLogger.info(args, msg),
+  warn: (msg, ...args) => pinoLogger.warn(args, msg),
+  error: (msg, ...args) => pinoLogger.error(args, msg),
+};
+```
+</details>
+
 
 ### Runtime Compatibility
 

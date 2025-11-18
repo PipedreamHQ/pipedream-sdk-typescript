@@ -10,7 +10,7 @@ export const ReloadPropsOpts: core.serialization.ObjectSchema<
     Pipedream.ReloadPropsOpts
 > = core.serialization.object({
     id: core.serialization.string(),
-    version: core.serialization.string().optional(),
+    version: core.serialization.string().optionalNullable(),
     externalUserId: core.serialization.property("external_user_id", core.serialization.string()),
     blocking: core.serialization.boolean().optional(),
     configuredProps: core.serialization.property("configured_props", ConfiguredProps.optional()),
@@ -20,7 +20,7 @@ export const ReloadPropsOpts: core.serialization.ObjectSchema<
 export declare namespace ReloadPropsOpts {
     export interface Raw {
         id: string;
-        version?: string | null;
+        version?: (string | null | undefined) | null;
         external_user_id: string;
         blocking?: boolean | null;
         configured_props?: ConfiguredProps.Raw | null;

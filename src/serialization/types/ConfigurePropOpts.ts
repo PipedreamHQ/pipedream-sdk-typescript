@@ -10,7 +10,7 @@ export const ConfigurePropOpts: core.serialization.ObjectSchema<
     Pipedream.ConfigurePropOpts
 > = core.serialization.object({
     id: core.serialization.string(),
-    version: core.serialization.string().optional(),
+    version: core.serialization.string().optionalNullable(),
     externalUserId: core.serialization.property("external_user_id", core.serialization.string()),
     propName: core.serialization.property("prop_name", core.serialization.string()),
     blocking: core.serialization.boolean().optional(),
@@ -27,7 +27,7 @@ export const ConfigurePropOpts: core.serialization.ObjectSchema<
 export declare namespace ConfigurePropOpts {
     export interface Raw {
         id: string;
-        version?: string | null;
+        version?: (string | null | undefined) | null;
         external_user_id: string;
         prop_name: string;
         blocking?: boolean | null;

@@ -1,2 +1,2 @@
-export * from "./AppsListRequestSortDirection.js";
-export * from "./AppsListRequestSortKey.js";
+export * from "./ListAppsRequestSortDirection.js";
+export * from "./ListAppsRequestSortKey.js";

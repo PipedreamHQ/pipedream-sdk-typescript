@@ -26,29 +26,26 @@ export class DeployedTriggers {
     /**
      * Retrieve all deployed triggers for a specific external user
      *
-     * @param {Pipedream.DeployedTriggersListRequest} request
+     * @param {Pipedream.ListDeployedTriggersRequest} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.deployedTriggers.list({
-     *         after: "after",
-     *         before: "before",
-     *         limit: 1,
-     *         externalUserId: "external_user_id",
-     *         emitterType: "email"
+     *         projectId: "project_id",
+     *         externalUserId: "external_user_id"
      *     })
      */
     public async list(
-        request: Pipedream.DeployedTriggersListRequest,
+        request: Pipedream.ListDeployedTriggersRequest,
         requestOptions?: DeployedTriggers.RequestOptions,
-    ): Promise<core.Page<Pipedream.Emitter>> {
+    ): Promise<core.Page<Pipedream.Emitter, Pipedream.GetTriggersResponse>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (
-                request: Pipedream.DeployedTriggersListRequest,
+                request: Pipedream.ListDeployedTriggersRequest,
             ): Promise<core.WithRawResponse<Pipedream.GetTriggersResponse>> => {
-                const { after, before, limit, externalUserId, emitterType } = request;
+                const { projectId, after, before, limit, externalUserId, emitterType } = request;
                 const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
                 if (after != null) {
                     _queryParams.after = after;
@@ -87,6 +84,8 @@ export class DeployedTriggers {
                     timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
                     maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
                     abortSignal: requestOptions?.abortSignal,
+                    fetchFn: this._options?.fetch,
+                    logging: this._options.logging,
                 });
                 if (_response.ok) {
                     return {
@@ -132,7 +131,7 @@ export class DeployedTriggers {
             },
         );
         const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Pageable<Pipedream.GetTriggersResponse, Pipedream.Emitter>({
+        return new core.Page<Pipedream.Emitter, Pipedream.GetTriggersResponse>({
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
@@ -148,31 +147,30 @@ export class DeployedTriggers {
     /**
      * Get details of a specific deployed trigger by its ID
      *
-     * @param {string} triggerId
-     * @param {Pipedream.DeployedTriggersRetrieveRequest} request
+     * @param {Pipedream.RetrieveDeployedTriggersRequest} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.deployedTriggers.retrieve("trigger_id", {
+     *     await client.deployedTriggers.retrieve({
+     *         projectId: "project_id",
+     *         triggerId: "trigger_id",
      *         externalUserId: "external_user_id"
      *     })
      */
     public retrieve(
-        triggerId: string,
-        request: Pipedream.DeployedTriggersRetrieveRequest,
+        request: Pipedream.RetrieveDeployedTriggersRequest,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.GetTriggerResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__retrieve(triggerId, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__retrieve(request, requestOptions));
     }
 
     private async __retrieve(
-        triggerId: string,
-        request: Pipedream.DeployedTriggersRetrieveRequest,
+        request: Pipedream.RetrieveDeployedTriggersRequest,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetTriggerResponse>> {
-        const { externalUserId } = request;
+        const { projectId, triggerId, externalUserId } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams.external_user_id = externalUserId;
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -196,6 +194,8 @@ export class DeployedTriggers {
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return {
@@ -245,31 +245,30 @@ export class DeployedTriggers {
     /**
      * Modify the configuration of a deployed trigger, including active status
      *
-     * @param {string} triggerId
      * @param {Pipedream.UpdateTriggerOpts} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.deployedTriggers.update("trigger_id", {
+     *     await client.deployedTriggers.update({
+     *         projectId: "project_id",
+     *         triggerId: "trigger_id",
      *         externalUserId: "external_user_id"
      *     })
      */
     public update(
-        triggerId: string,
         request: Pipedream.UpdateTriggerOpts,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.GetTriggerResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__update(triggerId, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__update(request, requestOptions));
     }
 
     private async __update(
-        triggerId: string,
         request: Pipedream.UpdateTriggerOpts,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetTriggerResponse>> {
-        const { externalUserId, ..._body } = request;
+        const { projectId, triggerId, externalUserId, ..._body } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams.external_user_id = externalUserId;
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -299,6 +298,8 @@ export class DeployedTriggers {
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return {
@@ -348,32 +349,30 @@ export class DeployedTriggers {
     /**
      * Remove a deployed trigger and stop receiving events
      *
-     * @param {string} triggerId
-     * @param {Pipedream.DeployedTriggersDeleteRequest} request
+     * @param {Pipedream.DeleteDeployedTriggersRequest} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.deployedTriggers.delete("trigger_id", {
-     *         externalUserId: "external_user_id",
-     *         ignoreHookErrors: true
+     *     await client.deployedTriggers.delete({
+     *         projectId: "project_id",
+     *         triggerId: "trigger_id",
+     *         externalUserId: "external_user_id"
      *     })
      */
     public delete(
-        triggerId: string,
-        request: Pipedream.DeployedTriggersDeleteRequest,
+        request: Pipedream.DeleteDeployedTriggersRequest,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): core.HttpResponsePromise<void> {
-        return core.HttpResponsePromise.fromPromise(this.__delete(triggerId, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__delete(request, requestOptions));
     }
 
     private async __delete(
-        triggerId: string,
-        request: Pipedream.DeployedTriggersDeleteRequest,
+        request: Pipedream.DeleteDeployedTriggersRequest,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<void>> {
-        const { externalUserId, ignoreHookErrors } = request;
+        const { projectId, triggerId, externalUserId, ignoreHookErrors } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams.external_user_id = externalUserId;
         if (ignoreHookErrors != null) {
@@ -401,6 +400,8 @@ export class DeployedTriggers {
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return { data: undefined, rawResponse: _response.rawResponse };
@@ -441,32 +442,30 @@ export class DeployedTriggers {
     /**
      * Retrieve recent events emitted by a deployed trigger
      *
-     * @param {string} triggerId
-     * @param {Pipedream.DeployedTriggersListEventsRequest} request
+     * @param {Pipedream.ListEventsDeployedTriggersRequest} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.deployedTriggers.listEvents("trigger_id", {
-     *         externalUserId: "external_user_id",
-     *         n: 1
+     *     await client.deployedTriggers.listEvents({
+     *         projectId: "project_id",
+     *         triggerId: "trigger_id",
+     *         externalUserId: "external_user_id"
      *     })
      */
     public listEvents(
-        triggerId: string,
-        request: Pipedream.DeployedTriggersListEventsRequest,
+        request: Pipedream.ListEventsDeployedTriggersRequest,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.GetTriggerEventsResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__listEvents(triggerId, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__listEvents(request, requestOptions));
     }
 
     private async __listEvents(
-        triggerId: string,
-        request: Pipedream.DeployedTriggersListEventsRequest,
+        request: Pipedream.ListEventsDeployedTriggersRequest,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetTriggerEventsResponse>> {
-        const { externalUserId, n } = request;
+        const { projectId, triggerId, externalUserId, n } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams.external_user_id = externalUserId;
         if (n != null) {
@@ -494,6 +493,8 @@ export class DeployedTriggers {
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return {
@@ -543,31 +544,30 @@ export class DeployedTriggers {
     /**
      * Get workflows connected to receive events from this trigger
      *
-     * @param {string} triggerId
-     * @param {Pipedream.DeployedTriggersListWorkflowsRequest} request
+     * @param {Pipedream.ListWorkflowsDeployedTriggersRequest} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.deployedTriggers.listWorkflows("trigger_id", {
+     *     await client.deployedTriggers.listWorkflows({
+     *         projectId: "project_id",
+     *         triggerId: "trigger_id",
      *         externalUserId: "external_user_id"
      *     })
      */
     public listWorkflows(
-        triggerId: string,
-        request: Pipedream.DeployedTriggersListWorkflowsRequest,
+        request: Pipedream.ListWorkflowsDeployedTriggersRequest,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.GetTriggerWorkflowsResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__listWorkflows(triggerId, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__listWorkflows(request, requestOptions));
     }
 
     private async __listWorkflows(
-        triggerId: string,
-        request: Pipedream.DeployedTriggersListWorkflowsRequest,
+        request: Pipedream.ListWorkflowsDeployedTriggersRequest,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetTriggerWorkflowsResponse>> {
-        const { externalUserId } = request;
+        const { projectId, triggerId, externalUserId } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams.external_user_id = externalUserId;
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -591,6 +591,8 @@ export class DeployedTriggers {
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return {
@@ -640,32 +642,31 @@ export class DeployedTriggers {
     /**
      * Connect or disconnect workflows to receive trigger events
      *
-     * @param {string} triggerId
      * @param {Pipedream.UpdateTriggerWorkflowsOpts} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.deployedTriggers.updateWorkflows("trigger_id", {
+     *     await client.deployedTriggers.updateWorkflows({
+     *         projectId: "project_id",
+     *         triggerId: "trigger_id",
      *         externalUserId: "external_user_id",
      *         workflowIds: ["workflow_ids"]
      *     })
      */
     public updateWorkflows(
-        triggerId: string,
         request: Pipedream.UpdateTriggerWorkflowsOpts,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.GetTriggerWorkflowsResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__updateWorkflows(triggerId, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__updateWorkflows(request, requestOptions));
     }
 
     private async __updateWorkflows(
-        triggerId: string,
         request: Pipedream.UpdateTriggerWorkflowsOpts,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetTriggerWorkflowsResponse>> {
-        const { externalUserId, ..._body } = request;
+        const { projectId, triggerId, externalUserId, ..._body } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams.external_user_id = externalUserId;
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -695,6 +696,8 @@ export class DeployedTriggers {
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return {
@@ -744,31 +747,30 @@ export class DeployedTriggers {
     /**
      * Get webhook URLs configured to receive trigger events
      *
-     * @param {string} triggerId
-     * @param {Pipedream.DeployedTriggersListWebhooksRequest} request
+     * @param {Pipedream.ListWebhooksDeployedTriggersRequest} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.deployedTriggers.listWebhooks("trigger_id", {
+     *     await client.deployedTriggers.listWebhooks({
+     *         projectId: "project_id",
+     *         triggerId: "trigger_id",
      *         externalUserId: "external_user_id"
      *     })
      */
     public listWebhooks(
-        triggerId: string,
-        request: Pipedream.DeployedTriggersListWebhooksRequest,
+        request: Pipedream.ListWebhooksDeployedTriggersRequest,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.GetTriggerWebhooksResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__listWebhooks(triggerId, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__listWebhooks(request, requestOptions));
     }
 
     private async __listWebhooks(
-        triggerId: string,
-        request: Pipedream.DeployedTriggersListWebhooksRequest,
+        request: Pipedream.ListWebhooksDeployedTriggersRequest,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetTriggerWebhooksResponse>> {
-        const { externalUserId } = request;
+        const { projectId, triggerId, externalUserId } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams.external_user_id = externalUserId;
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -792,6 +794,8 @@ export class DeployedTriggers {
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return {
@@ -841,32 +845,31 @@ export class DeployedTriggers {
     /**
      * Configure webhook URLs to receive trigger events
      *
-     * @param {string} triggerId
      * @param {Pipedream.UpdateTriggerWebhooksOpts} request
      * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.deployedTriggers.updateWebhooks("trigger_id", {
+     *     await client.deployedTriggers.updateWebhooks({
+     *         projectId: "project_id",
+     *         triggerId: "trigger_id",
      *         externalUserId: "external_user_id",
      *         webhookUrls: ["webhook_urls"]
      *     })
      */
     public updateWebhooks(
-        triggerId: string,
         request: Pipedream.UpdateTriggerWebhooksOpts,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.GetTriggerWebhooksResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__updateWebhooks(triggerId, request, requestOptions));
+        return core.HttpResponsePromise.fromPromise(this.__updateWebhooks(request, requestOptions));
     }
 
     private async __updateWebhooks(
-        triggerId: string,
         request: Pipedream.UpdateTriggerWebhooksOpts,
         requestOptions?: DeployedTriggers.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.GetTriggerWebhooksResponse>> {
-        const { externalUserId, ..._body } = request;
+        const { projectId, triggerId, externalUserId, ..._body } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams.external_user_id = externalUserId;
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -896,6 +899,8 @@ export class DeployedTriggers {
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
         });
         if (_response.ok) {
             return {
