@@ -5,4 +5,4 @@ import type * as Pipedream from "../index.js";
 /**
  * The ID of the File Stash to use for syncing the action's /tmp directory, or either `true` or 'NEW' to create a new stash
  */
-export type RunActionOptsStashId = (Pipedream.StashId | undefined) | undefined | "NEW" | boolean;
+export type RunActionOptsStashId = Pipedream.StashId | null | "NEW" | boolean;

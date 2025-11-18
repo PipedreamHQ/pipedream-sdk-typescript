@@ -10,29 +10,29 @@ export const ConfigurablePropDb: core.serialization.ObjectSchema<
 > = core.serialization.object({
     type: core.serialization.stringLiteral("$.service.db"),
     name: core.serialization.string(),
-    label: core.serialization.string().optional(),
-    description: core.serialization.string().optional(),
-    optional: core.serialization.boolean().optional(),
-    disabled: core.serialization.boolean().optional(),
-    hidden: core.serialization.boolean().optional(),
-    remoteOptions: core.serialization.boolean().optional(),
-    useQuery: core.serialization.boolean().optional(),
-    reloadProps: core.serialization.boolean().optional(),
-    withLabel: core.serialization.boolean().optional(),
+    label: core.serialization.string().optionalNullable(),
+    description: core.serialization.string().optionalNullable(),
+    optional: core.serialization.boolean().optionalNullable(),
+    disabled: core.serialization.boolean().optionalNullable(),
+    hidden: core.serialization.boolean().optionalNullable(),
+    remoteOptions: core.serialization.boolean().optionalNullable(),
+    useQuery: core.serialization.boolean().optionalNullable(),
+    reloadProps: core.serialization.boolean().optionalNullable(),
+    withLabel: core.serialization.boolean().optionalNullable(),
 });
 
 export declare namespace ConfigurablePropDb {
     export interface Raw {
         type: "$.service.db";
         name: string;
-        label?: string | null;
-        description?: string | null;
-        optional?: boolean | null;
-        disabled?: boolean | null;
-        hidden?: boolean | null;
-        remoteOptions?: boolean | null;
-        useQuery?: boolean | null;
-        reloadProps?: boolean | null;
-        withLabel?: boolean | null;
+        label?: (string | null | undefined) | null;
+        description?: (string | null | undefined) | null;
+        optional?: (boolean | null | undefined) | null;
+        disabled?: (boolean | null | undefined) | null;
+        hidden?: (boolean | null | undefined) | null;
+        remoteOptions?: (boolean | null | undefined) | null;
+        useQuery?: (boolean | null | undefined) | null;
+        reloadProps?: (boolean | null | undefined) | null;
+        withLabel?: (boolean | null | undefined) | null;
     }
 }

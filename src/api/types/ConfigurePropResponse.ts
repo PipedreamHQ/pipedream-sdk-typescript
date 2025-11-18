@@ -6,12 +6,12 @@ import type * as Pipedream from "../index.js";
  * Response received after configuring a component's prop
  */
 export interface ConfigurePropResponse {
-    options?: Pipedream.ConfigurePropOptions | undefined;
+    options?: Pipedream.ConfigurePropOptions | null;
     /** Available options for the configured prop */
-    stringOptions?: string[];
-    observations?: Pipedream.Observation[];
+    stringOptions?: string[] | null;
+    observations?: Pipedream.Observation[] | null;
     /** New context after configuring the prop */
-    context?: Record<string, unknown>;
+    context?: Record<string, unknown> | null;
     /** Any errors that occurred during configuration */
     errors?: string[];
 }

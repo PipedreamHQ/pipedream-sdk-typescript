@@ -12,7 +12,7 @@ export const RunActionResponse: core.serialization.ObjectSchema<
     exports: core.serialization.unknown().optional(),
     os: core.serialization.unknown().optional(),
     ret: core.serialization.unknown().optional(),
-    stashId: core.serialization.property("stash_id", StashId.optional()),
+    stashId: core.serialization.property("stash_id", StashId.optionalNullable()),
 });
 
 export declare namespace RunActionResponse {
@@ -20,6 +20,6 @@ export declare namespace RunActionResponse {
         exports?: unknown | null;
         os?: unknown | null;
         ret?: unknown | null;
-        stash_id?: (StashId.Raw | undefined) | null;
+        stash_id?: ((StashId.Raw | undefined) | null | undefined) | null;
     }
 }

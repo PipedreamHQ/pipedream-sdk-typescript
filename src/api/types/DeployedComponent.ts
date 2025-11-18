@@ -13,7 +13,7 @@ export interface DeployedComponent {
     /** The ID of the component that was deployed */
     componentId: string;
     /** The component key (name) that was deployed */
-    componentKey?: string;
+    componentKey?: string | null;
     /** The configurable properties of the component */
     configurableProps: Pipedream.ConfigurableProp[];
     configuredProps: Pipedream.ConfiguredProps;
@@ -28,5 +28,5 @@ export interface DeployedComponent {
     /** The name slug of the deployed component */
     nameSlug: string;
     /** Callback observations for the deployed component */
-    callbackObservations?: unknown;
+    callbackObservations?: unknown | null;
 }

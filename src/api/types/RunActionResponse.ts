@@ -12,5 +12,5 @@ export interface RunActionResponse {
     os?: unknown;
     /** The value returned by the action */
     ret?: unknown;
-    stashId?: Pipedream.StashId | undefined;
+    stashId?: Pipedream.StashId | null;
 }

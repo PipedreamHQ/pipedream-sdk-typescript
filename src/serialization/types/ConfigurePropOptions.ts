@@ -8,7 +8,7 @@ import { ConfigurePropOptionsItem } from "./ConfigurePropOptionsItem.js";
 export const ConfigurePropOptions: core.serialization.Schema<
     serializers.ConfigurePropOptions.Raw,
     Pipedream.ConfigurePropOptions
-> = core.serialization.list(ConfigurePropOptionsItem).optional();
+> = core.serialization.list(ConfigurePropOptionsItem).nullable();
 
 export declare namespace ConfigurePropOptions {
     export type Raw = ConfigurePropOptionsItem.Raw[] | null | undefined;

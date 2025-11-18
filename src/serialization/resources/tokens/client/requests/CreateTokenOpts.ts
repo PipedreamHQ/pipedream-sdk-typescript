@@ -4,17 +4,19 @@ import type * as Pipedream from "../../../../../api/index.js";
 import * as core from "../../../../../core/index.js";
 import type * as serializers from "../../../../index.js";
 
-export const CreateTokenOpts: core.serialization.Schema<serializers.CreateTokenOpts.Raw, Pipedream.CreateTokenOpts> =
-    core.serialization.object({
-        allowedOrigins: core.serialization.property(
-            "allowed_origins",
-            core.serialization.list(core.serialization.string()).optional(),
-        ),
-        errorRedirectUri: core.serialization.property("error_redirect_uri", core.serialization.string().optional()),
-        externalUserId: core.serialization.property("external_user_id", core.serialization.string()),
-        successRedirectUri: core.serialization.property("success_redirect_uri", core.serialization.string().optional()),
-        webhookUri: core.serialization.property("webhook_uri", core.serialization.string().optional()),
-    });
+export const CreateTokenOpts: core.serialization.Schema<
+    serializers.CreateTokenOpts.Raw,
+    Omit<Pipedream.CreateTokenOpts, "projectId">
+> = core.serialization.object({
+    allowedOrigins: core.serialization.property(
+        "allowed_origins",
+        core.serialization.list(core.serialization.string()).optional(),
+    ),
+    errorRedirectUri: core.serialization.property("error_redirect_uri", core.serialization.string().optional()),
+    externalUserId: core.serialization.property("external_user_id", core.serialization.string()),
+    successRedirectUri: core.serialization.property("success_redirect_uri", core.serialization.string().optional()),
+    webhookUri: core.serialization.property("webhook_uri", core.serialization.string().optional()),
+});
 
 export declare namespace CreateTokenOpts {
     export interface Raw {
