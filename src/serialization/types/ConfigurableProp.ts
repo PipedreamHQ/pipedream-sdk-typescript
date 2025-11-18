@@ -61,7 +61,7 @@ export declare namespace ConfigurableProp {
         | ConfigurableProp.Boolean
         | ConfigurableProp.InterfaceTimer
         | ConfigurableProp.InterfaceApphook
-        | ConfigurableProp.Integer
+        | ConfigurableProp.IntegerArray
         | ConfigurableProp.InterfaceHttp
         | ConfigurableProp.ServiceDb
         | ConfigurableProp.Sql
@@ -70,11 +70,11 @@ export declare namespace ConfigurableProp {
         | ConfigurableProp.AirtableViewId
         | ConfigurableProp.AirtableFieldId
         | ConfigurableProp.DiscordChannel
-        | ConfigurableProp.DiscordChannel
+        | ConfigurableProp.DiscordChannelArray
         | ConfigurableProp.Integer
         | ConfigurableProp.Object
         | ConfigurableProp.String
-        | ConfigurableProp.String;
+        | ConfigurableProp.StringArray;
 
     export interface Alert extends ConfigurablePropAlert.Raw {
         type: "alert";
@@ -100,7 +100,7 @@ export declare namespace ConfigurableProp {
         type: "$.interface.apphook";
     }
 
-    export interface Integer extends ConfigurablePropIntegerArray.Raw {
+    export interface IntegerArray extends ConfigurablePropIntegerArray.Raw {
         type: "integer[]";
     }
 
@@ -136,7 +136,7 @@ export declare namespace ConfigurableProp {
         type: "$.discord.channel";
     }
 
-    export interface DiscordChannel extends ConfigurablePropDiscordChannelArray.Raw {
+    export interface DiscordChannelArray extends ConfigurablePropDiscordChannelArray.Raw {
         type: "$.discord.channel[]";
     }
 
@@ -152,7 +152,7 @@ export declare namespace ConfigurableProp {
         type: "string";
     }
 
-    export interface String extends ConfigurablePropStringArray.Raw {
+    export interface StringArray extends ConfigurablePropStringArray.Raw {
         type: "string[]";
     }
 }

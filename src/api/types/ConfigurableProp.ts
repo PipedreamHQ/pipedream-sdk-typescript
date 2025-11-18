@@ -12,7 +12,7 @@ export type ConfigurableProp =
     | Pipedream.ConfigurableProp.Boolean
     | Pipedream.ConfigurableProp.InterfaceTimer
     | Pipedream.ConfigurableProp.InterfaceApphook
-    | Pipedream.ConfigurableProp.Integer
+    | Pipedream.ConfigurableProp.IntegerArray
     | Pipedream.ConfigurableProp.InterfaceHttp
     | Pipedream.ConfigurableProp.ServiceDb
     | Pipedream.ConfigurableProp.Sql
@@ -21,11 +21,11 @@ export type ConfigurableProp =
     | Pipedream.ConfigurableProp.AirtableViewId
     | Pipedream.ConfigurableProp.AirtableFieldId
     | Pipedream.ConfigurableProp.DiscordChannel
-    | Pipedream.ConfigurableProp.DiscordChannel
+    | Pipedream.ConfigurableProp.DiscordChannelArray
     | Pipedream.ConfigurableProp.Integer
-    | Pipedream.ConfigurableProp.Object_
+    | Pipedream.ConfigurableProp.Object
     | Pipedream.ConfigurableProp.String
-    | Pipedream.ConfigurableProp.String;
+    | Pipedream.ConfigurableProp.StringArray;
 
 export namespace ConfigurableProp {
     export interface Alert extends Pipedream.ConfigurablePropAlert {
@@ -52,7 +52,7 @@ export namespace ConfigurableProp {
         type: "$.interface.apphook";
     }
 
-    export interface Integer extends Pipedream.ConfigurablePropIntegerArray {
+    export interface IntegerArray extends Pipedream.ConfigurablePropIntegerArray {
         type: "integer[]";
     }
 
@@ -88,7 +88,7 @@ export namespace ConfigurableProp {
         type: "$.discord.channel";
     }
 
-    export interface DiscordChannel extends Pipedream.ConfigurablePropDiscordChannelArray {
+    export interface DiscordChannelArray extends Pipedream.ConfigurablePropDiscordChannelArray {
         type: "$.discord.channel[]";
     }
 
@@ -96,7 +96,7 @@ export namespace ConfigurableProp {
         type: "integer";
     }
 
-    export interface Object_ extends Pipedream.ConfigurablePropObject {
+    export interface Object extends Pipedream.ConfigurablePropObject {
         type: "object";
     }
 
@@ -104,7 +104,7 @@ export namespace ConfigurableProp {
         type: "string";
     }
 
-    export interface String extends Pipedream.ConfigurablePropStringArray {
+    export interface StringArray extends Pipedream.ConfigurablePropStringArray {
         type: "string[]";
     }
 }
