@@ -5,6 +5,26 @@
 
 The Pipedream TypeScript library provides convenient access to the Pipedream APIs from TypeScript.
 
+## Table of Contents
+
+- [Installation](#installation)
+- [Reference](#reference)
+- [Migration From V 1 X](#migration-from-v-1-x)
+- [Usage](#usage)
+- [Request and Response Types](#request-and-response-types)
+- [Exception Handling](#exception-handling)
+- [Binary Response](#binary-response)
+- [Pagination](#pagination)
+- [Advanced](#advanced)
+  - [Additional Headers](#additional-headers)
+  - [Additional Query String Parameters](#additional-query-string-parameters)
+  - [Retries](#retries)
+  - [Timeouts](#timeouts)
+  - [Aborting Requests](#aborting-requests)
+  - [Access Raw Response Data](#access-raw-response-data)
+  - [Runtime Compatibility](#runtime-compatibility)
+- [Contributing](#contributing)
+
 ## Installation
 
 ```sh
@@ -34,7 +54,7 @@ await client.actions.run({
 });
 ```
 
-## Request And Response Types
+## Request and Response Types
 
 The SDK exports all request and response types as TypeScript interfaces. Simply import them with the
 following namespace:

@@ -3,46 +3,27 @@
 import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { ConfigurablePropBase } from "./ConfigurablePropBase.js";
 import { ConfigurablePropIntegerOptionsItem } from "./ConfigurablePropIntegerOptionsItem.js";
 import { ConfiguredPropValueInteger } from "./ConfiguredPropValueInteger.js";
 
 export const ConfigurablePropInteger: core.serialization.ObjectSchema<
     serializers.ConfigurablePropInteger.Raw,
     Pipedream.ConfigurablePropInteger
-> = core.serialization.object({
-    type: core.serialization.stringLiteral("integer"),
-    min: core.serialization.number().optional(),
-    max: core.serialization.number().optional(),
-    default: ConfiguredPropValueInteger.optional(),
-    options: core.serialization.list(ConfigurablePropIntegerOptionsItem).optional(),
-    name: core.serialization.string(),
-    label: core.serialization.string().optional(),
-    description: core.serialization.string().optional(),
-    optional: core.serialization.boolean().optional(),
-    disabled: core.serialization.boolean().optional(),
-    hidden: core.serialization.boolean().optional(),
-    remoteOptions: core.serialization.boolean().optional(),
-    useQuery: core.serialization.boolean().optional(),
-    reloadProps: core.serialization.boolean().optional(),
-    withLabel: core.serialization.boolean().optional(),
-});
+> = core.serialization
+    .object({
+        min: core.serialization.number().optional(),
+        max: core.serialization.number().optional(),
+        default: ConfiguredPropValueInteger.optional(),
+        options: core.serialization.list(ConfigurablePropIntegerOptionsItem).optional(),
+    })
+    .extend(ConfigurablePropBase);
 
 export declare namespace ConfigurablePropInteger {
-    export interface Raw {
-        type: "integer";
+    export interface Raw extends ConfigurablePropBase.Raw {
         min?: number | null;
         max?: number | null;
         default?: ConfiguredPropValueInteger.Raw | null;
         options?: ConfigurablePropIntegerOptionsItem.Raw[] | null;
-        name: string;
-        label?: string | null;
-        description?: string | null;
-        optional?: boolean | null;
-        disabled?: boolean | null;
-        hidden?: boolean | null;
-        remoteOptions?: boolean | null;
-        useQuery?: boolean | null;
-        reloadProps?: boolean | null;
-        withLabel?: boolean | null;
     }
 }

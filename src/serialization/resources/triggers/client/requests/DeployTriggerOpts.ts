@@ -16,6 +16,7 @@ export const DeployTriggerOpts: core.serialization.Schema<
     dynamicPropsId: core.serialization.property("dynamic_props_id", core.serialization.string().optional()),
     workflowId: core.serialization.property("workflow_id", core.serialization.string().optional()),
     webhookUrl: core.serialization.property("webhook_url", core.serialization.string().optional()),
+    emitOnDeploy: core.serialization.property("emit_on_deploy", core.serialization.boolean().optional()),
 });
 
 export declare namespace DeployTriggerOpts {
@@ -27,5 +28,6 @@ export declare namespace DeployTriggerOpts {
         dynamic_props_id?: string | null;
         workflow_id?: string | null;
         webhook_url?: string | null;
+        emit_on_deploy?: boolean | null;
     }
 }

@@ -23,4 +23,6 @@ export interface DeployTriggerOpts {
     workflowId?: string;
     /** Optional webhook URL to receive trigger events */
     webhookUrl?: string;
+    /** Whether the trigger should emit events during the deploy hook execution. Defaults to true if not specified. */
+    emitOnDeploy?: boolean;
 }
