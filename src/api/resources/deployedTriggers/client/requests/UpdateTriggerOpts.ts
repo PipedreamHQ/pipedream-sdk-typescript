@@ -16,4 +16,6 @@ export interface UpdateTriggerOpts {
     configuredProps?: Pipedream.ConfiguredProps;
     /** The name of the trigger */
     name?: string;
+    /** Whether the trigger should emit events during deployment */
+    emitOnDeploy?: boolean;
 }

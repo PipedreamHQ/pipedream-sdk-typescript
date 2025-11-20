@@ -22,6 +22,7 @@ export const DeployedComponent: core.serialization.ObjectSchema<
     name: core.serialization.string(),
     nameSlug: core.serialization.property("name_slug", core.serialization.string()),
     callbackObservations: core.serialization.property("callback_observations", core.serialization.unknown().optional()),
+    emitOnDeploy: core.serialization.property("emit_on_deploy", core.serialization.boolean().optional()),
 });
 
 export declare namespace DeployedComponent {
@@ -38,5 +39,6 @@ export declare namespace DeployedComponent {
         name: string;
         name_slug: string;
         callback_observations?: unknown | null;
+        emit_on_deploy?: boolean | null;
     }
 }
