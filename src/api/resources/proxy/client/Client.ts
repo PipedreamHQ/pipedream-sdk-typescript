@@ -6,6 +6,7 @@ import * as core from "../../../../core/index.js";
 import * as environments from "../../../../environments.js";
 import * as errors from "../../../../errors/index.js";
 import { base64Encode } from "../../../../core/index.js";
+import { createRequestUrl } from "../../../../core/fetcher/createRequestUrl.js";
 import * as serializers from "../../../../serialization/index.js";
 import * as Pipedream from "../../../index.js";
 
@@ -19,6 +20,19 @@ export declare namespace Proxy {
 
 export class Proxy {
     protected readonly _options: Proxy.Options;
+
+    /**
+     * Precompiled regex to check if an Accept header accepts JSON responses.
+     * Matches: application/json, */*, or application/* (with or without parameters)
+     */
+    private static readonly JSON_ACCEPT_REGEX =
+        /(?:^|,|\s)(application\/json|\*\/\*|application\/\*)(?:\s*;|\s*,|\s*$)/i;
+
+    /**
+     * Precompiled regex to check if a Content-Type header is JSON.
+     * Matches: application/json (with or without parameters like charset)
+     */
+    private static readonly JSON_CONTENT_TYPE_REGEX = /^application\/json(?:\s|;|$)/i;
 
     constructor(_options: Proxy.Options) {
         this._options = _options;
@@ -34,9 +48,34 @@ export class Proxy {
 
         const transformed: Record<string, string | core.Supplier<string | null | undefined> | null | undefined> = {};
         for (const [key, value] of Object.entries(headers)) {
-            transformed[`x-pd-proxy-${key}`] = value;
+            const headerName = `x-pd-proxy-${key.toLowerCase()}`;
+            transformed[headerName] = value;
         }
         return transformed;
+    }
+
+    /**
+     * Determine the response type based on the `Accept` header provided by the
+     * caller. Note that the caller's headers must have already been transformed
+     * via `transformProxyHeaders`.
+     */
+    private getResponseType(headers: core.Fetcher.Args["headers"]): core.Fetcher.Args["responseType"] | undefined {
+        const acceptHeader = headers?.["x-pd-proxy-accept"];
+        if (!acceptHeader) {
+            return undefined; // No Accept header = default to JSON
+        }
+
+        const acceptValue = typeof acceptHeader === 'string' ? acceptHeader : String(acceptHeader ?? '');
+        const acceptsJson = Proxy.JSON_ACCEPT_REGEX.test(acceptValue);
+        return acceptsJson ? undefined : "binary-response";
+    }
+
+    /**
+     * Check if the response is JSON based on content-type header
+     */
+    private isJsonResponse(response: core.APIResponse<unknown, unknown>): boolean {
+        const contentType = response.rawResponse.headers.get("content-type");
+        return contentType ? Proxy.JSON_CONTENT_TYPE_REGEX.test(contentType) : false;
     }
 
     /**
@@ -59,21 +98,21 @@ export class Proxy {
     public get(
         request: Pipedream.ProxyGetRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): core.HttpResponsePromise<Pipedream.ProxyResponse | undefined> {
+    ): core.HttpResponsePromise<Pipedream.ProxyResponse | core.BinaryResponse | undefined> {
         return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
     }
 
     private async __get(
         request: Pipedream.ProxyGetRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
+    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | core.BinaryResponse | undefined>> {
         const { url, externalUserId, accountId, params, headers } = request;
-        const url64 = base64Encode(url);
+        const urlWithParams = createRequestUrl(url, params);
+        const url64 = base64Encode(urlWithParams);
         const transformedHeaders = this.transformProxyHeaders(headers);
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {
             external_user_id: externalUserId,
             account_id: accountId,
-            ...(params || {}),
         };
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
@@ -84,6 +123,7 @@ export class Proxy {
             transformedHeaders,
             requestOptions?.headers,
         );
+        const responseType = this.getResponseType(_headers);
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -94,11 +134,19 @@ export class Proxy {
             method: "GET",
             headers: _headers,
             queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
+            responseType,
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
+            if (!this.isJsonResponse(_response)) {
+                return {
+                    data: _response.body as core.BinaryResponse,
+                    rawResponse: _response.rawResponse,
+                };
+            }
+
             return {
                 data: serializers.ProxyResponse.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
@@ -164,21 +212,21 @@ export class Proxy {
     public post(
         request: Pipedream.ProxyPostRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): core.HttpResponsePromise<Pipedream.ProxyResponse | undefined> {
+    ): core.HttpResponsePromise<Pipedream.ProxyResponse | core.BinaryResponse | undefined> {
         return core.HttpResponsePromise.fromPromise(this.__post(request, requestOptions));
     }
 
     private async __post(
         request: Pipedream.ProxyPostRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
+    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | core.BinaryResponse | undefined>> {
         const { url, externalUserId, accountId, body: _body, params, headers } = request;
-        const url64 = base64Encode(url);
+        const urlWithParams = createRequestUrl(url, params);
+        const url64 = base64Encode(urlWithParams);
         const transformedHeaders = this.transformProxyHeaders(headers);
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {
             external_user_id: externalUserId,
             account_id: accountId,
-            ...(params || {}),
         };
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
@@ -189,6 +237,7 @@ export class Proxy {
             transformedHeaders,
             requestOptions?.headers,
         );
+        const responseType = this.getResponseType(_headers);
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -205,11 +254,19 @@ export class Proxy {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
+            responseType,
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
+            if (!this.isJsonResponse(_response)) {
+                return {
+                    data: _response.body as core.BinaryResponse,
+                    rawResponse: _response.rawResponse,
+                };
+            }
+
             return {
                 data: serializers.ProxyResponse.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
@@ -275,21 +332,21 @@ export class Proxy {
     public put(
         request: Pipedream.ProxyPutRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): core.HttpResponsePromise<Pipedream.ProxyResponse | undefined> {
+    ): core.HttpResponsePromise<Pipedream.ProxyResponse | core.BinaryResponse | undefined> {
         return core.HttpResponsePromise.fromPromise(this.__put(request, requestOptions));
     }
 
     private async __put(
         request: Pipedream.ProxyPutRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
+    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | core.BinaryResponse | undefined>> {
         const { url, externalUserId, accountId, body: _body, params, headers } = request;
-        const url64 = base64Encode(url);
+        const urlWithParams = createRequestUrl(url, params);
+        const url64 = base64Encode(urlWithParams);
         const transformedHeaders = this.transformProxyHeaders(headers);
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {
             external_user_id: externalUserId,
             account_id: accountId,
-            ...(params || {}),
         };
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
@@ -300,6 +357,7 @@ export class Proxy {
             transformedHeaders,
             requestOptions?.headers,
         );
+        const responseType = this.getResponseType(_headers);
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -316,11 +374,19 @@ export class Proxy {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
+            responseType,
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
+            if (!this.isJsonResponse(_response)) {
+                return {
+                    data: _response.body as core.BinaryResponse,
+                    rawResponse: _response.rawResponse,
+                };
+            }
+
             return {
                 data: serializers.ProxyResponse.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
@@ -385,21 +451,21 @@ export class Proxy {
     public delete(
         request: Pipedream.ProxyDeleteRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): core.HttpResponsePromise<Pipedream.ProxyResponse | undefined> {
+    ): core.HttpResponsePromise<Pipedream.ProxyResponse | core.BinaryResponse | undefined> {
         return core.HttpResponsePromise.fromPromise(this.__delete(request, requestOptions));
     }
 
     private async __delete(
         request: Pipedream.ProxyDeleteRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
+    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | core.BinaryResponse | undefined>> {
         const { url, externalUserId, accountId, params, headers } = request;
-        const url64 = base64Encode(url);
+        const urlWithParams = createRequestUrl(url, params);
+        const url64 = base64Encode(urlWithParams);
         const transformedHeaders = this.transformProxyHeaders(headers);
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {
             external_user_id: externalUserId,
             account_id: accountId,
-            ...(params || {}),
         };
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
@@ -410,6 +476,7 @@ export class Proxy {
             transformedHeaders,
             requestOptions?.headers,
         );
+        const responseType = this.getResponseType(_headers);
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -420,11 +487,19 @@ export class Proxy {
             method: "DELETE",
             headers: _headers,
             queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
+            responseType,
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
+            if (!this.isJsonResponse(_response)) {
+                return {
+                    data: _response.body as core.BinaryResponse,
+                    rawResponse: _response.rawResponse,
+                };
+            }
+
             return {
                 data: serializers.ProxyResponse.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
@@ -490,21 +565,21 @@ export class Proxy {
     public patch(
         request: Pipedream.ProxyPatchRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): core.HttpResponsePromise<Pipedream.ProxyResponse | undefined> {
+    ): core.HttpResponsePromise<Pipedream.ProxyResponse | core.BinaryResponse | undefined> {
         return core.HttpResponsePromise.fromPromise(this.__patch(request, requestOptions));
     }
 
     private async __patch(
         request: Pipedream.ProxyPatchRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
+    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | core.BinaryResponse | undefined>> {
         const { url, externalUserId, accountId, body: _body, params, headers } = request;
-        const url64 = base64Encode(url);
+        const urlWithParams = createRequestUrl(url, params);
+        const url64 = base64Encode(urlWithParams);
         const transformedHeaders = this.transformProxyHeaders(headers);
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {
             external_user_id: externalUserId,
             account_id: accountId,
-            ...(params || {}),
         };
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             this._options?.headers,
@@ -515,6 +590,7 @@ export class Proxy {
             transformedHeaders,
             requestOptions?.headers,
         );
+        const responseType = this.getResponseType(_headers);
         const _response = await core.fetcher({
             url: core.url.join(
                 (await core.Supplier.get(this._options.baseUrl)) ??
@@ -531,11 +607,19 @@ export class Proxy {
                 unrecognizedObjectKeys: "strip",
                 omitUndefined: true,
             }),
+            responseType,
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
             maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
             abortSignal: requestOptions?.abortSignal,
         });
         if (_response.ok) {
+            if (!this.isJsonResponse(_response)) {
+                return {
+                    data: _response.body as core.BinaryResponse,
+                    rawResponse: _response.rawResponse,
+                };
+            }
+
             return {
                 data: serializers.ProxyResponse.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
