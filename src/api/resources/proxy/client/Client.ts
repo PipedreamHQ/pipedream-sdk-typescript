@@ -65,7 +65,8 @@ export class Proxy {
             return undefined; // No Accept header = default to JSON
         }
 
-        const acceptsJson = Proxy.JSON_ACCEPT_REGEX.test(acceptHeader.valueOf().toString());
+        const acceptValue = typeof acceptHeader === 'string' ? acceptHeader : String(acceptHeader ?? '');
+        const acceptsJson = Proxy.JSON_ACCEPT_REGEX.test(acceptValue);
         return acceptsJson ? undefined : "binary-response";
     }
 
