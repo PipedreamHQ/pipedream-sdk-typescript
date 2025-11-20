@@ -21,6 +21,19 @@ export declare namespace Proxy {
 export class Proxy {
     protected readonly _options: Proxy.Options;
 
+    /**
+     * Precompiled regex to check if an Accept header accepts JSON responses.
+     * Matches: application/json, *\\/*, or application/* (with or without parameters)
+     */
+    private static readonly JSON_ACCEPT_REGEX =
+        /(?:^|,|\s)(application\/json|\*\/\*|application\/\*)(?:\s*;|\s*,|\s*$)/i;
+
+    /**
+     * Precompiled regex to check if a Content-Type header is JSON.
+     * Matches: application/json (with or without parameters like charset)
+     */
+    private static readonly JSON_CONTENT_TYPE_REGEX = /^application\/json(?:\s|;|$)/i;
+
     constructor(_options: Proxy.Options) {
         this._options = _options;
     }
@@ -47,15 +60,21 @@ export class Proxy {
      * via `transformProxyHeaders`.
      */
     private getResponseType(headers: core.Fetcher.Args["headers"]): core.Fetcher.Args["responseType"] | undefined {
-        const isNotJson = headers?.["x-pd-proxy-accept"] && headers["x-pd-proxy-accept"] !== "application/json";
-        return isNotJson ? "binary-response" : undefined;
+        const acceptHeader = headers?.["x-pd-proxy-accept"];
+        if (!acceptHeader) {
+            return undefined; // No Accept header = default to JSON
+        }
+
+        const acceptsJson = Proxy.JSON_ACCEPT_REGEX.test(acceptHeader.valueOf().toString());
+        return acceptsJson ? undefined : "binary-response";
     }
 
     /**
      * Check if the response is JSON based on content-type header
      */
     private isJsonResponse(response: core.APIResponse<unknown, unknown>): boolean {
-        return response.rawResponse.headers.get("content-type") === "application/json";
+        const contentType = response.rawResponse.headers.get("content-type");
+        return contentType ? Proxy.JSON_CONTENT_TYPE_REGEX.test(contentType) : false;
     }
 
     /**
