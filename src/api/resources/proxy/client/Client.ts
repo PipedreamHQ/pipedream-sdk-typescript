@@ -23,7 +23,7 @@ export class Proxy {
 
     /**
      * Precompiled regex to check if an Accept header accepts JSON responses.
-     * Matches: application/json, *\\/*, or application/* (with or without parameters)
+     * Matches: application/json, */*, or application/* (with or without parameters)
      */
     private static readonly JSON_ACCEPT_REGEX =
         /(?:^|,|\s)(application\/json|\*\/\*|application\/\*)(?:\s*;|\s*,|\s*$)/i;
