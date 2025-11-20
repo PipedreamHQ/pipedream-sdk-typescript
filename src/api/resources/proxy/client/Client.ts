@@ -85,7 +85,7 @@ export class Proxy {
     private async __get(
         request: Pipedream.ProxyGetRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
+    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | core.BinaryResponse | undefined>> {
         const { url, externalUserId, accountId, params, headers } = request;
         const urlWithParams = createRequestUrl(url, params);
         const url64 = base64Encode(urlWithParams);
@@ -199,7 +199,7 @@ export class Proxy {
     private async __post(
         request: Pipedream.ProxyPostRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
+    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | core.BinaryResponse | undefined>> {
         const { url, externalUserId, accountId, body: _body, params, headers } = request;
         const urlWithParams = createRequestUrl(url, params);
         const url64 = base64Encode(urlWithParams);
@@ -319,7 +319,7 @@ export class Proxy {
     private async __put(
         request: Pipedream.ProxyPutRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
+    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | core.BinaryResponse | undefined>> {
         const { url, externalUserId, accountId, body: _body, params, headers } = request;
         const urlWithParams = createRequestUrl(url, params);
         const url64 = base64Encode(urlWithParams);
@@ -438,7 +438,7 @@ export class Proxy {
     private async __delete(
         request: Pipedream.ProxyDeleteRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
+    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | core.BinaryResponse | undefined>> {
         const { url, externalUserId, accountId, params, headers } = request;
         const urlWithParams = createRequestUrl(url, params);
         const url64 = base64Encode(urlWithParams);
@@ -552,7 +552,7 @@ export class Proxy {
     private async __patch(
         request: Pipedream.ProxyPatchRequest,
         requestOptions?: Proxy.RequestOptions,
-    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | undefined>> {
+    ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | core.BinaryResponse | undefined>> {
         const { url, externalUserId, accountId, body: _body, params, headers } = request;
         const urlWithParams = createRequestUrl(url, params);
         const url64 = base64Encode(urlWithParams);
