@@ -3,23 +3,42 @@
 import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { ConfigurablePropBase } from "./ConfigurablePropBase.js";
 import { ConfigurablePropObjectOptionsItem } from "./ConfigurablePropObjectOptionsItem.js";
 import { ConfiguredPropValueObject } from "./ConfiguredPropValueObject.js";
 
 export const ConfigurablePropObject: core.serialization.ObjectSchema<
     serializers.ConfigurablePropObject.Raw,
     Pipedream.ConfigurablePropObject
-> = core.serialization
-    .object({
-        default: ConfiguredPropValueObject.optional(),
-        options: core.serialization.list(ConfigurablePropObjectOptionsItem).optional(),
-    })
-    .extend(ConfigurablePropBase);
+> = core.serialization.object({
+    type: core.serialization.stringLiteral("object"),
+    default: ConfiguredPropValueObject.optional(),
+    options: core.serialization.list(ConfigurablePropObjectOptionsItem).optional(),
+    name: core.serialization.string(),
+    label: core.serialization.string().optional(),
+    description: core.serialization.string().optional(),
+    optional: core.serialization.boolean().optional(),
+    disabled: core.serialization.boolean().optional(),
+    hidden: core.serialization.boolean().optional(),
+    remoteOptions: core.serialization.boolean().optional(),
+    useQuery: core.serialization.boolean().optional(),
+    reloadProps: core.serialization.boolean().optional(),
+    withLabel: core.serialization.boolean().optional(),
+});
 
 export declare namespace ConfigurablePropObject {
-    export interface Raw extends ConfigurablePropBase.Raw {
+    export interface Raw {
+        type: "object";
         default?: ConfiguredPropValueObject.Raw | null;
         options?: ConfigurablePropObjectOptionsItem.Raw[] | null;
+        name: string;
+        label?: string | null;
+        description?: string | null;
+        optional?: boolean | null;
+        disabled?: boolean | null;
+        hidden?: boolean | null;
+        remoteOptions?: boolean | null;
+        useQuery?: boolean | null;
+        reloadProps?: boolean | null;
+        withLabel?: boolean | null;
     }
 }

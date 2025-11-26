@@ -10,6 +10,7 @@ import type * as Pipedream from "../../../../index.js";
  *         limit: 1,
  *         q: "q",
  *         app: "app",
+ *         registry: "public",
  *         componentType: "trigger"
  *     }
  */
@@ -24,6 +25,8 @@ export interface ComponentsListRequest {
     q?: string;
     /** The ID or name slug of the app to filter the components */
     app?: string;
+    /** The registry to retrieve components from. Defaults to 'all' ('public', 'private', or 'all') */
+    registry?: Pipedream.ComponentsListRequestRegistry;
     /** The type of the component to filter the components */
     componentType?: Pipedream.ComponentType;
 }

@@ -1,6 +1,6 @@
 {
     "name": "@pipedream/sdk",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "private": false,
     "repository": "github:PipedreamHQ/pipedream-sdk-typescript",
     "type": "commonjs",
@@ -10,11 +10,6 @@
     "exports": {
         ".": {
             "types": "./dist/cjs/index.d.ts",
-            "browser": {
-                "types": "./dist/esm/browser/index.d.mts",
-                "import": "./dist/esm/browser/index.mjs",
-                "default": "./dist/esm/browser/index.mjs"
-            },
             "import": {
                 "types": "./dist/esm/index.d.mts",
                 "default": "./dist/esm/index.mjs"
@@ -24,18 +19,6 @@
                 "default": "./dist/cjs/index.js"
             },
             "default": "./dist/cjs/index.js"
-        },
-        "./browser": {
-            "types": "./dist/esm/browser/index.d.mts",
-            "import": {
-                "types": "./dist/esm/browser/index.d.mts",
-                "default": "./dist/esm/browser/index.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/browser/index.d.ts",
-                "default": "./dist/cjs/browser/index.js"
-            },
-            "default": "./dist/esm/browser/index.mjs"
         },
         "./serialization": {
             "types": "./dist/cjs/serialization/index.d.ts",
@@ -48,18 +31,6 @@
                 "default": "./dist/cjs/serialization/index.js"
             },
             "default": "./dist/cjs/serialization/index.js"
-        },
-        "./server": {
-            "types": "./dist/cjs/index.d.ts",
-            "import": {
-                "types": "./dist/esm/index.d.mts",
-                "default": "./dist/esm/index.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/index.d.ts",
-                "default": "./dist/cjs/index.js"
-            },
-            "default": "./dist/cjs/index.js"
         },
         "./package.json": "./package.json"
     },
@@ -93,8 +64,6 @@
         "@biomejs/biome": "2.2.5"
     },
     "browser": {
-        "./dist/cjs/wrapper/utils/getBaseUrl.js": "./dist/cjs/wrapper/utils/getBaseUrl.browser.js",
-        "./dist/esm/wrapper/utils/getBaseUrl.mjs": "./dist/esm/wrapper/utils/getBaseUrl.browser.mjs",
         "fs": false,
         "os": false,
         "path": false,

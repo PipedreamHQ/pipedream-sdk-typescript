@@ -3,25 +3,44 @@
 import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { ConfigurablePropBase } from "./ConfigurablePropBase.js";
 
 export const ConfigurablePropApphook: core.serialization.ObjectSchema<
     serializers.ConfigurablePropApphook.Raw,
     Pipedream.ConfigurablePropApphook
-> = core.serialization
-    .object({
-        appProp: core.serialization.string(),
-        eventNames: core.serialization.list(core.serialization.string()).optional(),
-        remote: core.serialization.boolean().optional(),
-        static: core.serialization.list(core.serialization.unknown()).optional(),
-    })
-    .extend(ConfigurablePropBase);
+> = core.serialization.object({
+    type: core.serialization.stringLiteral("$.interface.apphook"),
+    appProp: core.serialization.string(),
+    eventNames: core.serialization.list(core.serialization.string()).optional(),
+    remote: core.serialization.boolean().optional(),
+    static: core.serialization.list(core.serialization.unknown()).optional(),
+    name: core.serialization.string(),
+    label: core.serialization.string().optional(),
+    description: core.serialization.string().optional(),
+    optional: core.serialization.boolean().optional(),
+    disabled: core.serialization.boolean().optional(),
+    hidden: core.serialization.boolean().optional(),
+    remoteOptions: core.serialization.boolean().optional(),
+    useQuery: core.serialization.boolean().optional(),
+    reloadProps: core.serialization.boolean().optional(),
+    withLabel: core.serialization.boolean().optional(),
+});
 
 export declare namespace ConfigurablePropApphook {
-    export interface Raw extends ConfigurablePropBase.Raw {
+    export interface Raw {
+        type: "$.interface.apphook";
         appProp: string;
         eventNames?: string[] | null;
         remote?: boolean | null;
         static?: unknown[] | null;
+        name: string;
+        label?: string | null;
+        description?: string | null;
+        optional?: boolean | null;
+        disabled?: boolean | null;
+        hidden?: boolean | null;
+        remoteOptions?: boolean | null;
+        useQuery?: boolean | null;
+        reloadProps?: boolean | null;
+        withLabel?: boolean | null;
     }
 }
