@@ -37,7 +37,8 @@ export class Triggers {
      *         before: "before",
      *         limit: 1,
      *         q: "q",
-     *         app: "app"
+     *         app: "app",
+     *         registry: "public"
      *     })
      */
     public async list(
@@ -48,7 +49,7 @@ export class Triggers {
             async (
                 request: Pipedream.TriggersListRequest,
             ): Promise<core.WithRawResponse<Pipedream.GetComponentsResponse>> => {
-                const { after, before, limit, q, app } = request;
+                const { after, before, limit, q, app, registry } = request;
                 const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
                 if (after != null) {
                     _queryParams.after = after;
@@ -64,6 +65,12 @@ export class Triggers {
                 }
                 if (app != null) {
                     _queryParams.app = app;
+                }
+                if (registry != null) {
+                    _queryParams.registry = serializers.TriggersListRequestRegistry.jsonOrThrow(registry, {
+                        unrecognizedObjectKeys: "strip",
+                        omitUndefined: true,
+                    });
                 }
                 const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
                     this._options?.headers,

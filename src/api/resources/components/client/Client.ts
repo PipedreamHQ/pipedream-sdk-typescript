@@ -38,6 +38,7 @@ export class Components {
      *         limit: 1,
      *         q: "q",
      *         app: "app",
+     *         registry: "public",
      *         componentType: "trigger"
      *     })
      */
@@ -49,7 +50,7 @@ export class Components {
             async (
                 request: Pipedream.ComponentsListRequest,
             ): Promise<core.WithRawResponse<Pipedream.GetComponentsResponse>> => {
-                const { after, before, limit, q, app, componentType } = request;
+                const { after, before, limit, q, app, registry, componentType } = request;
                 const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
                 if (after != null) {
                     _queryParams.after = after;
@@ -65,6 +66,12 @@ export class Components {
                 }
                 if (app != null) {
                     _queryParams.app = app;
+                }
+                if (registry != null) {
+                    _queryParams.registry = serializers.ComponentsListRequestRegistry.jsonOrThrow(registry, {
+                        unrecognizedObjectKeys: "strip",
+                        omitUndefined: true,
+                    });
                 }
                 if (componentType != null) {
                     _queryParams.component_type = serializers.ComponentType.jsonOrThrow(componentType, {
