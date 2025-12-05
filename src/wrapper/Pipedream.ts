@@ -78,7 +78,6 @@ export class Pipedream extends PipedreamClient {
 
         if ("tokenProvider" in opts) {
             clientOpts.tokenProvider = opts.tokenProvider;
-            clientOpts.projectId = "";
         } else {
             const { clientId = process.env.PIPEDREAM_CLIENT_ID, clientSecret = process.env.PIPEDREAM_CLIENT_SECRET } =
                 opts || {};
