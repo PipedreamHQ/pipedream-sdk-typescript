@@ -3,25 +3,44 @@
 import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { ConfigurablePropBase } from "./ConfigurablePropBase.js";
 import { ConfigurablePropStringArrayOptionsItem } from "./ConfigurablePropStringArrayOptionsItem.js";
 import { ConfiguredPropValueString } from "./ConfiguredPropValueString.js";
 
 export const ConfigurablePropStringArray: core.serialization.ObjectSchema<
     serializers.ConfigurablePropStringArray.Raw,
     Pipedream.ConfigurablePropStringArray
-> = core.serialization
-    .object({
-        secret: core.serialization.boolean().optional(),
-        default: core.serialization.list(ConfiguredPropValueString).optional(),
-        options: core.serialization.list(ConfigurablePropStringArrayOptionsItem).optional(),
-    })
-    .extend(ConfigurablePropBase);
+> = core.serialization.object({
+    type: core.serialization.stringLiteral("string[]"),
+    secret: core.serialization.boolean().optionalNullable(),
+    default: core.serialization.list(ConfiguredPropValueString).optionalNullable(),
+    options: core.serialization.list(ConfigurablePropStringArrayOptionsItem).optional(),
+    name: core.serialization.string(),
+    label: core.serialization.string().optionalNullable(),
+    description: core.serialization.string().optionalNullable(),
+    optional: core.serialization.boolean().optionalNullable(),
+    disabled: core.serialization.boolean().optionalNullable(),
+    hidden: core.serialization.boolean().optionalNullable(),
+    remoteOptions: core.serialization.boolean().optionalNullable(),
+    useQuery: core.serialization.boolean().optionalNullable(),
+    reloadProps: core.serialization.boolean().optionalNullable(),
+    withLabel: core.serialization.boolean().optionalNullable(),
+});
 
 export declare namespace ConfigurablePropStringArray {
-    export interface Raw extends ConfigurablePropBase.Raw {
-        secret?: boolean | null;
-        default?: ConfiguredPropValueString.Raw[] | null;
+    export interface Raw {
+        type: "string[]";
+        secret?: (boolean | null | undefined) | null;
+        default?: (ConfiguredPropValueString.Raw[] | null | undefined) | null;
         options?: ConfigurablePropStringArrayOptionsItem.Raw[] | null;
+        name: string;
+        label?: (string | null | undefined) | null;
+        description?: (string | null | undefined) | null;
+        optional?: (boolean | null | undefined) | null;
+        disabled?: (boolean | null | undefined) | null;
+        hidden?: (boolean | null | undefined) | null;
+        remoteOptions?: (boolean | null | undefined) | null;
+        useQuery?: (boolean | null | undefined) | null;
+        reloadProps?: (boolean | null | undefined) | null;
+        withLabel?: (boolean | null | undefined) | null;
     }
 }

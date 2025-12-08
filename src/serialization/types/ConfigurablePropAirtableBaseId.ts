@@ -3,19 +3,38 @@
 import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { ConfigurablePropBase } from "./ConfigurablePropBase.js";
 
 export const ConfigurablePropAirtableBaseId: core.serialization.ObjectSchema<
     serializers.ConfigurablePropAirtableBaseId.Raw,
     Pipedream.ConfigurablePropAirtableBaseId
-> = core.serialization
-    .object({
-        appProp: core.serialization.string(),
-    })
-    .extend(ConfigurablePropBase);
+> = core.serialization.object({
+    type: core.serialization.stringLiteral("$.airtable.baseId"),
+    appProp: core.serialization.string(),
+    name: core.serialization.string(),
+    label: core.serialization.string().optionalNullable(),
+    description: core.serialization.string().optionalNullable(),
+    optional: core.serialization.boolean().optionalNullable(),
+    disabled: core.serialization.boolean().optionalNullable(),
+    hidden: core.serialization.boolean().optionalNullable(),
+    remoteOptions: core.serialization.boolean().optionalNullable(),
+    useQuery: core.serialization.boolean().optionalNullable(),
+    reloadProps: core.serialization.boolean().optionalNullable(),
+    withLabel: core.serialization.boolean().optionalNullable(),
+});
 
 export declare namespace ConfigurablePropAirtableBaseId {
-    export interface Raw extends ConfigurablePropBase.Raw {
+    export interface Raw {
+        type: "$.airtable.baseId";
         appProp: string;
+        name: string;
+        label?: (string | null | undefined) | null;
+        description?: (string | null | undefined) | null;
+        optional?: (boolean | null | undefined) | null;
+        disabled?: (boolean | null | undefined) | null;
+        hidden?: (boolean | null | undefined) | null;
+        remoteOptions?: (boolean | null | undefined) | null;
+        useQuery?: (boolean | null | undefined) | null;
+        reloadProps?: (boolean | null | undefined) | null;
+        withLabel?: (boolean | null | undefined) | null;
     }
 }

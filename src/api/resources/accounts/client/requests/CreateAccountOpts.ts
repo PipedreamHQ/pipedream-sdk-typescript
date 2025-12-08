@@ -3,14 +3,15 @@
 /**
  * @example
  *     {
- *         externalUserId: "external_user_id",
- *         oauthAppId: "oauth_app_id",
+ *         projectId: "project_id",
  *         appSlug: "app_slug",
  *         cfmapJson: "cfmap_json",
  *         connectToken: "connect_token"
  *     }
  */
 export interface CreateAccountOpts {
+    /** The project ID, which starts with `proj_`. */
+    projectId: string;
     externalUserId?: string;
     /** The OAuth app ID to filter by, if applicable */
     oauthAppId?: string;

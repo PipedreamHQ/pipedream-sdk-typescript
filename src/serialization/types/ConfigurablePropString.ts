@@ -3,25 +3,44 @@
 import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { ConfigurablePropBase } from "./ConfigurablePropBase.js";
 import { ConfigurablePropStringOptionsItem } from "./ConfigurablePropStringOptionsItem.js";
 import { ConfiguredPropValueString } from "./ConfiguredPropValueString.js";
 
 export const ConfigurablePropString: core.serialization.ObjectSchema<
     serializers.ConfigurablePropString.Raw,
     Pipedream.ConfigurablePropString
-> = core.serialization
-    .object({
-        secret: core.serialization.boolean().optional(),
-        default: ConfiguredPropValueString.optional(),
-        options: core.serialization.list(ConfigurablePropStringOptionsItem).optional(),
-    })
-    .extend(ConfigurablePropBase);
+> = core.serialization.object({
+    type: core.serialization.stringLiteral("string"),
+    secret: core.serialization.boolean().optionalNullable(),
+    default: ConfiguredPropValueString.optional(),
+    options: core.serialization.list(ConfigurablePropStringOptionsItem).optional(),
+    name: core.serialization.string(),
+    label: core.serialization.string().optionalNullable(),
+    description: core.serialization.string().optionalNullable(),
+    optional: core.serialization.boolean().optionalNullable(),
+    disabled: core.serialization.boolean().optionalNullable(),
+    hidden: core.serialization.boolean().optionalNullable(),
+    remoteOptions: core.serialization.boolean().optionalNullable(),
+    useQuery: core.serialization.boolean().optionalNullable(),
+    reloadProps: core.serialization.boolean().optionalNullable(),
+    withLabel: core.serialization.boolean().optionalNullable(),
+});
 
 export declare namespace ConfigurablePropString {
-    export interface Raw extends ConfigurablePropBase.Raw {
-        secret?: boolean | null;
+    export interface Raw {
+        type: "string";
+        secret?: (boolean | null | undefined) | null;
         default?: ConfiguredPropValueString.Raw | null;
         options?: ConfigurablePropStringOptionsItem.Raw[] | null;
+        name: string;
+        label?: (string | null | undefined) | null;
+        description?: (string | null | undefined) | null;
+        optional?: (boolean | null | undefined) | null;
+        disabled?: (boolean | null | undefined) | null;
+        hidden?: (boolean | null | undefined) | null;
+        remoteOptions?: (boolean | null | undefined) | null;
+        useQuery?: (boolean | null | undefined) | null;
+        reloadProps?: (boolean | null | undefined) | null;
+        withLabel?: (boolean | null | undefined) | null;
     }
 }

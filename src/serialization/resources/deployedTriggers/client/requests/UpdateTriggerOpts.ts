@@ -7,7 +7,7 @@ import { ConfiguredProps } from "../../../../types/ConfiguredProps.js";
 
 export const UpdateTriggerOpts: core.serialization.Schema<
     serializers.UpdateTriggerOpts.Raw,
-    Omit<Pipedream.UpdateTriggerOpts, "externalUserId">
+    Omit<Pipedream.UpdateTriggerOpts, "projectId" | "triggerId" | "externalUserId">
 > = core.serialization.object({
     active: core.serialization.boolean().optional(),
     configuredProps: core.serialization.property("configured_props", ConfiguredProps.optional()),

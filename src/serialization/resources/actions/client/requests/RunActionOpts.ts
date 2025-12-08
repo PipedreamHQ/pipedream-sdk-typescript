@@ -6,23 +6,25 @@ import type * as serializers from "../../../../index.js";
 import { ConfiguredProps } from "../../../../types/ConfiguredProps.js";
 import { RunActionOptsStashId } from "../../../../types/RunActionOptsStashId.js";
 
-export const RunActionOpts: core.serialization.Schema<serializers.RunActionOpts.Raw, Pipedream.RunActionOpts> =
-    core.serialization.object({
-        id: core.serialization.string(),
-        version: core.serialization.string().optional(),
-        externalUserId: core.serialization.property("external_user_id", core.serialization.string()),
-        configuredProps: core.serialization.property("configured_props", ConfiguredProps.optional()),
-        dynamicPropsId: core.serialization.property("dynamic_props_id", core.serialization.string().optional()),
-        stashId: core.serialization.property("stash_id", RunActionOptsStashId.optional()),
-    });
+export const RunActionOpts: core.serialization.Schema<
+    serializers.RunActionOpts.Raw,
+    Omit<Pipedream.RunActionOpts, "projectId">
+> = core.serialization.object({
+    id: core.serialization.string(),
+    version: core.serialization.string().optionalNullable(),
+    externalUserId: core.serialization.property("external_user_id", core.serialization.string()),
+    configuredProps: core.serialization.property("configured_props", ConfiguredProps.optional()),
+    dynamicPropsId: core.serialization.property("dynamic_props_id", core.serialization.string().optional()),
+    stashId: core.serialization.property("stash_id", RunActionOptsStashId.optionalNullable()),
+});
 
 export declare namespace RunActionOpts {
     export interface Raw {
         id: string;
-        version?: string | null;
+        version?: (string | null | undefined) | null;
         external_user_id: string;
         configured_props?: ConfiguredProps.Raw | null;
         dynamic_props_id?: string | null;
-        stash_id?: RunActionOptsStashId.Raw | null;
+        stash_id?: (RunActionOptsStashId.Raw | null | undefined) | null;
     }
 }

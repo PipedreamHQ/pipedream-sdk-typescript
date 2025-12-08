@@ -1,1 +1,1 @@
-export * from "./TriggersListRequestRegistry.js";
+export * from "./ListTriggersRequestRegistry.js";

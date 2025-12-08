@@ -4,21 +4,40 @@ import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { ConfigurablePropAlertType } from "./ConfigurablePropAlertType.js";
-import { ConfigurablePropBase } from "./ConfigurablePropBase.js";
 
 export const ConfigurablePropAlert: core.serialization.ObjectSchema<
     serializers.ConfigurablePropAlert.Raw,
     Pipedream.ConfigurablePropAlert
-> = core.serialization
-    .object({
-        alertType: ConfigurablePropAlertType.optional(),
-        content: core.serialization.string(),
-    })
-    .extend(ConfigurablePropBase);
+> = core.serialization.object({
+    type: core.serialization.stringLiteral("alert"),
+    alertType: ConfigurablePropAlertType.optional(),
+    content: core.serialization.string(),
+    name: core.serialization.string(),
+    label: core.serialization.string().optionalNullable(),
+    description: core.serialization.string().optionalNullable(),
+    optional: core.serialization.boolean().optionalNullable(),
+    disabled: core.serialization.boolean().optionalNullable(),
+    hidden: core.serialization.boolean().optionalNullable(),
+    remoteOptions: core.serialization.boolean().optionalNullable(),
+    useQuery: core.serialization.boolean().optionalNullable(),
+    reloadProps: core.serialization.boolean().optionalNullable(),
+    withLabel: core.serialization.boolean().optionalNullable(),
+});
 
 export declare namespace ConfigurablePropAlert {
-    export interface Raw extends ConfigurablePropBase.Raw {
+    export interface Raw {
+        type: "alert";
         alertType?: ConfigurablePropAlertType.Raw | null;
         content: string;
+        name: string;
+        label?: (string | null | undefined) | null;
+        description?: (string | null | undefined) | null;
+        optional?: (boolean | null | undefined) | null;
+        disabled?: (boolean | null | undefined) | null;
+        hidden?: (boolean | null | undefined) | null;
+        remoteOptions?: (boolean | null | undefined) | null;
+        useQuery?: (boolean | null | undefined) | null;
+        reloadProps?: (boolean | null | undefined) | null;
+        withLabel?: (boolean | null | undefined) | null;
     }
 }
