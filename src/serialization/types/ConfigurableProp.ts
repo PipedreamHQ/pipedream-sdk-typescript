@@ -12,10 +12,13 @@ import { ConfigurablePropAny } from "./ConfigurablePropAny.js";
 import { ConfigurablePropApp } from "./ConfigurablePropApp.js";
 import { ConfigurablePropApphook } from "./ConfigurablePropApphook.js";
 import { ConfigurablePropBoolean } from "./ConfigurablePropBoolean.js";
+import { ConfigurablePropDataStore } from "./ConfigurablePropDataStore.js";
 import { ConfigurablePropDb } from "./ConfigurablePropDb.js";
+import { ConfigurablePropDir } from "./ConfigurablePropDir.js";
 import { ConfigurablePropDiscordChannel } from "./ConfigurablePropDiscordChannel.js";
 import { ConfigurablePropDiscordChannelArray } from "./ConfigurablePropDiscordChannelArray.js";
 import { ConfigurablePropHttp } from "./ConfigurablePropHttp.js";
+import { ConfigurablePropHttpRequest } from "./ConfigurablePropHttpRequest.js";
 import { ConfigurablePropInteger } from "./ConfigurablePropInteger.js";
 import { ConfigurablePropIntegerArray } from "./ConfigurablePropIntegerArray.js";
 import { ConfigurablePropObject } from "./ConfigurablePropObject.js";
@@ -31,10 +34,13 @@ export const ConfigurableProp: core.serialization.Schema<serializers.Configurabl
             any: ConfigurablePropAny,
             app: ConfigurablePropApp,
             boolean: ConfigurablePropBoolean,
+            data_store: ConfigurablePropDataStore,
+            dir: ConfigurablePropDir,
             "$.interface.timer": ConfigurablePropTimer,
             "$.interface.apphook": ConfigurablePropApphook,
             "integer[]": ConfigurablePropIntegerArray,
             "$.interface.http": ConfigurablePropHttp,
+            http_request: ConfigurablePropHttpRequest,
             "$.service.db": ConfigurablePropDb,
             sql: ConfigurablePropSql,
             "$.airtable.baseId": ConfigurablePropAirtableBaseId,
@@ -59,10 +65,13 @@ export declare namespace ConfigurableProp {
         | ConfigurableProp.Any
         | ConfigurableProp.App
         | ConfigurableProp.Boolean
+        | ConfigurableProp.DataStore
+        | ConfigurableProp.Dir
         | ConfigurableProp.InterfaceTimer
         | ConfigurableProp.InterfaceApphook
         | ConfigurableProp.IntegerArray
         | ConfigurableProp.InterfaceHttp
+        | ConfigurableProp.HttpRequest
         | ConfigurableProp.ServiceDb
         | ConfigurableProp.Sql
         | ConfigurableProp.AirtableBaseId
@@ -92,6 +101,14 @@ export declare namespace ConfigurableProp {
         type: "boolean";
     }
 
+    export interface DataStore extends ConfigurablePropDataStore.Raw {
+        type: "data_store";
+    }
+
+    export interface Dir extends ConfigurablePropDir.Raw {
+        type: "dir";
+    }
+
     export interface InterfaceTimer extends ConfigurablePropTimer.Raw {
         type: "$.interface.timer";
     }
@@ -106,6 +123,10 @@ export declare namespace ConfigurableProp {
 
     export interface InterfaceHttp extends ConfigurablePropHttp.Raw {
         type: "$.interface.http";
+    }
+
+    export interface HttpRequest extends ConfigurablePropHttpRequest.Raw {
+        type: "http_request";
     }
 
     export interface ServiceDb extends ConfigurablePropDb.Raw {
