@@ -1,1 +1,1 @@
-export * from "./ComponentsListRequestRegistry.js";
+export * from "./ListComponentsRequestRegistry.js";

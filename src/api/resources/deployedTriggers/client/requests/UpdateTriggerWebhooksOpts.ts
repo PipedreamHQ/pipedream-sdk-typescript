@@ -3,11 +3,16 @@
 /**
  * @example
  *     {
+ *         projectId: "project_id",
+ *         triggerId: "trigger_id",
  *         externalUserId: "external_user_id",
  *         webhookUrls: ["webhook_urls"]
  *     }
  */
 export interface UpdateTriggerWebhooksOpts {
+    /** The project ID, which starts with `proj_`. */
+    projectId: string;
+    triggerId: string;
     /** The external user ID who owns the trigger */
     externalUserId: string;
     /** Array of webhook URLs to set */

@@ -6,24 +6,24 @@ import type * as serializers from "../index.js";
 import { AppAuthType } from "./AppAuthType.js";
 
 export const App: core.serialization.ObjectSchema<serializers.App.Raw, Pipedream.App> = core.serialization.object({
-    id: core.serialization.string().optional(),
+    id: core.serialization.string().optionalNullable(),
     nameSlug: core.serialization.property("name_slug", core.serialization.string()),
     name: core.serialization.string(),
-    authType: core.serialization.property("auth_type", AppAuthType.optional()),
-    description: core.serialization.string().optional(),
+    authType: core.serialization.property("auth_type", AppAuthType.optionalNullable()),
+    description: core.serialization.string().optionalNullable(),
     imgSrc: core.serialization.property("img_src", core.serialization.string()),
-    customFieldsJson: core.serialization.property("custom_fields_json", core.serialization.string().optional()),
+    customFieldsJson: core.serialization.property("custom_fields_json", core.serialization.string().nullable()),
     categories: core.serialization.list(core.serialization.string()),
     featuredWeight: core.serialization.property("featured_weight", core.serialization.number()),
 });
 
 export declare namespace App {
     export interface Raw {
-        id?: string | null;
+        id?: (string | null | undefined) | null;
         name_slug: string;
         name: string;
-        auth_type?: AppAuthType.Raw | null;
-        description?: string | null;
+        auth_type?: (AppAuthType.Raw | null | undefined) | null;
+        description?: (string | null | undefined) | null;
         img_src: string;
         custom_fields_json?: string | null;
         categories: string[];

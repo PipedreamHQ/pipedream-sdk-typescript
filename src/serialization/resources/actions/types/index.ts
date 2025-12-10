@@ -1,1 +1,1 @@
-export * from "./ActionsListRequestRegistry.js";
+export * from "./ListActionsRequestRegistry.js";

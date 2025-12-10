@@ -3,10 +3,13 @@
 /**
  * @example
  *     {
+ *         projectId: "project_id",
  *         externalUserId: "external_user_id"
  *     }
  */
 export interface CreateTokenOpts {
+    /** The project ID, which starts with `proj_`. */
+    projectId: string;
     /** List of allowed origins for CORS */
     allowedOrigins?: string[];
     /** URI to redirect to on error */

@@ -5,15 +5,18 @@ import type * as Pipedream from "../../../../index.js";
 /**
  * @example
  *     {
+ *         projectId: "project_id",
  *         id: "id",
  *         externalUserId: "external_user_id"
  *     }
  */
 export interface DeployTriggerOpts {
+    /** The project ID, which starts with `proj_`. */
+    projectId: string;
     /** The trigger component ID */
     id: string;
     /** Optional trigger component version (in SemVer format, for example '1.0.0'), defaults to latest */
-    version?: string;
+    version?: string | null;
     /** The external user ID */
     externalUserId: string;
     configuredProps?: Pipedream.ConfiguredProps;
@@ -24,5 +27,5 @@ export interface DeployTriggerOpts {
     /** Optional webhook URL to receive trigger events */
     webhookUrl?: string;
     /** Whether the trigger should emit events during the deploy hook execution. Defaults to true if not specified. */
-    emitOnDeploy?: boolean;
+    emitOnDeploy?: boolean | null;
 }

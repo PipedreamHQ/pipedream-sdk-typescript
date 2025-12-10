@@ -3,7 +3,6 @@
 import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { ConfigurablePropBase } from "./ConfigurablePropBase.js";
 import { ConfigurablePropSqlAuth } from "./ConfigurablePropSqlAuth.js";
 import { ConfigurablePropSqlOptionsItem } from "./ConfigurablePropSqlOptionsItem.js";
 import { ConfiguredPropValueSql } from "./ConfiguredPropValueSql.js";
@@ -11,18 +10,38 @@ import { ConfiguredPropValueSql } from "./ConfiguredPropValueSql.js";
 export const ConfigurablePropSql: core.serialization.ObjectSchema<
     serializers.ConfigurablePropSql.Raw,
     Pipedream.ConfigurablePropSql
-> = core.serialization
-    .object({
-        auth: ConfigurablePropSqlAuth.optional(),
-        default: ConfiguredPropValueSql.optional(),
-        options: core.serialization.list(ConfigurablePropSqlOptionsItem).optional(),
-    })
-    .extend(ConfigurablePropBase);
+> = core.serialization.object({
+    type: core.serialization.stringLiteral("sql"),
+    auth: ConfigurablePropSqlAuth.optionalNullable(),
+    default: ConfiguredPropValueSql.optional(),
+    options: core.serialization.list(ConfigurablePropSqlOptionsItem).optional(),
+    name: core.serialization.string(),
+    label: core.serialization.string().optionalNullable(),
+    description: core.serialization.string().optionalNullable(),
+    optional: core.serialization.boolean().optionalNullable(),
+    disabled: core.serialization.boolean().optionalNullable(),
+    hidden: core.serialization.boolean().optionalNullable(),
+    remoteOptions: core.serialization.boolean().optionalNullable(),
+    useQuery: core.serialization.boolean().optionalNullable(),
+    reloadProps: core.serialization.boolean().optionalNullable(),
+    withLabel: core.serialization.boolean().optionalNullable(),
+});
 
 export declare namespace ConfigurablePropSql {
-    export interface Raw extends ConfigurablePropBase.Raw {
-        auth?: ConfigurablePropSqlAuth.Raw | null;
+    export interface Raw {
+        type: "sql";
+        auth?: (ConfigurablePropSqlAuth.Raw | null | undefined) | null;
         default?: ConfiguredPropValueSql.Raw | null;
         options?: ConfigurablePropSqlOptionsItem.Raw[] | null;
+        name: string;
+        label?: (string | null | undefined) | null;
+        description?: (string | null | undefined) | null;
+        optional?: (boolean | null | undefined) | null;
+        disabled?: (boolean | null | undefined) | null;
+        hidden?: (boolean | null | undefined) | null;
+        remoteOptions?: (boolean | null | undefined) | null;
+        useQuery?: (boolean | null | undefined) | null;
+        reloadProps?: (boolean | null | undefined) | null;
+        withLabel?: (boolean | null | undefined) | null;
     }
 }

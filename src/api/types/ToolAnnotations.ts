@@ -5,13 +5,13 @@
  */
 export interface ToolAnnotations {
     /** If true, the component may perform destructive updates to its environment. If false, the component performs only additive updates. */
-    destructiveHint?: boolean;
+    destructiveHint?: boolean | null;
     /** If true, calling the component repeatedly with the same arguments will have no additional effect on the its environment. */
-    idempotentHint?: boolean;
+    idempotentHint?: boolean | null;
     /** If true, this component may interact with an “open world” of external entities. If false, the component's domain of interaction is closed. For example, the world of a web search component is open, whereas that of a memory component is not. */
-    openWorldHint?: boolean;
+    openWorldHint?: boolean | null;
     /** If true, the component does not modify its environment. */
-    readOnlyHint?: boolean;
+    readOnlyHint?: boolean | null;
     /** A human-readable title for the component. */
-    title?: string;
+    title?: string | null;
 }

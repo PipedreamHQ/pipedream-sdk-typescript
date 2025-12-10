@@ -5,10 +5,15 @@ import type * as Pipedream from "../../../../index.js";
 /**
  * @example
  *     {
+ *         projectId: "project_id",
+ *         triggerId: "trigger_id",
  *         externalUserId: "external_user_id"
  *     }
  */
 export interface UpdateTriggerOpts {
+    /** The project ID, which starts with `proj_`. */
+    projectId: string;
+    triggerId: string;
     /** The external user ID who owns the trigger */
     externalUserId: string;
     /** Whether the trigger should be active */

@@ -3,25 +3,44 @@
 import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { ConfigurablePropBase } from "./ConfigurablePropBase.js";
 
 export const ConfigurablePropApphook: core.serialization.ObjectSchema<
     serializers.ConfigurablePropApphook.Raw,
     Pipedream.ConfigurablePropApphook
-> = core.serialization
-    .object({
-        appProp: core.serialization.string(),
-        eventNames: core.serialization.list(core.serialization.string()).optional(),
-        remote: core.serialization.boolean().optional(),
-        static: core.serialization.list(core.serialization.unknown()).optional(),
-    })
-    .extend(ConfigurablePropBase);
+> = core.serialization.object({
+    type: core.serialization.stringLiteral("$.interface.apphook"),
+    appProp: core.serialization.string(),
+    eventNames: core.serialization.list(core.serialization.string()).optionalNullable(),
+    remote: core.serialization.boolean().optionalNullable(),
+    static: core.serialization.list(core.serialization.unknown()).optionalNullable(),
+    name: core.serialization.string(),
+    label: core.serialization.string().optionalNullable(),
+    description: core.serialization.string().optionalNullable(),
+    optional: core.serialization.boolean().optionalNullable(),
+    disabled: core.serialization.boolean().optionalNullable(),
+    hidden: core.serialization.boolean().optionalNullable(),
+    remoteOptions: core.serialization.boolean().optionalNullable(),
+    useQuery: core.serialization.boolean().optionalNullable(),
+    reloadProps: core.serialization.boolean().optionalNullable(),
+    withLabel: core.serialization.boolean().optionalNullable(),
+});
 
 export declare namespace ConfigurablePropApphook {
-    export interface Raw extends ConfigurablePropBase.Raw {
+    export interface Raw {
+        type: "$.interface.apphook";
         appProp: string;
-        eventNames?: string[] | null;
-        remote?: boolean | null;
-        static?: unknown[] | null;
+        eventNames?: (string[] | null | undefined) | null;
+        remote?: (boolean | null | undefined) | null;
+        static?: (unknown[] | null | undefined) | null;
+        name: string;
+        label?: (string | null | undefined) | null;
+        description?: (string | null | undefined) | null;
+        optional?: (boolean | null | undefined) | null;
+        disabled?: (boolean | null | undefined) | null;
+        hidden?: (boolean | null | undefined) | null;
+        remoteOptions?: (boolean | null | undefined) | null;
+        useQuery?: (boolean | null | undefined) | null;
+        reloadProps?: (boolean | null | undefined) | null;
+        withLabel?: (boolean | null | undefined) | null;
     }
 }

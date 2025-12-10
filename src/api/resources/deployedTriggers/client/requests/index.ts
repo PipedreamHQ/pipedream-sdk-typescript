@@ -1,9 +1,9 @@
-export type { DeployedTriggersDeleteRequest } from "./DeployedTriggersDeleteRequest.js";
-export type { DeployedTriggersListEventsRequest } from "./DeployedTriggersListEventsRequest.js";
-export type { DeployedTriggersListRequest } from "./DeployedTriggersListRequest.js";
-export type { DeployedTriggersListWebhooksRequest } from "./DeployedTriggersListWebhooksRequest.js";
-export type { DeployedTriggersListWorkflowsRequest } from "./DeployedTriggersListWorkflowsRequest.js";
-export type { DeployedTriggersRetrieveRequest } from "./DeployedTriggersRetrieveRequest.js";
+export type { DeleteDeployedTriggersRequest } from "./DeleteDeployedTriggersRequest.js";
+export type { ListDeployedTriggersRequest } from "./ListDeployedTriggersRequest.js";
+export type { ListEventsDeployedTriggersRequest } from "./ListEventsDeployedTriggersRequest.js";
+export type { ListWebhooksDeployedTriggersRequest } from "./ListWebhooksDeployedTriggersRequest.js";
+export type { ListWorkflowsDeployedTriggersRequest } from "./ListWorkflowsDeployedTriggersRequest.js";
+export type { RetrieveDeployedTriggersRequest } from "./RetrieveDeployedTriggersRequest.js";
 export type { UpdateTriggerOpts } from "./UpdateTriggerOpts.js";
 export type { UpdateTriggerWebhooksOpts } from "./UpdateTriggerWebhooksOpts.js";
 export type { UpdateTriggerWorkflowsOpts } from "./UpdateTriggerWorkflowsOpts.js";

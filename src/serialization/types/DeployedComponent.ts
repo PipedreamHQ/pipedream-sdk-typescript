@@ -13,7 +13,7 @@ export const DeployedComponent: core.serialization.ObjectSchema<
     id: core.serialization.string(),
     ownerId: core.serialization.property("owner_id", core.serialization.string()),
     componentId: core.serialization.property("component_id", core.serialization.string()),
-    componentKey: core.serialization.property("component_key", core.serialization.string().optional()),
+    componentKey: core.serialization.property("component_key", core.serialization.string().optionalNullable()),
     configurableProps: core.serialization.property("configurable_props", core.serialization.list(ConfigurableProp)),
     configuredProps: core.serialization.property("configured_props", ConfiguredProps),
     active: core.serialization.boolean(),
@@ -21,7 +21,10 @@ export const DeployedComponent: core.serialization.ObjectSchema<
     updatedAt: core.serialization.property("updated_at", core.serialization.number()),
     name: core.serialization.string(),
     nameSlug: core.serialization.property("name_slug", core.serialization.string()),
-    callbackObservations: core.serialization.property("callback_observations", core.serialization.unknown().optional()),
+    callbackObservations: core.serialization.property(
+        "callback_observations",
+        core.serialization.unknown().optionalNullable(),
+    ),
     emitOnDeploy: core.serialization.property("emit_on_deploy", core.serialization.boolean().optional()),
 });
 
@@ -30,7 +33,7 @@ export declare namespace DeployedComponent {
         id: string;
         owner_id: string;
         component_id: string;
-        component_key?: string | null;
+        component_key?: (string | null | undefined) | null;
         configurable_props: ConfigurableProp.Raw[];
         configured_props: ConfiguredProps.Raw;
         active: boolean;
@@ -38,7 +41,7 @@ export declare namespace DeployedComponent {
         updated_at: number;
         name: string;
         name_slug: string;
-        callback_observations?: unknown | null;
+        callback_observations?: (unknown | null | undefined) | null;
         emit_on_deploy?: boolean | null;
     }
 }
