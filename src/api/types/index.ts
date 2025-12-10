@@ -83,6 +83,7 @@ export * from "./GetTriggerResponse.js";
 export * from "./GetTriggersResponse.js";
 export * from "./GetTriggerWebhooksResponse.js";
 export * from "./GetTriggerWorkflowsResponse.js";
+export * from "./HTTPAuthType.js";
 export * from "./HttpInterface.js";
 export * from "./HttpRequestAuth.js";
 export * from "./HttpRequestAuthType.js";
