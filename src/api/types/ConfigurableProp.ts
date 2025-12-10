@@ -10,10 +10,13 @@ export type ConfigurableProp =
     | Pipedream.ConfigurableProp.Any
     | Pipedream.ConfigurableProp.App
     | Pipedream.ConfigurableProp.Boolean
+    | Pipedream.ConfigurableProp.DataStore
+    | Pipedream.ConfigurableProp.Dir
     | Pipedream.ConfigurableProp.InterfaceTimer
     | Pipedream.ConfigurableProp.InterfaceApphook
     | Pipedream.ConfigurableProp.IntegerArray
     | Pipedream.ConfigurableProp.InterfaceHttp
+    | Pipedream.ConfigurableProp.HttpRequest
     | Pipedream.ConfigurableProp.ServiceDb
     | Pipedream.ConfigurableProp.Sql
     | Pipedream.ConfigurableProp.AirtableBaseId
@@ -23,7 +26,7 @@ export type ConfigurableProp =
     | Pipedream.ConfigurableProp.DiscordChannel
     | Pipedream.ConfigurableProp.DiscordChannelArray
     | Pipedream.ConfigurableProp.Integer
-    | Pipedream.ConfigurableProp.Object
+    | Pipedream.ConfigurableProp.Object_
     | Pipedream.ConfigurableProp.String
     | Pipedream.ConfigurableProp.StringArray;
 
@@ -44,6 +47,14 @@ export namespace ConfigurableProp {
         type: "boolean";
     }
 
+    export interface DataStore extends Pipedream.ConfigurablePropDataStore {
+        type: "data_store";
+    }
+
+    export interface Dir extends Pipedream.ConfigurablePropDir {
+        type: "dir";
+    }
+
     export interface InterfaceTimer extends Pipedream.ConfigurablePropTimer {
         type: "$.interface.timer";
     }
@@ -58,6 +69,10 @@ export namespace ConfigurableProp {
 
     export interface InterfaceHttp extends Pipedream.ConfigurablePropHttp {
         type: "$.interface.http";
+    }
+
+    export interface HttpRequest extends Pipedream.ConfigurablePropHttpRequest {
+        type: "http_request";
     }
 
     export interface ServiceDb extends Pipedream.ConfigurablePropDb {
@@ -96,7 +111,7 @@ export namespace ConfigurableProp {
         type: "integer";
     }
 
-    export interface Object extends Pipedream.ConfigurablePropObject {
+    export interface Object_ extends Pipedream.ConfigurablePropObject {
         type: "object";
     }
 
