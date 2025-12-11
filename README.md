@@ -490,7 +490,10 @@ const response = await client.apps.list({
     limit: 1,
     q: "q",
     sortKey: "name",
-    sortDirection: "asc"
+    sortDirection: "asc",
+    hasComponents: true,
+    hasActions: true,
+    hasTriggers: true
 });
 for await (const item of response) {
     console.log(item);
@@ -503,7 +506,10 @@ let page = await client.apps.list({
     limit: 1,
     q: "q",
     sortKey: "name",
-    sortDirection: "asc"
+    sortDirection: "asc",
+    hasComponents: true,
+    hasActions: true,
+    hasTriggers: true
 });
 while (page.hasNextPage()) {
     page = page.getNextPage();

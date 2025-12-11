@@ -10,6 +10,10 @@ export const Project: core.serialization.ObjectSchema<serializers.Project.Raw, P
         name: core.serialization.string(),
         appName: core.serialization.property("app_name", core.serialization.string().optional()),
         supportEmail: core.serialization.property("support_email", core.serialization.string().optional()),
+        connectRequireKeyAuthTest: core.serialization.property(
+            "connect_require_key_auth_test",
+            core.serialization.boolean().optional(),
+        ),
     });
 
 export declare namespace Project {
@@ -18,5 +22,6 @@ export declare namespace Project {
         name: string;
         app_name?: string | null;
         support_email?: string | null;
+        connect_require_key_auth_test?: boolean | null;
     }
 }

@@ -36,7 +36,10 @@ export class Apps {
      *         limit: 1,
      *         q: "q",
      *         sortKey: "name",
-     *         sortDirection: "asc"
+     *         sortDirection: "asc",
+     *         hasComponents: true,
+     *         hasActions: true,
+     *         hasTriggers: true
      *     })
      */
     public async list(
@@ -45,7 +48,18 @@ export class Apps {
     ): Promise<core.Page<Pipedream.App>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (request: Pipedream.AppsListRequest): Promise<core.WithRawResponse<Pipedream.ListAppsResponse>> => {
-                const { after, before, limit, q, sortKey, sortDirection, categoryIds } = request;
+                const {
+                    after,
+                    before,
+                    limit,
+                    q,
+                    sortKey,
+                    sortDirection,
+                    categoryIds,
+                    hasComponents,
+                    hasActions,
+                    hasTriggers,
+                } = request;
                 const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
                 if (after != null) {
                     _queryParams.after = after;
@@ -77,6 +91,15 @@ export class Apps {
                     } else {
                         _queryParams.category_ids = categoryIds;
                     }
+                }
+                if (hasComponents != null) {
+                    _queryParams.has_components = hasComponents.toString();
+                }
+                if (hasActions != null) {
+                    _queryParams.has_actions = hasActions.toString();
+                }
+                if (hasTriggers != null) {
+                    _queryParams.has_triggers = hasTriggers.toString();
                 }
                 const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
                     this._options?.headers,

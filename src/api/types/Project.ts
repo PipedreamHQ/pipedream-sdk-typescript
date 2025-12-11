@@ -12,4 +12,6 @@ export interface Project {
     appName?: string;
     /** Support email configured for the project */
     supportEmail?: string;
+    /** Send a test request to the upstream API when adding Connect accounts for key-based apps */
+    connectRequireKeyAuthTest?: boolean;
 }

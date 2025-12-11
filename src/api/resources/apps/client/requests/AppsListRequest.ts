@@ -10,7 +10,10 @@ import type * as Pipedream from "../../../../index.js";
  *         limit: 1,
  *         q: "q",
  *         sortKey: "name",
- *         sortDirection: "asc"
+ *         sortDirection: "asc",
+ *         hasComponents: true,
+ *         hasActions: true,
+ *         hasTriggers: true
  *     }
  */
 export interface AppsListRequest {
@@ -28,4 +31,10 @@ export interface AppsListRequest {
     sortDirection?: Pipedream.AppsListRequestSortDirection;
     /** Only return apps in these categories */
     categoryIds?: string | string[];
+    /** Filter to apps that have components (actions or triggers) */
+    hasComponents?: boolean;
+    /** Filter to apps that have actions */
+    hasActions?: boolean;
+    /** Filter to apps that have triggers */
+    hasTriggers?: boolean;
 }
