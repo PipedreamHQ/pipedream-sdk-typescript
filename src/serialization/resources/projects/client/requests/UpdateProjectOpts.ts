@@ -11,6 +11,10 @@ export const UpdateProjectOpts: core.serialization.Schema<
     name: core.serialization.string().optional(),
     appName: core.serialization.property("app_name", core.serialization.string().optional()),
     supportEmail: core.serialization.property("support_email", core.serialization.string().optional()),
+    connectRequireKeyAuthTest: core.serialization.property(
+        "connect_require_key_auth_test",
+        core.serialization.boolean().optional(),
+    ),
 });
 
 export declare namespace UpdateProjectOpts {
@@ -18,5 +22,6 @@ export declare namespace UpdateProjectOpts {
         name?: string | null;
         app_name?: string | null;
         support_email?: string | null;
+        connect_require_key_auth_test?: boolean | null;
     }
 }
