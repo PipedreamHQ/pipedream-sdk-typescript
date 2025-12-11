@@ -11,6 +11,8 @@ export * from "./deployedTriggers/client/requests/index.js";
 export * as deployedTriggers from "./deployedTriggers/index.js";
 export * from "./oauthTokens/client/requests/index.js";
 export * as oauthTokens from "./oauthTokens/index.js";
+export * from "./projects/client/requests/index.js";
+export * as projects from "./projects/index.js";
 export * as proxy from "./proxy/index.js";
 export * from "./tokens/client/requests/index.js";
 export * as tokens from "./tokens/index.js";

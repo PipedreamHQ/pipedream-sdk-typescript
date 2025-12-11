@@ -10,7 +10,7 @@ import * as Pipedream from "../../../index.js";
 
 export declare namespace Triggers {
     export interface Options extends BaseClientOptions {
-        token?: core.Supplier<core.BearerToken | undefined>;
+        token?: core.Supplier<core.BearerToken>;
     }
 
     export interface RequestOptions extends BaseRequestOptions {}
@@ -29,6 +29,7 @@ export class Triggers {
      * @param {Pipedream.TriggersListRequest} request
      * @param {Triggers.RequestOptions} requestOptions - Request-specific configuration.
      *
+     * @throws {@link Pipedream.BadRequestError}
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
@@ -108,6 +109,8 @@ export class Triggers {
                 }
                 if (_response.error.reason === "status-code") {
                     switch (_response.error.statusCode) {
+                        case 400:
+                            throw new Pipedream.BadRequestError(_response.error.body, _response.rawResponse);
                         case 429:
                             throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
                         default:

@@ -10,7 +10,7 @@ import * as Pipedream from "../../../index.js";
 
 export declare namespace Tokens {
     export interface Options extends BaseClientOptions {
-        token?: core.Supplier<core.BearerToken | undefined>;
+        token?: core.Supplier<core.BearerToken>;
     }
 
     export interface RequestOptions extends BaseRequestOptions {}

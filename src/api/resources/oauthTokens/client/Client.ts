@@ -10,7 +10,7 @@ import type * as Pipedream from "../../../index.js";
 
 export declare namespace OauthTokens {
     export interface Options extends BaseClientOptions {
-        token?: core.Supplier<core.BearerToken | undefined>;
+        token?: core.Supplier<core.BearerToken>;
     }
 
     export interface RequestOptions extends BaseRequestOptions {}
