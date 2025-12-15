@@ -31,10 +31,10 @@ export interface AppsListRequest {
     sortDirection?: Pipedream.AppsListRequestSortDirection;
     /** Only return apps in these categories */
     categoryIds?: string | string[];
-    /** Filter to apps that have components (actions or triggers) */
+    /** Only return apps that have components (actions or triggers) */
     hasComponents?: boolean;
-    /** Filter to apps that have actions */
+    /** Only return apps that have actions */
     hasActions?: boolean;
-    /** Filter to apps that have triggers */
+    /** Only return apps that have triggers */
     hasTriggers?: boolean;
 }

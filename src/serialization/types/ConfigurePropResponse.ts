@@ -11,10 +11,7 @@ export const ConfigurePropResponse: core.serialization.ObjectSchema<
     Pipedream.ConfigurePropResponse
 > = core.serialization.object({
     options: ConfigurePropOptions.optional(),
-    stringOptions: core.serialization.property(
-        "string_options",
-        core.serialization.list(core.serialization.string()).optional(),
-    ),
+    stringOptions: core.serialization.list(core.serialization.string()).optional(),
     observations: core.serialization.list(Observation).optional(),
     context: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
     errors: core.serialization.list(core.serialization.string()).optional(),
@@ -23,7 +20,7 @@ export const ConfigurePropResponse: core.serialization.ObjectSchema<
 export declare namespace ConfigurePropResponse {
     export interface Raw {
         options?: (ConfigurePropOptions.Raw | undefined) | null;
-        string_options?: string[] | null;
+        stringOptions?: string[] | null;
         observations?: Observation.Raw[] | null;
         context?: Record<string, unknown> | null;
         errors?: string[] | null;
