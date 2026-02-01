@@ -114,6 +114,11 @@ export type StartConnectOpts = {
      * @param status - The status of the connection when closed.
      */
     onClose?: (status: ConnectStatus) => void;
+
+    /**
+     * Whether to hide the close (X) button in the Connect iframe.
+     */
+    hideClose?: boolean;
 };
 
 /**
@@ -305,6 +310,10 @@ export class PipedreamClient extends BackendClient {
 
         if (opts.oauthAppId) {
             qp.set("oauthAppId", opts.oauthAppId);
+        }
+
+        if (opts.hideClose) {
+            qp.set("hideClose", "true");
         }
 
         const iframe = document.createElement("iframe");
