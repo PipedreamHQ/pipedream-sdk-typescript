@@ -10,6 +10,6 @@
 export interface CreateOAuthTokenOpts {
     clientId: string;
     clientSecret: string;
-    /** Optional space-separated scopes for the access token. Defaults to '*'. */
+    /** Optional space-separated scopes for the access token. Defaults to `*`. */
     scope?: string;
 }
