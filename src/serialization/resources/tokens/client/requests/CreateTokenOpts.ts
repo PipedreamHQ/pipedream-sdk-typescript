@@ -11,7 +11,9 @@ export const CreateTokenOpts: core.serialization.Schema<serializers.CreateTokenO
             core.serialization.list(core.serialization.string()).optional(),
         ),
         errorRedirectUri: core.serialization.property("error_redirect_uri", core.serialization.string().optional()),
+        expiresIn: core.serialization.property("expires_in", core.serialization.number().optional()),
         externalUserId: core.serialization.property("external_user_id", core.serialization.string()),
+        scope: core.serialization.string().optional(),
         successRedirectUri: core.serialization.property("success_redirect_uri", core.serialization.string().optional()),
         webhookUri: core.serialization.property("webhook_uri", core.serialization.string().optional()),
     });
@@ -20,7 +22,9 @@ export declare namespace CreateTokenOpts {
     export interface Raw {
         allowed_origins?: string[] | null;
         error_redirect_uri?: string | null;
+        expires_in?: number | null;
         external_user_id: string;
+        scope?: string | null;
         success_redirect_uri?: string | null;
         webhook_uri?: string | null;
     }
