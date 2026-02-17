@@ -11,8 +11,12 @@ export interface CreateTokenOpts {
     allowedOrigins?: string[];
     /** URI to redirect to on error */
     errorRedirectUri?: string;
+    /** Token TTL in seconds (max 14400 = 4 hours). Defaults to 4 hours if not specified. */
+    expiresIn?: number;
     /** Your end user ID, for whom you're creating the token */
     externalUserId: string;
+    /** Space-separated scopes to restrict token permissions. Defaults to 'connect:*' if not specified. See https://pipedream.com/docs/connect/api-reference/authentication#connect-token-scopes for more information. */
+    scope?: string;
     /** URI to redirect to on success */
     successRedirectUri?: string;
     /** Webhook URI for notifications */
