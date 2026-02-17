@@ -62,6 +62,8 @@ export * from "./ConfigurePropOptionsItem.js";
 export * from "./ConfigurePropOpts.js";
 export * from "./ConfigurePropResponse.js";
 export * from "./ConnectToken.js";
+export * from "./ConnectUsage.js";
+export * from "./ConnectUsageResponse.js";
 export * from "./CreateOAuthTokenResponse.js";
 export * from "./CreateTokenResponse.js";
 export * from "./DeleteTriggerOpts.js";

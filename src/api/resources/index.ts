@@ -25,6 +25,8 @@ export * as tokens from "./tokens/index.js";
 export * from "./triggers/client/requests/index.js";
 export * as triggers from "./triggers/index.js";
 export * from "./triggers/types/index.js";
+export * as usage from "./usage/index.js";
+export * from "./usage/client/requests/index.js";
 export * as users from "./users/index.js";
 export * as workflows from "./workflows/index.js";
 export * from "./workflows/client/requests/index.js";
