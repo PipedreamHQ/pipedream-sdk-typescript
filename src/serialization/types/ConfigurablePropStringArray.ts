@@ -13,6 +13,7 @@ export const ConfigurablePropStringArray: core.serialization.ObjectSchema<
 > = core.serialization
     .object({
         secret: core.serialization.boolean().optional(),
+        format: core.serialization.stringLiteral("file-ref").optional(),
         default: core.serialization.list(ConfiguredPropValueString).optional(),
         options: core.serialization.list(ConfigurablePropStringArrayOptionsItem).optional(),
     })
@@ -21,6 +22,7 @@ export const ConfigurablePropStringArray: core.serialization.ObjectSchema<
 export declare namespace ConfigurablePropStringArray {
     export interface Raw extends ConfigurablePropBase.Raw {
         secret?: boolean | null;
+        format?: "file-ref" | null;
         default?: ConfiguredPropValueString.Raw[] | null;
         options?: ConfigurablePropStringArrayOptionsItem.Raw[] | null;
     }
