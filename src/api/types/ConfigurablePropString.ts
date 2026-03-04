@@ -5,6 +5,8 @@ import type * as Pipedream from "../index.js";
 export interface ConfigurablePropString extends Pipedream.ConfigurablePropBase {
     /** If true, this prop is a secret and should not be displayed in plain text. */
     secret?: boolean;
+    /** The format of the string value. `file-ref` indicates a URL of a file or path to a file in the component's /tmp directory. */
+    format?: "file-ref";
     default?: Pipedream.ConfiguredPropValueString;
     options?: Pipedream.ConfigurablePropStringOptionsItem[];
 }
