@@ -5,6 +5,7 @@ import type * as Pipedream from "../index.js";
 export interface ConfigurablePropStringArray extends Pipedream.ConfigurablePropBase {
     /** If true, this prop is a secret and should not be displayed in plain text. */
     secret?: boolean;
+    format?: Pipedream.ConfigurablePropStringFormat;
     /** The default value for this prop */
     default?: Pipedream.ConfiguredPropValueString[];
     options?: Pipedream.ConfigurablePropStringArrayOptionsItem[];
