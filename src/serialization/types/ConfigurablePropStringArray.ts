@@ -5,6 +5,7 @@ import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { ConfigurablePropBase } from "./ConfigurablePropBase.js";
 import { ConfigurablePropStringArrayOptionsItem } from "./ConfigurablePropStringArrayOptionsItem.js";
+import { ConfigurablePropStringFormat } from "./ConfigurablePropStringFormat.js";
 import { ConfiguredPropValueString } from "./ConfiguredPropValueString.js";
 
 export const ConfigurablePropStringArray: core.serialization.ObjectSchema<
@@ -13,6 +14,7 @@ export const ConfigurablePropStringArray: core.serialization.ObjectSchema<
 > = core.serialization
     .object({
         secret: core.serialization.boolean().optional(),
+        format: ConfigurablePropStringFormat.optional(),
         default: core.serialization.list(ConfiguredPropValueString).optional(),
         options: core.serialization.list(ConfigurablePropStringArrayOptionsItem).optional(),
     })
@@ -21,6 +23,7 @@ export const ConfigurablePropStringArray: core.serialization.ObjectSchema<
 export declare namespace ConfigurablePropStringArray {
     export interface Raw extends ConfigurablePropBase.Raw {
         secret?: boolean | null;
+        format?: ConfigurablePropStringFormat.Raw | null;
         default?: ConfiguredPropValueString.Raw[] | null;
         options?: ConfigurablePropStringArrayOptionsItem.Raw[] | null;
     }

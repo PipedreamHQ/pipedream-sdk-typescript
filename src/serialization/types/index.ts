@@ -42,6 +42,7 @@ export * from "./ConfigurablePropSqlOptionsItem.js";
 export * from "./ConfigurablePropString.js";
 export * from "./ConfigurablePropStringArray.js";
 export * from "./ConfigurablePropStringArrayOptionsItem.js";
+export * from "./ConfigurablePropStringFormat.js";
 export * from "./ConfigurablePropStringOptionsItem.js";
 export * from "./ConfigurablePropTimer.js";
 export * from "./ConfigurablePropTimerDefault.js";
