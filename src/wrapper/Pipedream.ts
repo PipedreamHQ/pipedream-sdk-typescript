@@ -2,6 +2,7 @@ import type { TokenProvider } from "../core/auth/TokenProvider.js";
 import { ProjectEnvironment } from "../api/index.js";
 import { Workflows } from "../api/resources/workflows/client/Client.js";
 import { PipedreamClient } from "../Client.js";
+import { PipedreamEnvironment } from "../environments.js";
 
 export type PipedreamClientOpts = {
     /**
@@ -66,7 +67,7 @@ export class Pipedream extends PipedreamClient {
         }
 
         const clientOpts: PipedreamClient.Options = {
-            baseUrl: opts.baseUrl ?? "https://api.pipedream.com",
+            baseUrl: opts.baseUrl ?? PipedreamEnvironment.Prod,
             projectEnvironment,
             projectId: projectId ?? "",
         };
