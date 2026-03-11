@@ -2,8 +2,6 @@ import type { TokenProvider } from "../core/auth/TokenProvider.js";
 import { ProjectEnvironment } from "../api/index.js";
 import { Workflows } from "../api/resources/workflows/client/Client.js";
 import { PipedreamClient } from "../Client.js";
-import { PipedreamEnvironment } from "../environments.js";
-import { getBaseUrl } from "./utils/getBaseUrl.js";
 
 export type PipedreamClientOpts = {
     /**
@@ -17,9 +15,9 @@ export type PipedreamClientOpts = {
     clientSecret?: string;
 
     /**
-     * The Pipedream environment to connect to.
+     * Optional base URL for API requests. Defaults to https://api.pipedream.com
      */
-    environment?: PipedreamEnvironment;
+    baseUrl?: string;
 
     /**
      * The project environment configuration.
@@ -50,7 +48,6 @@ export class Pipedream extends PipedreamClient {
 
     public constructor(opts: PipedreamClientOpts = {}) {
         const {
-            environment = PipedreamEnvironment.Prod,
             projectEnvironment = process.env.PIPEDREAM_PROJECT_ENVIRONMENT ?? ProjectEnvironment.Production,
             projectId = process.env.PIPEDREAM_PROJECT_ID,
             workflowDomain,
@@ -68,10 +65,8 @@ export class Pipedream extends PipedreamClient {
             );
         }
 
-        const baseUrl = getBaseUrl(environment);
         const clientOpts: PipedreamClient.Options = {
-            baseUrl,
-            environment,
+            baseUrl: opts.baseUrl ?? "https://api.pipedream.com",
             projectEnvironment,
             projectId: projectId ?? "",
         };
