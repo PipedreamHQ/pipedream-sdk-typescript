@@ -49,17 +49,11 @@ export class Workflows {
     }
 
     private get _defaultWorkflowDomain(): string {
-        return this._options.environment !== environments.PipedreamEnvironment.Prod &&
-            this._options.environment !== environments.PipedreamEnvironment.Canary
-            ? "m.d.pipedream.net"
-            : "m.pipedream.net";
+        return "m.pipedream.net";
     }
 
     private get _urlProtocol(): string {
-        return this._options.environment !== environments.PipedreamEnvironment.Prod &&
-            this._options.environment !== environments.PipedreamEnvironment.Canary
-            ? "http"
-            : "https";
+        return "https";
     }
 
     /**
