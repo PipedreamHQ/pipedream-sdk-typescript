@@ -2,7 +2,8 @@
 
 import type { OauthTokens } from "../../api/resources/oauthTokens/client/Client.js";
 
-import * as core from "../../core/index.js";
+import { Supplier } from "../fetcher/Supplier.js";
+import type * as core from "../../core/index.js";
 
 /**
  * The OAuthTokenProvider retrieves an OAuth access token, refreshing it as needed.
@@ -40,8 +41,8 @@ export class OAuthTokenProvider {
 
     private async refresh(): Promise<string> {
         const tokenResponse = await this._authClient.create({
-            clientId: await core.Supplier.get(this._clientId),
-            clientSecret: await core.Supplier.get(this._clientSecret),
+            clientId: await Supplier.get(this._clientId),
+            clientSecret: await Supplier.get(this._clientSecret),
         });
 
         this._accessToken = tokenResponse.accessToken;
