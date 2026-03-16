@@ -51,7 +51,7 @@ export class Pipedream extends PipedreamClient {
         const {
             projectEnvironment = process.env.PIPEDREAM_PROJECT_ENVIRONMENT ?? ProjectEnvironment.Production,
             projectId = process.env.PIPEDREAM_PROJECT_ID,
-            workflowDomain,
+            workflowDomain = process.env.PIPEDREAM_WORKFLOW_DOMAIN,
         } = opts || {};
 
         if (!projectEnvironment) {
@@ -67,7 +67,7 @@ export class Pipedream extends PipedreamClient {
         }
 
         const clientOpts: PipedreamClient.Options = {
-            baseUrl: opts.baseUrl ?? PipedreamEnvironment.Prod,
+            baseUrl: opts.baseUrl ?? process.env.PIPEDREAM_BASE_URL ?? PipedreamEnvironment.Prod,
             projectEnvironment,
             projectId: projectId ?? "",
         };
