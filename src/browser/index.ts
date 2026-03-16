@@ -175,7 +175,6 @@ export class PipedreamClient extends BackendClient {
      */
     constructor(opts: PipedreamClientOpts) {
         const {
-            environment = PipedreamEnvironment.Prod,
             externalUserId,
             projectEnvironment,
             tokenCallback,
@@ -196,7 +195,6 @@ export class PipedreamClient extends BackendClient {
         });
 
         super({
-            environment,
             projectEnvironment,
             projectId: "",
             tokenProvider,
