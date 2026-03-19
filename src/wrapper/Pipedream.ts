@@ -49,15 +49,13 @@ export class Pipedream extends PipedreamClient {
 
     public constructor(opts: PipedreamClientOpts = {}) {
         const {
-            projectEnvironment = process.env.PIPEDREAM_PROJECT_ENVIRONMENT ?? ProjectEnvironment.Production,
+            projectEnvironment = process.env.PIPEDREAM_PROJECT_ENVIRONMENT,
             projectId = process.env.PIPEDREAM_PROJECT_ID,
             workflowDomain = process.env.PIPEDREAM_WORKFLOW_DOMAIN,
         } = opts || {};
 
-        if (!projectEnvironment) {
-            throw new Error("Project environment cannot be empty");
-        }
         if (
+            projectEnvironment != null &&
             projectEnvironment !== ProjectEnvironment.Production &&
             projectEnvironment !== ProjectEnvironment.Development
         ) {
@@ -88,6 +86,9 @@ export class Pipedream extends PipedreamClient {
                 // tokens.
                 throw new Error("Project ID cannot be blank");
             }
+
+            // Default to production for client ID/secret auth
+            clientOpts.projectEnvironment ??= ProjectEnvironment.Production;
 
             clientOpts.clientId = clientId;
             clientOpts.clientSecret = clientSecret;
