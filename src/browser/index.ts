@@ -8,7 +8,7 @@ export type * from "../api/types/index.js";
 export * from "../index.js";
 
 import { ConnectTokenProvider, type TokenCallback } from "../core/auth/index.js";
-import { type Account, type App, PipedreamClient as BackendClient, PipedreamEnvironment } from "../index.js";
+import { type Account, type App, PipedreamClient as BackendClient, } from "../index.js";
 import type { PipedreamClientOpts as BackendClientOpts } from "../wrapper/Pipedream.js";
 
 if (typeof process === "undefined") {
@@ -163,8 +163,8 @@ export function createFrontendClient(
  * A client for interacting with the Pipedream Connect API from the browser.
  */
 export class PipedreamClient extends BackendClient {
-    private baseURL: string;
-    private iframeURL: string;
+    private frontendUrl: string;
+    private iframeUrl: string;
     private iframe?: HTMLIFrameElement;
     private iframeId = 0;
 
@@ -175,6 +175,7 @@ export class PipedreamClient extends BackendClient {
      */
     constructor(opts: PipedreamClientOpts) {
         const {
+            baseUrl,
             externalUserId,
             projectEnvironment,
             tokenCallback,
@@ -195,14 +196,15 @@ export class PipedreamClient extends BackendClient {
         });
 
         super({
+            baseUrl,
             projectEnvironment,
             projectId: "",
             tokenProvider,
             workflowDomain,
         });
 
-        this.baseURL = `https://${opts.frontendHost || "pipedream.com"}`;
-        this.iframeURL = `${this.baseURL}/_static/connect.html`;
+        this.frontendUrl = `https://${opts.frontendHost || "pipedream.com"}`;
+        this.iframeUrl = `${this.frontendUrl}/_static/connect.html`;
     }
 
     get externalUserId(): string | undefined {
@@ -317,7 +319,7 @@ export class PipedreamClient extends BackendClient {
         const iframe = document.createElement("iframe");
         iframe.id = `pipedream-connect-iframe-${this.iframeId++}`;
         iframe.title = "Pipedream Connect";
-        iframe.src = `${this.iframeURL}?${qp.toString()}`;
+        iframe.src = `${this.iframeUrl}?${qp.toString()}`;
         iframe.style.cssText = "position:fixed;inset:0;z-index:2147483647;border:0;display:block;overflow:hidden auto";
         iframe.width = "100%";
         iframe.height = "100%";
