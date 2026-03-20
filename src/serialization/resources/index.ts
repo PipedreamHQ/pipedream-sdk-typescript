@@ -19,3 +19,5 @@ export * as tokens from "./tokens/index.js";
 export * from "./triggers/client/requests/index.js";
 export * as triggers from "./triggers/index.js";
 export * from "./triggers/types/index.js";
+export * from "./webhooks/client/requests/index.js";
+export * as webhooks from "./webhooks/index.js";

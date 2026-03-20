@@ -3,7 +3,9 @@ export type { DeployedTriggersListEventsRequest } from "./DeployedTriggersListEv
 export type { DeployedTriggersListRequest } from "./DeployedTriggersListRequest.js";
 export type { DeployedTriggersListWebhooksRequest } from "./DeployedTriggersListWebhooksRequest.js";
 export type { DeployedTriggersListWorkflowsRequest } from "./DeployedTriggersListWorkflowsRequest.js";
+export type { DeployedTriggersRegenerateWebhookSigningKeyRequest } from "./DeployedTriggersRegenerateWebhookSigningKeyRequest.js";
 export type { DeployedTriggersRetrieveRequest } from "./DeployedTriggersRetrieveRequest.js";
+export type { DeployedTriggersRetrieveWebhooksRequest } from "./DeployedTriggersRetrieveWebhooksRequest.js";
 export type { UpdateTriggerOpts } from "./UpdateTriggerOpts.js";
 export type { UpdateTriggerWebhooksOpts } from "./UpdateTriggerWebhooksOpts.js";
 export type { UpdateTriggerWorkflowsOpts } from "./UpdateTriggerWorkflowsOpts.js";
