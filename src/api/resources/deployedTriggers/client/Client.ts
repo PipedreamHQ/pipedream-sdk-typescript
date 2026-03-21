@@ -839,7 +839,7 @@ export class DeployedTriggers {
     }
 
     /**
-     * Configure webhook URLs to receive trigger events
+     * Configure webhook URLs to receive trigger events. `signing_key` is only returned for OAuth-authenticated requests.
      *
      * @param {string} triggerId
      * @param {Pipedream.UpdateTriggerWebhooksOpts} request
@@ -857,7 +857,7 @@ export class DeployedTriggers {
         triggerId: string,
         request: Pipedream.UpdateTriggerWebhooksOpts,
         requestOptions?: DeployedTriggers.RequestOptions,
-    ): core.HttpResponsePromise<Pipedream.GetTriggerWebhooksResponse> {
+    ): core.HttpResponsePromise<Pipedream.UpdateTriggerWebhooksResponse> {
         return core.HttpResponsePromise.fromPromise(this.__updateWebhooks(triggerId, request, requestOptions));
     }
 
@@ -865,7 +865,7 @@ export class DeployedTriggers {
         triggerId: string,
         request: Pipedream.UpdateTriggerWebhooksOpts,
         requestOptions?: DeployedTriggers.RequestOptions,
-    ): Promise<core.WithRawResponse<Pipedream.GetTriggerWebhooksResponse>> {
+    ): Promise<core.WithRawResponse<Pipedream.UpdateTriggerWebhooksResponse>> {
         const { externalUserId, ..._body } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams.external_user_id = externalUserId;
@@ -899,7 +899,7 @@ export class DeployedTriggers {
         });
         if (_response.ok) {
             return {
-                data: serializers.GetTriggerWebhooksResponse.parseOrThrow(_response.body, {
+                data: serializers.UpdateTriggerWebhooksResponse.parseOrThrow(_response.body, {
                     unrecognizedObjectKeys: "passthrough",
                     allowUnrecognizedUnionMembers: true,
                     allowUnrecognizedEnumValues: true,
@@ -933,6 +933,210 @@ export class DeployedTriggers {
             case "timeout":
                 throw new errors.PipedreamTimeoutError(
                     "Timeout exceeded when calling PUT /v1/connect/{project_id}/deployed-triggers/{trigger_id}/webhooks.",
+                );
+            case "unknown":
+                throw new errors.PipedreamError({
+                    message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
+                });
+        }
+    }
+
+    /**
+     * Retrieve a specific webhook for a deployed trigger, including its signing key
+     *
+     * @param {string} triggerId
+     * @param {string} webhookId
+     * @param {Pipedream.DeployedTriggersRetrieveWebhookRequest} request
+     * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
+     *
+     * @example
+     *     await client.deployedTriggers.retrieveWebhook("trigger_id", "webhook_id", {
+     *         externalUserId: "external_user_id"
+     *     })
+     */
+    public retrieveWebhook(
+        triggerId: string,
+        webhookId: string,
+        request: Pipedream.DeployedTriggersRetrieveWebhookRequest,
+        requestOptions?: DeployedTriggers.RequestOptions,
+    ): core.HttpResponsePromise<Pipedream.GetWebhookWithSigningKeyResponse> {
+        return core.HttpResponsePromise.fromPromise(
+            this.__retrieveWebhook(triggerId, webhookId, request, requestOptions),
+        );
+    }
+
+    private async __retrieveWebhook(
+        triggerId: string,
+        webhookId: string,
+        request: Pipedream.DeployedTriggersRetrieveWebhookRequest,
+        requestOptions?: DeployedTriggers.RequestOptions,
+    ): Promise<core.WithRawResponse<Pipedream.GetWebhookWithSigningKeyResponse>> {
+        const { externalUserId } = request;
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
+        _queryParams.external_user_id = externalUserId;
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+            }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.PipedreamEnvironment.Prod,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/deployed-triggers/${core.url.encodePathParam(triggerId)}/webhooks/${core.url.encodePathParam(webhookId)}`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.GetWebhookWithSigningKeyResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.PipedreamError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
+                });
+            case "timeout":
+                throw new errors.PipedreamTimeoutError(
+                    "Timeout exceeded when calling GET /v1/connect/{project_id}/deployed-triggers/{trigger_id}/webhooks/{webhook_id}.",
+                );
+            case "unknown":
+                throw new errors.PipedreamError({
+                    message: _response.error.errorMessage,
+                    rawResponse: _response.rawResponse,
+                });
+        }
+    }
+
+    /**
+     * Regenerate the signing key for a specific webhook on a deployed trigger
+     *
+     * @param {string} triggerId
+     * @param {string} webhookId
+     * @param {Pipedream.DeployedTriggersRegenerateWebhookSigningKeyRequest} request
+     * @param {DeployedTriggers.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
+     *
+     * @example
+     *     await client.deployedTriggers.regenerateWebhookSigningKey("trigger_id", "webhook_id", {
+     *         externalUserId: "external_user_id"
+     *     })
+     */
+    public regenerateWebhookSigningKey(
+        triggerId: string,
+        webhookId: string,
+        request: Pipedream.DeployedTriggersRegenerateWebhookSigningKeyRequest,
+        requestOptions?: DeployedTriggers.RequestOptions,
+    ): core.HttpResponsePromise<Pipedream.GetWebhookWithSigningKeyResponse> {
+        return core.HttpResponsePromise.fromPromise(
+            this.__regenerateWebhookSigningKey(triggerId, webhookId, request, requestOptions),
+        );
+    }
+
+    private async __regenerateWebhookSigningKey(
+        triggerId: string,
+        webhookId: string,
+        request: Pipedream.DeployedTriggersRegenerateWebhookSigningKeyRequest,
+        requestOptions?: DeployedTriggers.RequestOptions,
+    ): Promise<core.WithRawResponse<Pipedream.GetWebhookWithSigningKeyResponse>> {
+        const { externalUserId } = request;
+        const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
+        _queryParams.external_user_id = externalUserId;
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                Authorization: await this._getAuthorizationHeader(),
+                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+            }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.PipedreamEnvironment.Prod,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/deployed-triggers/${core.url.encodePathParam(triggerId)}/webhooks/${core.url.encodePathParam(webhookId)}/regenerate_signing_key`,
+            ),
+            method: "POST",
+            headers: _headers,
+            queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.GetWebhookWithSigningKeyResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        switch (_response.error.reason) {
+            case "non-json":
+                throw new errors.PipedreamError({
+                    statusCode: _response.error.statusCode,
+                    body: _response.error.rawBody,
+                    rawResponse: _response.rawResponse,
+                });
+            case "timeout":
+                throw new errors.PipedreamTimeoutError(
+                    "Timeout exceeded when calling POST /v1/connect/{project_id}/deployed-triggers/{trigger_id}/webhooks/{webhook_id}/regenerate_signing_key.",
                 );
             case "unknown":
                 throw new errors.PipedreamError({
