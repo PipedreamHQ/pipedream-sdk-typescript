@@ -3,16 +3,19 @@
 import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { TriggerWebhook } from "./TriggerWebhook.js";
 
 export const GetTriggerWebhooksResponse: core.serialization.ObjectSchema<
     serializers.GetTriggerWebhooksResponse.Raw,
     Pipedream.GetTriggerWebhooksResponse
 > = core.serialization.object({
     webhookUrls: core.serialization.property("webhook_urls", core.serialization.list(core.serialization.string())),
+    webhooks: core.serialization.list(TriggerWebhook).optional(),
 });
 
 export declare namespace GetTriggerWebhooksResponse {
     export interface Raw {
         webhook_urls: string[];
+        webhooks?: TriggerWebhook.Raw[] | null;
     }
 }

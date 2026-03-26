@@ -16,6 +16,8 @@ export * from "./fileStash/client/requests/index.js";
 export * as fileStash from "./fileStash/index.js";
 export * from "./oauthTokens/client/requests/index.js";
 export * as oauthTokens from "./oauthTokens/index.js";
+export * from "./projectEnvironment/client/requests/index.js";
+export * as projectEnvironment from "./projectEnvironment/index.js";
 export * from "./projects/client/requests/index.js";
 export * as projects from "./projects/index.js";
 export * from "./proxy/client/requests/index.js";
