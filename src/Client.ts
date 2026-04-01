@@ -10,10 +10,12 @@ import { Components } from "./api/resources/components/client/Client.js";
 import { DeployedTriggers } from "./api/resources/deployedTriggers/client/Client.js";
 import { FileStash } from "./api/resources/fileStash/client/Client.js";
 import { OauthTokens } from "./api/resources/oauthTokens/client/Client.js";
+import { ProjectEnvironment } from "./api/resources/projectEnvironment/client/Client.js";
 import { Projects } from "./api/resources/projects/client/Client.js";
 import { Proxy } from "./api/resources/proxy/client/Client.js";
 import { Tokens } from "./api/resources/tokens/client/Client.js";
 import { Triggers } from "./api/resources/triggers/client/Client.js";
+import { Usage } from "./api/resources/usage/client/Client.js";
 import { Users } from "./api/resources/users/client/Client.js";
 import type { BaseClientOptions, BaseRequestOptions } from "./BaseClient.js";
 import { mergeHeaders } from "./core/headers.js";
@@ -35,12 +37,14 @@ export class PipedreamClient {
     protected _appCategories: AppCategories | undefined;
     protected _apps: Apps | undefined;
     protected _accounts: Accounts | undefined;
+    protected _usage: Usage | undefined;
     protected _users: Users | undefined;
     protected _components: Components | undefined;
     protected _actions: Actions | undefined;
     protected _triggers: Triggers | undefined;
     protected _deployedTriggers: DeployedTriggers | undefined;
     protected _fileStash: FileStash | undefined;
+    protected _projectEnvironment: ProjectEnvironment | undefined;
     protected _projects: Projects | undefined;
     protected _proxy: Proxy | undefined;
     protected _tokens: Tokens | undefined;
@@ -112,6 +116,13 @@ export class PipedreamClient {
         }));
     }
 
+    public get usage(): Usage {
+        return (this._usage ??= new Usage({
+            ...this._options,
+            token: async () => await this._tokenProvider.getToken(),
+        }));
+    }
+
     public get users(): Users {
         return (this._users ??= new Users({
             ...this._options,
@@ -149,6 +160,13 @@ export class PipedreamClient {
 
     public get fileStash(): FileStash {
         return (this._fileStash ??= new FileStash({
+            ...this._options,
+            token: async () => await this._tokenProvider.getToken(),
+        }));
+    }
+
+    public get projectEnvironment(): ProjectEnvironment {
+        return (this._projectEnvironment ??= new ProjectEnvironment({
             ...this._options,
             token: async () => await this._tokenProvider.getToken(),
         }));
