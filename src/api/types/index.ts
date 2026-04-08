@@ -1,4 +1,5 @@
 export * from "./Account.js";
+export * from "./AccountCredentials.js";
 export * from "./AccountId.js";
 export * from "./App.js";
 export * from "./AppAuthType.js";
