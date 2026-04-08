@@ -3,22 +3,23 @@
 import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { Observation } from "./Observation.js";
 import { StashId } from "./StashId.js";
 
 export const RunActionResponse: core.serialization.ObjectSchema<
     serializers.RunActionResponse.Raw,
     Pipedream.RunActionResponse
 > = core.serialization.object({
-    exports: core.serialization.unknown().optional(),
-    os: core.serialization.unknown().optional(),
+    exports: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
+    os: core.serialization.list(Observation).optional(),
     ret: core.serialization.unknown().optional(),
     stashId: core.serialization.property("stash_id", StashId.optional()),
 });
 
 export declare namespace RunActionResponse {
     export interface Raw {
-        exports?: unknown | null;
-        os?: unknown | null;
+        exports?: Record<string, unknown> | null;
+        os?: Observation.Raw[] | null;
         ret?: unknown | null;
         stash_id?: (StashId.Raw | undefined) | null;
     }
