@@ -7,9 +7,9 @@ import type * as Pipedream from "../index.js";
  */
 export interface RunActionResponse {
     /** The key-value pairs resulting from calls to `$.export` */
-    exports?: unknown;
+    exports?: Record<string, unknown>;
     /** Any logs produced during the execution of the action */
-    os?: unknown;
+    os?: Pipedream.Observation[];
     /** The value returned by the action */
     ret?: unknown;
     stashId?: Pipedream.StashId | undefined;
