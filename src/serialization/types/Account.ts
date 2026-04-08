@@ -3,6 +3,7 @@
 import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { AccountCredentials } from "./AccountCredentials.js";
 import { AccountId } from "./AccountId.js";
 import { App } from "./App.js";
 
@@ -16,7 +17,7 @@ export const Account: core.serialization.ObjectSchema<serializers.Account.Raw, P
         app: App.optional(),
         createdAt: core.serialization.property("created_at", core.serialization.date().optional()),
         updatedAt: core.serialization.property("updated_at", core.serialization.date().optional()),
-        credentials: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
+        credentials: AccountCredentials.optional(),
         expiresAt: core.serialization.property("expires_at", core.serialization.date().optional()),
         error: core.serialization.string().optional(),
         lastRefreshedAt: core.serialization.property("last_refreshed_at", core.serialization.date().optional()),
@@ -33,7 +34,7 @@ export declare namespace Account {
         app?: App.Raw | null;
         created_at?: string | null;
         updated_at?: string | null;
-        credentials?: Record<string, unknown> | null;
+        credentials?: AccountCredentials.Raw | null;
         expires_at?: string | null;
         error?: string | null;
         last_refreshed_at?: string | null;

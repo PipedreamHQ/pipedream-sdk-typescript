@@ -20,8 +20,8 @@ export interface Account {
     createdAt?: Date;
     /** The date and time the account was last updated, an ISO 8601 formatted string */
     updatedAt?: Date;
-    /** The credentials associated with the account, if the `include_credentials` parameter was set to true in the request */
-    credentials?: Record<string, unknown>;
+    /** The credentials associated with the account, if the `include_credentials` parameter was set to true in the request (only applicable for BYOA apps). In addition to the well-known OAuth fields listed below, this object may contain app-specific custom fields (e.g. `base_url`). */
+    credentials?: Pipedream.AccountCredentials;
     /** The date and time the account's credentials expiration, an ISO 8601 formatted string */
     expiresAt?: Date;
     /** The error message if the account is unhealthy or dead, null otherwise */
