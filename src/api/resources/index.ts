@@ -30,5 +30,6 @@ export * from "./triggers/types/index.js";
 export * as usage from "./usage/index.js";
 export * from "./usage/client/requests/index.js";
 export * as users from "./users/index.js";
+export * from "./users/client/requests/index.js";
 export * as workflows from "./workflows/index.js";
 export * from "./workflows/client/requests/index.js";
