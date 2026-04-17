@@ -13,6 +13,7 @@ export const ConfigurablePropBase: core.serialization.ObjectSchema<
     description: core.serialization.string().optional(),
     optional: core.serialization.boolean().optional(),
     disabled: core.serialization.boolean().optional(),
+    readOnly: core.serialization.boolean().optional(),
     hidden: core.serialization.boolean().optional(),
     remoteOptions: core.serialization.boolean().optional(),
     useQuery: core.serialization.boolean().optional(),
@@ -27,6 +28,7 @@ export declare namespace ConfigurablePropBase {
         description?: string | null;
         optional?: boolean | null;
         disabled?: boolean | null;
+        readOnly?: boolean | null;
         hidden?: boolean | null;
         remoteOptions?: boolean | null;
         useQuery?: boolean | null;
