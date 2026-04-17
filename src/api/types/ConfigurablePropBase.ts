@@ -14,6 +14,8 @@ export interface ConfigurablePropBase {
     optional?: boolean;
     /** If true, this prop will be ignored. */
     disabled?: boolean;
+    /** If true, this prop is read-only — its value is either fixed by the component author (`static`) or the prop is purely informational (e.g. `alert`, `dir`). Connect clients should render it without treating it as a configurable input. */
+    readOnly?: boolean;
     /** If true, should not expose this prop to the user */
     hidden?: boolean;
     /** If true, call `configureComponent` for this prop to load remote options. It is safe, and preferred, given a returned list of { label: string; value: any } objects to set the prop value to { __lv: { label: string; value: any } }. This way, on load, you can access label for the value without necessarily reloading these options */

@@ -5,6 +5,7 @@ import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.
 import * as core from "../../../../core/index.js";
 import * as environments from "../../../../environments.js";
 import * as errors from "../../../../errors/index.js";
+import * as serializers from "../../../../serialization/index.js";
 import * as Pipedream from "../../../index.js";
 
 export declare namespace Users {
@@ -100,6 +101,121 @@ export class Users {
                     rawResponse: _response.rawResponse,
                 });
         }
+    }
+
+    /**
+     * Retrieve all external users for the project
+     *
+     * @param {Pipedream.UsersListRequest} request
+     * @param {Users.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
+     *
+     * @example
+     *     await client.users.list({
+     *         after: "after",
+     *         before: "before",
+     *         limit: 1,
+     *         q: "q"
+     *     })
+     */
+    public async list(
+        request: Pipedream.UsersListRequest = {},
+        requestOptions?: Users.RequestOptions,
+    ): Promise<core.Page<Pipedream.ExternalUser>> {
+        const list = core.HttpResponsePromise.interceptFunction(
+            async (request: Pipedream.UsersListRequest): Promise<core.WithRawResponse<Pipedream.GetUsersResponse>> => {
+                const { after, before, limit, q } = request;
+                const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
+                if (after != null) {
+                    _queryParams.after = after;
+                }
+                if (before != null) {
+                    _queryParams.before = before;
+                }
+                if (limit != null) {
+                    _queryParams.limit = limit.toString();
+                }
+                if (q != null) {
+                    _queryParams.q = q;
+                }
+                const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+                    this._options?.headers,
+                    mergeOnlyDefinedHeaders({
+                        Authorization: await this._getAuthorizationHeader(),
+                        "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+                    }),
+                    requestOptions?.headers,
+                );
+                const _response = await core.fetcher({
+                    url: core.url.join(
+                        (await core.Supplier.get(this._options.baseUrl)) ??
+                            (await core.Supplier.get(this._options.environment)) ??
+                            environments.PipedreamEnvironment.Prod,
+                        `v1/connect/${core.url.encodePathParam(this._options.projectId)}/users`,
+                    ),
+                    method: "GET",
+                    headers: _headers,
+                    queryParameters: { ..._queryParams, ...requestOptions?.queryParams },
+                    timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+                    maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+                    abortSignal: requestOptions?.abortSignal,
+                });
+                if (_response.ok) {
+                    return {
+                        data: serializers.GetUsersResponse.parseOrThrow(_response.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        rawResponse: _response.rawResponse,
+                    };
+                }
+                if (_response.error.reason === "status-code") {
+                    switch (_response.error.statusCode) {
+                        case 429:
+                            throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                        default:
+                            throw new errors.PipedreamError({
+                                statusCode: _response.error.statusCode,
+                                body: _response.error.body,
+                                rawResponse: _response.rawResponse,
+                            });
+                    }
+                }
+                switch (_response.error.reason) {
+                    case "non-json":
+                        throw new errors.PipedreamError({
+                            statusCode: _response.error.statusCode,
+                            body: _response.error.rawBody,
+                            rawResponse: _response.rawResponse,
+                        });
+                    case "timeout":
+                        throw new errors.PipedreamTimeoutError(
+                            "Timeout exceeded when calling GET /v1/connect/{project_id}/users.",
+                        );
+                    case "unknown":
+                        throw new errors.PipedreamError({
+                            message: _response.error.errorMessage,
+                            rawResponse: _response.rawResponse,
+                        });
+                }
+            },
+        );
+        const dataWithRawResponse = await list(request).withRawResponse();
+        return new core.Pageable<Pipedream.GetUsersResponse, Pipedream.ExternalUser>({
+            response: dataWithRawResponse.data,
+            rawResponse: dataWithRawResponse.rawResponse,
+            hasNextPage: (response) =>
+                response?.pageInfo.endCursor != null &&
+                !(typeof response?.pageInfo.endCursor === "string" && response?.pageInfo.endCursor === ""),
+            getItems: (response) => response?.data ?? [],
+            loadPage: (response) => {
+                return list(core.setObjectProperty(request, "after", response?.pageInfo.endCursor));
+            },
+        });
     }
 
     protected async _getAuthorizationHeader(): Promise<string | undefined> {
