@@ -2,4 +2,8 @@
 
 import type * as Pipedream from "../index.js";
 
-export interface ConfigurablePropDir extends Pipedream.ConfigurablePropBase {}
+export interface ConfigurablePropDir extends Pipedream.ConfigurablePropBase {
+    accessMode?: Pipedream.ConfigurablePropDirAccessMode;
+    /** If true, the component's /tmp directory is synchronized with File Stash */
+    sync?: boolean;
+}
