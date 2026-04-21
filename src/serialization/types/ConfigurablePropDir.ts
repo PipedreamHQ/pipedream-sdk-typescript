@@ -4,12 +4,21 @@ import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { ConfigurablePropBase } from "./ConfigurablePropBase.js";
+import { ConfigurablePropDirAccessMode } from "./ConfigurablePropDirAccessMode.js";
 
 export const ConfigurablePropDir: core.serialization.ObjectSchema<
     serializers.ConfigurablePropDir.Raw,
     Pipedream.ConfigurablePropDir
-> = core.serialization.object({}).extend(ConfigurablePropBase);
+> = core.serialization
+    .object({
+        accessMode: ConfigurablePropDirAccessMode.optional(),
+        sync: core.serialization.boolean().optional(),
+    })
+    .extend(ConfigurablePropBase);
 
 export declare namespace ConfigurablePropDir {
-    export interface Raw extends ConfigurablePropBase.Raw {}
+    export interface Raw extends ConfigurablePropBase.Raw {
+        accessMode?: ConfigurablePropDirAccessMode.Raw | null;
+        sync?: boolean | null;
+    }
 }

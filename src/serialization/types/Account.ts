@@ -17,6 +17,10 @@ export const Account: core.serialization.ObjectSchema<serializers.Account.Raw, P
         app: App.optional(),
         createdAt: core.serialization.property("created_at", core.serialization.date().optional()),
         updatedAt: core.serialization.property("updated_at", core.serialization.date().optional()),
+        authorizedScopes: core.serialization.property(
+            "authorized_scopes",
+            core.serialization.list(core.serialization.string()).optional(),
+        ),
         credentials: AccountCredentials.optional(),
         expiresAt: core.serialization.property("expires_at", core.serialization.date().optional()),
         error: core.serialization.string().optional(),
@@ -34,6 +38,7 @@ export declare namespace Account {
         app?: App.Raw | null;
         created_at?: string | null;
         updated_at?: string | null;
+        authorized_scopes?: string[] | null;
         credentials?: AccountCredentials.Raw | null;
         expires_at?: string | null;
         error?: string | null;
