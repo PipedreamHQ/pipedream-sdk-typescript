@@ -21,4 +21,6 @@ export interface CreateTokenOpts {
     successRedirectUri?: string;
     /** Webhook URI for notifications */
     webhookUri?: string;
+    /** When true, end users may authorize a subset of the app's OAuth scopes; only the app's functional scopes (needed for the post-OAuth test request) are enforced. Defaults to false. */
+    allowProgressiveScopes?: boolean;
 }

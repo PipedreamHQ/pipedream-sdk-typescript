@@ -16,6 +16,10 @@ export const CreateTokenOpts: core.serialization.Schema<serializers.CreateTokenO
         scope: core.serialization.string().optional(),
         successRedirectUri: core.serialization.property("success_redirect_uri", core.serialization.string().optional()),
         webhookUri: core.serialization.property("webhook_uri", core.serialization.string().optional()),
+        allowProgressiveScopes: core.serialization.property(
+            "allow_progressive_scopes",
+            core.serialization.boolean().optional(),
+        ),
     });
 
 export declare namespace CreateTokenOpts {
@@ -27,5 +31,6 @@ export declare namespace CreateTokenOpts {
         scope?: string | null;
         success_redirect_uri?: string | null;
         webhook_uri?: string | null;
+        allow_progressive_scopes?: boolean | null;
     }
 }
