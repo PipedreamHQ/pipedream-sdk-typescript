@@ -4,12 +4,15 @@
  * @example
  *     {
  *         appId: "app_id",
+ *         accountId: "account_id",
  *         oauthAppId: "oauth_app_id"
  *     }
  */
 export interface TokensValidateRequest {
     /** The app ID to validate against */
     appId: string;
+    /** An existing account ID to reconnect. Must belong to the app identified by app_id. */
+    accountId?: string;
     /** The OAuth app ID to validate against (if the token is for an OAuth app) */
     oauthAppId?: string;
 }
