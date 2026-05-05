@@ -22,4 +22,6 @@ export interface CreateAccountOpts {
     connectToken: string;
     /** Optional name for the account */
     name?: string;
+    /** An existing account ID to reconnect. When provided, the account's credentials are updated instead of creating a new account. Must belong to the same external user and project environment as the connect token, and match the app identified by app_slug. */
+    accountId?: string;
 }

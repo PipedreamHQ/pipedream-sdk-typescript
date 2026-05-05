@@ -132,6 +132,7 @@ export class Tokens {
      * @example
      *     await client.tokens.validate("ctok", {
      *         appId: "app_id",
+     *         accountId: "account_id",
      *         oauthAppId: "oauth_app_id"
      *     })
      */
@@ -148,9 +149,13 @@ export class Tokens {
         request: Pipedream.TokensValidateRequest,
         requestOptions?: Tokens.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ValidateTokenResponse>> {
-        const { appId, oauthAppId } = request;
+        const { appId, accountId, oauthAppId } = request;
         const _queryParams: Record<string, string | string[] | object | object[] | null> = {};
         _queryParams.app_id = appId;
+        if (accountId != null) {
+            _queryParams.account_id = accountId;
+        }
+
         if (oauthAppId != null) {
             _queryParams.oauth_app_id = oauthAppId;
         }
