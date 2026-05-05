@@ -12,6 +12,7 @@ export const CreateAccountOpts: core.serialization.Schema<
     cfmapJson: core.serialization.property("cfmap_json", core.serialization.string()),
     connectToken: core.serialization.property("connect_token", core.serialization.string()),
     name: core.serialization.string().optional(),
+    accountId: core.serialization.property("account_id", core.serialization.string().optional()),
 });
 
 export declare namespace CreateAccountOpts {
@@ -20,5 +21,6 @@ export declare namespace CreateAccountOpts {
         cfmap_json: string;
         connect_token: string;
         name?: string | null;
+        account_id?: string | null;
     }
 }
