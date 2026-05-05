@@ -11,9 +11,9 @@ import * as serializers from "../../../../serialization/index.js";
 import * as Pipedream from "../../../index.js";
 
 export declare namespace Proxy {
-    export interface Options extends BaseClientOptions {
+    export type Options = BaseClientOptions & {
         token?: core.Supplier<core.BearerToken | undefined>;
-    }
+    };
 
     export interface RequestOptions extends BaseRequestOptions {}
 }
@@ -182,6 +182,11 @@ export class Proxy {
                 throw new errors.PipedreamTimeoutError(
                     "Timeout exceeded when calling GET /v1/connect/{project_id}/proxy/{url_64}.",
                 );
+            case "body-is-null":
+                throw new errors.PipedreamError({
+                    statusCode: _response.error.statusCode,
+                    rawResponse: _response.rawResponse,
+                });
             case "unknown":
                 throw new errors.PipedreamError({
                     message: _response.error.errorMessage,
@@ -302,6 +307,11 @@ export class Proxy {
                 throw new errors.PipedreamTimeoutError(
                     "Timeout exceeded when calling POST /v1/connect/{project_id}/proxy/{url_64}.",
                 );
+            case "body-is-null":
+                throw new errors.PipedreamError({
+                    statusCode: _response.error.statusCode,
+                    rawResponse: _response.rawResponse,
+                });
             case "unknown":
                 throw new errors.PipedreamError({
                     message: _response.error.errorMessage,
@@ -422,6 +432,11 @@ export class Proxy {
                 throw new errors.PipedreamTimeoutError(
                     "Timeout exceeded when calling PUT /v1/connect/{project_id}/proxy/{url_64}.",
                 );
+            case "body-is-null":
+                throw new errors.PipedreamError({
+                    statusCode: _response.error.statusCode,
+                    rawResponse: _response.rawResponse,
+                });
             case "unknown":
                 throw new errors.PipedreamError({
                     message: _response.error.errorMessage,
@@ -535,6 +550,11 @@ export class Proxy {
                 throw new errors.PipedreamTimeoutError(
                     "Timeout exceeded when calling DELETE /v1/connect/{project_id}/proxy/{url_64}.",
                 );
+            case "body-is-null":
+                throw new errors.PipedreamError({
+                    statusCode: _response.error.statusCode,
+                    rawResponse: _response.rawResponse,
+                });
             case "unknown":
                 throw new errors.PipedreamError({
                     message: _response.error.errorMessage,
@@ -655,6 +675,11 @@ export class Proxy {
                 throw new errors.PipedreamTimeoutError(
                     "Timeout exceeded when calling PATCH /v1/connect/{project_id}/proxy/{url_64}.",
                 );
+            case "body-is-null":
+                throw new errors.PipedreamError({
+                    statusCode: _response.error.statusCode,
+                    rawResponse: _response.rawResponse,
+                });
             case "unknown":
                 throw new errors.PipedreamError({
                     message: _response.error.errorMessage,
