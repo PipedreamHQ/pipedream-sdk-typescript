@@ -1,6 +1,6 @@
 import type { TokenProvider } from "../core/auth/TokenProvider.js";
 import { ProjectEnvironment } from "../api/index.js";
-import { Workflows } from "../api/resources/workflows/client/Client.js";
+import { WorkflowsClient } from "../api/resources/workflows/client/Client.js";
 import { PipedreamClient } from "../Client.js";
 import { PipedreamEnvironment } from "../environments.js";
 
@@ -45,7 +45,7 @@ export type PipedreamClientOpts = {
 
 export class Pipedream extends PipedreamClient {
     private _workflowDomain?: string;
-    private _workflows: Workflows | undefined;
+    private _workflows: WorkflowsClient | undefined;
 
     public constructor(opts: PipedreamClientOpts = {}) {
         const {
@@ -108,8 +108,8 @@ export class Pipedream extends PipedreamClient {
         return this._tokenProvider.getToken();
     }
 
-    public get workflows(): Workflows {
-        return (this._workflows ??= new Workflows({
+    public get workflows(): WorkflowsClient {
+        return (this._workflows ??= new WorkflowsClient({
             ...this._options,
             token: async () => await this._tokenProvider.getToken(),
             workflowDomain: this._workflowDomain,

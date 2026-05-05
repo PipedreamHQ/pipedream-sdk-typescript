@@ -10,16 +10,16 @@ import { createRequestUrl } from "../../../../core/fetcher/createRequestUrl.js";
 import * as serializers from "../../../../serialization/index.js";
 import * as Pipedream from "../../../index.js";
 
-export declare namespace Proxy {
-    export interface Options extends BaseClientOptions {
+export declare namespace ProxyClient {
+    export type Options = BaseClientOptions & {
         token?: core.Supplier<core.BearerToken | undefined>;
-    }
+    };
 
     export interface RequestOptions extends BaseRequestOptions {}
 }
 
-export class Proxy {
-    protected readonly _options: Proxy.Options;
+export class ProxyClient {
+    protected readonly _options: ProxyClient.Options;
 
     /**
      * Precompiled regex to check if an Accept header accepts JSON responses.
@@ -33,7 +33,7 @@ export class Proxy {
      */
     private static readonly JSON_CONTENT_TYPE_REGEX = /^application\/json(?:\s|;|$)/i;
 
-    constructor(_options: Proxy.Options) {
+    constructor(_options: ProxyClient.Options) {
         this._options = _options;
     }
 
@@ -65,7 +65,7 @@ export class Proxy {
         }
 
         const acceptValue = typeof acceptHeader === 'string' ? acceptHeader : String(acceptHeader ?? '');
-        const acceptsJson = Proxy.JSON_ACCEPT_REGEX.test(acceptValue);
+        const acceptsJson = ProxyClient.JSON_ACCEPT_REGEX.test(acceptValue);
         return acceptsJson ? undefined : "binary-response";
     }
 
@@ -74,14 +74,14 @@ export class Proxy {
      */
     private isJsonResponse(response: core.APIResponse<unknown, unknown>): boolean {
         const contentType = response.rawResponse.headers.get("content-type");
-        return contentType ? Proxy.JSON_CONTENT_TYPE_REGEX.test(contentType) : false;
+        return contentType ? ProxyClient.JSON_CONTENT_TYPE_REGEX.test(contentType) : false;
     }
 
     /**
      * Forward an authenticated GET request to an external API using an external user's account credentials
      *
      * @param {Pipedream.ProxyGetRequest} request
-     * @param {Proxy.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {ProxyClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
@@ -96,14 +96,14 @@ export class Proxy {
      */
     public get(
         request: Pipedream.ProxyGetRequest,
-        requestOptions?: Proxy.RequestOptions,
+        requestOptions?: ProxyClient.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.ProxyResponse | core.BinaryResponse | undefined> {
         return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
     }
 
     private async __get(
         request: Pipedream.ProxyGetRequest,
-        requestOptions?: Proxy.RequestOptions,
+        requestOptions?: ProxyClient.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | core.BinaryResponse | undefined>> {
         const { url, externalUserId, accountId, params, headers } = request;
         const urlWithParams = createRequestUrl(url, params);
@@ -182,6 +182,11 @@ export class Proxy {
                 throw new errors.PipedreamTimeoutError(
                     "Timeout exceeded when calling GET /v1/connect/{project_id}/proxy/{url_64}.",
                 );
+            case "body-is-null":
+                throw new errors.PipedreamError({
+                    statusCode: _response.error.statusCode,
+                    rawResponse: _response.rawResponse,
+                });
             case "unknown":
                 throw new errors.PipedreamError({
                     message: _response.error.errorMessage,
@@ -194,7 +199,7 @@ export class Proxy {
      * Forward an authenticated POST request to an external API using an external user's account credentials
      *
      * @param {Pipedream.ProxyPostRequest} request
-     * @param {Proxy.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {ProxyClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
@@ -210,14 +215,14 @@ export class Proxy {
      */
     public post(
         request: Pipedream.ProxyPostRequest,
-        requestOptions?: Proxy.RequestOptions,
+        requestOptions?: ProxyClient.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.ProxyResponse | core.BinaryResponse | undefined> {
         return core.HttpResponsePromise.fromPromise(this.__post(request, requestOptions));
     }
 
     private async __post(
         request: Pipedream.ProxyPostRequest,
-        requestOptions?: Proxy.RequestOptions,
+        requestOptions?: ProxyClient.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | core.BinaryResponse | undefined>> {
         const { url, externalUserId, accountId, body: _body, params, headers } = request;
         const urlWithParams = createRequestUrl(url, params);
@@ -302,6 +307,11 @@ export class Proxy {
                 throw new errors.PipedreamTimeoutError(
                     "Timeout exceeded when calling POST /v1/connect/{project_id}/proxy/{url_64}.",
                 );
+            case "body-is-null":
+                throw new errors.PipedreamError({
+                    statusCode: _response.error.statusCode,
+                    rawResponse: _response.rawResponse,
+                });
             case "unknown":
                 throw new errors.PipedreamError({
                     message: _response.error.errorMessage,
@@ -314,7 +324,7 @@ export class Proxy {
      * Forward an authenticated PUT request to an external API using an external user's account credentials
      *
      * @param {Pipedream.ProxyPutRequest} request
-     * @param {Proxy.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {ProxyClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
@@ -330,14 +340,14 @@ export class Proxy {
      */
     public put(
         request: Pipedream.ProxyPutRequest,
-        requestOptions?: Proxy.RequestOptions,
+        requestOptions?: ProxyClient.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.ProxyResponse | core.BinaryResponse | undefined> {
         return core.HttpResponsePromise.fromPromise(this.__put(request, requestOptions));
     }
 
     private async __put(
         request: Pipedream.ProxyPutRequest,
-        requestOptions?: Proxy.RequestOptions,
+        requestOptions?: ProxyClient.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | core.BinaryResponse | undefined>> {
         const { url, externalUserId, accountId, body: _body, params, headers } = request;
         const urlWithParams = createRequestUrl(url, params);
@@ -422,6 +432,11 @@ export class Proxy {
                 throw new errors.PipedreamTimeoutError(
                     "Timeout exceeded when calling PUT /v1/connect/{project_id}/proxy/{url_64}.",
                 );
+            case "body-is-null":
+                throw new errors.PipedreamError({
+                    statusCode: _response.error.statusCode,
+                    rawResponse: _response.rawResponse,
+                });
             case "unknown":
                 throw new errors.PipedreamError({
                     message: _response.error.errorMessage,
@@ -434,7 +449,7 @@ export class Proxy {
      * Forward an authenticated DELETE request to an external API using an external user's account credentials
      *
      * @param {Pipedream.ProxyDeleteRequest} request
-     * @param {Proxy.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {ProxyClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
@@ -449,14 +464,14 @@ export class Proxy {
      */
     public delete(
         request: Pipedream.ProxyDeleteRequest,
-        requestOptions?: Proxy.RequestOptions,
+        requestOptions?: ProxyClient.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.ProxyResponse | core.BinaryResponse | undefined> {
         return core.HttpResponsePromise.fromPromise(this.__delete(request, requestOptions));
     }
 
     private async __delete(
         request: Pipedream.ProxyDeleteRequest,
-        requestOptions?: Proxy.RequestOptions,
+        requestOptions?: ProxyClient.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | core.BinaryResponse | undefined>> {
         const { url, externalUserId, accountId, params, headers } = request;
         const urlWithParams = createRequestUrl(url, params);
@@ -535,6 +550,11 @@ export class Proxy {
                 throw new errors.PipedreamTimeoutError(
                     "Timeout exceeded when calling DELETE /v1/connect/{project_id}/proxy/{url_64}.",
                 );
+            case "body-is-null":
+                throw new errors.PipedreamError({
+                    statusCode: _response.error.statusCode,
+                    rawResponse: _response.rawResponse,
+                });
             case "unknown":
                 throw new errors.PipedreamError({
                     message: _response.error.errorMessage,
@@ -547,7 +567,7 @@ export class Proxy {
      * Forward an authenticated PATCH request to an external API using an external user's account credentials
      *
      * @param {Pipedream.ProxyPatchRequest} request
-     * @param {Proxy.RequestOptions} requestOptions - Request-specific configuration.
+     * @param {ProxyClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
@@ -563,14 +583,14 @@ export class Proxy {
      */
     public patch(
         request: Pipedream.ProxyPatchRequest,
-        requestOptions?: Proxy.RequestOptions,
+        requestOptions?: ProxyClient.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.ProxyResponse | core.BinaryResponse | undefined> {
         return core.HttpResponsePromise.fromPromise(this.__patch(request, requestOptions));
     }
 
     private async __patch(
         request: Pipedream.ProxyPatchRequest,
-        requestOptions?: Proxy.RequestOptions,
+        requestOptions?: ProxyClient.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ProxyResponse | core.BinaryResponse | undefined>> {
         const { url, externalUserId, accountId, body: _body, params, headers } = request;
         const urlWithParams = createRequestUrl(url, params);
@@ -655,6 +675,11 @@ export class Proxy {
                 throw new errors.PipedreamTimeoutError(
                     "Timeout exceeded when calling PATCH /v1/connect/{project_id}/proxy/{url_64}.",
                 );
+            case "body-is-null":
+                throw new errors.PipedreamError({
+                    statusCode: _response.error.statusCode,
+                    rawResponse: _response.rawResponse,
+                });
             case "unknown":
                 throw new errors.PipedreamError({
                     message: _response.error.errorMessage,

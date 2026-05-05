@@ -2,31 +2,39 @@
 // It was later customized by the Pipedream team.
 
 import { SDK_VERSION } from "./version.js";
-import { Accounts } from "./api/resources/accounts/client/Client.js";
-import { Actions } from "./api/resources/actions/client/Client.js";
-import { AppCategories } from "./api/resources/appCategories/client/Client.js";
-import { Apps } from "./api/resources/apps/client/Client.js";
-import { Components } from "./api/resources/components/client/Client.js";
-import { DeployedTriggers } from "./api/resources/deployedTriggers/client/Client.js";
-import { FileStash } from "./api/resources/fileStash/client/Client.js";
-import { OauthTokens } from "./api/resources/oauthTokens/client/Client.js";
-import { ProjectEnvironment } from "./api/resources/projectEnvironment/client/Client.js";
-import { Projects } from "./api/resources/projects/client/Client.js";
-import { Proxy } from "./api/resources/proxy/client/Client.js";
-import { Tokens } from "./api/resources/tokens/client/Client.js";
-import { Triggers } from "./api/resources/triggers/client/Client.js";
-import { Usage } from "./api/resources/usage/client/Client.js";
-import { Users } from "./api/resources/users/client/Client.js";
+import { AccountsClient } from "./api/resources/accounts/client/Client.js";
+import { ActionsClient } from "./api/resources/actions/client/Client.js";
+import { AppCategoriesClient } from "./api/resources/appCategories/client/Client.js";
+import { AppsClient } from "./api/resources/apps/client/Client.js";
+import { ComponentsClient } from "./api/resources/components/client/Client.js";
+import { DeployedTriggersClient } from "./api/resources/deployedTriggers/client/Client.js";
+import { FileStashClient } from "./api/resources/fileStash/client/Client.js";
+import { OauthTokensClient } from "./api/resources/oauthTokens/client/Client.js";
+import { ProjectEnvironmentClient } from "./api/resources/projectEnvironment/client/Client.js";
+import { ProjectsClient } from "./api/resources/projects/client/Client.js";
+import { ProxyClient } from "./api/resources/proxy/client/Client.js";
+import { TokensClient } from "./api/resources/tokens/client/Client.js";
+import { TriggersClient } from "./api/resources/triggers/client/Client.js";
+import { UsageClient } from "./api/resources/usage/client/Client.js";
+import { UsersClient } from "./api/resources/users/client/Client.js";
 import type { BaseClientOptions, BaseRequestOptions } from "./BaseClient.js";
 import { mergeHeaders } from "./core/headers.js";
 import * as core from "./core/index.js";
 
 export declare namespace PipedreamClient {
-    export interface Options extends BaseClientOptions {
+    // BaseClientOptions is `{...} & (ClientCredentials | TokenOverride)`. The
+    // distributive conditional below strips the auth fields off each arm of
+    // that union (collapsing both arms back to the same base shape) so we can
+    // re-add `clientId`/`clientSecret`/`token` as truly optional, plus the
+    // PipedreamClient-specific `tokenProvider` knob.
+    export type Options = (BaseClientOptions extends infer T
+        ? Omit<T, "clientId" | "clientSecret" | "token">
+        : never) & {
         clientId?: core.Supplier<string>;
         clientSecret?: core.Supplier<string>;
+        token?: core.Supplier<string>;
         tokenProvider?: core.TokenProvider;
-    }
+    };
 
     export interface RequestOptions extends BaseRequestOptions {}
 }
@@ -34,23 +42,25 @@ export declare namespace PipedreamClient {
 export class PipedreamClient {
     protected readonly _options: PipedreamClient.Options;
     protected readonly _tokenProvider: core.TokenProvider;
-    protected _appCategories: AppCategories | undefined;
-    protected _apps: Apps | undefined;
-    protected _accounts: Accounts | undefined;
-    protected _usage: Usage | undefined;
-    protected _users: Users | undefined;
-    protected _components: Components | undefined;
-    protected _actions: Actions | undefined;
-    protected _triggers: Triggers | undefined;
-    protected _deployedTriggers: DeployedTriggers | undefined;
-    protected _fileStash: FileStash | undefined;
-    protected _projectEnvironment: ProjectEnvironment | undefined;
-    protected _projects: Projects | undefined;
-    protected _proxy: Proxy | undefined;
-    protected _tokens: Tokens | undefined;
-    protected _oauthTokens: OauthTokens | undefined;
+    protected _appCategories: AppCategoriesClient | undefined;
+    protected _apps: AppsClient | undefined;
+    protected _accounts: AccountsClient | undefined;
+    protected _usage: UsageClient | undefined;
+    protected _users: UsersClient | undefined;
+    protected _components: ComponentsClient | undefined;
+    protected _actions: ActionsClient | undefined;
+    protected _triggers: TriggersClient | undefined;
+    protected _deployedTriggers: DeployedTriggersClient | undefined;
+    protected _fileStash: FileStashClient | undefined;
+    protected _projectEnvironment: ProjectEnvironmentClient | undefined;
+    protected _projects: ProjectsClient | undefined;
+    protected _proxy: ProxyClient | undefined;
+    protected _tokens: TokensClient | undefined;
+    protected _oauthTokens: OauthTokensClient | undefined;
 
     constructor(_options: PipedreamClient.Options) {
+        // mergeHeaders returns Record<string, unknown>; the cast matches the
+        // pattern used by the generated BaseClient.normalizeClientOptions.
         this._options = {
             ..._options,
             headers: mergeHeaders(
@@ -65,7 +75,7 @@ export class PipedreamClient {
                 },
                 _options?.headers,
             ),
-        };
+        } as PipedreamClient.Options;
 
         this._tokenProvider = this._options.tokenProvider ?? this.newOAuthTokenProvider();
     }
@@ -88,113 +98,118 @@ export class PipedreamClient {
         return new core.OAuthTokenProvider({
             clientId,
             clientSecret,
-            authClient: new OauthTokens({
+            authClient: new OauthTokensClient({
                 ...this._options,
+                // Explicit pass so TS sees the ClientCredentials arm of
+                // BaseClientOptions satisfied; the OAuth token endpoint
+                // doesn't actually use authProvider, but the type does.
+                clientId,
+                clientSecret,
                 environment: this._options.environment,
             }),
         });
     }
 
-    public get appCategories(): AppCategories {
-        return (this._appCategories ??= new AppCategories({
+    public get appCategories(): AppCategoriesClient {
+        return (this._appCategories ??= new AppCategoriesClient({
             ...this._options,
             token: async () => await this._tokenProvider.getToken(),
         }));
     }
 
-    public get apps(): Apps {
-        return (this._apps ??= new Apps({
+    public get apps(): AppsClient {
+        return (this._apps ??= new AppsClient({
             ...this._options,
             token: async () => await this._tokenProvider.getToken(),
         }));
     }
 
-    public get accounts(): Accounts {
-        return (this._accounts ??= new Accounts({
+    public get accounts(): AccountsClient {
+        return (this._accounts ??= new AccountsClient({
             ...this._options,
             token: async () => await this._tokenProvider.getToken(),
         }));
     }
 
-    public get usage(): Usage {
-        return (this._usage ??= new Usage({
+    public get usage(): UsageClient {
+        return (this._usage ??= new UsageClient({
             ...this._options,
             token: async () => await this._tokenProvider.getToken(),
         }));
     }
 
-    public get users(): Users {
-        return (this._users ??= new Users({
+    public get users(): UsersClient {
+        return (this._users ??= new UsersClient({
             ...this._options,
             token: async () => await this._tokenProvider.getToken(),
         }));
     }
 
-    public get components(): Components {
-        return (this._components ??= new Components({
+    public get components(): ComponentsClient {
+        return (this._components ??= new ComponentsClient({
             ...this._options,
             token: async () => await this._tokenProvider.getToken(),
         }));
     }
 
-    public get actions(): Actions {
-        return (this._actions ??= new Actions({
+    public get actions(): ActionsClient {
+        return (this._actions ??= new ActionsClient({
             ...this._options,
             token: async () => await this._tokenProvider.getToken(),
         }));
     }
 
-    public get triggers(): Triggers {
-        return (this._triggers ??= new Triggers({
+    public get triggers(): TriggersClient {
+        return (this._triggers ??= new TriggersClient({
             ...this._options,
             token: async () => await this._tokenProvider.getToken(),
         }));
     }
 
-    public get deployedTriggers(): DeployedTriggers {
-        return (this._deployedTriggers ??= new DeployedTriggers({
+    public get deployedTriggers(): DeployedTriggersClient {
+        return (this._deployedTriggers ??= new DeployedTriggersClient({
             ...this._options,
             token: async () => await this._tokenProvider.getToken(),
         }));
     }
 
-    public get fileStash(): FileStash {
-        return (this._fileStash ??= new FileStash({
+    public get fileStash(): FileStashClient {
+        return (this._fileStash ??= new FileStashClient({
             ...this._options,
             token: async () => await this._tokenProvider.getToken(),
         }));
     }
 
-    public get projectEnvironment(): ProjectEnvironment {
-        return (this._projectEnvironment ??= new ProjectEnvironment({
+    public get projectEnvironment(): ProjectEnvironmentClient {
+        return (this._projectEnvironment ??= new ProjectEnvironmentClient({
             ...this._options,
             token: async () => await this._tokenProvider.getToken(),
         }));
     }
 
-    public get projects(): Projects {
-        return (this._projects ??= new Projects({
+    public get projects(): ProjectsClient {
+        return (this._projects ??= new ProjectsClient({
             ...this._options,
             token: async () => await this._tokenProvider.getToken(),
         }));
     }
 
-    public get proxy(): Proxy {
-        return (this._proxy ??= new Proxy({
+    public get proxy(): ProxyClient {
+        return (this._proxy ??= new ProxyClient({
             ...this._options,
             token: async () => await this._tokenProvider.getToken(),
         }));
     }
 
-    public get tokens(): Tokens {
-        return (this._tokens ??= new Tokens({
+    public get tokens(): TokensClient {
+        return (this._tokens ??= new TokensClient({
             ...this._options,
             token: async () => await this._tokenProvider.getToken(),
         }));
     }
 
-    public get oauthTokens(): OauthTokens {
-        return (this._oauthTokens ??= new OauthTokens({
+    public get oauthTokens(): OauthTokensClient {
+        return (this._oauthTokens ??= new OauthTokensClient({
             ...this._options,
             token: async () => await this._tokenProvider.getToken(),
         }));

@@ -8,7 +8,7 @@ import * as Pipedream from "../../../index.js";
 import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../core/headers.js";
 import * as errors from "../../../../errors/index.js";
 
-export declare namespace Workflows {
+export declare namespace WorkflowsClient {
     export interface Options {
         environment?: core.Supplier<environments.PipedreamEnvironment | string>;
         /** Specify a custom URL to connect the client to. */
@@ -39,11 +39,11 @@ export declare namespace Workflows {
     }
 }
 
-export class Workflows {
-    protected readonly _options: Workflows.Options;
+export class WorkflowsClient {
+    protected readonly _options: WorkflowsClient.Options;
     private readonly workflowDomain: string;
 
-    constructor(_options: Workflows.Options) {
+    constructor(_options: WorkflowsClient.Options) {
         this._options = _options;
         this.workflowDomain = _options.workflowDomain ?? this._defaultWorkflowDomain;
     }
@@ -63,7 +63,7 @@ export class Workflows {
      * @param {Pipedream.InvokeWorkflowOpts} request
      * @param {Pipedream.HTTPAuthType} authType - The type of authorization to use
      * for the request (defaults to None).
-     * @param {Workflows.RequestOptions} requestOptions - Request-specific
+     * @param {WorkflowsClient.RequestOptions} requestOptions - Request-specific
      * configuration.
      *
      * @example
@@ -82,7 +82,7 @@ export class Workflows {
     public invoke(
         request: Pipedream.InvokeWorkflowOpts,
         authType: Pipedream.HTTPAuthType = Pipedream.HTTPAuthType.None,
-        requestOptions?: Workflows.RequestOptions,
+        requestOptions?: WorkflowsClient.RequestOptions,
     ): core.HttpResponsePromise<unknown> {
         return core.HttpResponsePromise.fromPromise(this.__invoke(request, authType, requestOptions));
     }
@@ -90,7 +90,7 @@ export class Workflows {
     private async __invoke(
         request: Pipedream.InvokeWorkflowOpts,
         authType: Pipedream.HTTPAuthType = Pipedream.HTTPAuthType.None,
-        requestOptions?: Workflows.RequestOptions,
+        requestOptions?: WorkflowsClient.RequestOptions,
     ): Promise<core.WithRawResponse<unknown>> {
         const { urlOrEndpoint, body, method = "POST", headers = {} } = request;
 
@@ -149,7 +149,7 @@ export class Workflows {
      * Invokes a workflow for a Pipedream Connect user in a project.
      *
      * @param {Pipedream.InvokeWorkflowForExternalUserOpts} request
-     * @param {Workflows.RequestOptions} requestOptions - Request-specific
+     * @param {WorkflowsClient.RequestOptions} requestOptions - Request-specific
      * configuration.
      *
      * @example
@@ -168,14 +168,14 @@ export class Workflows {
      */
     public invokeForExternalUser(
         request: Pipedream.InvokeWorkflowForExternalUserOpts,
-        requestOptions?: Workflows.RequestOptions,
+        requestOptions?: WorkflowsClient.RequestOptions,
     ): core.HttpResponsePromise<unknown> {
         return core.HttpResponsePromise.fromPromise(this.__invokeForExternalUser(request, requestOptions));
     }
 
     private async __invokeForExternalUser(
         request: Pipedream.InvokeWorkflowForExternalUserOpts,
-        requestOptions?: Workflows.RequestOptions,
+        requestOptions?: WorkflowsClient.RequestOptions,
     ): Promise<core.WithRawResponse<unknown>> {
         const { urlOrEndpoint, externalUserId, body, method, headers = {} } = request;
 
