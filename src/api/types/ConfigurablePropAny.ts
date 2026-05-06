@@ -3,6 +3,6 @@
 import type * as Pipedream from "../index.js";
 
 export interface ConfigurablePropAny extends Pipedream.ConfigurablePropBase {
-    default?: Pipedream.ConfiguredPropValueAny | undefined;
+    default?: Pipedream.ConfiguredPropValueAny;
     options?: Pipedream.ConfigurablePropAnyOptionsItem[];
 }

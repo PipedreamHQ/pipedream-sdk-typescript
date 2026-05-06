@@ -6,7 +6,7 @@ import type * as Pipedream from "../index.js";
  * Response received after configuring a component's prop
  */
 export interface ConfigurePropResponse {
-    options?: Pipedream.ConfigurePropOptions | undefined;
+    options?: Pipedream.ConfigurePropOptions;
     /** Available options for the configured prop */
     stringOptions?: string[];
     observations?: Pipedream.Observation[];
