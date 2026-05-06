@@ -1,48 +1,17 @@
 {
     "name": "@pipedream/sdk",
-    "version": "2.5.0",
+    "version": "2.5.1",
     "private": false,
     "repository": {
         "type": "git",
         "url": "git+https://github.com/PipedreamHQ/pipedream-sdk-typescript.git"
     },
     "type": "commonjs",
-    "license": "SEE LICENSE IN LICENSE",
     "main": "./dist/cjs/index.js",
     "module": "./dist/esm/index.mjs",
     "types": "./dist/cjs/index.d.ts",
     "exports": {
         ".": {
-            "types": "./dist/cjs/index.d.ts",
-            "browser": {
-                "types": "./dist/esm/browser/index.d.mts",
-                "import": "./dist/esm/browser/index.mjs",
-                "default": "./dist/esm/browser/index.mjs"
-            },
-            "import": {
-                "types": "./dist/esm/index.d.mts",
-                "default": "./dist/esm/index.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/index.d.ts",
-                "default": "./dist/cjs/index.js"
-            },
-            "default": "./dist/cjs/index.js"
-        },
-        "./browser": {
-            "types": "./dist/esm/browser/index.d.mts",
-            "import": {
-                "types": "./dist/esm/browser/index.d.mts",
-                "default": "./dist/esm/browser/index.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/browser/index.d.ts",
-                "default": "./dist/cjs/browser/index.js"
-            },
-            "default": "./dist/esm/browser/index.mjs"
-        },
-        "./server": {
-            "types": "./dist/cjs/index.d.ts",
             "import": {
                 "types": "./dist/esm/index.d.mts",
                 "default": "./dist/esm/index.mjs"
