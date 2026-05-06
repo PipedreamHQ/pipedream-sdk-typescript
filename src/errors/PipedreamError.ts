@@ -7,23 +7,34 @@ export class PipedreamError extends Error {
     public readonly statusCode?: number;
     public readonly body?: unknown;
     public readonly rawResponse?: core.RawResponse;
+    public readonly cause?: unknown;
 
     constructor({
         message,
         statusCode,
         body,
         rawResponse,
+        cause,
     }: {
         message?: string;
         statusCode?: number;
         body?: unknown;
         rawResponse?: core.RawResponse;
+        cause?: unknown;
     }) {
         super(buildMessage({ message, statusCode, body }));
-        Object.setPrototypeOf(this, PipedreamError.prototype);
+        Object.setPrototypeOf(this, new.target.prototype);
+        if (Error.captureStackTrace) {
+            Error.captureStackTrace(this, this.constructor);
+        }
+
+        this.name = this.constructor.name;
         this.statusCode = statusCode;
         this.body = body;
         this.rawResponse = rawResponse;
+        if (cause != null) {
+            this.cause = cause;
+        }
     }
 }
 

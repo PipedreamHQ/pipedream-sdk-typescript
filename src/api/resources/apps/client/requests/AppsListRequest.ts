@@ -11,6 +11,7 @@ import type * as Pipedream from "../../../../index.js";
  *         q: "q",
  *         sortKey: "name",
  *         sortDirection: "asc",
+ *         categoryIds: ["category_ids"],
  *         hasComponents: true,
  *         hasActions: true,
  *         hasTriggers: true

@@ -26,7 +26,7 @@ export type ConfigurableProp =
     | Pipedream.ConfigurableProp.DiscordChannel
     | Pipedream.ConfigurableProp.DiscordChannelArray
     | Pipedream.ConfigurableProp.Integer
-    | Pipedream.ConfigurableProp.Object_
+    | Pipedream.ConfigurableProp.Object
     | Pipedream.ConfigurableProp.String
     | Pipedream.ConfigurableProp.StringArray;
 
@@ -111,7 +111,7 @@ export namespace ConfigurableProp {
         type: "integer";
     }
 
-    export interface Object_ extends Pipedream.ConfigurablePropObject {
+    export interface Object extends Pipedream.ConfigurablePropObject {
         type: "object";
     }
 

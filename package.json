@@ -2,20 +2,16 @@
     "name": "@pipedream/sdk",
     "version": "2.4.9",
     "private": false,
-    "repository": "github:PipedreamHQ/pipedream-sdk-typescript",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/PipedreamHQ/pipedream-sdk-typescript.git"
+    },
     "type": "commonjs",
-    "license": "SEE LICENSE IN LICENSE",
     "main": "./dist/cjs/index.js",
     "module": "./dist/esm/index.mjs",
     "types": "./dist/cjs/index.d.ts",
     "exports": {
         ".": {
-            "types": "./dist/cjs/index.d.ts",
-            "browser": {
-                "types": "./dist/esm/browser/index.d.mts",
-                "import": "./dist/esm/browser/index.mjs",
-                "default": "./dist/esm/browser/index.mjs"
-            },
             "import": {
                 "types": "./dist/esm/index.d.mts",
                 "default": "./dist/esm/index.mjs"
@@ -26,20 +22,7 @@
             },
             "default": "./dist/cjs/index.js"
         },
-        "./browser": {
-            "types": "./dist/esm/browser/index.d.mts",
-            "import": {
-                "types": "./dist/esm/browser/index.d.mts",
-                "default": "./dist/esm/browser/index.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/browser/index.d.ts",
-                "default": "./dist/cjs/browser/index.js"
-            },
-            "default": "./dist/esm/browser/index.mjs"
-        },
         "./serialization": {
-            "types": "./dist/cjs/serialization/index.d.ts",
             "import": {
                 "types": "./dist/esm/serialization/index.d.mts",
                 "default": "./dist/esm/serialization/index.mjs"
@@ -50,17 +33,170 @@
             },
             "default": "./dist/cjs/serialization/index.js"
         },
-        "./server": {
-            "types": "./dist/cjs/index.d.ts",
+        "./appCategories": {
             "import": {
-                "types": "./dist/esm/index.d.mts",
-                "default": "./dist/esm/index.mjs"
+                "types": "./dist/esm/api/resources/appCategories/exports.d.mts",
+                "default": "./dist/esm/api/resources/appCategories/exports.mjs"
             },
             "require": {
-                "types": "./dist/cjs/index.d.ts",
-                "default": "./dist/cjs/index.js"
+                "types": "./dist/cjs/api/resources/appCategories/exports.d.ts",
+                "default": "./dist/cjs/api/resources/appCategories/exports.js"
             },
-            "default": "./dist/cjs/index.js"
+            "default": "./dist/cjs/api/resources/appCategories/exports.js"
+        },
+        "./apps": {
+            "import": {
+                "types": "./dist/esm/api/resources/apps/exports.d.mts",
+                "default": "./dist/esm/api/resources/apps/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/apps/exports.d.ts",
+                "default": "./dist/cjs/api/resources/apps/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/apps/exports.js"
+        },
+        "./accounts": {
+            "import": {
+                "types": "./dist/esm/api/resources/accounts/exports.d.mts",
+                "default": "./dist/esm/api/resources/accounts/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/accounts/exports.d.ts",
+                "default": "./dist/cjs/api/resources/accounts/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/accounts/exports.js"
+        },
+        "./users": {
+            "import": {
+                "types": "./dist/esm/api/resources/users/exports.d.mts",
+                "default": "./dist/esm/api/resources/users/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/users/exports.d.ts",
+                "default": "./dist/cjs/api/resources/users/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/users/exports.js"
+        },
+        "./components": {
+            "import": {
+                "types": "./dist/esm/api/resources/components/exports.d.mts",
+                "default": "./dist/esm/api/resources/components/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/components/exports.d.ts",
+                "default": "./dist/cjs/api/resources/components/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/components/exports.js"
+        },
+        "./actions": {
+            "import": {
+                "types": "./dist/esm/api/resources/actions/exports.d.mts",
+                "default": "./dist/esm/api/resources/actions/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/actions/exports.d.ts",
+                "default": "./dist/cjs/api/resources/actions/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/actions/exports.js"
+        },
+        "./triggers": {
+            "import": {
+                "types": "./dist/esm/api/resources/triggers/exports.d.mts",
+                "default": "./dist/esm/api/resources/triggers/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/triggers/exports.d.ts",
+                "default": "./dist/cjs/api/resources/triggers/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/triggers/exports.js"
+        },
+        "./deployedTriggers": {
+            "import": {
+                "types": "./dist/esm/api/resources/deployedTriggers/exports.d.mts",
+                "default": "./dist/esm/api/resources/deployedTriggers/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/deployedTriggers/exports.d.ts",
+                "default": "./dist/cjs/api/resources/deployedTriggers/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/deployedTriggers/exports.js"
+        },
+        "./projectEnvironment": {
+            "import": {
+                "types": "./dist/esm/api/resources/projectEnvironment/exports.d.mts",
+                "default": "./dist/esm/api/resources/projectEnvironment/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/projectEnvironment/exports.d.ts",
+                "default": "./dist/cjs/api/resources/projectEnvironment/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/projectEnvironment/exports.js"
+        },
+        "./projects": {
+            "import": {
+                "types": "./dist/esm/api/resources/projects/exports.d.mts",
+                "default": "./dist/esm/api/resources/projects/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/projects/exports.d.ts",
+                "default": "./dist/cjs/api/resources/projects/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/projects/exports.js"
+        },
+        "./fileStash": {
+            "import": {
+                "types": "./dist/esm/api/resources/fileStash/exports.d.mts",
+                "default": "./dist/esm/api/resources/fileStash/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/fileStash/exports.d.ts",
+                "default": "./dist/cjs/api/resources/fileStash/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/fileStash/exports.js"
+        },
+        "./proxy": {
+            "import": {
+                "types": "./dist/esm/api/resources/proxy/exports.d.mts",
+                "default": "./dist/esm/api/resources/proxy/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/proxy/exports.d.ts",
+                "default": "./dist/cjs/api/resources/proxy/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/proxy/exports.js"
+        },
+        "./tokens": {
+            "import": {
+                "types": "./dist/esm/api/resources/tokens/exports.d.mts",
+                "default": "./dist/esm/api/resources/tokens/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/tokens/exports.d.ts",
+                "default": "./dist/cjs/api/resources/tokens/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/tokens/exports.js"
+        },
+        "./usage": {
+            "import": {
+                "types": "./dist/esm/api/resources/usage/exports.d.mts",
+                "default": "./dist/esm/api/resources/usage/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/usage/exports.d.ts",
+                "default": "./dist/cjs/api/resources/usage/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/usage/exports.js"
+        },
+        "./oauthTokens": {
+            "import": {
+                "types": "./dist/esm/api/resources/oauthTokens/exports.d.mts",
+                "default": "./dist/esm/api/resources/oauthTokens/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/oauthTokens/exports.d.ts",
+                "default": "./dist/cjs/api/resources/oauthTokens/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/oauthTokens/exports.js"
         },
         "./package.json": "./package.json"
     },
@@ -84,22 +220,24 @@
         "test:unit": "vitest --project unit",
         "test:wire": "vitest --project wire"
     },
+    "dependencies": {},
     "devDependencies": {
-        "webpack": "^5.97.1",
-        "ts-loader": "^9.5.1",
-        "vitest": "^3.2.4",
+        "webpack": "^5.105.4",
+        "ts-loader": "^9.5.4",
+        "vitest": "^4.1.1",
         "msw": "2.11.2",
         "@types/node": "^18.19.70",
-        "typescript": "~5.7.2",
-        "@biomejs/biome": "2.2.5"
+        "typescript": "~5.9.3",
+        "@biomejs/biome": "2.4.10"
     },
     "browser": {
         "fs": false,
         "os": false,
         "path": false,
-        "stream": false
+        "stream": false,
+        "crypto": false
     },
-    "packageManager": "pnpm@10.14.0",
+    "packageManager": "pnpm@10.33.0",
     "engines": {
         "node": ">=18.0.0"
     },
