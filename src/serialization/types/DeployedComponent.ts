@@ -23,6 +23,7 @@ export const DeployedComponent: core.serialization.ObjectSchema<
     nameSlug: core.serialization.property("name_slug", core.serialization.string()),
     callbackObservations: core.serialization.property("callback_observations", core.serialization.unknown().optional()),
     emitOnDeploy: core.serialization.property("emit_on_deploy", core.serialization.boolean().optional()),
+    type: core.serialization.stringLiteral("DeployedComponent"),
     webhookSigningKey: core.serialization.property("webhook_signing_key", core.serialization.string().optional()),
 });
 
@@ -41,6 +42,7 @@ export declare namespace DeployedComponent {
         name_slug: string;
         callback_observations?: unknown | null;
         emit_on_deploy?: boolean | null;
+        type: "DeployedComponent";
         webhook_signing_key?: string | null;
     }
 }

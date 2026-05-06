@@ -13,4 +13,6 @@ export interface HttpInterface {
     createdAt: number;
     /** The timestamp when the HTTP interface was last updated (epoch milliseconds) */
     updatedAt: number;
+    /** The discriminator field */
+    type: "HttpInterface";
 }

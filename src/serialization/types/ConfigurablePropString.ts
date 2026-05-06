@@ -3,7 +3,6 @@
 import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { ConfigurablePropBase } from "./ConfigurablePropBase.js";
 import { ConfigurablePropStringFormat } from "./ConfigurablePropStringFormat.js";
 import { ConfigurablePropStringOptionsItem } from "./ConfigurablePropStringOptionsItem.js";
 import { ConfiguredPropValueString } from "./ConfiguredPropValueString.js";
@@ -11,20 +10,42 @@ import { ConfiguredPropValueString } from "./ConfiguredPropValueString.js";
 export const ConfigurablePropString: core.serialization.ObjectSchema<
     serializers.ConfigurablePropString.Raw,
     Pipedream.ConfigurablePropString
-> = core.serialization
-    .object({
-        secret: core.serialization.boolean().optional(),
-        format: ConfigurablePropStringFormat.optional(),
-        default: ConfiguredPropValueString.optional(),
-        options: core.serialization.list(ConfigurablePropStringOptionsItem).optional(),
-    })
-    .extend(ConfigurablePropBase);
+> = core.serialization.object({
+    type: core.serialization.stringLiteral("string"),
+    secret: core.serialization.boolean().optional(),
+    format: ConfigurablePropStringFormat.optional(),
+    default: ConfiguredPropValueString.optional(),
+    options: core.serialization.list(ConfigurablePropStringOptionsItem).optional(),
+    name: core.serialization.string(),
+    label: core.serialization.string().optional(),
+    description: core.serialization.string().optional(),
+    optional: core.serialization.boolean().optional(),
+    disabled: core.serialization.boolean().optional(),
+    readOnly: core.serialization.boolean().optional(),
+    hidden: core.serialization.boolean().optional(),
+    remoteOptions: core.serialization.boolean().optional(),
+    useQuery: core.serialization.boolean().optional(),
+    reloadProps: core.serialization.boolean().optional(),
+    withLabel: core.serialization.boolean().optional(),
+});
 
 export declare namespace ConfigurablePropString {
-    export interface Raw extends ConfigurablePropBase.Raw {
+    export interface Raw {
+        type: "string";
         secret?: boolean | null;
         format?: ConfigurablePropStringFormat.Raw | null;
         default?: ConfiguredPropValueString.Raw | null;
         options?: ConfigurablePropStringOptionsItem.Raw[] | null;
+        name: string;
+        label?: string | null;
+        description?: string | null;
+        optional?: boolean | null;
+        disabled?: boolean | null;
+        readOnly?: boolean | null;
+        hidden?: boolean | null;
+        remoteOptions?: boolean | null;
+        useQuery?: boolean | null;
+        reloadProps?: boolean | null;
+        withLabel?: boolean | null;
     }
 }

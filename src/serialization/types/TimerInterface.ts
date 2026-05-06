@@ -13,6 +13,7 @@ export const TimerInterface: core.serialization.ObjectSchema<serializers.TimerIn
         scheduleChangedAt: core.serialization.property("schedule_changed_at", core.serialization.number()),
         createdAt: core.serialization.property("created_at", core.serialization.number()),
         updatedAt: core.serialization.property("updated_at", core.serialization.number()),
+        type: core.serialization.stringLiteral("TimerInterface"),
     });
 
 export declare namespace TimerInterface {
@@ -24,5 +25,6 @@ export declare namespace TimerInterface {
         schedule_changed_at: number;
         created_at: number;
         updated_at: number;
+        type: "TimerInterface";
     }
 }

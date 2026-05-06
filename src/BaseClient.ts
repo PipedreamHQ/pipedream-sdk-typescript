@@ -65,8 +65,8 @@ export function normalizeClientOptions<T extends BaseClientOptions = BaseClientO
         {
             "X-Fern-Language": "JavaScript",
             "X-Fern-SDK-Name": "@pipedream/sdk",
-            "X-Fern-SDK-Version": "2.5.0",
-            "User-Agent": "@pipedream/sdk/2.5.0",
+            "X-Fern-SDK-Version": "2.5.1",
+            "User-Agent": "@pipedream/sdk/2.5.1",
             "X-Fern-Runtime": core.RUNTIME.type,
             "X-Fern-Runtime-Version": core.RUNTIME.version,
             "x-pd-environment": options?.projectEnvironment,

@@ -14,4 +14,6 @@ export interface TimerInterface {
     createdAt: number;
     /** The timestamp when the timer interface was last updated (epoch milliseconds) */
     updatedAt: number;
+    /** The discriminator field */
+    type: "TimerInterface";
 }

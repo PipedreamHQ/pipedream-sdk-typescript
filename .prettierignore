@@ -1,7 +1,0 @@
-# Ignore everything
-*
-!*/
-
-# Allow only TypeScript files
-!*.ts
-!*.tsx
