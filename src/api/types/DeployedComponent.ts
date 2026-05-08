@@ -31,6 +31,8 @@ export interface DeployedComponent {
     callbackObservations?: unknown;
     /** Whether the trigger emits events during the deploy hook execution. When false, the $emit function is disabled during deploy hook execution. Defaults to true. */
     emitOnDeploy?: boolean;
+    /** The discriminator field */
+    type: "DeployedComponent";
     /** The webhook signing key. Only returned for OAuth-authenticated requests when `webhook_url` is supplied. */
     webhookSigningKey?: string;
 }

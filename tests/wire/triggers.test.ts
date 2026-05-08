@@ -25,7 +25,7 @@ describe("TriggersClient", () => {
                     key: "key",
                     name: "name",
                     version: "version",
-                    configurable_props: [{ type: "alert", name: "name", content: "content" }],
+                    configurable_props: [{ name: "name", type: "alert", content: "content" }],
                     description: "description",
                     component_type: "component_type",
                     stash: "optional",
@@ -156,7 +156,7 @@ describe("TriggersClient", () => {
                 key: "key",
                 name: "name",
                 version: "version",
-                configurable_props: [{ type: "alert", name: "name", content: "content" }],
+                configurable_props: [{ name: "name", type: "alert", content: "content" }],
                 description: "description",
                 component_type: "component_type",
                 stash: "optional",
@@ -341,7 +341,7 @@ describe("TriggersClient", () => {
         const rawResponseBody = {
             observations: [{ k: "k", msg: "msg", ts: 1.1 }],
             errors: ["errors"],
-            dynamicProps: { id: "id", configurableProps: [{ type: "alert", name: "name", content: "content" }] },
+            dynamicProps: { id: "id", configurableProps: [{ name: "name", type: "alert", content: "content" }] },
         };
 
         server
@@ -426,12 +426,11 @@ describe("TriggersClient", () => {
         const rawRequestBody = { id: "id", external_user_id: "external_user_id" };
         const rawResponseBody = {
             data: {
-                type: "DeployedComponent",
                 id: "id",
                 owner_id: "owner_id",
                 component_id: "component_id",
                 component_key: "component_key",
-                configurable_props: [{ type: "alert", name: "name", content: "content" }],
+                configurable_props: [{ name: "name", type: "alert", content: "content" }],
                 configured_props: { key: { key: "value" } },
                 active: true,
                 created_at: 1,
@@ -440,6 +439,7 @@ describe("TriggersClient", () => {
                 name_slug: "name_slug",
                 callback_observations: { key: "value" },
                 emit_on_deploy: true,
+                type: "DeployedComponent",
                 webhook_signing_key: "webhook_signing_key",
             },
         };
@@ -459,7 +459,6 @@ describe("TriggersClient", () => {
         });
         expect(response).toEqual({
             data: {
-                type: "DeployedComponent",
                 id: "id",
                 ownerId: "owner_id",
                 componentId: "component_id",
@@ -485,6 +484,7 @@ describe("TriggersClient", () => {
                     key: "value",
                 },
                 emitOnDeploy: true,
+                type: "DeployedComponent",
                 webhookSigningKey: "webhook_signing_key",
             },
         });

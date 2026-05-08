@@ -3,13 +3,38 @@
 import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
-import { ConfigurablePropBase } from "./ConfigurablePropBase.js";
 
 export const ConfigurablePropDataStore: core.serialization.ObjectSchema<
     serializers.ConfigurablePropDataStore.Raw,
     Pipedream.ConfigurablePropDataStore
-> = core.serialization.object({}).extend(ConfigurablePropBase);
+> = core.serialization.object({
+    type: core.serialization.stringLiteral("data_store"),
+    name: core.serialization.string(),
+    label: core.serialization.string().optional(),
+    description: core.serialization.string().optional(),
+    optional: core.serialization.boolean().optional(),
+    disabled: core.serialization.boolean().optional(),
+    readOnly: core.serialization.boolean().optional(),
+    hidden: core.serialization.boolean().optional(),
+    remoteOptions: core.serialization.boolean().optional(),
+    useQuery: core.serialization.boolean().optional(),
+    reloadProps: core.serialization.boolean().optional(),
+    withLabel: core.serialization.boolean().optional(),
+});
 
 export declare namespace ConfigurablePropDataStore {
-    export interface Raw extends ConfigurablePropBase.Raw {}
+    export interface Raw {
+        type: "data_store";
+        name: string;
+        label?: string | null;
+        description?: string | null;
+        optional?: boolean | null;
+        disabled?: boolean | null;
+        readOnly?: boolean | null;
+        hidden?: boolean | null;
+        remoteOptions?: boolean | null;
+        useQuery?: boolean | null;
+        reloadProps?: boolean | null;
+        withLabel?: boolean | null;
+    }
 }

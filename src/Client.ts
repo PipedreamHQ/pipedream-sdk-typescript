@@ -18,6 +18,7 @@ import { TriggersClient } from "./api/resources/triggers/client/Client.js";
 import { UsageClient } from "./api/resources/usage/client/Client.js";
 import { UsersClient } from "./api/resources/users/client/Client.js";
 import type { BaseClientOptions, BaseRequestOptions } from "./BaseClient.js";
+import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "./BaseClient.js";
 import { mergeHeaders } from "./core/headers.js";
 import * as core from "./core/index.js";
 
@@ -40,7 +41,7 @@ export declare namespace PipedreamClient {
 }
 
 export class PipedreamClient {
-    protected readonly _options: PipedreamClient.Options;
+    protected readonly _options: NormalizedClientOptionsWithAuth<PipedreamClient.Options>;
     protected readonly _tokenProvider: core.TokenProvider;
     protected _appCategories: AppCategoriesClient | undefined;
     protected _apps: AppsClient | undefined;
@@ -59,36 +60,44 @@ export class PipedreamClient {
     protected _oauthTokens: OauthTokensClient | undefined;
 
     constructor(_options: PipedreamClient.Options) {
-        // mergeHeaders returns Record<string, unknown>; the cast matches the
-        // pattern used by the generated BaseClient.normalizeClientOptions.
-        this._options = {
-            ..._options,
-            headers: mergeHeaders(
-                {
-                    "x-pd-environment": _options?.projectEnvironment,
-                    "X-Fern-Language": "JavaScript",
-                    "X-Fern-SDK-Name": "@pipedream/sdk",
-                    "X-Fern-SDK-Version": SDK_VERSION,
-                    "User-Agent": `@pipedream/sdk/${SDK_VERSION}`,
-                    "X-Fern-Runtime": core.RUNTIME.type,
-                    "X-Fern-Runtime-Version": core.RUNTIME.version,
-                },
-                _options?.headers,
-            ),
-        } as PipedreamClient.Options;
+        this._tokenProvider = _options.tokenProvider ?? PipedreamClient.newOAuthTokenProvider(_options);
 
-        this._tokenProvider = this._options.tokenProvider ?? this.newOAuthTokenProvider();
+        // Bridge our custom TokenProvider into the BaseClient auth pipeline.
+        const auth: core.AuthProvider = {
+            getAuthRequest: async () => ({
+                headers: { Authorization: `Bearer ${await this._tokenProvider.getToken()}` },
+            }),
+        };
+
+        const headers = mergeHeaders(
+            {
+                "x-pd-environment": _options?.projectEnvironment,
+                "X-Fern-Language": "JavaScript",
+                "X-Fern-SDK-Name": "@pipedream/sdk",
+                "X-Fern-SDK-Version": SDK_VERSION,
+                "User-Agent": `@pipedream/sdk/${SDK_VERSION}`,
+                "X-Fern-Runtime": core.RUNTIME.type,
+                "X-Fern-Runtime-Version": core.RUNTIME.version,
+            },
+            _options?.headers,
+        );
+
+        this._options = normalizeClientOptionsWithAuth({
+            ..._options,
+            auth,
+            headers,
+        } as PipedreamClient.Options);
     }
 
-    private newOAuthTokenProvider(): core.OAuthTokenProvider {
-        const clientId = this._options.clientId ?? process.env.PIPEDREAM_CLIENT_ID;
+    private static newOAuthTokenProvider(options: PipedreamClient.Options): core.OAuthTokenProvider {
+        const clientId = options.clientId ?? process.env.PIPEDREAM_CLIENT_ID;
         if (clientId == null) {
             throw new Error(
                 "clientId is required; either pass it as an argument or set the PIPEDREAM_CLIENT_ID environment variable",
             );
         }
 
-        const clientSecret = this._options.clientSecret ?? process.env.PIPEDREAM_CLIENT_SECRET;
+        const clientSecret = options.clientSecret ?? process.env.PIPEDREAM_CLIENT_SECRET;
         if (clientSecret == null) {
             throw new Error(
                 "clientSecret is required; either pass it as an argument or set the PIPEDREAM_CLIENT_SECRET environment variable",
@@ -96,122 +105,77 @@ export class PipedreamClient {
         }
 
         return new core.OAuthTokenProvider({
-            clientId,
-            clientSecret,
+            clientId: typeof clientId === "function" ? clientId : (clientId as string),
+            clientSecret: typeof clientSecret === "function" ? clientSecret : (clientSecret as string),
             authClient: new OauthTokensClient({
-                ...this._options,
+                ...options,
                 // Explicit pass so TS sees the ClientCredentials arm of
                 // BaseClientOptions satisfied; the OAuth token endpoint
                 // doesn't actually use authProvider, but the type does.
-                clientId,
-                clientSecret,
-                environment: this._options.environment,
+                clientId: clientId as core.Supplier<string>,
+                clientSecret: clientSecret as core.Supplier<string>,
+                environment: options.environment,
             }),
         });
     }
 
     public get appCategories(): AppCategoriesClient {
-        return (this._appCategories ??= new AppCategoriesClient({
-            ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
-        }));
+        return (this._appCategories ??= new AppCategoriesClient(this._options));
     }
 
     public get apps(): AppsClient {
-        return (this._apps ??= new AppsClient({
-            ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
-        }));
+        return (this._apps ??= new AppsClient(this._options));
     }
 
     public get accounts(): AccountsClient {
-        return (this._accounts ??= new AccountsClient({
-            ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
-        }));
+        return (this._accounts ??= new AccountsClient(this._options));
     }
 
     public get usage(): UsageClient {
-        return (this._usage ??= new UsageClient({
-            ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
-        }));
+        return (this._usage ??= new UsageClient(this._options));
     }
 
     public get users(): UsersClient {
-        return (this._users ??= new UsersClient({
-            ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
-        }));
+        return (this._users ??= new UsersClient(this._options));
     }
 
     public get components(): ComponentsClient {
-        return (this._components ??= new ComponentsClient({
-            ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
-        }));
+        return (this._components ??= new ComponentsClient(this._options));
     }
 
     public get actions(): ActionsClient {
-        return (this._actions ??= new ActionsClient({
-            ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
-        }));
+        return (this._actions ??= new ActionsClient(this._options));
     }
 
     public get triggers(): TriggersClient {
-        return (this._triggers ??= new TriggersClient({
-            ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
-        }));
+        return (this._triggers ??= new TriggersClient(this._options));
     }
 
     public get deployedTriggers(): DeployedTriggersClient {
-        return (this._deployedTriggers ??= new DeployedTriggersClient({
-            ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
-        }));
+        return (this._deployedTriggers ??= new DeployedTriggersClient(this._options));
     }
 
     public get fileStash(): FileStashClient {
-        return (this._fileStash ??= new FileStashClient({
-            ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
-        }));
+        return (this._fileStash ??= new FileStashClient(this._options));
     }
 
     public get projectEnvironment(): ProjectEnvironmentClient {
-        return (this._projectEnvironment ??= new ProjectEnvironmentClient({
-            ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
-        }));
+        return (this._projectEnvironment ??= new ProjectEnvironmentClient(this._options));
     }
 
     public get projects(): ProjectsClient {
-        return (this._projects ??= new ProjectsClient({
-            ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
-        }));
+        return (this._projects ??= new ProjectsClient(this._options));
     }
 
     public get proxy(): ProxyClient {
-        return (this._proxy ??= new ProxyClient({
-            ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
-        }));
+        return (this._proxy ??= new ProxyClient(this._options));
     }
 
     public get tokens(): TokensClient {
-        return (this._tokens ??= new TokensClient({
-            ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
-        }));
+        return (this._tokens ??= new TokensClient(this._options));
     }
 
     public get oauthTokens(): OauthTokensClient {
-        return (this._oauthTokens ??= new OauthTokensClient({
-            ...this._options,
-            token: async () => await this._tokenProvider.getToken(),
-        }));
+        return (this._oauthTokens ??= new OauthTokensClient(this._options));
     }
 }

@@ -5,21 +5,4 @@ import type * as Pipedream from "../index.js";
 /**
  * A component/interface that emits events
  */
-export type Emitter =
-    | Pipedream.Emitter.DeployedComponent
-    | Pipedream.Emitter.HttpInterface
-    | Pipedream.Emitter.TimerInterface;
-
-export namespace Emitter {
-    export interface DeployedComponent extends Pipedream.DeployedComponent {
-        type: "DeployedComponent";
-    }
-
-    export interface HttpInterface extends Pipedream.HttpInterface {
-        type: "HttpInterface";
-    }
-
-    export interface TimerInterface extends Pipedream.TimerInterface {
-        type: "TimerInterface";
-    }
-}
+export type Emitter = Pipedream.DeployedComponent | Pipedream.HttpInterface | Pipedream.TimerInterface;

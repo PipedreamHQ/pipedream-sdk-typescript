@@ -25,7 +25,7 @@ describe("ActionsClient", () => {
                     key: "key",
                     name: "name",
                     version: "version",
-                    configurable_props: [{ type: "alert", name: "name", content: "content" }],
+                    configurable_props: [{ name: "name", type: "alert", content: "content" }],
                     description: "description",
                     component_type: "component_type",
                     stash: "optional",
@@ -156,7 +156,7 @@ describe("ActionsClient", () => {
                 key: "key",
                 name: "name",
                 version: "version",
-                configurable_props: [{ type: "alert", name: "name", content: "content" }],
+                configurable_props: [{ name: "name", type: "alert", content: "content" }],
                 description: "description",
                 component_type: "component_type",
                 stash: "optional",
@@ -341,7 +341,7 @@ describe("ActionsClient", () => {
         const rawResponseBody = {
             observations: [{ k: "k", msg: "msg", ts: 1.1 }],
             errors: ["errors"],
-            dynamicProps: { id: "id", configurableProps: [{ type: "alert", name: "name", content: "content" }] },
+            dynamicProps: { id: "id", configurableProps: [{ name: "name", type: "alert", content: "content" }] },
         };
 
         server

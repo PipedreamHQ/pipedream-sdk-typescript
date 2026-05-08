@@ -1,840 +1,383 @@
 <!-- markdownlint-disable MD024 -->
-# Migrating from v1.x
+# Migrating from v2.x
 
-This guide will help you migrate your existing Pipedream SDK v1.x integration to
-the latest version.
+This guide will help you migrate your existing Pipedream SDK v2.x integration to
+the latest version. If you are still on v1.x, start with the [v1.x migration
+guide](./MIGRATE-v1.md) first.
 
 ## Table of contents
 
-- [Migrating from v1.x](#migrating-from-v1x)
+- [Migrating from v2.x](#migrating-from-v2x)
   - [Table of contents](#table-of-contents)
   - [Deprecation](#deprecation)
   - [Breaking changes](#breaking-changes)
-  - [Client initialization](#client-initialization)
-    - [Server-side](#server-side)
-      - [v1.x (old)](#v1x-old)
-      - [v2.x (new)](#v2x-new)
-    - [Browser-side](#browser-side)
-      - [v1.x (old)](#v1x-old-1)
-      - [v2.x (new)](#v2x-new-1)
-    - [Environment variables](#environment-variables)
-  - [Method migration](#method-migration)
-    - [Method and parameter naming](#method-and-parameter-naming)
-    - [Migration examples](#migration-examples)
-      - [Running actions](#running-actions)
-        - [v1.x (old)](#v1x-old-2)
-        - [v2.x (new)](#v2x-new-2)
-      - [Deploying triggers](#deploying-triggers)
-        - [v1.x (old)](#v1x-old-3)
-        - [v2.x (new)](#v2x-new-3)
-      - [Managing accounts](#managing-accounts)
-        - [v1.x (old)](#v1x-old-4)
-        - [v2.x (new)](#v2x-new-4)
-      - [Creating connect tokens](#creating-connect-tokens)
-        - [v1.x (old)](#v1x-old-5)
-        - [v2.x (new)](#v2x-new-5)
-      - [Validating connect tokens](#validating-connect-tokens)
-        - [v1.x (old)](#v1x-old-6)
-        - [v2.x (new)](#v2x-new-6)
-      - [Configuring component props](#configuring-component-props)
-        - [v1.x (old)](#v1x-old-7)
-        - [v2.x (new)](#v2x-new-7)
-      - [Deleting accounts](#deleting-accounts)
-        - [v1.x (old)](#v1x-old-8)
-        - [v2.x (new)](#v2x-new-8)
-      - [Getting project info](#getting-project-info)
-        - [v1.x (old)](#v1x-old-9)
-        - [v2.x (new)](#v2x-new-9)
-      - [Making proxy requests](#making-proxy-requests)
-        - [v1.x (old)](#v1x-old-10)
-        - [v2.x (new)](#v2x-new-10)
-      - [Invoking workflows](#invoking-workflows)
-        - [v1.x (old)](#v1x-old-11)
-        - [v2.x (new)](#v2x-new-11)
-  - [Namespace mapping](#namespace-mapping)
-  - [New features in v2.x](#new-features-in-v2x)
-    - [Full TypeScript support](#full-typescript-support)
-    - [Pagination support](#pagination-support)
-    - [Enhanced error handling](#enhanced-error-handling)
-    - [Request options](#request-options)
-    - [Abort signals](#abort-signals)
-    - [Raw response access](#raw-response-access)
-  - [Browser/Server Environment Separation](#browserserver-environment-separation)
-    - [Package.json Export Structure](#packagejson-export-structure)
-    - [Import Recommendations](#import-recommendations)
-  - [Additional namespaces](#additional-namespaces)
+  - [Unchanged in v3.x](#unchanged-in-v3x)
+  - [Type migration](#type-migration)
+    - [`ConfigurableProp` namespace removed](#configurableprop-namespace-removed)
+      - [v2.x (old)](#v2x-old)
+      - [v3.x (new)](#v3x-new)
+    - [`ConfigurablePropBase` no longer in the inheritance chain](#configurablepropbase-no-longer-in-the-inheritance-chain)
+      - [v2.x (old)](#v2x-old-1)
+      - [v3.x (new)](#v3x-new-1)
+    - [`Emitter` namespace removed](#emitter-namespace-removed)
+      - [v2.x (old)](#v2x-old-2)
+      - [v3.x (new)](#v3x-new-2)
+    - [Narrowing emitters with the new `type` discriminator](#narrowing-emitters-with-the-new-type-discriminator)
+      - [v2.x (old)](#v2x-old-3)
+      - [v3.x (new)](#v3x-new-3)
+    - [Discord configurable prop types removed](#discord-configurable-prop-types-removed)
+      - [v2.x (old)](#v2x-old-4)
+      - [v3.x (new)](#v3x-new-4)
+  - [Type mapping](#type-mapping)
+  - [New features in v3.x](#new-features-in-v3x)
+    - [Flatter, easier-to-narrow discriminated unions](#flatter-easier-to-narrow-discriminated-unions)
+    - [Explicit `type` field on emitter members](#explicit-type-field-on-emitter-members)
   - [Partial migration](#partial-migration)
   - [Important removed functionality](#important-removed-functionality)
   - [Migration checklist](#migration-checklist)
 
 ## Deprecation
 
-The v1.x version of the Pipedream SDK is now deprecated. This means that no
+The v2.x version of the Pipedream SDK is now deprecated. This means that no
 changes will be made to this version unless there are critical security issues.
 We recommend that you migrate to the latest version of the SDK to take advantage
 of new features, improvements, and bug fixes if possible.
 
 ## Breaking changes
 
-The new SDK version introduces several breaking changes that you need to be
-aware of when migrating from v1.x. Below is a summary of the most significant
-changes:
+The v3.x SDK is a focused type-system release. The runtime behavior, network
+calls, environment variables, and public method surface are all unchanged from
+v2.x — the only changes you need to make are to TypeScript code that imports or
+narrows the affected types. Below is a summary of the breaking changes:
 
-- **Namespaced Methods**: Methods are now namespaced by the resource they act
-  upon. For example, instead of using `client.runAction()`, you now use
-  `client.actions.run()`.
-- **Automatic Snake Case Conversion**: While the TypeScript interfaces use
-  `camelCase` for better developer experience, the SDK automatically converts
-  these to `snake_case` when making API calls to align with our [OpenAPI
-  spec](https://api.pipedream.com/api-docs/swagger.json).
-- **Client Initialization**: The `createBackendClient()` and
-  `createFrontendClient()` methods have been replaced with a new
-  `PipedreamClient` class. Note: The v1.x `BrowserClient` class has been
-  replaced with `PipedreamClient` in the browser context.
-- **TypeScript Types**: All TypeScript types are now exported for better type
-  safety.
-- **Authentication Changes**: The `rawAccessToken()` method is now available as
-  a `rawAccessToken` getter property on the server-side SDK.
-- **Environment Variables**: The SDK now supports automatic configuration via
-  environment variables (see below).
+- **Flattened `ConfigurableProp` union**: The `ConfigurableProp` namespace has
+  been removed. Variants like `Pipedream.ConfigurableProp.Alert` are now
+  imported directly as `Pipedream.ConfigurablePropAlert`.
+- **Flattened `Emitter` union**: The `Emitter` namespace has been removed.
+  `Pipedream.Emitter.DeployedComponent` is now `Pipedream.DeployedComponent`,
+  and likewise for `HttpInterface` and `TimerInterface`.
+- **`ConfigurablePropBase` no longer extended**: Each
+  `ConfigurableProp{Variant}` interface now inlines the base fields (`name`,
+  `label`, `description`, `optional`, `disabled`, `readOnly`, `hidden`,
+  `remoteOptions`, `useQuery`, `reloadProps`, `withLabel`) and includes its
+  literal `type` field directly. The shape of values your code receives is
+  unchanged, but any code that references `ConfigurablePropBase` directly must
+  be updated.
+- **Discord prop types removed**: `ConfigurablePropDiscord` and
+  `ConfigurablePropDiscordType` have been removed. Use the existing
+  `ConfigurablePropDiscordChannel` and `ConfigurablePropDiscordChannelArray`
+  variants instead.
+- **`type` discriminator added to emitter members**: `DeployedComponent`,
+  `HttpInterface`, and `TimerInterface` each now carry a literal `type` field
+  (`"DeployedComponent"`, `"HttpInterface"`, `"TimerInterface"`). This is
+  additive on responses you read, but if your code constructs these objects by
+  hand you'll need to include the new field.
 
-## Client initialization
+## Unchanged in v3.x
 
-### Server-side
+To save you time scanning the rest of this guide, the following remain identical
+to v2.x:
 
-For server-side applications, we recommend using the `PipedreamClient` wrapper
-class, which simplifies OAuth token management.
+- Client initialization (`new PipedreamClient({ … })`) and all constructor
+  options (`clientId`, `clientSecret`, `projectId`, `projectEnvironment`,
+  `workflowDomain`, `tokenCallback`, etc.).
+- All environment variables (`PIPEDREAM_CLIENT_ID`, `PIPEDREAM_CLIENT_SECRET`,
+  `PIPEDREAM_PROJECT_ID`, `PIPEDREAM_PROJECT_ENVIRONMENT`, `PIPEDREAM_BASE_URL`,
+  `PIPEDREAM_WORKFLOW_DOMAIN`).
+- All namespaced method names and signatures (`client.actions.run()`,
+  `client.proxy.get()`, `client.workflows.invoke()`, etc.).
+- Browser/server entrypoints (`@pipedream/sdk`, `@pipedream/sdk/browser`,
+  `@pipedream/sdk/server`).
+- Pagination, request options, abort signals, and `.withRawResponse()` chaining.
+- The `PipedreamError` class and error-handling shape.
 
-#### v1.x (old)
+If your v2.x code does not import any `ConfigurableProp*` or `Emitter*` types
+explicitly, it will most likely compile against v3.x without changes.
 
-```javascript
-import { createBackendClient } from '@pipedream/sdk';
+## Type migration
 
-const client = createBackendClient({
-  credentials: {
-    clientId: 'your-client-id',
-    clientSecret: 'your-client-secret',
-  },
-  projectId: 'your-project-id',
-  environment: 'development', // or 'production'
-});
+### `ConfigurableProp` namespace removed
+
+The `ConfigurableProp` discriminated union now references the per-variant
+interfaces directly instead of nesting them under a namespace.
+
+#### v2.x (old)
+
+```typescript
+import { Pipedream } from '@pipedream/sdk';
+
+function describeProp(prop: Pipedream.ConfigurableProp) {
+  if (prop.type === 'alert') {
+    const alert: Pipedream.ConfigurableProp.Alert = prop;
+    return alert.content;
+  }
+  if (prop.type === 'app') {
+    const app: Pipedream.ConfigurableProp.App = prop;
+    return app.name;
+  }
+}
 ```
 
-#### v2.x (new)
+#### v3.x (new)
 
-```javascript
-import { PipedreamClient } from '@pipedream/sdk';
+```typescript
+import { Pipedream } from '@pipedream/sdk';
 
-const client = new PipedreamClient({
-  clientId: 'your-client-id',
-  clientSecret: 'your-client-secret',
-  projectId: 'your-project-id',
-  projectEnvironment: 'development', // or 'production'
-});
+function describeProp(prop: Pipedream.ConfigurableProp) {
+  if (prop.type === 'alert') {
+    const alert: Pipedream.ConfigurablePropAlert = prop;
+    return alert.content;
+  }
+  if (prop.type === 'app') {
+    const app: Pipedream.ConfigurablePropApp = prop;
+    return app.name;
+  }
+}
 ```
 
-### Browser-side
+A complete name-by-name table is in [Type mapping](#type-mapping) below.
 
-For browser-side applications, you should use the `PipedreamClient` class and
-authenticate using a `connect_token` obtained from your backend.
+### `ConfigurablePropBase` no longer in the inheritance chain
 
-#### v1.x (old)
+Each `ConfigurableProp{Variant}` interface used to extend
+`ConfigurablePropBase`. In v3.x, the base fields are inlined into every variant
+and the literal `type` field is part of the variant interface itself. The fields
+you can read from a value are unchanged — only code that references
+`ConfigurablePropBase` directly needs to be updated.
 
-```javascript
-import { createFrontendClient } from '@pipedream/sdk';
+#### v2.x (old)
 
-const frontendClient = createFrontendClient({
-  environment: 'development',
-  credentials: {
-    token: 'connect-token-from-backend',
-  },
-});
+```typescript
+import { type Pipedream } from '@pipedream/sdk';
+
+// `ConfigurablePropBase` could be used to type any "shared" prop fields
+function isOptional(prop: Pipedream.ConfigurablePropBase): boolean {
+  return prop.optional ?? false;
+}
 ```
 
-#### v2.x (new)
+#### v3.x (new)
 
-The v2.x SDK provides two options for browser-side usage:
+```typescript
+import { type Pipedream } from '@pipedream/sdk';
 
-**Option 1: Using `PipedreamClient` with token callback (for dynamic token
-management)**
+// Use the union directly — every variant carries the previously-shared fields
+function isOptional(prop: Pipedream.ConfigurableProp): boolean {
+  return prop.optional ?? false;
+}
+```
 
-```javascript
-import { PipedreamClient } from '@pipedream/sdk';
+### `Emitter` namespace removed
 
-const tokenCallback = async ({ externalUserId }) => {
-  // Call your backend to get a connect token
-  const response = await fetch('/api/pipedream/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ externalUserId })
-  });
-  return response.json();
+Same flattening as `ConfigurableProp`: `Pipedream.Emitter` is now a union of the
+underlying types directly, with no namespaced wrappers.
+
+#### v2.x (old)
+
+```typescript
+import { Pipedream } from '@pipedream/sdk';
+
+function emitterId(e: Pipedream.Emitter): string {
+  if (e.type === 'DeployedComponent') {
+    const dc: Pipedream.Emitter.DeployedComponent = e;
+    return dc.id;
+  }
+  if (e.type === 'HttpInterface') {
+    const http: Pipedream.Emitter.HttpInterface = e;
+    return http.id;
+  }
+  const timer: Pipedream.Emitter.TimerInterface = e;
+  return timer.id;
+}
+```
+
+#### v3.x (new)
+
+```typescript
+import { Pipedream } from '@pipedream/sdk';
+
+function emitterId(e: Pipedream.Emitter): string {
+  if (e.type === 'DeployedComponent') {
+    const dc: Pipedream.DeployedComponent = e;
+    return dc.id;
+  }
+  if (e.type === 'HttpInterface') {
+    const http: Pipedream.HttpInterface = e;
+    return http.id;
+  }
+  const timer: Pipedream.TimerInterface = e;
+  return timer.id;
+}
+```
+
+### Narrowing emitters with the new `type` discriminator
+
+`DeployedComponent`, `HttpInterface`, and `TimerInterface` each gained a literal
+`type` field. This makes the `Emitter` union narrowable via the standard
+discriminated-union pattern. The field is always present on responses, so
+existing code that consumed these types will see the new field on objects it
+already had — typically a transparent change. The only caveat is if your code
+constructs these objects by hand (e.g. for tests or fixtures), in which case the
+`type` field is now required.
+
+#### v2.x (old)
+
+```typescript
+const fixture: Pipedream.DeployedComponent = {
+  id: 'dc_1',
+  ownerId: 'u_1',
+  componentId: 'c_1',
+  componentKey: 'k_1',
+  configurableProps: [],
+  configuredProps: {},
+  active: true,
+  createdAt: 1,
+  updatedAt: 1,
+  name: 'fixture',
+  nameSlug: 'fixture',
 };
-const clientWithToken = new PipedreamClient({
-  tokenCallback,
-  projectId: 'your-project-id',
-  projectEnvironment: 'development', // or 'production'
-});
 ```
 
-**Option 2: Using `createFrontendClient` with connect token (for simple token-based
-auth)**
-
-```javascript
-// Explicit browser import (recommended for browser apps)
-import { createFrontendClient, type PipedreamClient } from '@pipedream/sdk/browser';
-
-// Or automatic browser resolution
-import { createFrontendClient, type PipedreamClient } from '@pipedream/sdk';
-
-// `tokenCallback` is also supported here
-const client: PipedreamClient = createFrontendClient({
-  token: 'connect-token',
-  externalUserId: 'user-123'
-});
-
-// Connect an account using Pipedream Connect
-client.connectAccount({
-  app: 'github',
-  onSuccess: (result) => {
-    console.log('Account connected:', result.id);
-  },
-  onError: (error) => {
-    console.error('Connection failed:', error);
-  }
-});
-
-// Get user's accounts
-const accounts = await client.getAccounts();
-```
-
-### Environment variables
-
-The v2.x SDK supports automatic configuration via environment variables:
-
-```javascript
-// These environment variables are automatically used if set:
-// PIPEDREAM_CLIENT_ID
-// PIPEDREAM_CLIENT_SECRET
-// PIPEDREAM_PROJECT_ID
-// PIPEDREAM_PROJECT_ENVIRONMENT (defaults to 'production')
-
-// You can initialize the client with minimal configuration
-const client = new PipedreamClient({
-  projectId: 'your-project-id', // Can also come from PIPEDREAM_PROJECT_ID
-});
-
-// If environment variables are set, you can even do:
-const client = new PipedreamClient();
-// This will use PIPEDREAM_CLIENT_ID, PIPEDREAM_CLIENT_SECRET, and PIPEDREAM_PROJECT_ID
-```
-
-## Method migration
-
-### Method and parameter naming
-
-In v2.x, all methods are namespaced. While you write TypeScript code using
-`camelCase` (e.g., `externalUserId`), the SDK automatically converts these to
-`snake_case` (e.g., `external_user_id`) when making API calls. For example,
-`client.runAction({ externalUserId: '...' })` becomes
-`client.actions.run({ externalUserId: '...' })` in your code, but the SDK sends
-`external_user_id` to the API. This automatic conversion aligns with the
-[OpenAPI spec](https://api.pipedream.com/api-docs/swagger.json), but does
-**not apply** to the following arguments:
-
-1. Client constructor parameters like `clientId`, `clientSecret`, `projectId`,
-   `projectEnvironment`, and `workflowDomain`.
-2. The props listed under `configuredProps` (the naming follows whatever the
-   corresponding component defines).
-3. Request options like `timeoutInSeconds`, `maxRetries`, and `headers` (these
-   remain in camelCase as they are not part of the API request body).
-
-### Migration examples
-
-#### Running actions
-
-##### v1.x (old)
-
-```javascript
-const result = await client.runAction({
-  externalUserId: 'jverce',
-  actionId: 'gitlab-list-commits',
-  configuredProps: {
-    gitlab: { authProvisionId: 'apn_kVh9AoD' },
-    projectId: 45672541,
-    refName: 'main',
-  },
-});
-```
-
-##### v2.x (new)
-
-```javascript
-const result = await client.actions.run({
-  externalUserId: 'jverce',
-  id: 'gitlab-list-commits',
-  configuredProps: {
-    gitlab: { authProvisionId: 'apn_kVh9AoD' },
-    projectId: 45672541,
-    refName: 'main',
-  },
-});
-```
-
-#### Deploying triggers
-
-##### v1.x (old)
-
-```javascript
-const trigger = await client.deployTrigger({
-  externalUserId: 'jverce',
-  triggerId: 'gitlab-new-issue',
-  configuredProps: {
-    gitlab: {
-      authProvisionId: 'apn_kVh9AoD',
-    },
-    projectId: 45672541,
-  },
-  webhookUrl: 'https://events.example.com/gitlab-new-issue',
-});
-```
-
-##### v2.x (new)
-
-```javascript
-const trigger = await client.triggers.deploy({
-  externalUserId: 'jverce',
-  id: 'gitlab-new-issue',
-  configuredProps: {
-    gitlab: {
-      authProvisionId: 'apn_kVh9AoD',
-    },
-    projectId: 45672541,
-  },
-  webhookUrl: 'https://events.example.com/gitlab-new-issue',
-});
-```
-
-#### Managing accounts
-
-##### v1.x (old)
-
-```javascript
-// List accounts
-const accounts = await client.getAccounts({
-  external_user_id: 'jverce',
-  include_credentials: true,
-});
-
-// Get specific account
-const account = await client.getAccountById('apn_kVh9AoD', {
-  include_credentials: true,
-});
-```
-
-##### v2.x (new)
-
-```javascript
-// List accounts
-const accounts = await client.accounts.list({
-  externalUserId: 'jverce',
-  includeCredentials: true,
-});
-
-// Get specific account
-const account = await client.accounts.retrieve('apn_kVh9AoD', {
-  includeCredentials: true,
-});
-```
-
-#### Creating connect tokens
-
-##### v1.x (old)
-
-```javascript
-const token = await client.createConnectToken({
-  external_user_id: 'jverce',
-});
-```
-
-##### v2.x (new)
-
-```javascript
-const token = await client.tokens.create({
-  externalUserId: 'jverce',
-});
-```
-
-#### Validating connect tokens
-
-##### v1.x (old)
-
-```javascript
-// validateConnectToken was available in v1.x
-const isValid = await client.validateConnectToken({
-  token: 'connect-token-to-validate',
-});
-```
-
-##### v2.x (new)
-
-```javascript
-const validation = await client.tokens.validate({
-  token: 'connect-token-to-validate',
-});
-```
-
-#### Configuring component props
-
-##### v1.x (old)
-
-```javascript
-const response = await client.configureComponent({
-  externalUserId: 'jverce',
-  componentId: 'gitlab-new-issue',
-  propName: 'projectId',
-  configuredProps: {
-    gitlab: { authProvisionId: 'apn_kVh9AoD' },
-  },
-});
-```
-
-##### v2.x (new)
-
-```javascript
-const response = await client.components.configureProp({
-  externalUserId: 'jverce',
-  id: 'gitlab-new-issue',
-  propName: 'projectId',
-  configuredProps: {
-    gitlab: { authProvisionId: 'apn_kVh9AoD' },
-  },
-});
-```
-
-#### Deleting accounts
-
-##### v1.x (old)
-
-```javascript
-// Delete specific account
-await client.deleteAccount('account-id');
-
-// Delete all accounts for an app
-await client.deleteAccountsByApp('app-id');
-
-// Delete external user
-await client.deleteExternalUser('jverce');
-```
-
-##### v2.x (new)
-
-```javascript
-// Delete specific account
-await client.accounts.delete('account-id');
-
-// Delete all accounts for an app - functionality removed
-// Consider using accounts.list() and deleting individually
-
-// Delete external user - use users namespace
-await client.users.delete({
-  externalUserId: 'jverce',
-});
-```
-
-#### Getting project info
-
-##### v1.x (old)
-
-```javascript
-const projectInfo = await client.getProjectInfo();
-console.log(projectInfo.apps);
-```
-
-##### v2.x (new)
-
-```javascript
-const project = await client.projects.retrieve();
-console.log(project);
-```
-
-#### Making proxy requests
-
-##### v1.x (old)
-
-```javascript
-// v1.x uses a single method with two parameters
-const response = await client.makeProxyRequest({
-  searchParams: {
-    external_user_id: 'jverce',
-    account_id: 'apn_kVh9AoD',
-  },
-}, {
-  url: 'https://api.example.com/data',
-  options: {
-    method: 'GET',
-    headers: {
-      'Accept': 'application/json',
-    },
-  },
-});
-
-// POST request with body
-const postResponse = await client.makeProxyRequest({
-  searchParams: {
-    external_user_id: 'jverce',
-    account_id: 'apn_kVh9AoD',
-  },
-}, {
-  url: 'https://api.example.com/users',
-  options: {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ name: 'John Doe' }),
-  },
-});
-```
-
-##### v2.x (new)
-
-```javascript
-// v2.x uses separate methods for each HTTP verb
-const response = await client.proxy.get({
-  externalUserId: 'jverce',
-  accountId: 'apn_kVh9AoD',
-  url: 'https://api.example.com/data',
-  headers: {
-    'Accept': 'application/json',
-  },
-  params: {}, // Additional query parameters if needed
-});
-
-// POST request with body
-const postResponse = await client.proxy.post({
-  externalUserId: 'jverce',
-  accountId: 'apn_kVh9AoD',
-  url: 'https://api.example.com/users',
-  body: { name: 'John Doe' }, // Body is passed as an object, not a string
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-// Other HTTP methods are available
-await client.proxy.put({ /* ... */ });
-await client.proxy.delete({ /* ... */ });
-await client.proxy.patch({ /* ... */ });
-```
-
-#### Invoking workflows
-
-##### v1.x (old)
-
-```javascript
-// Invoke a workflow
-const response = await client.invokeWorkflow(
-  'https://your-endpoint.m.pipedream.net',
-  {
-    foo: 123,
-    bar: 'abc',
-  },
-  HTTPAuthType.OAuth // Optional auth type
-);
-
-// Invoke a workflow for an external user
-const response = await client.invokeWorkflowForExternalUser(
-  'https://your-workflow-url.m.pipedream.net',
-  'jverce', // external user ID as second parameter
-  {
-    foo: 123,
-    bar: 'abc',
-  }
-);
-```
-
-##### v2.x (new)
-
-```javascript
-// Invoke a workflow
-const response = await client.workflows.invoke({
-  urlOrEndpoint: 'https://your-endpoint.m.pipedream.net',
-  body: {
-    foo: 123,
-    bar: 'abc',
-  },
-  headers: {
-    'Accept': 'application/json',
-  },
-}, Pipedream.HTTPAuthType.OAuth);
-
-// Invoke a workflow for an external user
-const response = await client.workflows.invokeForExternalUser({
-  urlOrEndpoint: 'https://your-workflow-url.m.pipedream.net',
-  externalUserId: 'jverce', // now part of the options object
-  body: {
-    foo: 123,
-    bar: 'abc',
-  },
-});
-```
-
-## Namespace mapping
-
-Here's a complete list of how v1.x methods map to v2.x namespaced methods:
-
-| v1.x Method                       | v2.x Method                                      |
-| --------------------------------- | ------------------------------------------------ |
-| `runAction()`                     | `actions.run()`                                  |
-| `getAccounts()`                   | `accounts.list()`                                |
-| `getAccountById()`                | `accounts.retrieve()`                            |
-| `deleteAccount()`                 | `accounts.delete()`                              |
-| `deleteAccountsByApp()`           | Not available (use list + delete)                |
-| `deleteExternalUser()`            | `users.delete()`                                 |
-| `createConnectToken()`            | `tokens.create()`                                |
-| `validateConnectToken()`          | `tokens.validate()`                              |
-| `deployTrigger()`                 | `triggers.deploy()`                              |
-| `getDeployedTriggers()`           | `deployedTriggers.list()`                        |
-| `getDeployedTrigger()`            | `deployedTriggers.retrieve()`                    |
-| `updateDeployedTrigger()`         | `deployedTriggers.update()`                      |
-| `deleteDeployedTrigger()`         | `deployedTriggers.delete()`                      |
-| `getTriggerEvents()`              | `deployedTriggers.listEvents()`                  |
-| `getTriggerWebhooks()`            | `deployedTriggers.listWebhooks()`                |
-| `updateTriggerWebhooks()`         | `deployedTriggers.updateWebhooks()`              |
-| `getTriggerWorkflows()`           | `deployedTriggers.listWorkflows()`               |
-| `updateTriggerWorkflows()`        | `deployedTriggers.updateWorkflows()`             |
-| `getUsers()`                      | `users.list()`                                   |
-| `getUser()`                       | `users.retrieve()`                               |
-| `getApps()`                       | `apps.list()`                                    |
-| `getApp()`                        | `apps.retrieve()`                                |
-| `getComponents()`                 | `components.list()`                              |
-| `getComponent()`                  | `components.retrieve()`                          |
-| `configureComponent()`            | `components.configureProp()`                     |
-| `reloadComponentProps()`          | `components.reloadProps()`                       |
-| `getProjectInfo()`                | `projects.retrieve()`                            |
-| `makeProxyRequest()`              | `proxy.get()`, `proxy.post()`, etc.              |
-| `invokeWorkflow()`                | `workflows.invoke()`                             |
-| `invokeWorkflowForExternalUser()` | `workflows.invokeForExternalUser()`              |
-| `rawAccessToken()`                | `rawAccessToken` (getter property in server SDK) |
-
-## New features in v2.x
-
-The v2.x SDK includes several new features not available in v1.x:
-
-### Full TypeScript support
+#### v3.x (new)
 
 ```typescript
-import { type RunActionResponse } from '@pipedream/sdk';
-
-const result: RunActionResponse = await client.actions.run({
-  externalUserId: 'jverce',
-  id: 'gitlab-list-commits',
-  configuredProps: {
-    gitlab: { authProvisionId: 'apn_kVh9AoD' },
-    projectId: 45672541,
-    refName: 'main',
-  },
-});
+const fixture: Pipedream.DeployedComponent = {
+  type: 'DeployedComponent', // now required
+  id: 'dc_1',
+  ownerId: 'u_1',
+  componentId: 'c_1',
+  componentKey: 'k_1',
+  configurableProps: [],
+  configuredProps: {},
+  active: true,
+  createdAt: 1,
+  updatedAt: 1,
+  name: 'fixture',
+  nameSlug: 'fixture',
+};
 ```
 
-### Pagination support
+### Discord configurable prop types removed
 
-```javascript
-// Automatic pagination
-for await (const account of client.accounts.list({
-  externalUserId: 'jverce',
-})) {
-  console.log(account);
-}
+The generic `ConfigurablePropDiscord` wrapper and its
+`ConfigurablePropDiscordType` enum have been removed. The concrete variants that
+were already exported in v2.x — `ConfigurablePropDiscordChannel` and
+`ConfigurablePropDiscordChannelArray` — remain and should be used directly.
 
-// Manual pagination
-const firstPage = await client.accounts.list({
-  externalUserId: 'jverce',
-  limit: 20,
-});
-
-if (firstPage.hasNextPage()) {
-  const nextPage = await firstPage.getNextPage();
-  console.log(nextPage.data);
-}
-```
-
-### Enhanced error handling
-
-```javascript
-import { PipedreamError } from '@pipedream/sdk';
-
-try {
-  await client.actions.run({
-    externalUserId: 'jverce',
-    id: 'gitlab-list-commits',
-    configuredProps: {
-      gitlab: { authProvisionId: 'apn_kVh9AoD' },
-      projectId: 45672541,
-      refName: 'main',
-    },
-  });
-} catch (error) {
-  if (error instanceof PipedreamError) {
-    console.error('API Error:', error.status, error.message);
-  }
-}
-```
-
-### Request options
-
-```javascript
-// Custom timeout
-const result = await client.actions.run({
-  externalUserId: 'jverce',
-  id: 'gitlab-list-commits',
-  configuredProps: {
-    gitlab: { authProvisionId: 'apn_kVh9AoD' },
-    projectId: 45672541,
-    refName: 'main',
-  },
-}, {
-  timeoutInSeconds: 30,
-});
-
-// Retry configuration
-const result = await client.actions.run({
-  externalUserId: 'jverce',
-  id: 'gitlab-list-commits',
-  configuredProps: {
-    gitlab: { authProvisionId: 'apn_kVh9AoD' },
-    projectId: 45672541,
-    refName: 'main',
-  },
-}, {
-  maxRetries: 3,
-});
-
-// Custom headers
-const result = await client.actions.run({
-  externalUserId: 'jverce',
-  id: 'gitlab-list-commits',
-  configuredProps: {
-    gitlab: { authProvisionId: 'apn_kVh9AoD' },
-    projectId: 45672541,
-    refName: 'main',
-  },
-}, {
-  headers: {
-    'X-Custom-Header': 'value',
-  },
-});
-```
-
-### Abort signals
-
-```javascript
-const controller = new AbortController();
-
-// Abort after 5 seconds
-setTimeout(() => controller.abort(), 5000);
-
-try {
-  const result = await client.actions.run({
-    externalUserId: 'jverce',
-    id: 'gitlab-list-commits',
-    configuredProps: {
-      gitlab: { authProvisionId: 'apn_kVh9AoD' },
-      projectId: 45672541,
-      refName: 'main',
-    },
-  }, {
-    abortSignal: controller.signal,
-  });
-} catch (error) {
-  if (error.name === 'AbortError') {
-    console.log('Request was aborted');
-  }
-}
-```
-
-### Raw response access
-
-```javascript
-const response = await client.actions.run({
-  externalUserId: 'jverce',
-  id: 'gitlab-list-commits',
-  configuredProps: {
-    gitlab: { authProvisionId: 'apn_kVh9AoD' },
-    projectId: 45672541,
-    refName: 'main',
-  },
-}).withRawResponse();
-
-console.log(response.data); // Parsed response data
-console.log(response.rawResponse); // Original Response object
-```
-
-## Browser/Server Environment Separation
-
-The v2.x SDK provides proper environment separation to ensure browser-safe
-imports without Node.js dependencies.
-
-### Package.json Export Structure
-
-The SDK uses conditional exports to automatically serve the right code:
-
-```json
-{
-  "exports": {
-    ".": {
-      "browser": "./dist/esm/browser/index.mjs",  // Browser gets browser-only code
-      "import": "./dist/esm/index.mjs",           // Node.js gets full functionality
-      "require": "./dist/cjs/index.js"
-    },
-    "./browser": {
-      "import": "./dist/esm/browser/index.mjs"    // Explicit browser import
-    },
-    "./server": {
-      "import": "./dist/esm/index.mjs",           // Explicit server import
-      "require": "./dist/cjs/index.js"
-    }
-  }
-}
-```
-
-### Import Recommendations
+#### v2.x (old)
 
 ```typescript
-// For browser applications - avoids Node.js dependencies
-import { PipedreamClient, createFrontendClient } from '@pipedream/sdk/browser';
+import { type Pipedream } from '@pipedream/sdk';
 
-// For server applications - includes full functionality
-import { PipedreamClient } from '@pipedream/sdk/server';
-
-// Automatic resolution (recommended for most cases)
-import { PipedreamClient } from '@pipedream/sdk';
+function isDiscordChannelProp(p: Pipedream.ConfigurableProp): boolean {
+  return (p as Pipedream.ConfigurablePropDiscord).type ===
+    Pipedream.ConfigurablePropDiscordType.DiscordChannel;
+}
 ```
 
-This ensures:
+#### v3.x (new)
 
-- **Browser bundlers** automatically get the browser-safe version
-- **Node.js environments** get the full SDK with all server functionality
-- **Smaller bundle sizes** for browser applications
-- **No Node.js dependency errors** in browser builds
+```typescript
+import { type Pipedream } from '@pipedream/sdk';
 
-## Additional namespaces
+function isDiscordChannelProp(p: Pipedream.ConfigurableProp): boolean {
+  return p.type === '$.discord.channel';
+}
 
-The v2.x SDK includes several new namespaces not available in v1.x:
+// Or, with full type narrowing:
+function asDiscordChannel(
+  p: Pipedream.ConfigurableProp,
+): Pipedream.ConfigurablePropDiscordChannel | undefined {
+  return p.type === '$.discord.channel' ? p : undefined;
+}
+```
 
-- `apps` - Browse available apps and integrations
-- `appCategories` - List app categories
-- `components` - Work with components
-- `deployedTriggers.listEvents()` - List events for a deployed trigger
-- `deployedTriggers.listWebhooks()` - List webhooks for a deployed trigger
-- `deployedTriggers.listWorkflows()` - List workflows for a deployed trigger
-- `projects` - Get project information
-- `proxy` - Work with HTTP proxy endpoints
-- `triggers` - Additional trigger operations beyond deployment
-- `users` - User information
-- `oauthTokens` - OAuth token management
-- `workflows` - Invoke workflows
+## Type mapping
+
+Here's a complete list of how v2.x namespaced types map to v3.x flat types:
+
+| v2.x Type                              | v3.x Type                                      |
+| -------------------------------------- | ---------------------------------------------- |
+| `ConfigurableProp.Alert`               | `ConfigurablePropAlert`                        |
+| `ConfigurableProp.Any`                 | `ConfigurablePropAny`                          |
+| `ConfigurableProp.App`                 | `ConfigurablePropApp`                          |
+| `ConfigurableProp.Boolean`             | `ConfigurablePropBoolean`                      |
+| `ConfigurableProp.DataStore`           | `ConfigurablePropDataStore`                    |
+| `ConfigurableProp.Dir`                 | `ConfigurablePropDir`                          |
+| `ConfigurableProp.InterfaceTimer`      | `ConfigurablePropTimer`                        |
+| `ConfigurableProp.InterfaceApphook`    | `ConfigurablePropApphook`                      |
+| `ConfigurableProp.IntegerArray`        | `ConfigurablePropIntegerArray`                 |
+| `ConfigurableProp.InterfaceHttp`       | `ConfigurablePropHttp`                         |
+| `ConfigurableProp.HttpRequest`         | `ConfigurablePropHttpRequest`                  |
+| `ConfigurableProp.ServiceDb`           | `ConfigurablePropDb`                           |
+| `ConfigurableProp.Sql`                 | `ConfigurablePropSql`                          |
+| `ConfigurableProp.AirtableBaseId`      | `ConfigurablePropAirtableBaseId`               |
+| `ConfigurableProp.AirtableTableId`     | `ConfigurablePropAirtableTableId`              |
+| `ConfigurableProp.AirtableViewId`      | `ConfigurablePropAirtableViewId`               |
+| `ConfigurableProp.AirtableFieldId`     | `ConfigurablePropAirtableFieldId`              |
+| `ConfigurableProp.DiscordChannel`      | `ConfigurablePropDiscordChannel`               |
+| `ConfigurableProp.DiscordChannelArray` | `ConfigurablePropDiscordChannelArray`          |
+| `ConfigurableProp.Integer`             | `ConfigurablePropInteger`                      |
+| `ConfigurableProp.Object`              | `ConfigurablePropObject`                       |
+| `ConfigurableProp.String`              | `ConfigurablePropString`                       |
+| `ConfigurableProp.StringArray`         | `ConfigurablePropStringArray`                  |
+| `ConfigurablePropBase`                 | Removed (fields inlined per variant)           |
+| `ConfigurablePropDiscord`              | Removed (use `ConfigurablePropDiscordChannel`) |
+| `ConfigurablePropDiscordType`          | Removed (use the literal `type` strings)       |
+| `Emitter.DeployedComponent`            | `DeployedComponent`                            |
+| `Emitter.HttpInterface`                | `HttpInterface`                                |
+| `Emitter.TimerInterface`               | `TimerInterface`                               |
+
+## New features in v3.x
+
+The v3.x SDK does not introduce new endpoints or new methods. The improvements
+are entirely in the type system:
+
+### Flatter, easier-to-narrow discriminated unions
+
+Each `ConfigurableProp{Variant}` interface now stands on its own, with the
+literal `type` field declared on the variant itself rather than imposed by a
+nested namespace wrapper. This means TypeScript narrows
+`Pipedream.ConfigurableProp` cleanly with a plain `switch (prop.type)` or `if
+(prop.type === 'alert')` — without any namespace gymnastics — and IDE
+autocomplete surfaces every prop field directly.
+
+```typescript
+import { type Pipedream } from '@pipedream/sdk';
+
+function summarize(prop: Pipedream.ConfigurableProp): string {
+  switch (prop.type) {
+    case 'alert':
+      return prop.content; // narrowed to ConfigurablePropAlert
+    case 'string':
+      return prop.label ?? prop.name; // narrowed to ConfigurablePropString
+    case 'integer':
+      return String(prop.default ?? prop.name);
+    default:
+      return prop.name;
+  }
+}
+```
+
+### Explicit `type` field on emitter members
+
+`DeployedComponent`, `HttpInterface`, and `TimerInterface` now each carry a
+literal `type` field, which makes `Pipedream.Emitter` narrowable the same way:
+
+```typescript
+import { type Pipedream } from '@pipedream/sdk';
+
+function describe(e: Pipedream.Emitter): string {
+  switch (e.type) {
+    case 'DeployedComponent':
+      return `component ${e.componentKey}`;
+    case 'HttpInterface':
+      return `http ${e.id}`;
+    case 'TimerInterface':
+      return `timer ${e.id}`;
+  }
+}
+```
 
 ## Partial migration
 
@@ -844,102 +387,66 @@ incrementally without breaking your existing codebase. To do this, you can
 install the new SDK with an alias:
 
 ```bash
-npm install @pipedream/sdk-v2@npm:@pipedream/sdk@^2.0.0 --save
+npm install @pipedream/sdk-v3@npm:@pipedream/sdk@^3.0.0 --save
 ```
 
-Then, in your code, you can import the new SDK with the alias:
+Then, in your code, you can import each version separately:
 
-```javascript
-import { createBackendClient } from '@pipedream/sdk';
-import { PipedreamClient } from '@pipedream/sdk-v2';
+```typescript
+import { Pipedream as PipedreamV2 } from '@pipedream/sdk';
+import { Pipedream as PipedreamV3, PipedreamClient } from '@pipedream/sdk-v3';
 
-const clientOpts = {
-  credentials: {
-    clientId,
-    clientSecret,
-  },
-  projectId,
-  environment,
+const client = new PipedreamClient({
+  clientId: 'your-client-id',
+  clientSecret: 'your-client-secret',
+  projectId: 'your-project-id',
+  projectEnvironment: 'development',
+});
+
+// Old code continues to type-check against v2.x types
+function legacyHandler(prop: PipedreamV2.ConfigurableProp.Alert) {
+  return prop.content;
 }
 
-const client = createBackendClient(clientOpts);
-const newClient = new PipedreamClient({
-  ...clientOpts.credentials,
-  projectEnvironment: clientOpts.environment,
-  projectId: clientOpts.projectId,
-});
-
-// Use old client for existing code
-const oldResult = await client.runAction({
-  externalUserId: 'jverce',
-  actionId: 'gitlab-list-commits',
-  configuredProps: {
-    gitlab: { authProvisionId: 'apn_kVh9AoD' },
-    projectId: 45672541,
-    refName: 'main',
-  },
-});
-
-// Use new client for migrated code
-const newResult = await newClient.actions.run({
-  externalUserId: 'jverce',
-  id: 'gitlab-list-commits',
-  configuredProps: {
-    gitlab: { authProvisionId: 'apn_kVh9AoD' },
-    projectId: 45672541,
-    refName: 'main',
-  },
-});
+// Newly migrated code uses v3.x types
+function migratedHandler(prop: PipedreamV3.ConfigurablePropAlert) {
+  return prop.content;
+}
 ```
 
 ## Important removed functionality
 
-Some methods from v1.x have been removed or changed significantly in v2.x:
+The following exports have been removed in v3.x:
 
-1. **`deleteAccountsByApp()`** - This bulk deletion method is no longer
-   available. You'll need to list accounts for an app and delete them
-   individually.
-
-2. **`rawAccessToken()`** - The method has been changed to a getter property.
-   For the server-side SDK (`Pipedream` class from `@pipedream/sdk/server` or
-   the wrapper), you can access the raw access token via the `rawAccessToken`
-   getter property which returns a Promise:
-
-   ```javascript
-   // v1.x (old)
-   const token = await client.rawAccessToken();
-
-   // v2.x (new)
-   const token = await client.rawAccessToken;
-   ```
-
-   For the base `PipedreamClient` class, token management is handled internally.
-
-3. **Alternative method names** - The v1.x SDK provided alternative method names
-   (e.g., `actionRun()` as an alias for `runAction()`). These are no longer
-   available in v2.x.
-
-4. **`userId` parameter** - The deprecated `userId` parameter has been removed.
-   Always use `externalUserId` instead.
+1. **`ConfigurableProp` namespace members** (e.g.
+   `Pipedream.ConfigurableProp.Alert`) — replaced by flat per-variant interfaces
+   (e.g. `Pipedream.ConfigurablePropAlert`). See [Type mapping](#type-mapping).
+2. **`Emitter` namespace members** (e.g. `Pipedream.Emitter.HttpInterface`) —
+   replaced by direct references to the underlying types
+   (`Pipedream.HttpInterface`).
+3. **`ConfigurablePropBase`** — base fields are now inlined into each
+   `ConfigurableProp{Variant}` interface. There is no longer a single shared
+   base type.
+4. **`ConfigurablePropDiscord`** — use the concrete variants
+   `ConfigurablePropDiscordChannel` or `ConfigurablePropDiscordChannelArray`
+   instead.
+5. **`ConfigurablePropDiscordType`** — use the literal `type` strings (e.g.
+   `'$.discord.channel'`) directly.
 
 ## Migration checklist
 
-- [ ] Update import statements from `createBackendClient`/`createFrontendClient`
-  to `PipedreamClient`.
-- [ ] Update client initialization to use `new PipedreamClient()` for both
-  server-side and browser-side.
-- [ ] Convert all method calls to use namespaced format (e.g.,
-  `client.actions.run()`).
-- [ ] Keep parameter names in camelCase in your TypeScript/JavaScript code (the
-  SDK handles conversion to snake_case automatically).
-- [ ] Pass `externalUserId` to methods instead of setting it on the client.
-- [ ] Update error handling to use `PipedreamError` type.
-- [ ] Review and implement new features like pagination and request options
-  where beneficial.
-- [ ] Replace any usage of removed methods with their alternatives.
-- [ ] Update any code using `rawAccessToken()` - for server-side code, you can
-  access `client.rawAccessToken` as a getter property that returns a Promise.
-- [ ] For raw response access, use `.withRawResponse()` method chaining instead
-  of passing `includeRawResponse` option.
+- [ ] Update imports of `Pipedream.ConfigurableProp.{Variant}` types to the flat
+      `Pipedream.ConfigurableProp{Variant}` form.
+- [ ] Update imports of `Pipedream.Emitter.{Member}` types to
+      `Pipedream.{Member}` (e.g. `Pipedream.DeployedComponent`).
+- [ ] Replace any references to `ConfigurablePropBase` with the
+      `ConfigurableProp` union (or with the specific variant your code expects).
+- [ ] Replace any usage of `ConfigurablePropDiscord` /
+      `ConfigurablePropDiscordType` with `ConfigurablePropDiscordChannel` /
+      `ConfigurablePropDiscordChannelArray` and the literal `type` strings.
+- [ ] If you construct `DeployedComponent`, `HttpInterface`, or `TimerInterface`
+      objects by hand (e.g. in tests or fixtures), add the new `type`
+      discriminator field.
+- [ ] Run `tsc --noEmit` to surface any remaining type-only call sites.
 - [ ] Test all migrated code thoroughly.
-- [ ] Remove the old SDK dependency once migration is complete.
+- [ ] Remove the v2 SDK dependency once migration is complete.

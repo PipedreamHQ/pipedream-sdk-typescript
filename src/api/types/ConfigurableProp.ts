@@ -6,120 +6,26 @@ import type * as Pipedream from "../index.js";
  * A configuration or input field for a component. This is a discriminated union based on the type field.
  */
 export type ConfigurableProp =
-    | Pipedream.ConfigurableProp.Alert
-    | Pipedream.ConfigurableProp.Any
-    | Pipedream.ConfigurableProp.App
-    | Pipedream.ConfigurableProp.Boolean
-    | Pipedream.ConfigurableProp.DataStore
-    | Pipedream.ConfigurableProp.Dir
-    | Pipedream.ConfigurableProp.InterfaceTimer
-    | Pipedream.ConfigurableProp.InterfaceApphook
-    | Pipedream.ConfigurableProp.IntegerArray
-    | Pipedream.ConfigurableProp.InterfaceHttp
-    | Pipedream.ConfigurableProp.HttpRequest
-    | Pipedream.ConfigurableProp.ServiceDb
-    | Pipedream.ConfigurableProp.Sql
-    | Pipedream.ConfigurableProp.AirtableBaseId
-    | Pipedream.ConfigurableProp.AirtableTableId
-    | Pipedream.ConfigurableProp.AirtableViewId
-    | Pipedream.ConfigurableProp.AirtableFieldId
-    | Pipedream.ConfigurableProp.DiscordChannel
-    | Pipedream.ConfigurableProp.DiscordChannelArray
-    | Pipedream.ConfigurableProp.Integer
-    | Pipedream.ConfigurableProp.Object
-    | Pipedream.ConfigurableProp.String
-    | Pipedream.ConfigurableProp.StringArray;
-
-export namespace ConfigurableProp {
-    export interface Alert extends Pipedream.ConfigurablePropAlert {
-        type: "alert";
-    }
-
-    export interface Any extends Pipedream.ConfigurablePropAny {
-        type: "any";
-    }
-
-    export interface App extends Pipedream.ConfigurablePropApp {
-        type: "app";
-    }
-
-    export interface Boolean extends Pipedream.ConfigurablePropBoolean {
-        type: "boolean";
-    }
-
-    export interface DataStore extends Pipedream.ConfigurablePropDataStore {
-        type: "data_store";
-    }
-
-    export interface Dir extends Pipedream.ConfigurablePropDir {
-        type: "dir";
-    }
-
-    export interface InterfaceTimer extends Pipedream.ConfigurablePropTimer {
-        type: "$.interface.timer";
-    }
-
-    export interface InterfaceApphook extends Pipedream.ConfigurablePropApphook {
-        type: "$.interface.apphook";
-    }
-
-    export interface IntegerArray extends Pipedream.ConfigurablePropIntegerArray {
-        type: "integer[]";
-    }
-
-    export interface InterfaceHttp extends Pipedream.ConfigurablePropHttp {
-        type: "$.interface.http";
-    }
-
-    export interface HttpRequest extends Pipedream.ConfigurablePropHttpRequest {
-        type: "http_request";
-    }
-
-    export interface ServiceDb extends Pipedream.ConfigurablePropDb {
-        type: "$.service.db";
-    }
-
-    export interface Sql extends Pipedream.ConfigurablePropSql {
-        type: "sql";
-    }
-
-    export interface AirtableBaseId extends Pipedream.ConfigurablePropAirtableBaseId {
-        type: "$.airtable.baseId";
-    }
-
-    export interface AirtableTableId extends Pipedream.ConfigurablePropAirtableTableId {
-        type: "$.airtable.tableId";
-    }
-
-    export interface AirtableViewId extends Pipedream.ConfigurablePropAirtableViewId {
-        type: "$.airtable.viewId";
-    }
-
-    export interface AirtableFieldId extends Pipedream.ConfigurablePropAirtableFieldId {
-        type: "$.airtable.fieldId";
-    }
-
-    export interface DiscordChannel extends Pipedream.ConfigurablePropDiscordChannel {
-        type: "$.discord.channel";
-    }
-
-    export interface DiscordChannelArray extends Pipedream.ConfigurablePropDiscordChannelArray {
-        type: "$.discord.channel[]";
-    }
-
-    export interface Integer extends Pipedream.ConfigurablePropInteger {
-        type: "integer";
-    }
-
-    export interface Object extends Pipedream.ConfigurablePropObject {
-        type: "object";
-    }
-
-    export interface String extends Pipedream.ConfigurablePropString {
-        type: "string";
-    }
-
-    export interface StringArray extends Pipedream.ConfigurablePropStringArray {
-        type: "string[]";
-    }
-}
+    | Pipedream.ConfigurablePropAlert
+    | Pipedream.ConfigurablePropAny
+    | Pipedream.ConfigurablePropApp
+    | Pipedream.ConfigurablePropBoolean
+    | Pipedream.ConfigurablePropDataStore
+    | Pipedream.ConfigurablePropDir
+    | Pipedream.ConfigurablePropTimer
+    | Pipedream.ConfigurablePropApphook
+    | Pipedream.ConfigurablePropIntegerArray
+    | Pipedream.ConfigurablePropHttp
+    | Pipedream.ConfigurablePropHttpRequest
+    | Pipedream.ConfigurablePropDb
+    | Pipedream.ConfigurablePropSql
+    | Pipedream.ConfigurablePropAirtableBaseId
+    | Pipedream.ConfigurablePropAirtableTableId
+    | Pipedream.ConfigurablePropAirtableViewId
+    | Pipedream.ConfigurablePropAirtableFieldId
+    | Pipedream.ConfigurablePropDiscordChannel
+    | Pipedream.ConfigurablePropDiscordChannelArray
+    | Pipedream.ConfigurablePropInteger
+    | Pipedream.ConfigurablePropObject
+    | Pipedream.ConfigurablePropString
+    | Pipedream.ConfigurablePropStringArray;

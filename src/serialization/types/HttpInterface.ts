@@ -12,6 +12,7 @@ export const HttpInterface: core.serialization.ObjectSchema<serializers.HttpInte
         customResponse: core.serialization.property("custom_response", core.serialization.boolean()),
         createdAt: core.serialization.property("created_at", core.serialization.number()),
         updatedAt: core.serialization.property("updated_at", core.serialization.number()),
+        type: core.serialization.stringLiteral("HttpInterface"),
     });
 
 export declare namespace HttpInterface {
@@ -22,5 +23,6 @@ export declare namespace HttpInterface {
         custom_response: boolean;
         created_at: number;
         updated_at: number;
+        type: "HttpInterface";
     }
 }

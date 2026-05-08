@@ -28,8 +28,6 @@ export * from "./ConfigurablePropDataStore.js";
 export * from "./ConfigurablePropDb.js";
 export * from "./ConfigurablePropDir.js";
 export * from "./ConfigurablePropDirAccessMode.js";
-export * from "./ConfigurablePropDiscord.js";
-export * from "./ConfigurablePropDiscordType.js";
 export * from "./ConfigurablePropDiscordChannel.js";
 export * from "./ConfigurablePropDiscordChannelArray.js";
 export * from "./ConfigurablePropHttp.js";
