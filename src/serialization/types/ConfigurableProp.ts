@@ -30,7 +30,6 @@ import { ConfigurablePropTimer } from "./ConfigurablePropTimer.js";
 export const ConfigurableProp: core.serialization.Schema<serializers.ConfigurableProp.Raw, Pipedream.ConfigurableProp> =
     core.serialization.undiscriminatedUnion([
         ConfigurablePropAlert,
-        ConfigurablePropAny,
         ConfigurablePropApp,
         ConfigurablePropBoolean,
         ConfigurablePropDataStore,
@@ -49,15 +48,15 @@ export const ConfigurableProp: core.serialization.Schema<serializers.Configurabl
         ConfigurablePropDiscordChannel,
         ConfigurablePropDiscordChannelArray,
         ConfigurablePropInteger,
-        ConfigurablePropObject,
         ConfigurablePropString,
         ConfigurablePropStringArray,
+        ConfigurablePropObject,
+        ConfigurablePropAny,
     ]);
 
 export declare namespace ConfigurableProp {
     export type Raw =
         | ConfigurablePropAlert.Raw
-        | ConfigurablePropAny.Raw
         | ConfigurablePropApp.Raw
         | ConfigurablePropBoolean.Raw
         | ConfigurablePropDataStore.Raw
@@ -76,7 +75,8 @@ export declare namespace ConfigurableProp {
         | ConfigurablePropDiscordChannel.Raw
         | ConfigurablePropDiscordChannelArray.Raw
         | ConfigurablePropInteger.Raw
-        | ConfigurablePropObject.Raw
         | ConfigurablePropString.Raw
-        | ConfigurablePropStringArray.Raw;
+        | ConfigurablePropStringArray.Raw
+        | ConfigurablePropObject.Raw
+        | ConfigurablePropAny.Raw;
 }

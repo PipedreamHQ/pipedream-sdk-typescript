@@ -16,24 +16,24 @@ export const ConfiguredPropValue: core.serialization.Schema<
     serializers.ConfiguredPropValue.Raw,
     Pipedream.ConfiguredPropValue
 > = core.serialization.undiscriminatedUnion([
-    ConfiguredPropValueAny,
     ConfiguredPropValueApp,
     ConfiguredPropValueBoolean,
     ConfiguredPropValueInteger,
-    ConfiguredPropValueObject,
     ConfiguredPropValueSql,
     ConfiguredPropValueString,
     ConfiguredPropValueStringArray,
+    ConfiguredPropValueObject,
+    ConfiguredPropValueAny,
 ]);
 
 export declare namespace ConfiguredPropValue {
     export type Raw =
-        | (ConfiguredPropValueAny.Raw | undefined)
         | ConfiguredPropValueApp.Raw
         | ConfiguredPropValueBoolean.Raw
         | ConfiguredPropValueInteger.Raw
-        | ConfiguredPropValueObject.Raw
         | ConfiguredPropValueSql.Raw
         | ConfiguredPropValueString.Raw
-        | ConfiguredPropValueStringArray.Raw;
+        | ConfiguredPropValueStringArray.Raw
+        | ConfiguredPropValueObject.Raw
+        | (ConfiguredPropValueAny.Raw | undefined);
 }

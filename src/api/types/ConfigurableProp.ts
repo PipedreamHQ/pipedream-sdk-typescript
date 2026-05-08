@@ -7,7 +7,6 @@ import type * as Pipedream from "../index.js";
  */
 export type ConfigurableProp =
     | Pipedream.ConfigurablePropAlert
-    | Pipedream.ConfigurablePropAny
     | Pipedream.ConfigurablePropApp
     | Pipedream.ConfigurablePropBoolean
     | Pipedream.ConfigurablePropDataStore
@@ -26,6 +25,7 @@ export type ConfigurableProp =
     | Pipedream.ConfigurablePropDiscordChannel
     | Pipedream.ConfigurablePropDiscordChannelArray
     | Pipedream.ConfigurablePropInteger
-    | Pipedream.ConfigurablePropObject
     | Pipedream.ConfigurablePropString
-    | Pipedream.ConfigurablePropStringArray;
+    | Pipedream.ConfigurablePropStringArray
+    | Pipedream.ConfigurablePropObject
+    | Pipedream.ConfigurablePropAny;

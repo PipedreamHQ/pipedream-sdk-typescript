@@ -3,12 +3,12 @@
 import type * as Pipedream from "../index.js";
 
 export type ConfiguredPropValue =
-    | Pipedream.ConfiguredPropValueAny
-    | undefined
     | Pipedream.ConfiguredPropValueApp
     | Pipedream.ConfiguredPropValueBoolean
     | Pipedream.ConfiguredPropValueInteger
-    | Pipedream.ConfiguredPropValueObject
     | Pipedream.ConfiguredPropValueSql
     | Pipedream.ConfiguredPropValueString
-    | Pipedream.ConfiguredPropValueStringArray;
+    | Pipedream.ConfiguredPropValueStringArray
+    | Pipedream.ConfiguredPropValueObject
+    | Pipedream.ConfiguredPropValueAny
+    | undefined;
