@@ -27,7 +27,7 @@ describe("DeployedTriggersClient", () => {
                     component_id: "component_id",
                     component_key: "component_key",
                     configurable_props: [{ name: "name", type: "alert", content: "content" }],
-                    configured_props: {},
+                    configured_props: { key: { authProvisionId: "authProvisionId" } },
                     active: true,
                     created_at: 1,
                     updated_at: 1,
@@ -64,7 +64,11 @@ describe("DeployedTriggersClient", () => {
                             content: "content",
                         },
                     ],
-                    configuredProps: {},
+                    configuredProps: {
+                        key: {
+                            authProvisionId: "authProvisionId",
+                        },
+                    },
                     active: true,
                     createdAt: 1,
                     updatedAt: 1,
@@ -149,7 +153,7 @@ describe("DeployedTriggersClient", () => {
                 component_id: "component_id",
                 component_key: "component_key",
                 configurable_props: [{ name: "name", type: "alert", content: "content" }],
-                configured_props: { key: { key: "value" } },
+                configured_props: { key: { authProvisionId: "authProvisionId" } },
                 active: true,
                 created_at: 1,
                 updated_at: 1,
@@ -188,7 +192,7 @@ describe("DeployedTriggersClient", () => {
                 ],
                 configuredProps: {
                     key: {
-                        key: "value",
+                        authProvisionId: "authProvisionId",
                     },
                 },
                 active: true,
@@ -256,7 +260,7 @@ describe("DeployedTriggersClient", () => {
                 component_id: "component_id",
                 component_key: "component_key",
                 configurable_props: [{ name: "name", type: "alert", content: "content" }],
-                configured_props: { key: { key: "value" } },
+                configured_props: { key: { authProvisionId: "authProvisionId" } },
                 active: true,
                 created_at: 1,
                 updated_at: 1,
@@ -296,7 +300,7 @@ describe("DeployedTriggersClient", () => {
                 ],
                 configuredProps: {
                     key: {
-                        key: "value",
+                        authProvisionId: "authProvisionId",
                     },
                 },
                 active: true,

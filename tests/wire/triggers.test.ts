@@ -431,7 +431,7 @@ describe("TriggersClient", () => {
                 component_id: "component_id",
                 component_key: "component_key",
                 configurable_props: [{ name: "name", type: "alert", content: "content" }],
-                configured_props: { key: { key: "value" } },
+                configured_props: { key: { authProvisionId: "authProvisionId" } },
                 active: true,
                 created_at: 1,
                 updated_at: 1,
@@ -472,7 +472,7 @@ describe("TriggersClient", () => {
                 ],
                 configuredProps: {
                     key: {
-                        key: "value",
+                        authProvisionId: "authProvisionId",
                     },
                 },
                 active: true,
