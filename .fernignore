@@ -12,8 +12,9 @@ LICENSE
 # References doc (we have additional use cases)
 reference.md
 
-# Migration doc
+# Migration docs
 MIGRATE.md
+MIGRATE-v1.md
 
 # Repo guide for AI coding assistants
 CLAUDE.md
