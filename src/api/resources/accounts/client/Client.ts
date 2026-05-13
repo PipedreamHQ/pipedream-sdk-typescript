@@ -468,4 +468,102 @@ export class AccountsClient {
             "/v1/connect/{project_id}/apps/{app_id}/accounts",
         );
     }
+
+    /**
+     * List all connected accounts for a specific external user. Equivalent to GET /accounts with external_user_id filter but uses path-based routing.
+     *
+     * @param {string} external_user_id
+     * @param {Pipedream.AccountsListByExternalUserRequest} request
+     * @param {AccountsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
+     *
+     * @example
+     *     await client.accounts.listByExternalUser("external_user_id", {
+     *         includeCredentials: true,
+     *         app: "app"
+     *     })
+     */
+    public listByExternalUser(
+        external_user_id: string,
+        request: Pipedream.AccountsListByExternalUserRequest = {},
+        requestOptions?: AccountsClient.RequestOptions,
+    ): core.HttpResponsePromise<Pipedream.Account[]> {
+        return core.HttpResponsePromise.fromPromise(
+            this.__listByExternalUser(external_user_id, request, requestOptions),
+        );
+    }
+
+    private async __listByExternalUser(
+        external_user_id: string,
+        request: Pipedream.AccountsListByExternalUserRequest = {},
+        requestOptions?: AccountsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Pipedream.Account[]>> {
+        const { includeCredentials, app } = request;
+        const _queryParams: Record<string, unknown> = {
+            include_credentials: includeCredentials,
+            app,
+        };
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+            }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.PipedreamEnvironment.Prod,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/users/${core.url.encodePathParam(external_user_id)}/accounts`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url
+                .queryBuilder()
+                .addMany(_queryParams)
+                .mergeAdditional(requestOptions?.queryParams)
+                .build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.accounts.listByExternalUser.Response.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "GET",
+            "/v1/connect/{project_id}/users/{external_user_id}/accounts",
+        );
+    }
 }
