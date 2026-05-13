@@ -480,4 +480,128 @@ describe("AccountsClient", () => {
             return await client.accounts.deleteByApp("app_id");
         }).rejects.toThrow(Pipedream.TooManyRequestsError);
     });
+
+    test("listByExternalUser (1)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = [
+            {
+                id: "id",
+                name: "name",
+                external_id: "external_id",
+                healthy: true,
+                dead: true,
+                app: {
+                    id: "id",
+                    name_slug: "name_slug",
+                    name: "name",
+                    auth_type: "keys",
+                    description: "description",
+                    img_src: "img_src",
+                    custom_fields_json: "custom_fields_json",
+                    categories: ["categories"],
+                    featured_weight: 1.1,
+                },
+                created_at: "2024-01-15T09:30:00Z",
+                updated_at: "2024-01-15T09:30:00Z",
+                authorized_scopes: ["authorized_scopes"],
+                credentials: {
+                    oauth_client_id: "oauth_client_id",
+                    oauth_access_token: "oauth_access_token",
+                    oauth_refresh_token: "oauth_refresh_token",
+                    oauth_uid: "oauth_uid",
+                    oauth_signer_uri: "oauth_signer_uri",
+                },
+                expires_at: "2024-01-15T09:30:00Z",
+                error: "error",
+                last_refreshed_at: "2024-01-15T09:30:00Z",
+                next_refresh_at: "2024-01-15T09:30:00Z",
+            },
+        ];
+
+        server
+            .mockEndpoint()
+            .get("/v1/connect/project_id/users/external_user_id/accounts")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.accounts.listByExternalUser("external_user_id", {
+            includeCredentials: true,
+            app: "app",
+        });
+        expect(response).toEqual([
+            {
+                id: "id",
+                name: "name",
+                externalId: "external_id",
+                healthy: true,
+                dead: true,
+                app: {
+                    id: "id",
+                    nameSlug: "name_slug",
+                    name: "name",
+                    authType: "keys",
+                    description: "description",
+                    imgSrc: "img_src",
+                    customFieldsJson: "custom_fields_json",
+                    categories: ["categories"],
+                    featuredWeight: 1.1,
+                },
+                createdAt: new Date("2024-01-15T09:30:00.000Z"),
+                updatedAt: new Date("2024-01-15T09:30:00.000Z"),
+                authorizedScopes: ["authorized_scopes"],
+                credentials: {
+                    oauthClientId: "oauth_client_id",
+                    oauthAccessToken: "oauth_access_token",
+                    oauthRefreshToken: "oauth_refresh_token",
+                    oauthUid: "oauth_uid",
+                    oauthSignerUri: "oauth_signer_uri",
+                },
+                expiresAt: new Date("2024-01-15T09:30:00.000Z"),
+                error: "error",
+                lastRefreshedAt: new Date("2024-01-15T09:30:00.000Z"),
+                nextRefreshAt: new Date("2024-01-15T09:30:00.000Z"),
+            },
+        ]);
+    });
+
+    test("listByExternalUser (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/connect/project_id/users/external_user_id/accounts")
+            .respondWith()
+            .statusCode(429)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.accounts.listByExternalUser("external_user_id");
+        }).rejects.toThrow(Pipedream.TooManyRequestsError);
+    });
 });
