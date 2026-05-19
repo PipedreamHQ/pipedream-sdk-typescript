@@ -23,4 +23,6 @@ export interface App {
     categories: string[];
     /** A rough directional ordering of app popularity, subject to changes by Pipedream */
     featuredWeight: number;
+    /** Named subsets of the app's OAuth scopes that may be requested when users connect their accounts (via the `oauth_scope_profile` parameter). Empty for apps that don't define any. */
+    scopeProfiles: Pipedream.AppScopeProfilesItem[];
 }

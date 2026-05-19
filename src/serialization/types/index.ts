@@ -4,6 +4,8 @@ export * from "./AccountId.js";
 export * from "./App.js";
 export * from "./AppAuthType.js";
 export * from "./AppCategory.js";
+export * from "./AppScopeProfilesItem.js";
+export * from "./AppScopeProfilesItemName.js";
 export * from "./BackendClientOpts.js";
 export * from "./ClientOpts.js";
 export * from "./Component.js";
