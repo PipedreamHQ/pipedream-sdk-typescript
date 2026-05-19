@@ -119,6 +119,12 @@ export type StartConnectOpts = {
      * Whether to hide the close (X) button in the Connect iframe.
      */
     hideClose?: boolean;
+
+    /**
+     * The OAuth scope profile name to use when connecting. Restricts the
+     * OAuth scopes requested to those defined in the named profile.
+     */
+    oauthScopeProfile?: string;
 };
 
 /**
@@ -314,6 +320,10 @@ export class PipedreamClient extends BackendClient {
 
         if (opts.hideClose) {
             qp.set("hideClose", "true");
+        }
+
+        if (opts.oauthScopeProfile) {
+            qp.set("oauthScopeProfile", opts.oauthScopeProfile);
         }
 
         const iframe = document.createElement("iframe");
