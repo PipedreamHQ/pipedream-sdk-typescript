@@ -4,6 +4,7 @@ import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { AppAuthType } from "./AppAuthType.js";
+import { AppScopeProfilesItem } from "./AppScopeProfilesItem.js";
 
 export const App: core.serialization.ObjectSchema<serializers.App.Raw, Pipedream.App> = core.serialization.object({
     id: core.serialization.string().optional(),
@@ -15,6 +16,7 @@ export const App: core.serialization.ObjectSchema<serializers.App.Raw, Pipedream
     customFieldsJson: core.serialization.property("custom_fields_json", core.serialization.string().optional()),
     categories: core.serialization.list(core.serialization.string()),
     featuredWeight: core.serialization.property("featured_weight", core.serialization.number()),
+    scopeProfiles: core.serialization.property("scope_profiles", core.serialization.list(AppScopeProfilesItem)),
 });
 
 export declare namespace App {
@@ -28,5 +30,6 @@ export declare namespace App {
         custom_fields_json?: string | null;
         categories: string[];
         featured_weight: number;
+        scope_profiles: AppScopeProfilesItem.Raw[];
     }
 }
