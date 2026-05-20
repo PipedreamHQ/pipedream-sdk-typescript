@@ -52,6 +52,7 @@ jobs:
 
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
+    environment: Production
 
     steps:
       - name: Checkout repo
