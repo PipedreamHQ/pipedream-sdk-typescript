@@ -8,7 +8,7 @@ export type * from "../api/types/index.js";
 export * from "../index.js";
 
 import { ConnectTokenProvider, type TokenCallback } from "../core/auth/index.js";
-import { type Account, type App, PipedreamClient as BackendClient, } from "../index.js";
+import { type Account, type App, type AppScopeProfilesItemName, PipedreamClient as BackendClient } from "../index.js";
 import type { PipedreamClientOpts as BackendClientOpts } from "../wrapper/Pipedream.js";
 
 if (typeof process === "undefined") {
@@ -124,7 +124,7 @@ export type StartConnectOpts = {
      * The OAuth scope profile name to use when connecting. Restricts the
      * OAuth scopes requested to those defined in the named profile.
      */
-    oauthScopeProfile?: string;
+    oauthScopeProfile?: AppScopeProfilesItemName;
 };
 
 /**
@@ -180,13 +180,7 @@ export class PipedreamClient extends BackendClient {
      * @param opts - The options for configuring the browser client.
      */
     constructor(opts: PipedreamClientOpts) {
-        const {
-            baseUrl,
-            externalUserId,
-            projectEnvironment,
-            tokenCallback,
-            workflowDomain,
-        } = opts || {};
+        const { baseUrl, externalUserId, projectEnvironment, tokenCallback, workflowDomain } = opts || {};
 
         if (!externalUserId) {
             throw new Error("The external user ID cannot be blank");
