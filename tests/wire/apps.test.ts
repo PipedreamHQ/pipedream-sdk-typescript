@@ -30,6 +30,7 @@ describe("AppsClient", () => {
                     custom_fields_json: "custom_fields_json",
                     categories: ["categories"],
                     featured_weight: 1.1,
+                    scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
                 },
             ],
             page_info: { count: 10, total_count: 120, start_cursor: "start_cursor", end_cursor: "end_cursor" },
@@ -55,6 +56,12 @@ describe("AppsClient", () => {
                     customFieldsJson: "custom_fields_json",
                     categories: ["categories"],
                     featuredWeight: 1.1,
+                    scopeProfiles: [
+                        {
+                            name: "read_only",
+                            scopes: ["scopes"],
+                        },
+                    ],
                 },
             ],
             pageInfo: {
@@ -107,6 +114,7 @@ describe("AppsClient", () => {
                 custom_fields_json: "custom_fields_json",
                 categories: ["categories"],
                 featured_weight: 1.1,
+                scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
             },
         };
 
@@ -130,6 +138,12 @@ describe("AppsClient", () => {
                 customFieldsJson: "custom_fields_json",
                 categories: ["categories"],
                 featuredWeight: 1.1,
+                scopeProfiles: [
+                    {
+                        name: "read_only",
+                        scopes: ["scopes"],
+                    },
+                ],
             },
         });
     });

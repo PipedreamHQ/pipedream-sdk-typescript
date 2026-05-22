@@ -33,6 +33,7 @@ describe("AccountsClient", () => {
                         img_src: "img_src",
                         categories: ["categories"],
                         featured_weight: 1.1,
+                        scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
                     },
                     created_at: "2024-01-15T09:30:00Z",
                     updated_at: "2024-01-15T09:30:00Z",
@@ -68,6 +69,12 @@ describe("AccountsClient", () => {
                         imgSrc: "img_src",
                         categories: ["categories"],
                         featuredWeight: 1.1,
+                        scopeProfiles: [
+                            {
+                                name: "read_only",
+                                scopes: ["scopes"],
+                            },
+                        ],
                     },
                     createdAt: new Date("2024-01-15T09:30:00.000Z"),
                     updatedAt: new Date("2024-01-15T09:30:00.000Z"),
@@ -158,6 +165,7 @@ describe("AccountsClient", () => {
                 custom_fields_json: "custom_fields_json",
                 categories: ["categories"],
                 featured_weight: 1.1,
+                scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
             },
             created_at: "2024-01-15T09:30:00Z",
             updated_at: "2024-01-15T09:30:00Z",
@@ -207,6 +215,12 @@ describe("AccountsClient", () => {
                 customFieldsJson: "custom_fields_json",
                 categories: ["categories"],
                 featuredWeight: 1.1,
+                scopeProfiles: [
+                    {
+                        name: "read_only",
+                        scopes: ["scopes"],
+                    },
+                ],
             },
             createdAt: new Date("2024-01-15T09:30:00.000Z"),
             updatedAt: new Date("2024-01-15T09:30:00.000Z"),
@@ -287,6 +301,7 @@ describe("AccountsClient", () => {
                 custom_fields_json: "custom_fields_json",
                 categories: ["categories"],
                 featured_weight: 1.1,
+                scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
             },
             created_at: "2024-01-15T09:30:00Z",
             updated_at: "2024-01-15T09:30:00Z",
@@ -331,6 +346,12 @@ describe("AccountsClient", () => {
                 customFieldsJson: "custom_fields_json",
                 categories: ["categories"],
                 featuredWeight: 1.1,
+                scopeProfiles: [
+                    {
+                        name: "read_only",
+                        scopes: ["scopes"],
+                    },
+                ],
             },
             createdAt: new Date("2024-01-15T09:30:00.000Z"),
             updatedAt: new Date("2024-01-15T09:30:00.000Z"),
@@ -511,6 +532,7 @@ describe("AccountsClient", () => {
                     custom_fields_json: "custom_fields_json",
                     categories: ["categories"],
                     featured_weight: 1.1,
+                    scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
                 },
                 created_at: "2024-01-15T09:30:00Z",
                 updated_at: "2024-01-15T09:30:00Z",
@@ -558,6 +580,12 @@ describe("AccountsClient", () => {
                     customFieldsJson: "custom_fields_json",
                     categories: ["categories"],
                     featuredWeight: 1.1,
+                    scopeProfiles: [
+                        {
+                            name: "read_only",
+                            scopes: ["scopes"],
+                        },
+                    ],
                 },
                 createdAt: new Date("2024-01-15T09:30:00.000Z"),
                 updatedAt: new Date("2024-01-15T09:30:00.000Z"),

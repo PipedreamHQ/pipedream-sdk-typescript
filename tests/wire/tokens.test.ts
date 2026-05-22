@@ -99,6 +99,7 @@ describe("TokensClient", () => {
                 custom_fields_json: "custom_fields_json",
                 categories: ["categories"],
                 featured_weight: 1.1,
+                scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
             },
             error: "error",
             error_redirect_uri: "error_redirect_uri",
@@ -135,6 +136,12 @@ describe("TokensClient", () => {
                 customFieldsJson: "custom_fields_json",
                 categories: ["categories"],
                 featuredWeight: 1.1,
+                scopeProfiles: [
+                    {
+                        name: "read_only",
+                        scopes: ["scopes"],
+                    },
+                ],
             },
             error: "error",
             errorRedirectUri: "error_redirect_uri",
