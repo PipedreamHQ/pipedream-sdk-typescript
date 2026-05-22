@@ -8,7 +8,7 @@ import * as environments from "../../../../environments.js";
 import { handleNonStatusCodeError } from "../../../../errors/handleNonStatusCodeError.js";
 import * as errors from "../../../../errors/index.js";
 import * as serializers from "../../../../serialization/index.js";
-import type * as Pipedream from "../../../index.js";
+import * as Pipedream from "../../../index.js";
 
 export declare namespace OauthTokensClient {
     export type Options = BaseClientOptions;
@@ -28,6 +28,8 @@ export class OauthTokensClient {
      *
      * @param {Pipedream.CreateOAuthTokenOpts} request
      * @param {OauthTokensClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.oauthTokens.create({
@@ -92,11 +94,16 @@ export class OauthTokensClient {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.PipedreamError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/v1/oauth/token");
