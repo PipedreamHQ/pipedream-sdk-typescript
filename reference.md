@@ -1,5 +1,7 @@
 # Reference
+
 ## AppCategories
+
 <details><summary><code>client.appCategories.<a href="/src/api/resources/appCategories/client/Client.ts">list</a>() -> Pipedream.ListAppCategoriesResponse</code></summary>
 <dl>
 <dd>
@@ -30,6 +32,7 @@ Retrieve all available categories for integrated apps
 await client.appCategories.list();
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -49,7 +52,6 @@ await client.appCategories.list();
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -85,6 +87,7 @@ Get details of a specific app category by its ID
 await client.appCategories.retrieve("id");
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -113,12 +116,12 @@ await client.appCategories.retrieve("id");
 </dd>
 </dl>
 
-
 </dd>
 </dl>
 </details>
 
 ## Apps
+
 <details><summary><code>client.apps.<a href="/src/api/resources/apps/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;Pipedream.App, Pipedream.ListAppsResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -183,6 +186,7 @@ while (page.hasNextPage()) {
 const response = page.response;
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -210,7 +214,6 @@ const response = page.response;
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -246,6 +249,7 @@ Get detailed information about a specific app by ID or name slug
 await client.apps.retrieve("app_id");
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -274,12 +278,12 @@ await client.apps.retrieve("app_id");
 </dd>
 </dl>
 
-
 </dd>
 </dl>
 </details>
 
 ## Accounts
+
 <details><summary><code>client.accounts.<a href="/src/api/resources/accounts/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;Pipedream.Account, Pipedream.ListAccountsResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -338,6 +342,7 @@ while (page.hasNextPage()) {
 const response = page.response;
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -365,7 +370,6 @@ const response = page.response;
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -407,6 +411,7 @@ await client.accounts.create({
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -434,7 +439,6 @@ await client.accounts.create({
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -472,6 +476,7 @@ await client.accounts.retrieve("account_id", {
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -508,7 +513,6 @@ await client.accounts.retrieve("account_id", {
 </dd>
 </dl>
 
-
 </dd>
 </dl>
 </details>
@@ -543,6 +547,7 @@ Remove a connected account and its associated credentials
 await client.accounts.delete("account_id");
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -570,7 +575,6 @@ await client.accounts.delete("account_id");
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -606,6 +610,7 @@ Remove all connected accounts for a specific app
 await client.accounts.deleteByApp("app_id");
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -634,12 +639,86 @@ await client.accounts.deleteByApp("app_id");
 </dd>
 </dl>
 
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.accounts.<a href="/src/api/resources/accounts/client/Client.ts">listByExternalUser</a>(external_user_id, { ...params }) -> Pipedream.Account[]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+List all connected accounts for a specific external user. Equivalent to GET /accounts with external_user_id filter but uses path-based routing.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.accounts.listByExternalUser("external_user_id", {
+    includeCredentials: true,
+    app: "app"
+});
+
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**external_user_id:** `string`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Pipedream.AccountsListByExternalUserRequest`
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `AccountsClient.RequestOptions`
+
+</dd>
+</dl>
+</dd>
+</dl>
 
 </dd>
 </dl>
 </details>
 
 ## Users
+
 <details><summary><code>client.users.<a href="/src/api/resources/users/client/Client.ts">deleteExternalUser</a>(external_user_id) -> void</code></summary>
 <dl>
 <dd>
@@ -670,6 +749,7 @@ Remove an external user and all their associated accounts and resources
 await client.users.deleteExternalUser("external_user_id");
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -697,7 +777,6 @@ await client.users.deleteExternalUser("external_user_id");
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -755,6 +834,7 @@ while (page.hasNextPage()) {
 const response = page.response;
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -783,12 +863,12 @@ const response = page.response;
 </dd>
 </dl>
 
-
 </dd>
 </dl>
 </details>
 
 ## Components
+
 <details><summary><code>client.components.<a href="/src/api/resources/components/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;Pipedream.Component, Pipedream.GetComponentsResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -847,6 +927,7 @@ while (page.hasNextPage()) {
 const response = page.response;
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -874,7 +955,6 @@ const response = page.response;
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -912,6 +992,7 @@ await client.components.retrieve("component_id", {
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -947,7 +1028,6 @@ await client.components.retrieve("component_id", {
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -987,6 +1067,7 @@ await client.components.configureProp({
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1014,7 +1095,6 @@ await client.components.configureProp({
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -1053,6 +1133,7 @@ await client.components.reloadProps({
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1081,12 +1162,12 @@ await client.components.reloadProps({
 </dd>
 </dl>
 
-
 </dd>
 </dl>
 </details>
 
 ## Actions
+
 <details><summary><code>client.actions.<a href="/src/api/resources/actions/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;Pipedream.Component, Pipedream.GetComponentsResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -1143,6 +1224,7 @@ while (page.hasNextPage()) {
 const response = page.response;
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1170,7 +1252,6 @@ const response = page.response;
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -1208,6 +1289,7 @@ await client.actions.retrieve("component_id", {
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1243,7 +1325,6 @@ await client.actions.retrieve("component_id", {
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -1283,6 +1364,7 @@ await client.actions.configureProp({
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1310,7 +1392,6 @@ await client.actions.configureProp({
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -1349,6 +1430,7 @@ await client.actions.reloadProps({
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1376,7 +1458,6 @@ await client.actions.reloadProps({
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -1415,6 +1496,7 @@ await client.actions.run({
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1443,12 +1525,12 @@ await client.actions.run({
 </dd>
 </dl>
 
-
 </dd>
 </dl>
 </details>
 
 ## Triggers
+
 <details><summary><code>client.triggers.<a href="/src/api/resources/triggers/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;Pipedream.Component, Pipedream.GetComponentsResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -1505,6 +1587,7 @@ while (page.hasNextPage()) {
 const response = page.response;
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1532,7 +1615,6 @@ const response = page.response;
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -1570,6 +1652,7 @@ await client.triggers.retrieve("component_id", {
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1605,7 +1688,6 @@ await client.triggers.retrieve("component_id", {
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -1645,6 +1727,7 @@ await client.triggers.configureProp({
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1672,7 +1755,6 @@ await client.triggers.configureProp({
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -1711,6 +1793,7 @@ await client.triggers.reloadProps({
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1738,7 +1821,6 @@ await client.triggers.reloadProps({
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -1777,6 +1859,7 @@ await client.triggers.deploy({
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1805,12 +1888,12 @@ await client.triggers.deploy({
 </dd>
 </dl>
 
-
 </dd>
 </dl>
 </details>
 
 ## DeployedTriggers
+
 <details><summary><code>client.deployedTriggers.<a href="/src/api/resources/deployedTriggers/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;Pipedream.Emitter, Pipedream.GetTriggersResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -1865,6 +1948,7 @@ while (page.hasNextPage()) {
 const response = page.response;
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1892,7 +1976,6 @@ const response = page.response;
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -1930,6 +2013,7 @@ await client.deployedTriggers.retrieve("trigger_id", {
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -1965,7 +2049,6 @@ await client.deployedTriggers.retrieve("trigger_id", {
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -2003,6 +2086,7 @@ await client.deployedTriggers.update("trigger_id", {
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -2038,7 +2122,6 @@ await client.deployedTriggers.update("trigger_id", {
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -2077,6 +2160,7 @@ await client.deployedTriggers.delete("trigger_id", {
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -2112,7 +2196,6 @@ await client.deployedTriggers.delete("trigger_id", {
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -2151,6 +2234,7 @@ await client.deployedTriggers.listEvents("trigger_id", {
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -2186,7 +2270,6 @@ await client.deployedTriggers.listEvents("trigger_id", {
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -2224,6 +2307,7 @@ await client.deployedTriggers.listWorkflows("trigger_id", {
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -2259,7 +2343,6 @@ await client.deployedTriggers.listWorkflows("trigger_id", {
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -2298,6 +2381,7 @@ await client.deployedTriggers.updateWorkflows("trigger_id", {
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -2333,7 +2417,6 @@ await client.deployedTriggers.updateWorkflows("trigger_id", {
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -2371,6 +2454,7 @@ await client.deployedTriggers.listWebhooks("trigger_id", {
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -2406,7 +2490,6 @@ await client.deployedTriggers.listWebhooks("trigger_id", {
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -2445,6 +2528,7 @@ await client.deployedTriggers.updateWebhooks("trigger_id", {
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -2480,7 +2564,6 @@ await client.deployedTriggers.updateWebhooks("trigger_id", {
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -2518,6 +2601,7 @@ await client.deployedTriggers.retrieveWebhook("trigger_id", "webhook_id", {
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -2562,7 +2646,6 @@ await client.deployedTriggers.retrieveWebhook("trigger_id", "webhook_id", {
 </dd>
 </dl>
 
-
 </dd>
 </dl>
 </details>
@@ -2599,6 +2682,7 @@ await client.deployedTriggers.regenerateWebhookSigningKey("trigger_id", "webhook
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -2643,12 +2727,12 @@ await client.deployedTriggers.regenerateWebhookSigningKey("trigger_id", "webhook
 </dd>
 </dl>
 
-
 </dd>
 </dl>
 </details>
 
 ## ProjectEnvironment
+
 <details><summary><code>client.projectEnvironment.<a href="/src/api/resources/projectEnvironment/client/Client.ts">retrieveWebhook</a>() -> Pipedream.GetWebhookResponse</code></summary>
 <dl>
 <dd>
@@ -2679,6 +2763,7 @@ Retrieve the webhook configured for a project environment
 await client.projectEnvironment.retrieveWebhook();
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -2698,7 +2783,6 @@ await client.projectEnvironment.retrieveWebhook();
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -2736,6 +2820,7 @@ await client.projectEnvironment.updateWebhook({
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -2763,7 +2848,6 @@ await client.projectEnvironment.updateWebhook({
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -2799,6 +2883,7 @@ Remove the webhook configured for a project environment
 await client.projectEnvironment.deleteWebhook();
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -2818,7 +2903,6 @@ await client.projectEnvironment.deleteWebhook();
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -2854,6 +2938,7 @@ Regenerate the signing key for the project environment webhook
 await client.projectEnvironment.regenerateWebhookSigningKey();
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -2874,12 +2959,12 @@ await client.projectEnvironment.regenerateWebhookSigningKey();
 </dd>
 </dl>
 
-
 </dd>
 </dl>
 </details>
 
 ## Projects
+
 <details><summary><code>client.projects.<a href="/src/api/resources/projects/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;Pipedream.Project, Pipedream.ListProjectsResponse&gt;</code></summary>
 <dl>
 <dd>
@@ -2932,6 +3017,7 @@ while (page.hasNextPage()) {
 const response = page.response;
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -2959,7 +3045,6 @@ const response = page.response;
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -2997,6 +3082,7 @@ await client.projects.create({
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -3024,7 +3110,6 @@ await client.projects.create({
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -3060,6 +3145,7 @@ Get the project details for a specific project
 await client.projects.retrieve("project_id");
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -3087,7 +3173,6 @@ await client.projects.retrieve("project_id");
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -3123,6 +3208,7 @@ Delete a project owned by the authenticated workspace
 await client.projects.delete("project_id");
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -3150,7 +3236,6 @@ await client.projects.delete("project_id");
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -3186,6 +3271,7 @@ Update project details or application information
 await client.projects.update("project_id");
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -3221,7 +3307,6 @@ await client.projects.update("project_id");
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -3259,6 +3344,7 @@ await client.projects.updateLogo("project_id", {
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -3295,7 +3381,6 @@ await client.projects.updateLogo("project_id", {
 </dd>
 </dl>
 
-
 </dd>
 </dl>
 </details>
@@ -3330,6 +3415,7 @@ Retrieve project configuration and environment details
 await client.projects.retrieveInfo();
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -3350,12 +3436,12 @@ await client.projects.retrieveInfo();
 </dd>
 </dl>
 
-
 </dd>
 </dl>
 </details>
 
 ## FileStash
+
 <details><summary><code>client.fileStash.<a href="/src/api/resources/fileStash/client/Client.ts">downloadFile</a>({ ...params }) -> core.BinaryResponse</code></summary>
 <dl>
 <dd>
@@ -3388,6 +3474,7 @@ await client.fileStash.downloadFile({
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -3416,12 +3503,12 @@ await client.fileStash.downloadFile({
 </dd>
 </dl>
 
-
 </dd>
 </dl>
 </details>
 
 ## Proxy
+
 <details><summary><code>client.proxy.<a href="/src/api/resources/proxy/client/Client.ts">get</a>({ ...params }) -> core.BinaryResponse</code></summary>
 <dl>
 <dd>
@@ -3458,6 +3545,7 @@ await client.proxy.get({
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -3485,7 +3573,6 @@ await client.proxy.get({
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -3527,6 +3614,7 @@ await client.proxy.post({
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -3554,7 +3642,6 @@ await client.proxy.post({
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -3596,6 +3683,7 @@ await client.proxy.put({
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -3623,7 +3711,6 @@ await client.proxy.put({
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -3663,6 +3750,7 @@ await client.proxy.delete({
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -3690,7 +3778,6 @@ await client.proxy.delete({
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -3732,6 +3819,7 @@ await client.proxy.patch({
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -3760,12 +3848,12 @@ await client.proxy.patch({
 </dd>
 </dl>
 
-
 </dd>
 </dl>
 </details>
 
 ## Tokens
+
 <details><summary><code>client.tokens.<a href="/src/api/resources/tokens/client/Client.ts">create</a>({ ...params }) -> Pipedream.CreateTokenResponse</code></summary>
 <dl>
 <dd>
@@ -3798,6 +3886,7 @@ await client.tokens.create({
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -3825,7 +3914,6 @@ await client.tokens.create({
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -3865,6 +3953,7 @@ await client.tokens.validate("ctok", {
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -3901,12 +3990,12 @@ await client.tokens.validate("ctok", {
 </dd>
 </dl>
 
-
 </dd>
 </dl>
 </details>
 
 ## Usage
+
 <details><summary><code>client.usage.<a href="/src/api/resources/usage/client/Client.ts">list</a>({ ...params }) -> Pipedream.ConnectUsageResponse</code></summary>
 <dl>
 <dd>
@@ -3940,6 +4029,7 @@ await client.usage.list({
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -3968,12 +4058,12 @@ await client.usage.list({
 </dd>
 </dl>
 
-
 </dd>
 </dl>
 </details>
 
 ## OauthTokens
+
 <details><summary><code>client.oauthTokens.<a href="/src/api/resources/oauthTokens/client/Client.ts">create</a>({ ...params }) -> Pipedream.CreateOAuthTokenResponse</code></summary>
 <dl>
 <dd>
@@ -4007,6 +4097,7 @@ await client.oauthTokens.create({
 });
 
 ```
+
 </dd>
 </dl>
 </dd>
@@ -4034,7 +4125,6 @@ await client.oauthTokens.create({
 </dl>
 </dd>
 </dl>
-
 
 </dd>
 </dl>
@@ -4203,4 +4293,3 @@ await client.workflows.invokeForExternalUser({
 </dd>
 </dl>
 </details>
-
