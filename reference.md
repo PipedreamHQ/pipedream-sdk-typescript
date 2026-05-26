@@ -43,8 +43,8 @@ await client.appCategories.list();
 <dl>
 <dd>
 
-**requestOptions:** `AppCategoriesClient.RequestOptions`
-
+**requestOptions:** `AppCategoriesClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -99,15 +99,15 @@ await client.appCategories.retrieve("id");
 <dd>
 
 **id:** `string` — The ID of the app category to retrieve
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `AppCategoriesClient.RequestOptions`
-
+**requestOptions:** `AppCategoriesClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -196,16 +196,16 @@ const response = page.response;
 <dl>
 <dd>
 
-**request:** `Pipedream.AppsListRequest`
-
+**request:** `Pipedream.AppsListRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `AppsClient.RequestOptions`
-
+**requestOptions:** `AppsClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -260,15 +260,15 @@ await client.apps.retrieve("app_id");
 <dd>
 
 **app_id:** `string` — The name slug or ID of the app (e.g., 'slack', 'github')
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `AppsClient.RequestOptions`
-
+**requestOptions:** `AppsClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -351,16 +351,16 @@ const response = page.response;
 <dl>
 <dd>
 
-**request:** `Pipedream.AccountsListRequest`
-
+**request:** `Pipedream.AccountsListRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `AccountsClient.RequestOptions`
-
+**requestOptions:** `AccountsClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -420,16 +420,16 @@ await client.accounts.create({
 <dl>
 <dd>
 
-**request:** `Pipedream.CreateAccountOpts`
-
+**request:** `Pipedream.CreateAccountOpts` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `AccountsClient.RequestOptions`
-
+**requestOptions:** `AccountsClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -485,24 +485,24 @@ await client.accounts.retrieve("account_id", {
 <dl>
 <dd>
 
-**account_id:** `string`
-
+**account_id:** `string` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `Pipedream.AccountsRetrieveRequest`
-
+**request:** `Pipedream.AccountsRetrieveRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `AccountsClient.RequestOptions`
-
+**requestOptions:** `AccountsClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -556,16 +556,16 @@ await client.accounts.delete("account_id");
 <dl>
 <dd>
 
-**account_id:** `string`
-
+**account_id:** `string` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `AccountsClient.RequestOptions`
-
+**requestOptions:** `AccountsClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -619,16 +619,90 @@ await client.accounts.deleteByApp("app_id");
 <dl>
 <dd>
 
-**app_id:** `string`
-
+**app_id:** `string` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `AccountsClient.RequestOptions`
+**requestOptions:** `AccountsClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
 
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.accounts.<a href="/src/api/resources/accounts/client/Client.ts">listByExternalUser</a>(external_user_id, { ...params }) -> Pipedream.Account[]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+List all connected accounts for a specific external user. Equivalent to GET /accounts with external_user_id filter but uses path-based routing.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.accounts.listByExternalUser("external_user_id", {
+    includeCredentials: true,
+    app: "app"
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**external_user_id:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Pipedream.AccountsListByExternalUserRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `AccountsClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -683,16 +757,16 @@ await client.users.deleteExternalUser("external_user_id");
 <dl>
 <dd>
 
-**external_user_id:** `string`
-
+**external_user_id:** `string` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `UsersClient.RequestOptions`
-
+**requestOptions:** `UsersClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -768,16 +842,16 @@ const response = page.response;
 <dl>
 <dd>
 
-**request:** `Pipedream.UsersListRequest`
-
+**request:** `Pipedream.UsersListRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `UsersClient.RequestOptions`
-
+**requestOptions:** `UsersClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -860,16 +934,16 @@ const response = page.response;
 <dl>
 <dd>
 
-**request:** `Pipedream.ComponentsListRequest`
-
+**request:** `Pipedream.ComponentsListRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `ComponentsClient.RequestOptions`
-
+**requestOptions:** `ComponentsClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -926,23 +1000,23 @@ await client.components.retrieve("component_id", {
 <dd>
 
 **component_id:** `string` — The key that uniquely identifies the component (e.g., 'slack-send-message')
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `Pipedream.ComponentsRetrieveRequest`
-
+**request:** `Pipedream.ComponentsRetrieveRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `ComponentsClient.RequestOptions`
-
+**requestOptions:** `ComponentsClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -1000,16 +1074,16 @@ await client.components.configureProp({
 <dl>
 <dd>
 
-**request:** `Pipedream.ConfigurePropOpts`
-
+**request:** `Pipedream.ConfigurePropOpts` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `ComponentsClient.RequestOptions`
-
+**requestOptions:** `ComponentsClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -1066,16 +1140,16 @@ await client.components.reloadProps({
 <dl>
 <dd>
 
-**request:** `Pipedream.ReloadPropsOpts`
-
+**request:** `Pipedream.ReloadPropsOpts` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `ComponentsClient.RequestOptions`
-
+**requestOptions:** `ComponentsClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -1156,16 +1230,16 @@ const response = page.response;
 <dl>
 <dd>
 
-**request:** `Pipedream.ActionsListRequest`
-
+**request:** `Pipedream.ActionsListRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `ActionsClient.RequestOptions`
-
+**requestOptions:** `ActionsClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -1222,23 +1296,23 @@ await client.actions.retrieve("component_id", {
 <dd>
 
 **component_id:** `string` — The key that uniquely identifies the component (e.g., 'slack-send-message')
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `Pipedream.ActionsRetrieveRequest`
-
+**request:** `Pipedream.ActionsRetrieveRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `ActionsClient.RequestOptions`
-
+**requestOptions:** `ActionsClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -1296,16 +1370,16 @@ await client.actions.configureProp({
 <dl>
 <dd>
 
-**request:** `Pipedream.ConfigurePropOpts`
-
+**request:** `Pipedream.ConfigurePropOpts` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `ActionsClient.RequestOptions`
-
+**requestOptions:** `ActionsClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -1362,16 +1436,16 @@ await client.actions.reloadProps({
 <dl>
 <dd>
 
-**request:** `Pipedream.ReloadPropsOpts`
-
+**request:** `Pipedream.ReloadPropsOpts` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `ActionsClient.RequestOptions`
-
+**requestOptions:** `ActionsClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -1428,16 +1502,16 @@ await client.actions.run({
 <dl>
 <dd>
 
-**request:** `Pipedream.RunActionOpts`
-
+**request:** `Pipedream.RunActionOpts` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `ActionsClient.RequestOptions`
-
+**requestOptions:** `ActionsClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -1518,16 +1592,16 @@ const response = page.response;
 <dl>
 <dd>
 
-**request:** `Pipedream.TriggersListRequest`
-
+**request:** `Pipedream.TriggersListRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `TriggersClient.RequestOptions`
-
+**requestOptions:** `TriggersClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -1584,23 +1658,23 @@ await client.triggers.retrieve("component_id", {
 <dd>
 
 **component_id:** `string` — The key that uniquely identifies the component (e.g., 'slack-send-message')
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `Pipedream.TriggersRetrieveRequest`
-
+**request:** `Pipedream.TriggersRetrieveRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `TriggersClient.RequestOptions`
-
+**requestOptions:** `TriggersClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -1658,16 +1732,16 @@ await client.triggers.configureProp({
 <dl>
 <dd>
 
-**request:** `Pipedream.ConfigurePropOpts`
-
+**request:** `Pipedream.ConfigurePropOpts` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `TriggersClient.RequestOptions`
-
+**requestOptions:** `TriggersClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -1724,16 +1798,16 @@ await client.triggers.reloadProps({
 <dl>
 <dd>
 
-**request:** `Pipedream.ReloadPropsOpts`
-
+**request:** `Pipedream.ReloadPropsOpts` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `TriggersClient.RequestOptions`
-
+**requestOptions:** `TriggersClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -1790,16 +1864,16 @@ await client.triggers.deploy({
 <dl>
 <dd>
 
-**request:** `Pipedream.DeployTriggerOpts`
-
+**request:** `Pipedream.DeployTriggerOpts` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `TriggersClient.RequestOptions`
-
+**requestOptions:** `TriggersClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -1878,16 +1952,16 @@ const response = page.response;
 <dl>
 <dd>
 
-**request:** `Pipedream.DeployedTriggersListRequest`
-
+**request:** `Pipedream.DeployedTriggersListRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `DeployedTriggersClient.RequestOptions`
-
+**requestOptions:** `DeployedTriggersClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -1943,24 +2017,24 @@ await client.deployedTriggers.retrieve("trigger_id", {
 <dl>
 <dd>
 
-**trigger_id:** `string`
-
+**trigger_id:** `string` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `Pipedream.DeployedTriggersRetrieveRequest`
-
+**request:** `Pipedream.DeployedTriggersRetrieveRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `DeployedTriggersClient.RequestOptions`
-
+**requestOptions:** `DeployedTriggersClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -2016,24 +2090,24 @@ await client.deployedTriggers.update("trigger_id", {
 <dl>
 <dd>
 
-**trigger_id:** `string`
-
+**trigger_id:** `string` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `Pipedream.UpdateTriggerOpts`
-
+**request:** `Pipedream.UpdateTriggerOpts` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `DeployedTriggersClient.RequestOptions`
-
+**requestOptions:** `DeployedTriggersClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -2090,24 +2164,24 @@ await client.deployedTriggers.delete("trigger_id", {
 <dl>
 <dd>
 
-**trigger_id:** `string`
-
+**trigger_id:** `string` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `Pipedream.DeployedTriggersDeleteRequest`
-
+**request:** `Pipedream.DeployedTriggersDeleteRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `DeployedTriggersClient.RequestOptions`
-
+**requestOptions:** `DeployedTriggersClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -2164,24 +2238,24 @@ await client.deployedTriggers.listEvents("trigger_id", {
 <dl>
 <dd>
 
-**trigger_id:** `string`
-
+**trigger_id:** `string` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `Pipedream.DeployedTriggersListEventsRequest`
-
+**request:** `Pipedream.DeployedTriggersListEventsRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `DeployedTriggersClient.RequestOptions`
-
+**requestOptions:** `DeployedTriggersClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -2237,24 +2311,24 @@ await client.deployedTriggers.listWorkflows("trigger_id", {
 <dl>
 <dd>
 
-**trigger_id:** `string`
-
+**trigger_id:** `string` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `Pipedream.DeployedTriggersListWorkflowsRequest`
-
+**request:** `Pipedream.DeployedTriggersListWorkflowsRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `DeployedTriggersClient.RequestOptions`
-
+**requestOptions:** `DeployedTriggersClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -2311,24 +2385,24 @@ await client.deployedTriggers.updateWorkflows("trigger_id", {
 <dl>
 <dd>
 
-**trigger_id:** `string`
-
+**trigger_id:** `string` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `Pipedream.UpdateTriggerWorkflowsOpts`
-
+**request:** `Pipedream.UpdateTriggerWorkflowsOpts` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `DeployedTriggersClient.RequestOptions`
-
+**requestOptions:** `DeployedTriggersClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -2384,24 +2458,24 @@ await client.deployedTriggers.listWebhooks("trigger_id", {
 <dl>
 <dd>
 
-**trigger_id:** `string`
-
+**trigger_id:** `string` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `Pipedream.DeployedTriggersListWebhooksRequest`
-
+**request:** `Pipedream.DeployedTriggersListWebhooksRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `DeployedTriggersClient.RequestOptions`
-
+**requestOptions:** `DeployedTriggersClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -2458,24 +2532,24 @@ await client.deployedTriggers.updateWebhooks("trigger_id", {
 <dl>
 <dd>
 
-**trigger_id:** `string`
-
+**trigger_id:** `string` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `Pipedream.UpdateTriggerWebhooksOpts`
-
+**request:** `Pipedream.UpdateTriggerWebhooksOpts` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `DeployedTriggersClient.RequestOptions`
-
+**requestOptions:** `DeployedTriggersClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -2531,32 +2605,32 @@ await client.deployedTriggers.retrieveWebhook("trigger_id", "webhook_id", {
 <dl>
 <dd>
 
-**trigger_id:** `string`
-
+**trigger_id:** `string` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**webhook_id:** `string`
-
+**webhook_id:** `string` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `Pipedream.DeployedTriggersRetrieveWebhookRequest`
-
+**request:** `Pipedream.DeployedTriggersRetrieveWebhookRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `DeployedTriggersClient.RequestOptions`
-
+**requestOptions:** `DeployedTriggersClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -2612,32 +2686,32 @@ await client.deployedTriggers.regenerateWebhookSigningKey("trigger_id", "webhook
 <dl>
 <dd>
 
-**trigger_id:** `string`
-
+**trigger_id:** `string` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**webhook_id:** `string`
-
+**webhook_id:** `string` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `Pipedream.DeployedTriggersRegenerateWebhookSigningKeyRequest`
-
+**request:** `Pipedream.DeployedTriggersRegenerateWebhookSigningKeyRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `DeployedTriggersClient.RequestOptions`
-
+**requestOptions:** `DeployedTriggersClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -2692,8 +2766,8 @@ await client.projectEnvironment.retrieveWebhook();
 <dl>
 <dd>
 
-**requestOptions:** `ProjectEnvironmentClient.RequestOptions`
-
+**requestOptions:** `ProjectEnvironmentClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -2749,16 +2823,16 @@ await client.projectEnvironment.updateWebhook({
 <dl>
 <dd>
 
-**request:** `Pipedream.SetWebhookOpts`
-
+**request:** `Pipedream.SetWebhookOpts` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `ProjectEnvironmentClient.RequestOptions`
-
+**requestOptions:** `ProjectEnvironmentClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -2812,8 +2886,8 @@ await client.projectEnvironment.deleteWebhook();
 <dl>
 <dd>
 
-**requestOptions:** `ProjectEnvironmentClient.RequestOptions`
-
+**requestOptions:** `ProjectEnvironmentClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -2867,8 +2941,8 @@ await client.projectEnvironment.regenerateWebhookSigningKey();
 <dl>
 <dd>
 
-**requestOptions:** `ProjectEnvironmentClient.RequestOptions`
-
+**requestOptions:** `ProjectEnvironmentClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -2945,16 +3019,16 @@ const response = page.response;
 <dl>
 <dd>
 
-**request:** `Pipedream.ProjectsListRequest`
-
+**request:** `Pipedream.ProjectsListRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `ProjectsClient.RequestOptions`
-
+**requestOptions:** `ProjectsClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -3010,16 +3084,16 @@ await client.projects.create({
 <dl>
 <dd>
 
-**request:** `Pipedream.CreateProjectOpts`
-
+**request:** `Pipedream.CreateProjectOpts` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `ProjectsClient.RequestOptions`
-
+**requestOptions:** `ProjectsClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -3074,15 +3148,15 @@ await client.projects.retrieve("project_id");
 <dd>
 
 **project_id:** `string` — The project ID, which starts with `proj_`.
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `ProjectsClient.RequestOptions`
-
+**requestOptions:** `ProjectsClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -3137,15 +3211,15 @@ await client.projects.delete("project_id");
 <dd>
 
 **project_id:** `string` — The project ID, which starts with `proj_`.
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `ProjectsClient.RequestOptions`
-
+**requestOptions:** `ProjectsClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -3200,23 +3274,23 @@ await client.projects.update("project_id");
 <dd>
 
 **project_id:** `string` — The project ID, which starts with `proj_`.
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `Pipedream.UpdateProjectOpts`
-
+**request:** `Pipedream.UpdateProjectOpts` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `ProjectsClient.RequestOptions`
-
+**requestOptions:** `ProjectsClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -3273,23 +3347,23 @@ await client.projects.updateLogo("project_id", {
 <dd>
 
 **project_id:** `string` — The project ID, which starts with `proj_`.
-
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `Pipedream.UpdateProjectLogoOpts`
-
+**request:** `Pipedream.UpdateProjectLogoOpts` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `ProjectsClient.RequestOptions`
-
+**requestOptions:** `ProjectsClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -3343,8 +3417,8 @@ await client.projects.retrieveInfo();
 <dl>
 <dd>
 
-**requestOptions:** `ProjectsClient.RequestOptions`
-
+**requestOptions:** `ProjectsClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -3401,16 +3475,16 @@ await client.fileStash.downloadFile({
 <dl>
 <dd>
 
-**request:** `Pipedream.FileStashDownloadFileRequest`
-
+**request:** `Pipedream.FileStashDownloadFileRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `FileStashClient.RequestOptions`
-
+**requestOptions:** `FileStashClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -3422,7 +3496,7 @@ await client.fileStash.downloadFile({
 </details>
 
 ## Proxy
-<details><summary><code>client.proxy.<a href="/src/api/resources/proxy/client/Client.ts">get</a>({ ...params }) -> core.BinaryResponse</code></summary>
+<details><summary><code>client.proxy.<a href="/src/api/resources/proxy/client/Client.ts">get</a>(url_64, { ...params }) -> core.BinaryResponse</code></summary>
 <dl>
 <dd>
 
@@ -3449,12 +3523,9 @@ Forward an authenticated GET request to an external API using an external user's
 <dd>
 
 ```typescript
-await client.proxy.get({
-    url: "https://api.example.com/endpoint",
+await client.proxy.get("url_64", {
     externalUserId: "external_user_id",
-    accountId: "account_id",
-    params: { key: "value" },
-    headers: { "X-Custom-Header": "value" }
+    accountId: "account_id"
 });
 
 ```
@@ -3471,16 +3542,24 @@ await client.proxy.get({
 <dl>
 <dd>
 
-**request:** `Pipedream.ProxyGetRequest`
-
+**url_64:** `string` — Base64-encoded target URL
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `ProxyClient.RequestOptions`
+**request:** `Pipedream.ProxyGetRequest` 
+    
+</dd>
+</dl>
 
+<dl>
+<dd>
+
+**requestOptions:** `ProxyClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -3491,7 +3570,7 @@ await client.proxy.get({
 </dl>
 </details>
 
-<details><summary><code>client.proxy.<a href="/src/api/resources/proxy/client/Client.ts">post</a>({ ...params }) -> core.BinaryResponse</code></summary>
+<details><summary><code>client.proxy.<a href="/src/api/resources/proxy/client/Client.ts">post</a>(url_64, { ...params }) -> core.BinaryResponse</code></summary>
 <dl>
 <dd>
 
@@ -3518,12 +3597,14 @@ Forward an authenticated POST request to an external API using an external user'
 <dd>
 
 ```typescript
-await client.proxy.post({
-    url: "https://api.example.com/endpoint",
+await client.proxy.post("url_64", {
     externalUserId: "external_user_id",
     accountId: "account_id",
-    body: { name: "Alice" },
-    headers: { "Content-Type": "application/json" }
+    body: {
+        "string": {
+            "key": "value"
+        }
+    }
 });
 
 ```
@@ -3540,16 +3621,24 @@ await client.proxy.post({
 <dl>
 <dd>
 
-**request:** `Pipedream.ProxyPostRequest`
-
+**url_64:** `string` — Base64-encoded target URL
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `ProxyClient.RequestOptions`
+**request:** `Pipedream.ProxyPostRequest` 
+    
+</dd>
+</dl>
 
+<dl>
+<dd>
+
+**requestOptions:** `ProxyClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -3560,7 +3649,7 @@ await client.proxy.post({
 </dl>
 </details>
 
-<details><summary><code>client.proxy.<a href="/src/api/resources/proxy/client/Client.ts">put</a>({ ...params }) -> core.BinaryResponse</code></summary>
+<details><summary><code>client.proxy.<a href="/src/api/resources/proxy/client/Client.ts">put</a>(url_64, { ...params }) -> core.BinaryResponse</code></summary>
 <dl>
 <dd>
 
@@ -3587,12 +3676,14 @@ Forward an authenticated PUT request to an external API using an external user's
 <dd>
 
 ```typescript
-await client.proxy.put({
-    url: "https://api.example.com/endpoint",
+await client.proxy.put("url_64", {
     externalUserId: "external_user_id",
     accountId: "account_id",
-    body: { name: "Alice" },
-    headers: { "Content-Type": "application/json" }
+    body: {
+        "string": {
+            "key": "value"
+        }
+    }
 });
 
 ```
@@ -3609,16 +3700,24 @@ await client.proxy.put({
 <dl>
 <dd>
 
-**request:** `Pipedream.ProxyPutRequest`
-
+**url_64:** `string` — Base64-encoded target URL
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `ProxyClient.RequestOptions`
+**request:** `Pipedream.ProxyPutRequest` 
+    
+</dd>
+</dl>
 
+<dl>
+<dd>
+
+**requestOptions:** `ProxyClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -3629,7 +3728,7 @@ await client.proxy.put({
 </dl>
 </details>
 
-<details><summary><code>client.proxy.<a href="/src/api/resources/proxy/client/Client.ts">delete</a>({ ...params }) -> core.BinaryResponse</code></summary>
+<details><summary><code>client.proxy.<a href="/src/api/resources/proxy/client/Client.ts">delete</a>(url_64, { ...params }) -> core.BinaryResponse</code></summary>
 <dl>
 <dd>
 
@@ -3656,8 +3755,7 @@ Forward an authenticated DELETE request to an external API using an external use
 <dd>
 
 ```typescript
-await client.proxy.delete({
-    url: "https://api.example.com/endpoint",
+await client.proxy.delete("url_64", {
     externalUserId: "external_user_id",
     accountId: "account_id"
 });
@@ -3676,16 +3774,24 @@ await client.proxy.delete({
 <dl>
 <dd>
 
-**request:** `Pipedream.ProxyDeleteRequest`
-
+**url_64:** `string` — Base64-encoded target URL
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `ProxyClient.RequestOptions`
+**request:** `Pipedream.ProxyDeleteRequest` 
+    
+</dd>
+</dl>
 
+<dl>
+<dd>
+
+**requestOptions:** `ProxyClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -3696,7 +3802,7 @@ await client.proxy.delete({
 </dl>
 </details>
 
-<details><summary><code>client.proxy.<a href="/src/api/resources/proxy/client/Client.ts">patch</a>({ ...params }) -> core.BinaryResponse</code></summary>
+<details><summary><code>client.proxy.<a href="/src/api/resources/proxy/client/Client.ts">patch</a>(url_64, { ...params }) -> core.BinaryResponse</code></summary>
 <dl>
 <dd>
 
@@ -3723,12 +3829,14 @@ Forward an authenticated PATCH request to an external API using an external user
 <dd>
 
 ```typescript
-await client.proxy.patch({
-    url: "https://api.example.com/endpoint",
+await client.proxy.patch("url_64", {
     externalUserId: "external_user_id",
     accountId: "account_id",
-    body: { name: "Alice" },
-    headers: { "Content-Type": "application/json" }
+    body: {
+        "string": {
+            "key": "value"
+        }
+    }
 });
 
 ```
@@ -3745,16 +3853,24 @@ await client.proxy.patch({
 <dl>
 <dd>
 
-**request:** `Pipedream.ProxyPatchRequest`
-
+**url_64:** `string` — Base64-encoded target URL
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `ProxyClient.RequestOptions`
+**request:** `Pipedream.ProxyPatchRequest` 
+    
+</dd>
+</dl>
 
+<dl>
+<dd>
+
+**requestOptions:** `ProxyClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -3811,16 +3927,16 @@ await client.tokens.create({
 <dl>
 <dd>
 
-**request:** `Pipedream.CreateTokenOpts`
-
+**request:** `Pipedream.CreateTokenOpts` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `TokensClient.RequestOptions`
-
+**requestOptions:** `TokensClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -3878,24 +3994,24 @@ await client.tokens.validate("ctok", {
 <dl>
 <dd>
 
-**ctok:** `Pipedream.ConnectToken`
-
+**ctok:** `Pipedream.ConnectToken` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**request:** `Pipedream.TokensValidateRequest`
-
+**request:** `Pipedream.TokensValidateRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `TokensClient.RequestOptions`
-
+**requestOptions:** `TokensClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -3953,16 +4069,16 @@ await client.usage.list({
 <dl>
 <dd>
 
-**request:** `Pipedream.UsageListRequest`
-
+**request:** `Pipedream.UsageListRequest` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `UsageClient.RequestOptions`
-
+**requestOptions:** `UsageClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
@@ -4020,185 +4136,21 @@ await client.oauthTokens.create({
 <dl>
 <dd>
 
-**request:** `Pipedream.CreateOAuthTokenOpts`
-
+**request:** `Pipedream.CreateOAuthTokenOpts` 
+    
 </dd>
 </dl>
 
 <dl>
 <dd>
 
-**requestOptions:** `OauthTokensClient.RequestOptions`
-
+**requestOptions:** `OauthTokensClient.RequestOptions` 
+    
 </dd>
 </dl>
 </dd>
 </dl>
 
-
-</dd>
-</dl>
-</details>
-
-## Workflows
-
-<details><summary><code>client.workflows.<a href="/src/api/resources/workflows/client/Client.ts">invoke</a>({ ...params }, authType?) -> unknown</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Invokes a workflow using the URL of its HTTP interface(s), by sending an HTTP request.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```typescript
-// Invoke with URL
-await client.workflows.invoke({
-    urlOrEndpoint: "https://en-your-endpoint.m.pipedream.net",
-    body: {
-        foo: 123,
-        bar: "abc",
-        baz: null,
-    },
-    headers: {
-        Accept: "application/json",
-    },
-});
-
-// Invoke with endpoint ID
-await client.workflows.invoke({
-    urlOrEndpoint: "en123",
-    body: {
-        message: "Hello, World!",
-    },
-}, Pipedream.HTTPAuthType.OAuth);
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `Pipedream.InvokeWorkflowOpts`
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**authType:** `Pipedream.HTTPAuthType` — The type of authorization to use for the request (defaults to None)
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestOptions:** `WorkflowsClient.RequestOptions`
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.workflows.<a href="/src/api/resources/workflows/client/Client.ts">invokeForExternalUser</a>({ ...params }) -> unknown</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Invokes a workflow for a specific Pipedream Connect external user.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```typescript
-await client.workflows.invokeForExternalUser({
-    urlOrEndpoint: "https://your-workflow-url.m.pipedream.net",
-    externalUserId: "your-external-user-id",
-    body: {
-        foo: 123,
-        bar: "abc",
-        baz: null,
-    },
-    headers: {
-        Accept: "application/json",
-    },
-});
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `Pipedream.InvokeWorkflowForExternalUserOpts`
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestOptions:** `WorkflowsClient.RequestOptions`
-
-</dd>
-</dl>
-</dd>
-</dl>
 
 </dd>
 </dl>
