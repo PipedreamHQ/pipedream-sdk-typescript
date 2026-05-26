@@ -95,6 +95,12 @@ export type StartConnectOpts = {
     oauthAppId?: App["id"];
 
     /**
+     * An existing account ID to reconnect. When provided, the account's
+     * credentials are updated instead of creating a new account.
+     */
+    accountId?: string;
+
+    /**
      * Callback function to be called upon successful connection.
      *
      * @param res - The result of the connection.
@@ -310,6 +316,10 @@ export class PipedreamClient extends BackendClient {
 
         if (opts.oauthAppId) {
             qp.set("oauthAppId", opts.oauthAppId);
+        }
+
+        if (opts.accountId) {
+            qp.set("accountId", opts.accountId);
         }
 
         if (opts.hideClose) {
