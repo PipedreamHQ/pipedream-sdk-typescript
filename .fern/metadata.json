@@ -1,14 +1,15 @@
 {
-    "cliVersion": "5.37.12",
+    "cliVersion": "5.17.0",
     "generatorName": "fernapi/fern-typescript-node-sdk",
-    "generatorVersion": "3.70.7",
+    "generatorVersion": "3.69.1",
     "generatorConfig": {
         "includeApiReference": true,
         "namespaceExport": "Pipedream",
         "noSerdeLayer": false
     },
-    "originGitCommit": "320eac6d2809f95097ec1bb8cdb630cf13316b22",
-    "originGitCommitIsDirty": true,
-    "invokedBy": "manual",
-    "sdkVersion": "3.0.8"
+    "originGitCommit": "fa2fad94474bee68b5a4c87f25775ff6701a0fe6",
+    "originGitCommitIsDirty": false,
+    "invokedBy": "ci",
+    "ciProvider": "github",
+    "sdkVersion": "3.0.5"
 }

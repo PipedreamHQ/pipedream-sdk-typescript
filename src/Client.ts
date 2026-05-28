@@ -46,17 +46,17 @@ export class PipedreamClient {
     protected _appCategories: AppCategoriesClient | undefined;
     protected _apps: AppsClient | undefined;
     protected _accounts: AccountsClient | undefined;
+    protected _usage: UsageClient | undefined;
     protected _users: UsersClient | undefined;
     protected _components: ComponentsClient | undefined;
     protected _actions: ActionsClient | undefined;
     protected _triggers: TriggersClient | undefined;
     protected _deployedTriggers: DeployedTriggersClient | undefined;
+    protected _fileStash: FileStashClient | undefined;
     protected _projectEnvironment: ProjectEnvironmentClient | undefined;
     protected _projects: ProjectsClient | undefined;
-    protected _fileStash: FileStashClient | undefined;
     protected _proxy: ProxyClient | undefined;
     protected _tokens: TokensClient | undefined;
-    protected _usage: UsageClient | undefined;
     protected _oauthTokens: OauthTokensClient | undefined;
 
     constructor(_options: PipedreamClient.Options) {
@@ -131,6 +131,10 @@ export class PipedreamClient {
         return (this._accounts ??= new AccountsClient(this._options));
     }
 
+    public get usage(): UsageClient {
+        return (this._usage ??= new UsageClient(this._options));
+    }
+
     public get users(): UsersClient {
         return (this._users ??= new UsersClient(this._options));
     }
@@ -151,6 +155,10 @@ export class PipedreamClient {
         return (this._deployedTriggers ??= new DeployedTriggersClient(this._options));
     }
 
+    public get fileStash(): FileStashClient {
+        return (this._fileStash ??= new FileStashClient(this._options));
+    }
+
     public get projectEnvironment(): ProjectEnvironmentClient {
         return (this._projectEnvironment ??= new ProjectEnvironmentClient(this._options));
     }
@@ -159,20 +167,12 @@ export class PipedreamClient {
         return (this._projects ??= new ProjectsClient(this._options));
     }
 
-    public get fileStash(): FileStashClient {
-        return (this._fileStash ??= new FileStashClient(this._options));
-    }
-
     public get proxy(): ProxyClient {
         return (this._proxy ??= new ProxyClient(this._options));
     }
 
     public get tokens(): TokensClient {
         return (this._tokens ??= new TokensClient(this._options));
-    }
-
-    public get usage(): UsageClient {
-        return (this._usage ??= new UsageClient(this._options));
     }
 
     public get oauthTokens(): OauthTokensClient {
