@@ -1,4 +1,5 @@
 import type { TokenProvider } from "../core/auth/TokenProvider.js";
+import type { Supplier } from "../core/fetcher/Supplier.js";
 import { ProjectEnvironment } from "../api/index.js";
 import { WorkflowsClient } from "../api/resources/workflows/client/Client.js";
 import { PipedreamClient } from "../Client.js";
@@ -38,6 +39,11 @@ export type PipedreamClientOpts = {
     tokenProvider?: TokenProvider;
 
     /**
+     * Additional headers to include in every request.
+     */
+    headers?: Record<string, string | Supplier<string | null | undefined> | null | undefined>;
+
+    /**
      * Optional custom domain for workflow execution.
      */
     workflowDomain?: string;
@@ -68,6 +74,7 @@ export class Pipedream extends PipedreamClient {
             baseUrl: opts.baseUrl ?? process.env.PIPEDREAM_BASE_URL ?? PipedreamEnvironment.Prod,
             projectEnvironment,
             projectId: projectId ?? "",
+            headers: opts.headers,
         };
 
         if ("tokenProvider" in opts) {
