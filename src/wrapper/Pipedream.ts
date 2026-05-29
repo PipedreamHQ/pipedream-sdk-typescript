@@ -4,27 +4,10 @@ import { WorkflowsClient } from "../api/resources/workflows/client/Client.js";
 import { PipedreamClient } from "../Client.js";
 import { PipedreamEnvironment } from "../environments.js";
 
-export type PipedreamClientOpts = {
-    /**
-     * Optional client ID for authentication.
-     */
-    clientId?: string;
-
-    /**
-     * Optional client secret for authentication.
-     */
-    clientSecret?: string;
-
-    /**
-     * Optional base URL for API requests. Defaults to https://api.pipedream.com
-     */
-    baseUrl?: string;
-
-    /**
-     * The project environment configuration.
-     */
-    projectEnvironment?: ProjectEnvironment;
-
+export type PipedreamClientOpts = Pick<
+    PipedreamClient.Options,
+    "baseUrl" | "clientId" | "clientSecret" | "headers" | "projectEnvironment"
+> & {
     /**
      * The unique identifier for the project. This field is required, passed
      * either explicitly or by setting the `PIPEDREAM_PROJECT_ID` environment
@@ -49,8 +32,10 @@ export class Pipedream extends PipedreamClient {
 
     public constructor(opts: PipedreamClientOpts = {}) {
         const {
+            baseUrl = process.env.PIPEDREAM_BASE_URL ?? PipedreamEnvironment.Prod,
+            headers,
             projectEnvironment = process.env.PIPEDREAM_PROJECT_ENVIRONMENT,
-            projectId = process.env.PIPEDREAM_PROJECT_ID,
+            projectId = process.env.PIPEDREAM_PROJECT_ID ?? "",
             workflowDomain = process.env.PIPEDREAM_WORKFLOW_DOMAIN,
         } = opts || {};
 
@@ -65,9 +50,10 @@ export class Pipedream extends PipedreamClient {
         }
 
         const clientOpts: PipedreamClient.Options = {
-            baseUrl: opts.baseUrl ?? process.env.PIPEDREAM_BASE_URL ?? PipedreamEnvironment.Prod,
+            baseUrl,
+            headers,
             projectEnvironment,
-            projectId: projectId ?? "",
+            projectId,
         };
 
         if ("tokenProvider" in opts) {

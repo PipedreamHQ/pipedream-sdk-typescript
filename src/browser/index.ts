@@ -186,7 +186,7 @@ export class PipedreamClient extends BackendClient {
      * @param opts - The options for configuring the browser client.
      */
     constructor(opts: PipedreamClientOpts) {
-        const { baseUrl, externalUserId, projectEnvironment, tokenCallback, workflowDomain } = opts || {};
+        const { baseUrl, externalUserId, headers, projectEnvironment, tokenCallback, workflowDomain } = opts || {};
 
         if (!externalUserId) {
             throw new Error("The external user ID cannot be blank");
@@ -203,6 +203,7 @@ export class PipedreamClient extends BackendClient {
 
         super({
             baseUrl,
+            headers,
             projectEnvironment,
             projectId: "",
             tokenProvider,
