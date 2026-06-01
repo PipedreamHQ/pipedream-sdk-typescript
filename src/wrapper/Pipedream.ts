@@ -1,5 +1,4 @@
 import type { TokenProvider } from "../core/auth/TokenProvider.js";
-import type { Supplier } from "../core/fetcher/Supplier.js";
 import { ProjectEnvironment } from "../api/index.js";
 import { WorkflowsClient } from "../api/resources/workflows/client/Client.js";
 import { PipedreamClient } from "../Client.js";
@@ -41,7 +40,7 @@ export type PipedreamClientOpts = {
     /**
      * Additional headers to include in every request.
      */
-    headers?: Record<string, string | Supplier<string | null | undefined> | null | undefined>;
+    headers?: PipedreamClient.Options['headers'];
 
     /**
      * Optional custom domain for workflow execution.
