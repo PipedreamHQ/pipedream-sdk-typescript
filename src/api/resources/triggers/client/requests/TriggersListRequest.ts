@@ -24,6 +24,6 @@ export interface TriggersListRequest {
     q?: string;
     /** The ID or name slug of the app to filter the triggers */
     app?: string;
-    /** The registry to retrieve triggers from. Defaults to 'all' ('public', 'private', or 'all') */
+    /** The registry to retrieve triggers from */
     registry?: Pipedream.TriggersListRequestRegistry;
 }

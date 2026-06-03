@@ -23,7 +23,7 @@ describe("ComponentsClient", () => {
             data: [
                 {
                     key: "key",
-                    name: "name",
+                    name: "GitLab: List Commits",
                     version: "version",
                     configurable_props: [{ name: "name", type: "alert", content: "content" }],
                     description: "description",
@@ -46,7 +46,7 @@ describe("ComponentsClient", () => {
             data: [
                 {
                     key: "key",
-                    name: "name",
+                    name: "GitLab: List Commits",
                     version: "version",
                     configurableProps: [
                         {
@@ -155,7 +155,7 @@ describe("ComponentsClient", () => {
         const rawResponseBody = {
             data: {
                 key: "key",
-                name: "name",
+                name: "GitLab: List Commits",
                 version: "version",
                 configurable_props: [{ name: "name", type: "alert", content: "content" }],
                 description: "description",
@@ -173,19 +173,19 @@ describe("ComponentsClient", () => {
 
         server
             .mockEndpoint()
-            .get("/v1/connect/project_id/components/component_id")
+            .get("/v1/connect/project_id/components/slack-send-message")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.components.retrieve("component_id", {
-            version: "1.2.3",
+        const response = await client.components.retrieve("slack-send-message", {
+            version: "1.0.0",
         });
         expect(response).toEqual({
             data: {
                 key: "key",
-                name: "name",
+                name: "GitLab: List Commits",
                 version: "version",
                 configurableProps: [
                     {

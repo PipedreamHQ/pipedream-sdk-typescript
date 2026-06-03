@@ -24,6 +24,6 @@ export interface ActionsListRequest {
     q?: string;
     /** The ID or name slug of the app to filter the actions */
     app?: string;
-    /** The registry to retrieve actions from. Defaults to 'all' ('public', 'private', or 'all') */
+    /** The registry to retrieve actions from */
     registry?: Pipedream.ActionsListRequestRegistry;
 }

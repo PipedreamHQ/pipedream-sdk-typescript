@@ -10,6 +10,7 @@ export const EmittedEvent: core.serialization.ObjectSchema<serializers.EmittedEv
         k: core.serialization.string(),
         ts: core.serialization.number(),
         id: core.serialization.string(),
+        sum: core.serialization.string().optional(),
     });
 
 export declare namespace EmittedEvent {
@@ -18,5 +19,6 @@ export declare namespace EmittedEvent {
         k: string;
         ts: number;
         id: string;
+        sum?: string | null;
     }
 }

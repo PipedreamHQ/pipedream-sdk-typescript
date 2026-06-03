@@ -23,7 +23,7 @@ describe("TriggersClient", () => {
             data: [
                 {
                     key: "key",
-                    name: "name",
+                    name: "GitLab: List Commits",
                     version: "version",
                     configurable_props: [{ name: "name", type: "alert", content: "content" }],
                     description: "description",
@@ -46,7 +46,7 @@ describe("TriggersClient", () => {
             data: [
                 {
                     key: "key",
-                    name: "name",
+                    name: "GitLab: List Commits",
                     version: "version",
                     configurableProps: [
                         {
@@ -154,7 +154,7 @@ describe("TriggersClient", () => {
         const rawResponseBody = {
             data: {
                 key: "key",
-                name: "name",
+                name: "GitLab: List Commits",
                 version: "version",
                 configurable_props: [{ name: "name", type: "alert", content: "content" }],
                 description: "description",
@@ -172,19 +172,19 @@ describe("TriggersClient", () => {
 
         server
             .mockEndpoint()
-            .get("/v1/connect/project_id/triggers/component_id")
+            .get("/v1/connect/project_id/triggers/slack-send-message")
             .respondWith()
             .statusCode(200)
             .jsonBody(rawResponseBody)
             .build();
 
-        const response = await client.triggers.retrieve("component_id", {
-            version: "1.2.3",
+        const response = await client.triggers.retrieve("slack-send-message", {
+            version: "1.0.0",
         });
         expect(response).toEqual({
             data: {
                 key: "key",
-                name: "name",
+                name: "GitLab: List Commits",
                 version: "version",
                 configurableProps: [
                     {

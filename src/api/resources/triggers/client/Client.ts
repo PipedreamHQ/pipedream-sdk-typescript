@@ -145,15 +145,15 @@ export class TriggersClient {
     /**
      * Get detailed configuration for a specific trigger by its key
      *
-     * @param {string} component_id - The key that uniquely identifies the component (e.g., 'slack-send-message')
+     * @param {string} component_id - The key that uniquely identifies the component
      * @param {Pipedream.TriggersRetrieveRequest} request
      * @param {TriggersClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.triggers.retrieve("component_id", {
-     *         version: "1.2.3"
+     *     await client.triggers.retrieve("slack-send-message", {
+     *         version: "1.0.0"
      *     })
      */
     public retrieve(
