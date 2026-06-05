@@ -82,11 +82,32 @@ export class PipedreamClient {
             _options?.headers,
         );
 
+        const fetch = PipedreamClient.fetchWithNormalizedPath(_options.fetch);
+
         this._options = normalizeClientOptionsWithAuth({
             ..._options,
             auth,
             headers,
+            fetch,
         } as PipedreamClient.Options);
+    }
+
+    /**
+     * Wrap the fetch implementation so that the empty project-ID path
+     * segment is collapsed before the request goes out.
+     */
+    private static fetchWithNormalizedPath(userFetch?: typeof fetch): typeof fetch {
+        const delegate = userFetch ?? globalThis.fetch;
+        const normalize = (url: string): string => url.replace(/\/+/g, "/");
+        return (input, init) => {
+            if (typeof input === "string") {
+                return delegate(normalize(input), init);
+            }
+            if (input instanceof URL) {
+                return delegate(new URL(normalize(input.href)), init);
+            }
+            return delegate(input, init);
+        };
     }
 
     private static newOAuthTokenProvider(options: PipedreamClient.Options): core.OAuthTokenProvider {
