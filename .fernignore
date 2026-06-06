@@ -1,5 +1,10 @@
 # Specify files that shouldn't be modified by Fern
 
+# Fern-specific
+.fern/replay.lock
+.fern/replay.yml
+.gitattributes
+
 # Custom CI/CD
 .github/workflows/auto-close-empty-prs.yml
 .github/workflows/ci.yml
@@ -26,6 +31,7 @@ src/api/types/index.ts
 src/browser/index.ts
 src/index.ts
 src/wrapper
+tests/wire/connectTokenProjectId.test.ts
 
 # Ideally, we shouldn't. But until Fern supports the changes that we've made we
 # have to override some parts.
@@ -60,6 +66,3 @@ src/api/resources/workflows/client/Client.ts
 src/api/resources/workflows/client/index.ts
 src/api/resources/workflows/index.ts
 src/api/types/HTTPAuthType.ts
-.fern/replay.lock
-.fern/replay.yml
-.gitattributes
