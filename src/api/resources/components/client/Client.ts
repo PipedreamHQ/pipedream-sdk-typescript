@@ -153,15 +153,15 @@ export class ComponentsClient {
     /**
      * Get detailed configuration for a specific component by its key
      *
-     * @param {string} component_id - The key that uniquely identifies the component (e.g., 'slack-send-message')
+     * @param {string} component_id - The key that uniquely identifies the component
      * @param {Pipedream.ComponentsRetrieveRequest} request
      * @param {ComponentsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.components.retrieve("component_id", {
-     *         version: "1.2.3"
+     *     await client.components.retrieve("slack-send-message", {
+     *         version: "1.0.0"
      *     })
      */
     public retrieve(

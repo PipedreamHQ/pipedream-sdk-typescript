@@ -145,15 +145,15 @@ export class ActionsClient {
     /**
      * Get detailed configuration for a specific action by its key
      *
-     * @param {string} component_id - The key that uniquely identifies the component (e.g., 'slack-send-message')
+     * @param {string} component_id - The key that uniquely identifies the component
      * @param {Pipedream.ActionsRetrieveRequest} request
      * @param {ActionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
-     *     await client.actions.retrieve("component_id", {
-     *         version: "1.2.3"
+     *     await client.actions.retrieve("slack-send-message", {
+     *         version: "1.0.0"
      *     })
      */
     public retrieve(

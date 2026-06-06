@@ -3,10 +3,10 @@
 /**
  * @example
  *     {
- *         version: "1.2.3"
+ *         version: "1.0.0"
  *     }
  */
 export interface ComponentsRetrieveRequest {
-    /** Optional semantic version of the component to retrieve (for example '1.0.0') */
+    /** Optional semantic version of the component to retrieve */
     version?: string;
 }

@@ -419,7 +419,7 @@ describe("DeployedTriggersClient", () => {
             environment: server.baseUrl,
         });
 
-        const rawResponseBody = { data: [{ e: { key: "value" }, k: "k", ts: 1, id: "id" }] };
+        const rawResponseBody = { data: [{ e: { key: "value" }, k: "k", ts: 1, id: "id", sum: "sum" }] };
 
         server
             .mockEndpoint()
@@ -442,6 +442,7 @@ describe("DeployedTriggersClient", () => {
                     k: "k",
                     ts: 1,
                     id: "id",
+                    sum: "sum",
                 },
             ],
         });

@@ -5,9 +5,9 @@ import type * as Pipedream from "../index.js";
 export interface Component {
     /** The key that uniquely identifies the component. */
     key: string;
-    /** The human-readable name of the component, e.g. 'GitLab: List Commits' */
+    /** The human-readable name of the component */
     name: string;
-    /** The latest version of the component, in SemVer format. */
+    /** The latest version of the component, in semantic versioning format. */
     version: string;
     configurableProps: Pipedream.ConfigurableProp[];
     /** A description of the component */

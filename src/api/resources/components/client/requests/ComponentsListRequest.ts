@@ -25,7 +25,7 @@ export interface ComponentsListRequest {
     q?: string;
     /** The ID or name slug of the app to filter the components */
     app?: string;
-    /** The registry to retrieve components from. Defaults to 'all' ('public', 'private', or 'all') */
+    /** The registry to retrieve components from */
     registry?: Pipedream.ComponentsListRequestRegistry;
     /** The type of the component to filter the components */
     componentType?: Pipedream.ComponentType;

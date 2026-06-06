@@ -12,4 +12,6 @@ export interface EmittedEvent {
     ts: number;
     /** The event's unique ID */
     id: string;
+    /** A short summary of the event's payload */
+    sum?: string;
 }

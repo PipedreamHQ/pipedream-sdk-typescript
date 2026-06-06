@@ -12,7 +12,7 @@ import type * as Pipedream from "../../../../index.js";
 export interface DeployTriggerOpts {
     /** The trigger component ID */
     id: string;
-    /** Optional trigger component version (in SemVer format, for example '1.0.0'), defaults to latest */
+    /** Trigger component semantic version */
     version?: string;
     /** The external user ID */
     externalUserId: string;
