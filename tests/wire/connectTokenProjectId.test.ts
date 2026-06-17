@@ -67,6 +67,8 @@ describe("Connect token project ID path normalization", () => {
 
         expect(calledUrls.some((url) => url.includes("/v1/connect/accounts"))).toBe(true);
         expect(calledUrls.some((url) => url.includes("/v1/connect//accounts"))).toBe(false);
+        // The scheme separator "://" must not be collapsed to ":/".
+        expect(calledUrls.every((url) => url.includes("://"))).toBe(true);
     });
 
     test("leaves a non-empty project ID untouched", async () => {

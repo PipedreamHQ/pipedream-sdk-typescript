@@ -98,7 +98,15 @@ export class PipedreamClient {
      */
     private static fetchWithNormalizedPath(userFetch?: typeof fetch): typeof fetch {
         const delegate = userFetch ?? globalThis.fetch;
-        const normalize = (url: string): string => url.replace(/\/+/g, "/");
+        const normalize = (url: string): string => {
+            try {
+                const parsed = new URL(url);
+                parsed.pathname = parsed.pathname.replace(/\/{2,}/g, "/");
+                return parsed.href;
+            } catch {
+                return url;
+            }
+        };
         return (input, init) => {
             if (typeof input === "string") {
                 return delegate(normalize(input), init);
