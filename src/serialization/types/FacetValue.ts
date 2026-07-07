@@ -4,13 +4,15 @@ import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 
-export const ErrorResponse: core.serialization.ObjectSchema<serializers.ErrorResponse.Raw, Pipedream.ErrorResponse> =
+export const FacetValue: core.serialization.ObjectSchema<serializers.FacetValue.Raw, Pipedream.FacetValue> =
     core.serialization.object({
-        error: core.serialization.string(),
+        count: core.serialization.number(),
+        value: core.serialization.string(),
     });
 
-export declare namespace ErrorResponse {
+export declare namespace FacetValue {
     export interface Raw {
-        error: string;
+        count: number;
+        value: string;
     }
 }

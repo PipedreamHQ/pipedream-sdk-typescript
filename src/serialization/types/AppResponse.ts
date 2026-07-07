@@ -3,14 +3,15 @@
 import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { AppDocument } from "./AppDocument.js";
 
-export const ErrorResponse: core.serialization.ObjectSchema<serializers.ErrorResponse.Raw, Pipedream.ErrorResponse> =
+export const AppResponse: core.serialization.ObjectSchema<serializers.AppResponse.Raw, Pipedream.AppResponse> =
     core.serialization.object({
-        error: core.serialization.string(),
+        data: AppDocument,
     });
 
-export declare namespace ErrorResponse {
+export declare namespace AppResponse {
     export interface Raw {
-        error: string;
+        data: AppDocument.Raw;
     }
 }
