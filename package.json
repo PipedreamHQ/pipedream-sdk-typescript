@@ -1,6 +1,6 @@
 {
     "name": "@pipedream/sdk",
-    "version": "3.1.1",
+    "version": "3.1.3",
     "private": false,
     "repository": {
         "type": "git",
@@ -108,6 +108,17 @@
             },
             "default": "./dist/cjs/api/resources/users/exports.js"
         },
+        "./appOverrides": {
+            "import": {
+                "types": "./dist/esm/api/resources/appOverrides/exports.d.mts",
+                "default": "./dist/esm/api/resources/appOverrides/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/appOverrides/exports.d.ts",
+                "default": "./dist/cjs/api/resources/appOverrides/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/appOverrides/exports.js"
+        },
         "./components": {
             "import": {
                 "types": "./dist/esm/api/resources/components/exports.d.mts",
@@ -151,6 +162,17 @@
                 "default": "./dist/cjs/api/resources/deployedTriggers/exports.js"
             },
             "default": "./dist/cjs/api/resources/deployedTriggers/exports.js"
+        },
+        "./oauthApps": {
+            "import": {
+                "types": "./dist/esm/api/resources/oauthApps/exports.d.mts",
+                "default": "./dist/esm/api/resources/oauthApps/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/oauthApps/exports.d.ts",
+                "default": "./dist/cjs/api/resources/oauthApps/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/oauthApps/exports.js"
         },
         "./projectEnvironment": {
             "import": {

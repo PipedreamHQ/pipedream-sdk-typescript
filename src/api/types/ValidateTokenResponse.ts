@@ -13,6 +13,8 @@ export interface ValidateTokenResponse {
     errorRedirectUri?: string;
     /** OAuth app ID if applicable */
     oauthAppId?: string;
+    /** True when the resolved OAuth client is the app's Workday-official client */
+    oauthAppWorkdayOfficial?: boolean;
     /** Name of the project app */
     projectAppName?: string;
     /** Environment of the project */

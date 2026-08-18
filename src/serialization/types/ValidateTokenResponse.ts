@@ -13,6 +13,10 @@ export const ValidateTokenResponse: core.serialization.ObjectSchema<
     error: core.serialization.string().optional(),
     errorRedirectUri: core.serialization.property("error_redirect_uri", core.serialization.string().optional()),
     oauthAppId: core.serialization.property("oauth_app_id", core.serialization.string().optional()),
+    oauthAppWorkdayOfficial: core.serialization.property(
+        "oauth_app_workday_official",
+        core.serialization.boolean().optional(),
+    ),
     projectAppName: core.serialization.property("project_app_name", core.serialization.string().optional()),
     projectEnvironment: core.serialization.property("project_environment", core.serialization.string().optional()),
     projectId: core.serialization.property("project_id", core.serialization.string().optional()),
@@ -27,6 +31,7 @@ export declare namespace ValidateTokenResponse {
         error?: string | null;
         error_redirect_uri?: string | null;
         oauth_app_id?: string | null;
+        oauth_app_workday_official?: boolean | null;
         project_app_name?: string | null;
         project_environment?: string | null;
         project_id?: string | null;

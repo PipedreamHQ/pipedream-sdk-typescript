@@ -5,10 +5,12 @@ import { SDK_VERSION } from "./version.js";
 import { AccountsClient } from "./api/resources/accounts/client/Client.js";
 import { ActionsClient } from "./api/resources/actions/client/Client.js";
 import { AppCategoriesClient } from "./api/resources/appCategories/client/Client.js";
+import { AppOverridesClient } from "./api/resources/appOverrides/client/Client.js";
 import { AppsClient } from "./api/resources/apps/client/Client.js";
 import { ComponentsClient } from "./api/resources/components/client/Client.js";
 import { DeployedTriggersClient } from "./api/resources/deployedTriggers/client/Client.js";
 import { FileStashClient } from "./api/resources/fileStash/client/Client.js";
+import { OauthAppsClient } from "./api/resources/oauthApps/client/Client.js";
 import { OauthTokensClient } from "./api/resources/oauthTokens/client/Client.js";
 import { ProjectEnvironmentClient } from "./api/resources/projectEnvironment/client/Client.js";
 import { ProjectsClient } from "./api/resources/projects/client/Client.js";
@@ -44,6 +46,7 @@ export class PipedreamClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<PipedreamClient.Options>;
     protected readonly _tokenProvider: core.TokenProvider;
     protected _appCategories: AppCategoriesClient | undefined;
+    protected _appOverrides: AppOverridesClient | undefined;
     protected _apps: AppsClient | undefined;
     protected _accounts: AccountsClient | undefined;
     protected _usage: UsageClient | undefined;
@@ -57,6 +60,7 @@ export class PipedreamClient {
     protected _projects: ProjectsClient | undefined;
     protected _proxy: ProxyClient | undefined;
     protected _tokens: TokensClient | undefined;
+    protected _oauthApps: OauthAppsClient | undefined;
     protected _oauthTokens: OauthTokensClient | undefined;
 
     constructor(_options: PipedreamClient.Options) {
@@ -152,6 +156,10 @@ export class PipedreamClient {
         return (this._appCategories ??= new AppCategoriesClient(this._options));
     }
 
+    public get appOverrides(): AppOverridesClient {
+        return (this._appOverrides ??= new AppOverridesClient(this._options));
+    }
+
     public get apps(): AppsClient {
         return (this._apps ??= new AppsClient(this._options));
     }
@@ -202,6 +210,10 @@ export class PipedreamClient {
 
     public get tokens(): TokensClient {
         return (this._tokens ??= new TokensClient(this._options));
+    }
+
+    public get oauthApps(): OauthAppsClient {
+        return (this._oauthApps ??= new OauthAppsClient(this._options));
     }
 
     public get oauthTokens(): OauthTokensClient {
