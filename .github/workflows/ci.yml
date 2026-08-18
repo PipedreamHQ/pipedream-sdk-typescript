@@ -56,21 +56,39 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Check if tag is on main
+        id: tag-on-main
+        run: |
+          if git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "on-main=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "on-main=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Skipping publish: tag $GITHUB_REF_NAME is not on main"
+          fi
 
       - name: Set up node
+        if: steps.tag-on-main.outputs.on-main == 'true'
         uses: actions/setup-node@v6
 
       - name: Install pnpm
+        if: steps.tag-on-main.outputs.on-main == 'true'
         uses: pnpm/action-setup@v4
 
       - name: Install dependencies
+        if: steps.tag-on-main.outputs.on-main == 'true'
         run: pnpm install --frozen-lockfile
 
       - name: Build
+        if: steps.tag-on-main.outputs.on-main == 'true'
         run: pnpm build
 
       - name: Set up NPM authentication
+        if: steps.tag-on-main.outputs.on-main == 'true'
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
 
       - name: Publish
+        if: steps.tag-on-main.outputs.on-main == 'true'
         run: pnpm publish --access public --no-git-checks
