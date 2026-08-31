@@ -24,4 +24,6 @@ export interface CreateAccountOpts {
     name?: string;
     /** An existing account ID to reconnect. When provided, the account's credentials are updated instead of creating a new account. Must belong to the same external user and project environment as the connect token, and match the app identified by app_slug. */
     accountId?: string;
+    /** An app override ID. The account is linked to the override and the override's pre-defined custom field values are merged over cfmap_json; with account_id, the account is re-linked to this override. Must belong to the app identified by app_slug, and must not select an OAuth client — overrides that do can only connect through the OAuth flow. */
+    appOverrideId?: string;
 }

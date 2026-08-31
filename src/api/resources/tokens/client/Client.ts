@@ -125,12 +125,13 @@ export class TokensClient {
      *     await client.tokens.validate("ctok", {
      *         appId: "app_id",
      *         accountId: "account_id",
-     *         oauthAppId: "oauth_app_id"
+     *         oauthAppId: "oauth_app_id",
+     *         appOverrideId: "app_override_id"
      *     })
      */
     public validate(
         ctok: Pipedream.ConnectToken,
-        request: Pipedream.TokensValidateRequest,
+        request: Pipedream.TokensValidateRequest = {},
         requestOptions?: TokensClient.RequestOptions,
     ): core.HttpResponsePromise<Pipedream.ValidateTokenResponse> {
         return core.HttpResponsePromise.fromPromise(this.__validate(ctok, request, requestOptions));
@@ -138,14 +139,15 @@ export class TokensClient {
 
     private async __validate(
         ctok: Pipedream.ConnectToken,
-        request: Pipedream.TokensValidateRequest,
+        request: Pipedream.TokensValidateRequest = {},
         requestOptions?: TokensClient.RequestOptions,
     ): Promise<core.WithRawResponse<Pipedream.ValidateTokenResponse>> {
-        const { appId, accountId, oauthAppId } = request;
+        const { appId, accountId, oauthAppId, appOverrideId } = request;
         const _queryParams: Record<string, unknown> = {
             app_id: appId,
             account_id: accountId,
             oauth_app_id: oauthAppId,
+            app_override_id: appOverrideId,
         };
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(

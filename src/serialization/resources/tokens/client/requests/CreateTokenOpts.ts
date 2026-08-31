@@ -20,6 +20,8 @@ export const CreateTokenOpts: core.serialization.Schema<serializers.CreateTokenO
             "allow_progressive_scopes",
             core.serialization.boolean().optional(),
         ),
+        appId: core.serialization.property("app_id", core.serialization.string().optional()),
+        oauthAppId: core.serialization.property("oauth_app_id", core.serialization.string().optional()),
     });
 
 export declare namespace CreateTokenOpts {
@@ -32,5 +34,7 @@ export declare namespace CreateTokenOpts {
         success_redirect_uri?: string | null;
         webhook_uri?: string | null;
         allow_progressive_scopes?: boolean | null;
+        app_id?: string | null;
+        oauth_app_id?: string | null;
     }
 }
