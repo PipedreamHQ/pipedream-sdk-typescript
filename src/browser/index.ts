@@ -131,6 +131,14 @@ export type StartConnectOpts = {
      * OAuth scopes requested to those defined in the named profile.
      */
     oauthScopeProfile?: AppScopeProfilesItemName;
+
+    /**
+     * Whether to ask the user for their own OAuth client credentials when
+     * connecting, instead of using a shared OAuth client. The credentials are
+     * stored in an OAuth client owned by the connecting user. Implied when
+     * the app has no OAuth client.
+     */
+    customOauthClient?: boolean;
 };
 
 /**
@@ -329,6 +337,10 @@ export class PipedreamClient extends BackendClient {
 
         if (opts.oauthScopeProfile) {
             qp.set("oauthScopeProfile", opts.oauthScopeProfile);
+        }
+
+        if (opts.customOauthClient) {
+            qp.set("customOauthClient", "true");
         }
 
         const iframe = document.createElement("iframe");
