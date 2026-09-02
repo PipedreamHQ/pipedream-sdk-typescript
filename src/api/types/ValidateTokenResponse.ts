@@ -7,6 +7,10 @@ import type * as Pipedream from "../index.js";
  */
 export interface ValidateTokenResponse {
     app?: Pipedream.App;
+    /** ID of the resolved app override, echoed from the request */
+    appOverrideId?: string;
+    /** Names of the custom fields the resolved app override pre-defines */
+    appOverrideFieldNames?: string[];
     /** Error message if validation failed */
     error?: string;
     /** URI to redirect to on error */
@@ -15,6 +19,8 @@ export interface ValidateTokenResponse {
     oauthAppId?: string;
     /** True when the resolved OAuth client is the app's Workday-official client */
     oauthAppWorkdayOfficial?: boolean;
+    /** Base URL the Connect UI must run this client's OAuth flow on; null means the default API URL */
+    oauthAppConnectBaseUrl?: string;
     /** Name of the project app */
     projectAppName?: string;
     /** Environment of the project */

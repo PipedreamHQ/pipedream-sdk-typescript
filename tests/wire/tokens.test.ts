@@ -101,10 +101,13 @@ describe("TokensClient", () => {
                 featured_weight: 1.1,
                 scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
             },
+            app_override_id: "app_override_id",
+            app_override_field_names: ["app_override_field_names"],
             error: "error",
             error_redirect_uri: "error_redirect_uri",
             oauth_app_id: "oauth_app_id",
             oauth_app_workday_official: true,
+            oauth_app_connect_base_url: "oauth_app_connect_base_url",
             project_app_name: "project_app_name",
             project_environment: "project_environment",
             project_id: "project_id",
@@ -125,6 +128,7 @@ describe("TokensClient", () => {
             appId: "app_id",
             accountId: "account_id",
             oauthAppId: "oauth_app_id",
+            appOverrideId: "app_override_id",
         });
         expect(response).toEqual({
             app: {
@@ -144,10 +148,13 @@ describe("TokensClient", () => {
                     },
                 ],
             },
+            appOverrideId: "app_override_id",
+            appOverrideFieldNames: ["app_override_field_names"],
             error: "error",
             errorRedirectUri: "error_redirect_uri",
             oauthAppId: "oauth_app_id",
             oauthAppWorkdayOfficial: true,
+            oauthAppConnectBaseUrl: "oauth_app_connect_base_url",
             projectAppName: "project_app_name",
             projectEnvironment: "project_environment",
             projectId: "project_id",
@@ -181,9 +188,7 @@ describe("TokensClient", () => {
             .build();
 
         await expect(async () => {
-            return await client.tokens.validate("ctok", {
-                appId: "app_id",
-            });
+            return await client.tokens.validate("ctok");
         }).rejects.toThrow(Pipedream.TooManyRequestsError);
     });
 });

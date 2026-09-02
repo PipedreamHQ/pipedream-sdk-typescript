@@ -10,12 +10,21 @@ export const ValidateTokenResponse: core.serialization.ObjectSchema<
     Pipedream.ValidateTokenResponse
 > = core.serialization.object({
     app: App.optional(),
+    appOverrideId: core.serialization.property("app_override_id", core.serialization.string().optional()),
+    appOverrideFieldNames: core.serialization.property(
+        "app_override_field_names",
+        core.serialization.list(core.serialization.string()).optional(),
+    ),
     error: core.serialization.string().optional(),
     errorRedirectUri: core.serialization.property("error_redirect_uri", core.serialization.string().optional()),
     oauthAppId: core.serialization.property("oauth_app_id", core.serialization.string().optional()),
     oauthAppWorkdayOfficial: core.serialization.property(
         "oauth_app_workday_official",
         core.serialization.boolean().optional(),
+    ),
+    oauthAppConnectBaseUrl: core.serialization.property(
+        "oauth_app_connect_base_url",
+        core.serialization.string().optional(),
     ),
     projectAppName: core.serialization.property("project_app_name", core.serialization.string().optional()),
     projectEnvironment: core.serialization.property("project_environment", core.serialization.string().optional()),
@@ -28,10 +37,13 @@ export const ValidateTokenResponse: core.serialization.ObjectSchema<
 export declare namespace ValidateTokenResponse {
     export interface Raw {
         app?: App.Raw | null;
+        app_override_id?: string | null;
+        app_override_field_names?: string[] | null;
         error?: string | null;
         error_redirect_uri?: string | null;
         oauth_app_id?: string | null;
         oauth_app_workday_official?: boolean | null;
+        oauth_app_connect_base_url?: string | null;
         project_app_name?: string | null;
         project_environment?: string | null;
         project_id?: string | null;

@@ -13,6 +13,7 @@ export const CreateAccountOpts: core.serialization.Schema<
     connectToken: core.serialization.property("connect_token", core.serialization.string()),
     name: core.serialization.string().optional(),
     accountId: core.serialization.property("account_id", core.serialization.string().optional()),
+    appOverrideId: core.serialization.property("app_override_id", core.serialization.string().optional()),
 });
 
 export declare namespace CreateAccountOpts {
@@ -22,5 +23,6 @@ export declare namespace CreateAccountOpts {
         connect_token: string;
         name?: string | null;
         account_id?: string | null;
+        app_override_id?: string | null;
     }
 }

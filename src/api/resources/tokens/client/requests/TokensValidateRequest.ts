@@ -5,14 +5,17 @@
  *     {
  *         appId: "app_id",
  *         accountId: "account_id",
- *         oauthAppId: "oauth_app_id"
+ *         oauthAppId: "oauth_app_id",
+ *         appOverrideId: "app_override_id"
  *     }
  */
 export interface TokensValidateRequest {
-    /** The app ID to validate against */
-    appId: string;
+    /** The app ID to validate against. Required unless account_id or app_override_id identifies the app. */
+    appId?: string;
     /** An existing account ID to reconnect. Must belong to the app identified by app_id. */
     accountId?: string;
     /** The OAuth app ID to validate against (if the token is for an OAuth app) */
     oauthAppId?: string;
+    /** An app override ID. Selects the override's app, pre-defined custom fields, and OAuth client. With account_id, re-links the account to this override; it must belong to the account's app, and an override that pins a different OAuth client switches the account to that client when the reconnect flow completes. A conflicting app_id or oauth_app_id is an error. To resolve an override by name, list them with GET /v1/connect/{project_id}/app_overrides and match on name. */
+    appOverrideId?: string;
 }
