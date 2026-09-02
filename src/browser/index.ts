@@ -8,7 +8,13 @@ export type * from "../api/types/index.js";
 export * from "../index.js";
 
 import { ConnectTokenProvider, type TokenCallback } from "../core/auth/index.js";
-import { type Account, type App, type AppScopeProfilesItemName, PipedreamClient as BackendClient } from "../index.js";
+import {
+    type Account,
+    type App,
+    type AppOverride,
+    type AppScopeProfilesItemName,
+    PipedreamClient as BackendClient,
+} from "../index.js";
 import type { PipedreamClientOpts as BackendClientOpts } from "../wrapper/Pipedream.js";
 
 if (typeof process === "undefined") {
@@ -93,6 +99,14 @@ export type StartConnectOpts = {
      * The OAuth app ID to connect to.
      */
     oauthAppId?: App["id"];
+
+    /**
+     * An app override ID. The account is linked to the override, and the
+     * override's pre-defined custom field values and custom OAuth client (if
+     * any) are used when connecting. Must belong to the app identified by
+     * `app`.
+     */
+    appOverrideId?: AppOverride["id"];
 
     /**
      * An existing account ID to reconnect. When provided, the account's
@@ -325,6 +339,10 @@ export class PipedreamClient extends BackendClient {
 
         if (opts.oauthAppId) {
             qp.set("oauthAppId", opts.oauthAppId);
+        }
+
+        if (opts.appOverrideId) {
+            qp.set("appOverrideId", opts.appOverrideId);
         }
 
         if (opts.accountId) {
