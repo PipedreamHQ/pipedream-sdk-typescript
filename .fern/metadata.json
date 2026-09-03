@@ -7,9 +7,9 @@
         "namespaceExport": "Pipedream",
         "noSerdeLayer": false
     },
-    "originGitCommit": "4ec89179f0cd7c09cc536f40a9c42a089d9cd425",
+    "originGitCommit": "55f4ed66327cc60c86a1edef9596d71673752c85",
     "originGitCommitIsDirty": false,
     "invokedBy": "ci",
     "ciProvider": "github",
-    "sdkVersion": "3.1.5"
+    "sdkVersion": "3.1.7"
 }
