@@ -168,7 +168,7 @@ describe("OauthAppsClient", () => {
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
-        const rawRequestBody = { app: "app", client_id: "client_id", client_secret: "client_secret" };
+        const rawRequestBody = { app: "app" };
         const rawResponseBody = {
             id: "id",
             name_slug: "name_slug",
@@ -200,8 +200,6 @@ describe("OauthAppsClient", () => {
 
         const response = await client.oauthApps.create({
             app: "app",
-            clientId: "client_id",
-            clientSecret: "client_secret",
         });
         expect(response).toEqual({
             id: "id",
@@ -241,7 +239,7 @@ describe("OauthAppsClient", () => {
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
-        const rawRequestBody = { app: "app", client_id: "client_id", client_secret: "client_secret" };
+        const rawRequestBody = { app: "app" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -256,8 +254,6 @@ describe("OauthAppsClient", () => {
         await expect(async () => {
             return await client.oauthApps.create({
                 app: "app",
-                clientId: "client_id",
-                clientSecret: "client_secret",
             });
         }).rejects.toThrow(Pipedream.BadRequestError);
     });
@@ -274,7 +270,7 @@ describe("OauthAppsClient", () => {
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
-        const rawRequestBody = { app: "app", client_id: "client_id", client_secret: "client_secret" };
+        const rawRequestBody = { app: "app" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -289,8 +285,6 @@ describe("OauthAppsClient", () => {
         await expect(async () => {
             return await client.oauthApps.create({
                 app: "app",
-                clientId: "client_id",
-                clientSecret: "client_secret",
             });
         }).rejects.toThrow(Pipedream.TooManyRequestsError);
     });

@@ -3,18 +3,16 @@
 /**
  * @example
  *     {
- *         app: "app",
- *         clientId: "client_id",
- *         clientSecret: "client_secret"
+ *         app: "app"
  *     }
  */
 export interface CreateOauthAppOpts {
     /** The app's ID or name slug. The app must have custom OAuth clients enabled. */
     app: string;
-    /** The OAuth client ID registered with the upstream provider */
-    clientId: string;
-    /** The OAuth client secret. Write-only; never returned in responses. */
-    clientSecret: string;
+    /** The OAuth client ID registered with the upstream provider. Optional: providers that only issue credentials once they have a callback URL can be registered without one, and the client cannot connect accounts until it is set. */
+    clientId?: string;
+    /** The OAuth client secret. Optional, like the client ID. Write-only; never returned in responses. */
+    clientSecret?: string;
     /** Display name of the OAuth client */
     name?: string;
     /** Description of the OAuth client */
