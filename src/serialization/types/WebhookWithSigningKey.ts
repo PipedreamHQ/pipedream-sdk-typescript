@@ -3,6 +3,8 @@
 import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { WebhookDeliveryState } from "./WebhookDeliveryState.js";
+import { WebhookWithSigningKeyDeliveryBackend } from "./WebhookWithSigningKeyDeliveryBackend.js";
 
 export const WebhookWithSigningKey: core.serialization.ObjectSchema<
     serializers.WebhookWithSigningKey.Raw,
@@ -12,6 +14,9 @@ export const WebhookWithSigningKey: core.serialization.ObjectSchema<
     url: core.serialization.string(),
     signingKey: core.serialization.property("signing_key", core.serialization.string()),
     signingKeySet: core.serialization.property("signing_key_set", core.serialization.boolean()),
+    active: core.serialization.boolean().optional(),
+    deliveryBackend: core.serialization.property("delivery_backend", WebhookWithSigningKeyDeliveryBackend.optional()),
+    deliveryState: core.serialization.property("delivery_state", WebhookDeliveryState.optional()),
     createdAt: core.serialization.property("created_at", core.serialization.number()),
     updatedAt: core.serialization.property("updated_at", core.serialization.number()),
 });
@@ -22,6 +27,9 @@ export declare namespace WebhookWithSigningKey {
         url: string;
         signing_key: string;
         signing_key_set: boolean;
+        active?: boolean | null;
+        delivery_backend?: WebhookWithSigningKeyDeliveryBackend.Raw | null;
+        delivery_state?: WebhookDeliveryState.Raw | null;
         created_at: number;
         updated_at: number;
     }

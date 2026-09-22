@@ -1004,6 +1004,105 @@ export class DeployedTriggersClient {
     }
 
     /**
+     * Reactivate a disabled webhook and clear its delivery failure evidence
+     *
+     * @param {string} trigger_id
+     * @param {string} webhook_id
+     * @param {Pipedream.DeployedTriggersResetWebhookDeliveryStateRequest} request
+     * @param {DeployedTriggersClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.TooManyRequestsError}
+     *
+     * @example
+     *     await client.deployedTriggers.resetWebhookDeliveryState("trigger_id", "webhook_id", {
+     *         externalUserId: "external_user_id"
+     *     })
+     */
+    public resetWebhookDeliveryState(
+        trigger_id: string,
+        webhook_id: string,
+        request: Pipedream.DeployedTriggersResetWebhookDeliveryStateRequest,
+        requestOptions?: DeployedTriggersClient.RequestOptions,
+    ): core.HttpResponsePromise<Pipedream.GetWebhookWithSigningKeyResponse> {
+        return core.HttpResponsePromise.fromPromise(
+            this.__resetWebhookDeliveryState(trigger_id, webhook_id, request, requestOptions),
+        );
+    }
+
+    private async __resetWebhookDeliveryState(
+        trigger_id: string,
+        webhook_id: string,
+        request: Pipedream.DeployedTriggersResetWebhookDeliveryStateRequest,
+        requestOptions?: DeployedTriggersClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Pipedream.GetWebhookWithSigningKeyResponse>> {
+        const { externalUserId } = request;
+        const _queryParams: Record<string, unknown> = {
+            external_user_id: externalUserId,
+        };
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+            }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.PipedreamEnvironment.Prod,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/deployed-triggers/${core.url.encodePathParam(trigger_id)}/webhooks/${core.url.encodePathParam(webhook_id)}/reset_delivery_state`,
+            ),
+            method: "POST",
+            headers: _headers,
+            queryString: core.url
+                .queryBuilder()
+                .addMany(_queryParams)
+                .mergeAdditional(requestOptions?.queryParams)
+                .build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.GetWebhookWithSigningKeyResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "POST",
+            "/v1/connect/{project_id}/deployed-triggers/{trigger_id}/webhooks/{webhook_id}/reset_delivery_state",
+        );
+    }
+
+    /**
      * Regenerate the signing key for a specific webhook on a deployed trigger
      *
      * @param {string} trigger_id

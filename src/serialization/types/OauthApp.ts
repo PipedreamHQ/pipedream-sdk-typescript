@@ -9,7 +9,7 @@ import { AppScopeProfilesItem } from "./AppScopeProfilesItem.js";
 export const OauthApp: core.serialization.ObjectSchema<serializers.OauthApp.Raw, Pipedream.OauthApp> =
     core.serialization.object({
         id: core.serialization.string().optional(),
-        clientId: core.serialization.property("client_id", core.serialization.string()),
+        clientId: core.serialization.property("client_id", core.serialization.string().optional()),
         scopes: core.serialization.list(core.serialization.string()).optional(),
         additionalScopes: core.serialization.property(
             "additional_scopes",
@@ -33,7 +33,7 @@ export const OauthApp: core.serialization.ObjectSchema<serializers.OauthApp.Raw,
 export declare namespace OauthApp {
     export interface Raw {
         id?: string | null;
-        client_id: string;
+        client_id?: string | null;
         scopes?: string[] | null;
         additional_scopes?: string[] | null;
         redirect_uri?: string | null;

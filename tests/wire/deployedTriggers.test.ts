@@ -619,7 +619,17 @@ describe("DeployedTriggersClient", () => {
 
         const rawResponseBody = {
             webhook_urls: ["webhook_urls"],
-            webhooks: [{ id: "id", url: "url", signing_key: "signing_key", signing_key_set: true }],
+            webhooks: [
+                {
+                    id: "id",
+                    url: "url",
+                    signing_key: "signing_key",
+                    signing_key_set: true,
+                    active: true,
+                    delivery_backend: "jvm",
+                    delivery_state: { state: "happy", consecutive_failures: 1, sheds: 1 },
+                },
+            ],
         };
 
         server
@@ -641,6 +651,13 @@ describe("DeployedTriggersClient", () => {
                     url: "url",
                     signingKey: "signing_key",
                     signingKeySet: true,
+                    active: true,
+                    deliveryBackend: "jvm",
+                    deliveryState: {
+                        state: "happy",
+                        consecutiveFailures: 1,
+                        sheds: 1,
+                    },
                 },
             ],
         });
@@ -691,7 +708,17 @@ describe("DeployedTriggersClient", () => {
         const rawRequestBody = { webhook_urls: ["webhook_urls"] };
         const rawResponseBody = {
             webhook_urls: ["webhook_urls"],
-            webhooks: [{ id: "id", url: "url", signing_key: "signing_key", signing_key_set: true }],
+            webhooks: [
+                {
+                    id: "id",
+                    url: "url",
+                    signing_key: "signing_key",
+                    signing_key_set: true,
+                    active: true,
+                    delivery_backend: "jvm",
+                    delivery_state: { state: "happy", consecutive_failures: 1, sheds: 1 },
+                },
+            ],
         };
 
         server
@@ -715,6 +742,13 @@ describe("DeployedTriggersClient", () => {
                     url: "url",
                     signingKey: "signing_key",
                     signingKeySet: true,
+                    active: true,
+                    deliveryBackend: "jvm",
+                    deliveryState: {
+                        state: "happy",
+                        consecutiveFailures: 1,
+                        sheds: 1,
+                    },
                 },
             ],
         });
@@ -771,6 +805,15 @@ describe("DeployedTriggersClient", () => {
                 url: "url",
                 signing_key: "signing_key",
                 signing_key_set: true,
+                active: true,
+                delivery_backend: "jvm",
+                delivery_state: {
+                    state: "happy",
+                    since: 1,
+                    last_error: "last_error",
+                    consecutive_failures: 1,
+                    sheds: 1,
+                },
                 created_at: 1,
                 updated_at: 1,
             },
@@ -793,6 +836,15 @@ describe("DeployedTriggersClient", () => {
                 url: "url",
                 signingKey: "signing_key",
                 signingKeySet: true,
+                active: true,
+                deliveryBackend: "jvm",
+                deliveryState: {
+                    state: "happy",
+                    since: 1,
+                    lastError: "last_error",
+                    consecutiveFailures: 1,
+                    sheds: 1,
+                },
                 createdAt: 1,
                 updatedAt: 1,
             },
@@ -829,6 +881,101 @@ describe("DeployedTriggersClient", () => {
         }).rejects.toThrow(Pipedream.TooManyRequestsError);
     });
 
+    test("resetWebhookDeliveryState (1)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {
+            data: {
+                id: "id",
+                url: "url",
+                signing_key: "signing_key",
+                signing_key_set: true,
+                active: true,
+                delivery_backend: "jvm",
+                delivery_state: {
+                    state: "happy",
+                    since: 1,
+                    last_error: "last_error",
+                    consecutive_failures: 1,
+                    sheds: 1,
+                },
+                created_at: 1,
+                updated_at: 1,
+            },
+        };
+
+        server
+            .mockEndpoint()
+            .post("/v1/connect/project_id/deployed-triggers/trigger_id/webhooks/webhook_id/reset_delivery_state")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.deployedTriggers.resetWebhookDeliveryState("trigger_id", "webhook_id", {
+            externalUserId: "external_user_id",
+        });
+        expect(response).toEqual({
+            data: {
+                id: "id",
+                url: "url",
+                signingKey: "signing_key",
+                signingKeySet: true,
+                active: true,
+                deliveryBackend: "jvm",
+                deliveryState: {
+                    state: "happy",
+                    since: 1,
+                    lastError: "last_error",
+                    consecutiveFailures: 1,
+                    sheds: 1,
+                },
+                createdAt: 1,
+                updatedAt: 1,
+            },
+        });
+    });
+
+    test("resetWebhookDeliveryState (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/connect/project_id/deployed-triggers/trigger_id/webhooks/webhook_id/reset_delivery_state")
+            .respondWith()
+            .statusCode(429)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.deployedTriggers.resetWebhookDeliveryState("trigger_id", "webhook_id", {
+                externalUserId: "external_user_id",
+            });
+        }).rejects.toThrow(Pipedream.TooManyRequestsError);
+    });
+
     test("regenerateWebhookSigningKey (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
@@ -848,6 +995,15 @@ describe("DeployedTriggersClient", () => {
                 url: "url",
                 signing_key: "signing_key",
                 signing_key_set: true,
+                active: true,
+                delivery_backend: "jvm",
+                delivery_state: {
+                    state: "happy",
+                    since: 1,
+                    last_error: "last_error",
+                    consecutive_failures: 1,
+                    sheds: 1,
+                },
                 created_at: 1,
                 updated_at: 1,
             },
@@ -870,6 +1026,15 @@ describe("DeployedTriggersClient", () => {
                 url: "url",
                 signingKey: "signing_key",
                 signingKeySet: true,
+                active: true,
+                deliveryBackend: "jvm",
+                deliveryState: {
+                    state: "happy",
+                    since: 1,
+                    lastError: "last_error",
+                    consecutiveFailures: 1,
+                    sheds: 1,
+                },
                 createdAt: 1,
                 updatedAt: 1,
             },

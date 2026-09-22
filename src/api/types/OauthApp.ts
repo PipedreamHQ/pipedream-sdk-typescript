@@ -8,8 +8,8 @@ import type * as Pipedream from "../index.js";
 export interface OauthApp {
     /** Hash ID for the OAuth client */
     id?: string;
-    /** The OAuth client ID registered with the upstream provider */
-    clientId: string;
+    /** The OAuth client ID registered with the upstream provider. Null for a client registered before its provider issued credentials. */
+    clientId?: string;
     /** OAuth scopes requested when users connect through this client */
     scopes?: string[];
     /** Extra OAuth scopes users may grant on top of the base scopes */
