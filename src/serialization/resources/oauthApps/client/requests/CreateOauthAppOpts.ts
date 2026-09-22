@@ -9,8 +9,8 @@ export const CreateOauthAppOpts: core.serialization.Schema<
     Pipedream.CreateOauthAppOpts
 > = core.serialization.object({
     app: core.serialization.string(),
-    clientId: core.serialization.property("client_id", core.serialization.string()),
-    clientSecret: core.serialization.property("client_secret", core.serialization.string()),
+    clientId: core.serialization.property("client_id", core.serialization.string().optional()),
+    clientSecret: core.serialization.property("client_secret", core.serialization.string().optional()),
     name: core.serialization.string().optional(),
     description: core.serialization.string().optional(),
     scopes: core.serialization.list(core.serialization.string()).optional(),
@@ -23,8 +23,8 @@ export const CreateOauthAppOpts: core.serialization.Schema<
 export declare namespace CreateOauthAppOpts {
     export interface Raw {
         app: string;
-        client_id: string;
-        client_secret: string;
+        client_id?: string | null;
+        client_secret?: string | null;
         name?: string | null;
         description?: string | null;
         scopes?: string[] | null;

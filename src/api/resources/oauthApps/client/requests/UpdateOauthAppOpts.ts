@@ -9,7 +9,7 @@ export interface UpdateOauthAppOpts {
     name?: string;
     /** Description of the OAuth client */
     description?: string;
-    /** The OAuth client ID registered with the upstream provider */
+    /** The OAuth client ID registered with the upstream provider. Blank values are ignored and the existing client ID is kept. */
     clientId?: string;
     /** The OAuth client secret. Write-only; blank values are ignored and the existing secret is kept. */
     clientSecret?: string;

@@ -29,6 +29,7 @@ export class OauthTokensClient {
      * @param {Pipedream.CreateOAuthTokenOpts} request
      * @param {OauthTokensClient.RequestOptions} requestOptions - Request-specific configuration.
      *
+     * @throws {@link Pipedream.BadRequestError}
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
@@ -95,6 +96,8 @@ export class OauthTokensClient {
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
+                case 400:
+                    throw new Pipedream.BadRequestError(_response.error.body, _response.rawResponse);
                 case 429:
                     throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
                 default:

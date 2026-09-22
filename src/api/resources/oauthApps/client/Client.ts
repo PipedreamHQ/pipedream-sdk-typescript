@@ -145,9 +145,7 @@ export class OauthAppsClient {
      *
      * @example
      *     await client.oauthApps.create({
-     *         app: "app",
-     *         clientId: "client_id",
-     *         clientSecret: "client_secret"
+     *         app: "app"
      *     })
      */
     public create(
