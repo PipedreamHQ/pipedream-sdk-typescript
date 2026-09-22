@@ -69,6 +69,42 @@ describe("OauthTokensClient", () => {
             .post("/v1/oauth/token")
             .jsonBody(rawRequestBody)
             .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.oauthTokens.create({
+                clientId: "client_id",
+                clientSecret: "client_secret",
+            });
+        }).rejects.toThrow(Pipedream.BadRequestError);
+    });
+
+    test("create (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "projectId",
+            clientId: "client_id",
+            clientSecret: "client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {
+            grant_type: "client_credentials",
+            client_id: "client_id",
+            client_secret: "client_secret",
+        };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/oauth/token")
+            .jsonBody(rawRequestBody)
+            .respondWith()
             .statusCode(429)
             .jsonBody(rawResponseBody)
             .build();
