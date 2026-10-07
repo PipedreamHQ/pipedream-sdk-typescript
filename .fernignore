@@ -32,6 +32,7 @@ src/browser/index.ts
 src/index.ts
 src/wrapper
 tests/wire/connectTokenProjectId.test.ts
+tests/unit/auth/PrivateKeyJwt.test.ts
 
 # Ideally, we shouldn't. But until Fern supports the changes that we've made we
 # have to override some parts.
@@ -41,6 +42,7 @@ src/Client.ts
 src/core/auth/index.ts
 src/core/auth/ConnectTokenProvider.ts
 src/core/auth/OAuthTokenProvider.ts
+src/core/auth/PrivateKeyJwt.ts
 src/core/auth/StaticTokenProvider.ts
 src/core/auth/TokenProvider.ts
 
