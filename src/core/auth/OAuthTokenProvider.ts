@@ -4,17 +4,29 @@
 // `tokenProvider` option and `wrapper/Pipedream.rawAccessToken` keep working.
 
 import type { OauthTokensClient } from "../../api/resources/oauthTokens/client/Client.js";
-
+import type { CreateOAuthTokenResponse } from "../../api/types/CreateOAuthTokenResponse.js";
 import * as core from "../../core/index.js";
+import { PipedreamError } from "../../errors/PipedreamError.js";
+import { PipedreamTimeoutError } from "../../errors/PipedreamTimeoutError.js";
+import { CLIENT_ASSERTION_TYPE } from "./PrivateKeyJwt.js";
 
 /**
  * The OAuthTokenProvider retrieves an OAuth access token, refreshing it as needed.
  * The access token is then used as the bearer token in every authenticated request.
+ *
+ * The client authenticates with either a client secret or a client assertion
+ * (private_key_jwt): a function that signs a new single-use JWT each time it
+ * is called.
  */
 export class OAuthTokenProvider {
     private readonly BUFFER_IN_MINUTES = 2;
+    // Token requests authenticated with an assertion are retried here rather
+    // than by the HTTP client, so each attempt carries a newly signed
+    // assertion: the server rejects a reused one.
+    private readonly ASSERTION_MAX_RETRIES = 2;
     private readonly _clientId: core.Supplier<string>;
-    private readonly _clientSecret: core.Supplier<string>;
+    private readonly _clientSecret: core.Supplier<string> | undefined;
+    private readonly _clientAssertion: (() => Promise<string>) | undefined;
     private readonly _authClient: OauthTokensClient;
     private _accessToken: string | undefined;
     private _expiresAt: Date;
@@ -22,14 +34,18 @@ export class OAuthTokenProvider {
     constructor({
         clientId,
         clientSecret,
+        clientAssertion,
         authClient,
     }: {
         clientId: core.Supplier<string>;
-        clientSecret: core.Supplier<string>;
         authClient: OauthTokensClient;
-    }) {
+    } & (
+        | { clientSecret: core.Supplier<string>; clientAssertion?: undefined }
+        | { clientAssertion: () => Promise<string>; clientSecret?: undefined }
+    )) {
         this._clientId = clientId;
         this._clientSecret = clientSecret;
+        this._clientAssertion = clientAssertion;
         this._authClient = authClient;
         this._expiresAt = new Date();
     }
@@ -42,14 +58,35 @@ export class OAuthTokenProvider {
     }
 
     private async refresh(): Promise<string> {
-        const tokenResponse = await this._authClient.create({
-            clientId: await core.Supplier.get(this._clientId),
-            clientSecret: await core.Supplier.get(this._clientSecret),
-        });
+        const tokenResponse = this._clientAssertion
+            ? await this.requestWithAssertion(this._clientAssertion)
+            : await this._authClient.create({
+                  clientId: await core.Supplier.get(this._clientId),
+                  clientSecret: await core.Supplier.get(this._clientSecret as core.Supplier<string>),
+              });
 
         this._accessToken = tokenResponse.accessToken;
         this._expiresAt = this.getExpiresAt(tokenResponse.expiresIn, this.BUFFER_IN_MINUTES);
         return this._accessToken;
+    }
+
+    private async requestWithAssertion(clientAssertion: () => Promise<string>): Promise<CreateOAuthTokenResponse> {
+        const clientId = await core.Supplier.get(this._clientId);
+        for (let attempt = 0; ; attempt++) {
+            try {
+                return await this._authClient.create(
+                    {
+                        clientId,
+                        clientAssertionType: CLIENT_ASSERTION_TYPE,
+                        clientAssertion: await clientAssertion(),
+                    },
+                    { maxRetries: 0 },
+                );
+            } catch (error) {
+                if (attempt >= this.ASSERTION_MAX_RETRIES || !isRetryable(error)) throw error;
+                await new Promise((resolve) => setTimeout(resolve, 500 * 2 ** attempt));
+            }
+        }
     }
 
     private getExpiresAt(expiresInSeconds: number, bufferInMinutes: number): Date {
@@ -63,4 +100,13 @@ export class OAuthTokenProvider {
         const safetyMs = bufferMs * 2 < expiresInMs ? bufferMs : Math.floor(expiresInMs / 2);
         return new Date(now.getTime() + expiresInMs - safetyMs);
     }
+}
+
+// Rate limits, timeouts, and server errors are transient; 4xx errors such as
+// invalid_client are not.
+function isRetryable(error: unknown): boolean {
+    if (error instanceof PipedreamTimeoutError) return true;
+    if (!(error instanceof PipedreamError)) return false;
+    const status = error.statusCode;
+    return status == null || status === 408 || status === 429 || status >= 500;
 }

@@ -1,12 +1,12 @@
-import type { TokenProvider } from "../core/auth/TokenProvider.js";
 import { ProjectEnvironment } from "../api/index.js";
 import { WorkflowsClient } from "../api/resources/workflows/client/Client.js";
 import { PipedreamClient } from "../Client.js";
+import type { TokenProvider } from "../core/auth/TokenProvider.js";
 import { PipedreamEnvironment } from "../environments.js";
 
 export type PipedreamClientOpts = Pick<
     PipedreamClient.Options,
-    "baseUrl" | "clientId" | "clientSecret" | "headers" | "projectEnvironment"
+    "baseUrl" | "clientId" | "clientSecret" | "privateKey" | "keyId" | "headers" | "projectEnvironment"
 > & {
     /**
      * The unique identifier for the project. This field is required, passed
@@ -59,11 +59,27 @@ export class Pipedream extends PipedreamClient {
         if ("tokenProvider" in opts) {
             clientOpts.tokenProvider = opts.tokenProvider;
         } else {
-            const { clientId = process.env.PIPEDREAM_CLIENT_ID, clientSecret = process.env.PIPEDREAM_CLIENT_SECRET } =
-                opts || {};
+            const clientId = opts.clientId ?? process.env.PIPEDREAM_CLIENT_ID;
+            if (opts.clientSecret && opts.privateKey) {
+                throw new Error("Pass either clientSecret or privateKey, not both");
+            }
+            // Explicit credentials win over environment variables; otherwise
+            // read whichever of the two the environment provides.
+            let { clientSecret, privateKey } = opts;
+            if (!clientSecret && !privateKey) {
+                clientSecret = process.env.PIPEDREAM_CLIENT_SECRET;
+                privateKey = process.env.PIPEDREAM_PRIVATE_KEY;
+                if (clientSecret && privateKey) {
+                    throw new Error(
+                        "Both PIPEDREAM_CLIENT_SECRET and PIPEDREAM_PRIVATE_KEY are set; set only the one your client uses",
+                    );
+                }
+            }
 
-            if (!clientId || !clientSecret) {
-                throw new Error("Client ID and secret are both required and cannot be blank");
+            if (!clientId || !(clientSecret || privateKey)) {
+                throw new Error(
+                    "A client ID and either a client secret or a private key are required and cannot be blank",
+                );
             }
 
             if (!projectId) {
@@ -77,7 +93,12 @@ export class Pipedream extends PipedreamClient {
             clientOpts.projectEnvironment ??= ProjectEnvironment.Production;
 
             clientOpts.clientId = clientId;
-            clientOpts.clientSecret = clientSecret;
+            if (privateKey) {
+                clientOpts.privateKey = privateKey;
+                clientOpts.keyId = opts.keyId ?? process.env.PIPEDREAM_KEY_ID;
+            } else {
+                clientOpts.clientSecret = clientSecret;
+            }
         }
 
         super(clientOpts);

@@ -9,7 +9,12 @@
  */
 export interface CreateOAuthTokenOpts {
     clientId: string;
-    clientSecret: string;
+    /** The client secret, for clients that authenticate with a client secret. */
+    clientSecret?: string;
+    /** Required with `client_assertion`. */
+    clientAssertionType?: "urn:ietf:params:oauth:client-assertion-type:jwt-bearer";
+    /** For clients that authenticate with a public key: a JWT signed with the client's private key (ES256 or RS256). Claims: `iss` and `sub` set to the client ID, `aud` set to `https://api.pipedream.com`, `exp` at most 1 hour ahead, and a unique `jti`. Sign a new assertion for every request, including retries. */
+    clientAssertion?: string;
     /** Optional space-separated scopes for the access token. Defaults to `*`. */
     scope?: string;
 }

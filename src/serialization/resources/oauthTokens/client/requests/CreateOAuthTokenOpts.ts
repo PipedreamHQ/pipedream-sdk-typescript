@@ -9,14 +9,21 @@ export const CreateOAuthTokenOpts: core.serialization.Schema<
     Pipedream.CreateOAuthTokenOpts
 > = core.serialization.object({
     clientId: core.serialization.property("client_id", core.serialization.string()),
-    clientSecret: core.serialization.property("client_secret", core.serialization.string()),
+    clientSecret: core.serialization.property("client_secret", core.serialization.string().optional()),
+    clientAssertionType: core.serialization.property(
+        "client_assertion_type",
+        core.serialization.stringLiteral("urn:ietf:params:oauth:client-assertion-type:jwt-bearer").optional(),
+    ),
+    clientAssertion: core.serialization.property("client_assertion", core.serialization.string().optional()),
     scope: core.serialization.string().optional(),
 });
 
 export declare namespace CreateOAuthTokenOpts {
     export interface Raw {
         client_id: string;
-        client_secret: string;
+        client_secret?: string | null;
+        client_assertion_type?: "urn:ietf:params:oauth:client-assertion-type:jwt-bearer" | null;
+        client_assertion?: string | null;
         scope?: string | null;
     }
 }
