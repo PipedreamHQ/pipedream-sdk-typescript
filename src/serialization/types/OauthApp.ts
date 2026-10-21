@@ -9,14 +9,14 @@ import { AppScopeProfilesItem } from "./AppScopeProfilesItem.js";
 export const OauthApp: core.serialization.ObjectSchema<serializers.OauthApp.Raw, Pipedream.OauthApp> =
     core.serialization.object({
         id: core.serialization.string().optional(),
-        clientId: core.serialization.property("client_id", core.serialization.string()),
+        clientId: core.serialization.property("client_id", core.serialization.string().optional()),
         scopes: core.serialization.list(core.serialization.string()).optional(),
         additionalScopes: core.serialization.property(
             "additional_scopes",
             core.serialization.list(core.serialization.string()).optional(),
         ),
         redirectUri: core.serialization.property("redirect_uri", core.serialization.string().optional()),
-        ownerId: core.serialization.property("owner_id", core.serialization.string()),
+        ownerId: core.serialization.property("owner_id", core.serialization.string().optional()),
         createdAt: core.serialization.property("created_at", core.serialization.date().optional()),
         updatedAt: core.serialization.property("updated_at", core.serialization.date().optional()),
         nameSlug: core.serialization.property("name_slug", core.serialization.string()),
@@ -28,16 +28,17 @@ export const OauthApp: core.serialization.ObjectSchema<serializers.OauthApp.Raw,
         categories: core.serialization.list(core.serialization.string()),
         featuredWeight: core.serialization.property("featured_weight", core.serialization.number()),
         scopeProfiles: core.serialization.property("scope_profiles", core.serialization.list(AppScopeProfilesItem)),
+        oauthAppId: core.serialization.property("oauth_app_id", core.serialization.string().optional()),
     });
 
 export declare namespace OauthApp {
     export interface Raw {
         id?: string | null;
-        client_id: string;
+        client_id?: string | null;
         scopes?: string[] | null;
         additional_scopes?: string[] | null;
         redirect_uri?: string | null;
-        owner_id: string;
+        owner_id?: string | null;
         created_at?: string | null;
         updated_at?: string | null;
         name_slug: string;
@@ -49,5 +50,6 @@ export declare namespace OauthApp {
         categories: string[];
         featured_weight: number;
         scope_profiles: AppScopeProfilesItem.Raw[];
+        oauth_app_id?: string | null;
     }
 }

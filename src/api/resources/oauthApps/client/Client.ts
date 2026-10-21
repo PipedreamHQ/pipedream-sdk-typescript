@@ -145,9 +145,7 @@ export class OauthAppsClient {
      *
      * @example
      *     await client.oauthApps.create({
-     *         app: "app",
-     *         clientId: "client_id",
-     *         clientSecret: "client_secret"
+     *         app: "app"
      *     })
      */
     public create(
@@ -229,7 +227,7 @@ export class OauthAppsClient {
     }
 
     /**
-     * Get the configuration of a specific custom OAuth client
+     * Get the configuration of a specific OAuth client: one of your custom clients, or a Pipedream official client (see an app's `oauth_app_id`)
      *
      * @param {string} id - The OAuth client ID, which starts with `oa_`.
      * @param {OauthAppsClient.RequestOptions} requestOptions - Request-specific configuration.

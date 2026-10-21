@@ -3,21 +3,21 @@
 import type * as Pipedream from "../index.js";
 
 /**
- * A custom OAuth client (bring your own app), presented as its app's metadata merged with the client's own fields. `name` and `description` fall back to the app's when the client doesn't set them. The client secret is write-only and never returned.
+ * An OAuth client, either a custom client (bring your own app) or a Pipedream official client, presented as its app's metadata merged with the client's own fields. `name` and `description` fall back to the app's when the client doesn't set them. The client secret is write-only and never returned.
  */
 export interface OauthApp {
     /** Hash ID for the OAuth client */
     id?: string;
-    /** The OAuth client ID registered with the upstream provider */
-    clientId: string;
+    /** The OAuth client ID registered with the upstream provider. Null for a client registered before its provider issued credentials. */
+    clientId?: string;
     /** OAuth scopes requested when users connect through this client */
     scopes?: string[];
     /** Extra OAuth scopes users may grant on top of the base scopes */
     additionalScopes?: string[];
     /** The redirect URI to register with the upstream OAuth provider */
     redirectUri?: string;
-    /** Hash ID of the owner: the workspace (o_...) or the project (proj_...) */
-    ownerId: string;
+    /** Hash ID of the owner: the workspace (o_...) or the project (proj_...). Null for Pipedream official clients. */
+    ownerId?: string;
     createdAt?: Date;
     updatedAt?: Date;
     /** The name slug of the target app (see https://pipedream.com/docs/connect/quickstart#find-your-apps-name-slug) */
@@ -37,4 +37,6 @@ export interface OauthApp {
     featuredWeight: number;
     /** Named subsets of the app's OAuth scopes that may be requested when users connect their accounts (via the `oauth_scope_profile` parameter). Empty for apps that don't define any. */
     scopeProfiles: Pipedream.AppScopeProfilesItem[];
+    /** ID of the app's Pipedream official OAuth client, or null if the app doesn't use OAuth or has no official client. Retrieve the client, including its scopes, with the Retrieve OAuth client endpoint. Returned by the List apps and Retrieve app endpoints. */
+    oauthAppId?: string;
 }

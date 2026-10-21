@@ -14,7 +14,7 @@ describe("ProjectEnvironmentClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -49,7 +49,7 @@ describe("ProjectEnvironmentClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -77,7 +77,7 @@ describe("ProjectEnvironmentClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -125,7 +125,7 @@ describe("ProjectEnvironmentClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -156,7 +156,7 @@ describe("ProjectEnvironmentClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -175,7 +175,7 @@ describe("ProjectEnvironmentClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -203,7 +203,7 @@ describe("ProjectEnvironmentClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -214,6 +214,15 @@ describe("ProjectEnvironmentClient", () => {
                 url: "url",
                 signing_key: "signing_key",
                 signing_key_set: true,
+                active: true,
+                delivery_backend: "jvm",
+                delivery_state: {
+                    state: "happy",
+                    since: 1,
+                    last_error: "last_error",
+                    consecutive_failures: 1,
+                    sheds: 1,
+                },
                 created_at: 1,
                 updated_at: 1,
             },
@@ -234,6 +243,15 @@ describe("ProjectEnvironmentClient", () => {
                 url: "url",
                 signingKey: "signing_key",
                 signingKeySet: true,
+                active: true,
+                deliveryBackend: "jvm",
+                deliveryState: {
+                    state: "happy",
+                    since: 1,
+                    lastError: "last_error",
+                    consecutiveFailures: 1,
+                    sheds: 1,
+                },
                 createdAt: 1,
                 updatedAt: 1,
             },
@@ -248,7 +266,7 @@ describe("ProjectEnvironmentClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });

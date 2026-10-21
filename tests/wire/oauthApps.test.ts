@@ -14,7 +14,7 @@ describe("OauthAppsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -32,6 +32,7 @@ describe("OauthAppsClient", () => {
                     categories: ["categories"],
                     featured_weight: 1.1,
                     scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
+                    oauth_app_id: "oauth_app_id",
                     client_id: "client_id",
                     scopes: ["scopes"],
                     additional_scopes: ["additional_scopes"],
@@ -70,6 +71,7 @@ describe("OauthAppsClient", () => {
                             scopes: ["scopes"],
                         },
                     ],
+                    oauthAppId: "oauth_app_id",
                     clientId: "client_id",
                     scopes: ["scopes"],
                     additionalScopes: ["additional_scopes"],
@@ -108,7 +110,7 @@ describe("OauthAppsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -136,7 +138,7 @@ describe("OauthAppsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -164,11 +166,11 @@ describe("OauthAppsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
-        const rawRequestBody = { app: "app", client_id: "client_id", client_secret: "client_secret" };
+        const rawRequestBody = { app: "app" };
         const rawResponseBody = {
             id: "id",
             name_slug: "name_slug",
@@ -180,6 +182,7 @@ describe("OauthAppsClient", () => {
             categories: ["categories"],
             featured_weight: 1.1,
             scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
+            oauth_app_id: "oauth_app_id",
             client_id: "client_id",
             scopes: ["scopes"],
             additional_scopes: ["additional_scopes"],
@@ -200,8 +203,6 @@ describe("OauthAppsClient", () => {
 
         const response = await client.oauthApps.create({
             app: "app",
-            clientId: "client_id",
-            clientSecret: "client_secret",
         });
         expect(response).toEqual({
             id: "id",
@@ -219,6 +220,7 @@ describe("OauthAppsClient", () => {
                     scopes: ["scopes"],
                 },
             ],
+            oauthAppId: "oauth_app_id",
             clientId: "client_id",
             scopes: ["scopes"],
             additionalScopes: ["additional_scopes"],
@@ -237,11 +239,11 @@ describe("OauthAppsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
-        const rawRequestBody = { app: "app", client_id: "client_id", client_secret: "client_secret" };
+        const rawRequestBody = { app: "app" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -256,8 +258,6 @@ describe("OauthAppsClient", () => {
         await expect(async () => {
             return await client.oauthApps.create({
                 app: "app",
-                clientId: "client_id",
-                clientSecret: "client_secret",
             });
         }).rejects.toThrow(Pipedream.BadRequestError);
     });
@@ -270,11 +270,11 @@ describe("OauthAppsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
-        const rawRequestBody = { app: "app", client_id: "client_id", client_secret: "client_secret" };
+        const rawRequestBody = { app: "app" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -289,8 +289,6 @@ describe("OauthAppsClient", () => {
         await expect(async () => {
             return await client.oauthApps.create({
                 app: "app",
-                clientId: "client_id",
-                clientSecret: "client_secret",
             });
         }).rejects.toThrow(Pipedream.TooManyRequestsError);
     });
@@ -303,7 +301,7 @@ describe("OauthAppsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -319,6 +317,7 @@ describe("OauthAppsClient", () => {
             categories: ["categories"],
             featured_weight: 1.1,
             scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
+            oauth_app_id: "oauth_app_id",
             client_id: "client_id",
             scopes: ["scopes"],
             additional_scopes: ["additional_scopes"],
@@ -353,6 +352,7 @@ describe("OauthAppsClient", () => {
                     scopes: ["scopes"],
                 },
             ],
+            oauthAppId: "oauth_app_id",
             clientId: "client_id",
             scopes: ["scopes"],
             additionalScopes: ["additional_scopes"],
@@ -371,7 +371,7 @@ describe("OauthAppsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -399,7 +399,7 @@ describe("OauthAppsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -415,6 +415,7 @@ describe("OauthAppsClient", () => {
             categories: ["categories"],
             featured_weight: 1.1,
             scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
+            oauth_app_id: "oauth_app_id",
             client_id: "client_id",
             scopes: ["scopes"],
             additional_scopes: ["additional_scopes"],
@@ -450,6 +451,7 @@ describe("OauthAppsClient", () => {
                     scopes: ["scopes"],
                 },
             ],
+            oauthAppId: "oauth_app_id",
             clientId: "client_id",
             scopes: ["scopes"],
             additionalScopes: ["additional_scopes"],
@@ -468,7 +470,7 @@ describe("OauthAppsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -497,7 +499,7 @@ describe("OauthAppsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -516,7 +518,7 @@ describe("OauthAppsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -544,7 +546,7 @@ describe("OauthAppsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });

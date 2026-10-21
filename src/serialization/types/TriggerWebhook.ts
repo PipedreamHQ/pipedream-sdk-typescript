@@ -3,6 +3,8 @@
 import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { TriggerWebhookDeliveryBackend } from "./TriggerWebhookDeliveryBackend.js";
+import { WebhookDeliveryState } from "./WebhookDeliveryState.js";
 
 export const TriggerWebhook: core.serialization.ObjectSchema<serializers.TriggerWebhook.Raw, Pipedream.TriggerWebhook> =
     core.serialization.object({
@@ -10,6 +12,9 @@ export const TriggerWebhook: core.serialization.ObjectSchema<serializers.Trigger
         url: core.serialization.string(),
         signingKey: core.serialization.property("signing_key", core.serialization.string().optional()),
         signingKeySet: core.serialization.property("signing_key_set", core.serialization.boolean()),
+        active: core.serialization.boolean().optional(),
+        deliveryBackend: core.serialization.property("delivery_backend", TriggerWebhookDeliveryBackend.optional()),
+        deliveryState: core.serialization.property("delivery_state", WebhookDeliveryState.optional()),
     });
 
 export declare namespace TriggerWebhook {
@@ -18,5 +23,8 @@ export declare namespace TriggerWebhook {
         url: string;
         signing_key?: string | null;
         signing_key_set: boolean;
+        active?: boolean | null;
+        delivery_backend?: TriggerWebhookDeliveryBackend.Raw | null;
+        delivery_state?: WebhookDeliveryState.Raw | null;
     }
 }
