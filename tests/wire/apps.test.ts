@@ -13,7 +13,7 @@ describe("AppsClient", () => {
             maxRetries: 0,
             projectId: "projectId",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -31,6 +31,7 @@ describe("AppsClient", () => {
                     categories: ["categories"],
                     featured_weight: 1.1,
                     scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
+                    oauth_app_id: "oauth_app_id",
                 },
             ],
             page_info: { count: 10, total_count: 120, start_cursor: "start_cursor", end_cursor: "end_cursor" },
@@ -62,6 +63,7 @@ describe("AppsClient", () => {
                             scopes: ["scopes"],
                         },
                     ],
+                    oauthAppId: "oauth_app_id",
                 },
             ],
             pageInfo: {
@@ -98,7 +100,7 @@ describe("AppsClient", () => {
             maxRetries: 0,
             projectId: "projectId",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -115,6 +117,7 @@ describe("AppsClient", () => {
                 categories: ["categories"],
                 featured_weight: 1.1,
                 scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
+                oauth_app_id: "oauth_app_id",
             },
         };
 
@@ -144,6 +147,7 @@ describe("AppsClient", () => {
                         scopes: ["scopes"],
                     },
                 ],
+                oauthAppId: "oauth_app_id",
             },
         });
     });

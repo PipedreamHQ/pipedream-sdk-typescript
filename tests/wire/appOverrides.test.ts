@@ -14,7 +14,7 @@ describe("AppOverridesClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -105,7 +105,7 @@ describe("AppOverridesClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -133,7 +133,7 @@ describe("AppOverridesClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -161,7 +161,7 @@ describe("AppOverridesClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -180,6 +180,7 @@ describe("AppOverridesClient", () => {
                 categories: ["categories"],
                 featured_weight: 1.1,
                 scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
+                oauth_app_id: "oauth_app_id",
             },
             oauth_app_id: "oauth_app_id",
             cfmap: { key: "value" },
@@ -220,6 +221,7 @@ describe("AppOverridesClient", () => {
                         scopes: ["scopes"],
                     },
                 ],
+                oauthAppId: "oauth_app_id",
             },
             oauthAppId: "oauth_app_id",
             cfmap: {
@@ -239,7 +241,7 @@ describe("AppOverridesClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -271,7 +273,7 @@ describe("AppOverridesClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -303,7 +305,7 @@ describe("AppOverridesClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -322,6 +324,7 @@ describe("AppOverridesClient", () => {
                 categories: ["categories"],
                 featured_weight: 1.1,
                 scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
+                oauth_app_id: "oauth_app_id",
             },
             oauth_app_id: "oauth_app_id",
             cfmap: { key: "value" },
@@ -358,6 +361,7 @@ describe("AppOverridesClient", () => {
                         scopes: ["scopes"],
                     },
                 ],
+                oauthAppId: "oauth_app_id",
             },
             oauthAppId: "oauth_app_id",
             cfmap: {
@@ -377,7 +381,7 @@ describe("AppOverridesClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -405,7 +409,7 @@ describe("AppOverridesClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -424,6 +428,7 @@ describe("AppOverridesClient", () => {
                 categories: ["categories"],
                 featured_weight: 1.1,
                 scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
+                oauth_app_id: "oauth_app_id",
             },
             oauth_app_id: "oauth_app_id",
             cfmap: { key: "value" },
@@ -461,6 +466,7 @@ describe("AppOverridesClient", () => {
                         scopes: ["scopes"],
                     },
                 ],
+                oauthAppId: "oauth_app_id",
             },
             oauthAppId: "oauth_app_id",
             cfmap: {
@@ -480,7 +486,7 @@ describe("AppOverridesClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -509,7 +515,7 @@ describe("AppOverridesClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -538,7 +544,7 @@ describe("AppOverridesClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -557,7 +563,7 @@ describe("AppOverridesClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });

@@ -14,7 +14,7 @@ describe("ActionsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -90,7 +90,7 @@ describe("ActionsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -118,7 +118,7 @@ describe("ActionsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -146,7 +146,7 @@ describe("ActionsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -215,7 +215,7 @@ describe("ActionsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -243,7 +243,7 @@ describe("ActionsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -300,7 +300,7 @@ describe("ActionsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -333,7 +333,7 @@ describe("ActionsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -387,7 +387,7 @@ describe("ActionsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -419,7 +419,7 @@ describe("ActionsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -470,7 +470,7 @@ describe("ActionsClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });

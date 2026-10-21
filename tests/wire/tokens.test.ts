@@ -14,7 +14,7 @@ describe("TokensClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -52,7 +52,7 @@ describe("TokensClient", () => {
             maxRetries: 0,
             projectId: "project_id",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -83,7 +83,7 @@ describe("TokensClient", () => {
             maxRetries: 0,
             projectId: "projectId",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -100,6 +100,7 @@ describe("TokensClient", () => {
                 categories: ["categories"],
                 featured_weight: 1.1,
                 scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
+                oauth_app_id: "oauth_app_id",
             },
             app_override_id: "app_override_id",
             app_override_field_names: ["app_override_field_names"],
@@ -147,6 +148,7 @@ describe("TokensClient", () => {
                         scopes: ["scopes"],
                     },
                 ],
+                oauthAppId: "oauth_app_id",
             },
             appOverrideId: "app_override_id",
             appOverrideFieldNames: ["app_override_field_names"],
@@ -172,7 +174,7 @@ describe("TokensClient", () => {
             maxRetries: 0,
             projectId: "projectId",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });

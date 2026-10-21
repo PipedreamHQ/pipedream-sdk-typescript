@@ -25,4 +25,6 @@ export interface App {
     featuredWeight: number;
     /** Named subsets of the app's OAuth scopes that may be requested when users connect their accounts (via the `oauth_scope_profile` parameter). Empty for apps that don't define any. */
     scopeProfiles: Pipedream.AppScopeProfilesItem[];
+    /** ID of the app's Pipedream official OAuth client, or null if the app doesn't use OAuth or has no official client. Retrieve the client, including its scopes, with the Retrieve OAuth client endpoint. Returned by the List apps and Retrieve app endpoints. */
+    oauthAppId?: string;
 }
