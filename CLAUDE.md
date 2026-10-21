@@ -32,7 +32,7 @@ There are two classes named `PipedreamClient`. They are not the same thing:
   `PipedreamClient`. **This is what consumers see.**
 
 The wrapper adds: env-var resolution (`PIPEDREAM_PROJECT_ID`,
-`PIPEDREAM_CLIENT_ID`, `PIPEDREAM_CLIENT_SECRET`,
+`PIPEDREAM_CLIENT_ID`, `PIPEDREAM_CLIENT_SECRET`, `PIPEDREAM_PRIVATE_KEY`, `PIPEDREAM_KEY_ID`,
 `PIPEDREAM_PROJECT_ENVIRONMENT`, `PIPEDREAM_BASE_URL`,
 `PIPEDREAM_WORKFLOW_DOMAIN`), input validation, the `workflows` getter with
 custom domain support, and the `rawAccessToken` accessor.
@@ -63,6 +63,22 @@ sub-clients. The generated `OAuthAuthProvider` is intentionally bypassed — we
 use our `core.OAuthTokenProvider` instead because it has a smart 2-minute expiry
 buffer (and a half-lifetime fallback for short-lived tokens) that
 `OAuthAuthProvider` doesn't replicate.
+
+`OAuthTokenProvider` authenticates the client one of two ways, never both:
+
+- **Client secret** (`clientSecret`): sent to `POST /v1/oauth/token` through the
+  generated `oauthTokens.create`, with the HTTP client's normal retries.
+- **Private key** (`privateKey`, optional `keyId`): `core.createClientAssertionSigner`
+  (`src/core/auth/PrivateKeyJwt.ts`, custom) signs an RFC 7523 client assertion
+  for each token request. The alg (ES256/RS256) is inferred from the key, `aud`
+  is the base URL's origin, and every assertion gets a new single-use `jti`. These
+  token requests use `maxRetries: 0`, and the provider retries them itself with a
+  **newly signed** assertion, because the API rejects a reused `jti`. Don't
+  route them through the generic retry logic. Signing uses Node's `crypto`,
+  imported lazily, so the browser build never loads it.
+
+`Client.ts` and the wrapper reject `clientSecret` together with `privateKey`
+(passed or from the environment).
 
 The wrapper and browser entrypoint reach through `_tokenProvider` directly.
 Don't make it private.

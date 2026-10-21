@@ -14,15 +14,11 @@ describe("OauthTokensClient", () => {
             maxRetries: 0,
             projectId: "projectId",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
-        const rawRequestBody = {
-            grant_type: "client_credentials",
-            client_id: "client_id",
-            client_secret: "client_secret",
-        };
+        const rawRequestBody = { grant_type: "client_credentials", client_id: "client_id" };
         const rawResponseBody = { access_token: "access_token", token_type: "token_type", expires_in: 1 };
 
         server
@@ -36,7 +32,6 @@ describe("OauthTokensClient", () => {
 
         const response = await client.oauthTokens.create({
             clientId: "client_id",
-            clientSecret: "client_secret",
         });
         expect(response).toEqual({
             accessToken: "access_token",
@@ -53,15 +48,73 @@ describe("OauthTokensClient", () => {
             maxRetries: 0,
             projectId: "projectId",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
-        const rawRequestBody = {
-            grant_type: "client_credentials",
-            client_id: "client_id",
-            client_secret: "client_secret",
-        };
+        const rawRequestBody = { grant_type: "client_credentials", client_id: "client_id" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/oauth/token")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.oauthTokens.create({
+                clientId: "client_id",
+            });
+        }).rejects.toThrow(Pipedream.BadRequestError);
+    });
+
+    test("create (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "projectId",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { grant_type: "client_credentials", client_id: "client_id" };
+        const rawResponseBody = { error: "error" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/oauth/token")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.oauthTokens.create({
+                clientId: "client_id",
+            });
+        }).rejects.toThrow(Pipedream.UnauthorizedError);
+    });
+
+    test("create (4)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "projectId",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { grant_type: "client_credentials", client_id: "client_id" };
         const rawResponseBody = { key: "value" };
 
         server
@@ -76,7 +129,6 @@ describe("OauthTokensClient", () => {
         await expect(async () => {
             return await client.oauthTokens.create({
                 clientId: "client_id",
-                clientSecret: "client_secret",
             });
         }).rejects.toThrow(Pipedream.TooManyRequestsError);
     });

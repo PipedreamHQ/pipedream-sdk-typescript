@@ -13,7 +13,7 @@ describe("AppCategoriesClient", () => {
             maxRetries: 0,
             projectId: "projectId",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });
@@ -46,7 +46,7 @@ describe("AppCategoriesClient", () => {
             maxRetries: 0,
             projectId: "projectId",
             clientId: "client_id",
-            clientSecret: "client_secret",
+            clientSecret: "test_client_secret",
             projectEnvironment: "test",
             environment: server.baseUrl,
         });

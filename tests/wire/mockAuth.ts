@@ -3,7 +3,11 @@
 import type { MockServer } from "../mock-server/MockServer";
 
 export function mockOAuth(server: MockServer): void {
-    const rawRequestBody = { grant_type: "client_credentials", client_id: "client_id", client_secret: "client_secret" };
+    const rawRequestBody = {
+        grant_type: "client_credentials",
+        client_id: "client_id",
+        client_secret: "test_client_secret",
+    };
     const rawResponseBody = { access_token: "access_token", token_type: "token_type", expires_in: 1 };
     server
         .mockEndpoint()

@@ -29,12 +29,13 @@ export class OauthTokensClient {
      * @param {Pipedream.CreateOAuthTokenOpts} request
      * @param {OauthTokensClient.RequestOptions} requestOptions - Request-specific configuration.
      *
+     * @throws {@link Pipedream.BadRequestError}
+     * @throws {@link Pipedream.UnauthorizedError}
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.oauthTokens.create({
-     *         clientId: "client_id",
-     *         clientSecret: "client_secret"
+     *         clientId: "client_id"
      *     })
      */
     public create(
@@ -95,6 +96,19 @@ export class OauthTokensClient {
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
+                case 400:
+                    throw new Pipedream.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new Pipedream.UnauthorizedError(
+                        serializers.UnauthorizedErrorBody.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
                 case 429:
                     throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
                 default:

@@ -17,6 +17,7 @@ export const App: core.serialization.ObjectSchema<serializers.App.Raw, Pipedream
     categories: core.serialization.list(core.serialization.string()),
     featuredWeight: core.serialization.property("featured_weight", core.serialization.number()),
     scopeProfiles: core.serialization.property("scope_profiles", core.serialization.list(AppScopeProfilesItem)),
+    oauthAppId: core.serialization.property("oauth_app_id", core.serialization.string().optional()),
 });
 
 export declare namespace App {
@@ -31,5 +32,6 @@ export declare namespace App {
         categories: string[];
         featured_weight: number;
         scope_profiles: AppScopeProfilesItem.Raw[];
+        oauth_app_id?: string | null;
     }
 }
