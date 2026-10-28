@@ -15,6 +15,6 @@ export interface UpdateOauthAppOpts {
     clientSecret?: string;
     /** OAuth scopes to request when users connect through this client */
     scopes?: string[];
-    /** Extra OAuth scopes users may grant on top of the base scopes */
+    /** A second scope list to request alongside `scopes`. Its meaning depends on the app; the app's `scope_labels` names both lists. */
     additionalScopes?: string[];
 }

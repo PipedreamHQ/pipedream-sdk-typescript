@@ -32,6 +32,9 @@ describe("AppsClient", () => {
                     featured_weight: 1.1,
                     scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
                     oauth_app_id: "oauth_app_id",
+                    scopes: ["scopes"],
+                    additional_scopes: ["additional_scopes"],
+                    scope_labels: { scopes: "scopes", additional_scopes: "additional_scopes" },
                 },
             ],
             page_info: { count: 10, total_count: 120, start_cursor: "start_cursor", end_cursor: "end_cursor" },
@@ -64,6 +67,12 @@ describe("AppsClient", () => {
                         },
                     ],
                     oauthAppId: "oauth_app_id",
+                    scopes: ["scopes"],
+                    additionalScopes: ["additional_scopes"],
+                    scopeLabels: {
+                        scopes: "scopes",
+                        additionalScopes: "additional_scopes",
+                    },
                 },
             ],
             pageInfo: {
@@ -118,6 +127,9 @@ describe("AppsClient", () => {
                 featured_weight: 1.1,
                 scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
                 oauth_app_id: "oauth_app_id",
+                scopes: ["scopes"],
+                additional_scopes: ["additional_scopes"],
+                scope_labels: { scopes: "scopes", additional_scopes: "additional_scopes" },
             },
         };
 
@@ -148,6 +160,12 @@ describe("AppsClient", () => {
                     },
                 ],
                 oauthAppId: "oauth_app_id",
+                scopes: ["scopes"],
+                additionalScopes: ["additional_scopes"],
+                scopeLabels: {
+                    scopes: "scopes",
+                    additionalScopes: "additional_scopes",
+                },
             },
         });
     });

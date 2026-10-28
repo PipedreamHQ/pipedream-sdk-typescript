@@ -5,6 +5,7 @@ export * from "./App.js";
 export * from "./AppAuthType.js";
 export * from "./AppCategory.js";
 export * from "./AppOverride.js";
+export * from "./AppScopeLabels.js";
 export * from "./AppScopeProfilesItem.js";
 export * from "./AppScopeProfilesItemName.js";
 export * from "./BackendClientOpts.js";
