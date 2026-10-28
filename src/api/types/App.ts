@@ -25,6 +25,12 @@ export interface App {
     featuredWeight: number;
     /** Named subsets of the app's OAuth scopes that may be requested when users connect their accounts (via the `oauth_scope_profile` parameter). Empty for apps that don't define any. */
     scopeProfiles: Pipedream.AppScopeProfilesItem[];
-    /** ID of the app's Pipedream official OAuth client, or null if the app doesn't use OAuth or has no official client. Retrieve the client, including its scopes, with the Retrieve OAuth client endpoint. Returned by the List apps and Retrieve app endpoints. */
+    /** ID of the app's Pipedream official OAuth client, or null if the app doesn't use OAuth or has no official client. Useful for retrieving the OAuth client's `client_id` and redirect URI with the Retrieve OAuth client endpoint. */
     oauthAppId?: string;
+    /** The OAuth scopes requested when an account connects through this OAuth client, or, on an app, through the app's Pipedream official OAuth client and no `oauth_scope_profile`. `null` when the app doesn't use OAuth or has no official client. Absent when the app is embedded in another resource, such as an account. */
+    scopes?: string[];
+    /** A second list of scopes requested alongside `scopes`. The connection does not require the user to grant them. `scope_labels` names both lists. `null` when there are none, or when the app doesn't use OAuth or has no official client. Absent when the app is embedded in another resource, such as an account. */
+    additionalScopes?: string[];
+    /** Display names for `scopes` and `additional_scopes`; their meaning depends on the app. `null` when the app doesn't use OAuth or has no official client. Absent when the app is embedded in another resource, such as an account. */
+    scopeLabels?: Pipedream.AppScopeLabels;
 }
