@@ -4,10 +4,10 @@
  * Details about an observed error message
  */
 export interface ObservationError {
-    /** The name of the error/exception */
-    name?: string;
     /** The error message */
     message?: string;
+    /** The name of the error/exception */
+    name?: string;
     /** The stack trace of the error */
     stack?: string;
 }

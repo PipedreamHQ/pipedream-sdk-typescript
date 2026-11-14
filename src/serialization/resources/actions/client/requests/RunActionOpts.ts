@@ -8,21 +8,25 @@ import { RunActionOptsStashId } from "../../../../types/RunActionOptsStashId.js"
 
 export const RunActionOpts: core.serialization.Schema<serializers.RunActionOpts.Raw, Pipedream.RunActionOpts> =
     core.serialization.object({
-        id: core.serialization.string(),
-        version: core.serialization.string().optional(),
-        externalUserId: core.serialization.property("external_user_id", core.serialization.string()),
         configuredProps: core.serialization.property("configured_props", ConfiguredProps.optional()),
+        debug: core.serialization.boolean().optional(),
         dynamicPropsId: core.serialization.property("dynamic_props_id", core.serialization.string().optional()),
+        externalUserId: core.serialization.property("external_user_id", core.serialization.string()),
+        id: core.serialization.string(),
+        platformVersion: core.serialization.property("platform_version", core.serialization.string().optional()),
         stashId: core.serialization.property("stash_id", RunActionOptsStashId.optional()),
+        version: core.serialization.string().optional(),
     });
 
 export declare namespace RunActionOpts {
     export interface Raw {
-        id: string;
-        version?: string | null;
-        external_user_id: string;
         configured_props?: ConfiguredProps.Raw | null;
+        debug?: boolean | null;
         dynamic_props_id?: string | null;
+        external_user_id: string;
+        id: string;
+        platform_version?: string | null;
         stash_id?: RunActionOptsStashId.Raw | null;
+        version?: string | null;
     }
 }

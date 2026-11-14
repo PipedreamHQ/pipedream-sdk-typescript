@@ -5,19 +5,23 @@ import type * as Pipedream from "../../../../index.js";
 /**
  * @example
  *     {
- *         id: "id",
- *         externalUserId: "external_user_id"
+ *         externalUserId: "external_user_id",
+ *         id: "id"
  *     }
  */
 export interface RunActionOpts {
-    /** The action component ID */
-    id: string;
-    /** Action component semantic version */
-    version?: string;
-    /** The external user ID */
-    externalUserId: string;
     configuredProps?: Pipedream.ConfiguredProps;
+    /** Enable verbose debug logging for this execution. Defaults to false. */
+    debug?: boolean;
     /** The ID for dynamic props */
     dynamicPropsId?: string;
+    /** The external user ID */
+    externalUserId: string;
+    /** The action component ID */
+    id: string;
+    /** Pin a later platform version for the execution runtime. Honored only when strictly later than the current default. */
+    platformVersion?: string;
     stashId?: Pipedream.RunActionOptsStashId;
+    /** Action component semantic version */
+    version?: string;
 }

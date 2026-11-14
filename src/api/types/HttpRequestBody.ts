@@ -6,9 +6,9 @@ import type * as Pipedream from "../index.js";
  * Body configuration for HTTP request
  */
 export interface HttpRequestBody {
-    type?: Pipedream.HttpRequestBodyType;
     contentType?: string;
     fields?: Pipedream.HttpRequestField[];
     mode?: Pipedream.HttpRequestBodyMode;
     raw?: string;
+    type?: Pipedream.HttpRequestBodyType;
 }

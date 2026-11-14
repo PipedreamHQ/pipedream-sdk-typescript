@@ -3,10 +3,10 @@
 export interface PageInfo {
     /** Number of items returned */
     count?: number;
-    /** Total number of items */
-    totalCount?: number;
-    /** Used to fetch the previous page of items */
-    startCursor?: string;
     /** Used to fetch the next page of items */
     endCursor?: string;
+    /** Used to fetch the previous page of items */
+    startCursor?: string;
+    /** Total number of items */
+    totalCount?: number;
 }

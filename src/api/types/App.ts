@@ -6,25 +6,31 @@ import type * as Pipedream from "../index.js";
  * Response object for a Pipedream app's metadata
  */
 export interface App {
-    /** ID of the app. Only applies for OAuth apps. */
-    id?: string;
-    /** The name slug of the target app (see https://pipedream.com/docs/connect/quickstart#find-your-apps-name-slug) */
-    nameSlug: string;
-    /** The human-readable name of the app */
-    name: string;
+    /** A second list of scopes requested alongside `scopes`. The connection does not require the user to grant them. `scope_labels` names both lists. `null` when there are none, or when the app doesn't use OAuth or has no official client. Absent when the app is embedded in another resource, such as an account. */
+    additionalScopes?: string[];
     authType?: Pipedream.AppAuthType;
-    /** A short description of the app */
-    description?: string;
-    /** The URL to the app's logo */
-    imgSrc: string;
-    /** A JSON string representing the custom fields for the app */
-    customFieldsJson?: string;
     /** Categories associated with the app */
     categories: string[];
+    /** A JSON string representing the custom fields for the app */
+    customFieldsJson?: string;
+    /** A short description of the app */
+    description?: string;
     /** A rough directional ordering of app popularity, subject to changes by Pipedream */
     featuredWeight: number;
+    /** ID of the app. Only applies for OAuth apps. */
+    id?: string;
+    /** The URL to the app's logo */
+    imgSrc: string;
+    /** The human-readable name of the app */
+    name: string;
+    /** The name slug of the target app (see https://pipedream.com/docs/connect/quickstart#find-your-apps-name-slug) */
+    nameSlug: string;
+    /** ID of the app's Pipedream official OAuth client, or null if the app doesn't use OAuth or has no official client. Useful for retrieving the OAuth client's `client_id` and redirect URI with the Retrieve OAuth client endpoint. */
+    oauthAppId?: string;
+    /** Display names for `scopes` and `additional_scopes`; their meaning depends on the app. `null` when the app doesn't use OAuth or has no official client. Absent when the app is embedded in another resource, such as an account. */
+    scopeLabels?: Pipedream.AppScopeLabels;
     /** Named subsets of the app's OAuth scopes that may be requested when users connect their accounts (via the `oauth_scope_profile` parameter). Empty for apps that don't define any. */
     scopeProfiles: Pipedream.AppScopeProfilesItem[];
-    /** ID of the app's Pipedream official OAuth client, or null if the app doesn't use OAuth or has no official client. Retrieve the client, including its scopes, with the Retrieve OAuth client endpoint. Returned by the List apps and Retrieve app endpoints. */
-    oauthAppId?: string;
+    /** The OAuth scopes requested when an account connects through this OAuth client, or, on an app, through the app's Pipedream official OAuth client and no `oauth_scope_profile`. `null` when the app doesn't use OAuth or has no official client. Absent when the app is embedded in another resource, such as an account. */
+    scopes?: string[];
 }

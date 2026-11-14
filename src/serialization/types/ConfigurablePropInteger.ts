@@ -10,41 +10,41 @@ export const ConfigurablePropInteger: core.serialization.ObjectSchema<
     serializers.ConfigurablePropInteger.Raw,
     Pipedream.ConfigurablePropInteger
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("integer"),
-    min: core.serialization.number().optional(),
-    max: core.serialization.number().optional(),
     default: ConfiguredPropValueInteger.optional(),
+    max: core.serialization.number().optional(),
+    min: core.serialization.number().optional(),
     options: core.serialization.list(ConfigurablePropIntegerOptionsItem).optional(),
-    name: core.serialization.string(),
-    label: core.serialization.string().optional(),
+    type: core.serialization.stringLiteral("integer"),
     description: core.serialization.string().optional(),
-    optional: core.serialization.boolean().optional(),
     disabled: core.serialization.boolean().optional(),
-    readOnly: core.serialization.boolean().optional(),
     hidden: core.serialization.boolean().optional(),
+    label: core.serialization.string().optional(),
+    name: core.serialization.string(),
+    optional: core.serialization.boolean().optional(),
+    readOnly: core.serialization.boolean().optional(),
+    reloadProps: core.serialization.boolean().optional(),
     remoteOptions: core.serialization.boolean().optional(),
     useQuery: core.serialization.boolean().optional(),
-    reloadProps: core.serialization.boolean().optional(),
     withLabel: core.serialization.boolean().optional(),
 });
 
 export declare namespace ConfigurablePropInteger {
     export interface Raw {
-        type: "integer";
-        min?: number | null;
-        max?: number | null;
         default?: ConfiguredPropValueInteger.Raw | null;
+        max?: number | null;
+        min?: number | null;
         options?: ConfigurablePropIntegerOptionsItem.Raw[] | null;
-        name: string;
-        label?: string | null;
+        type: "integer";
         description?: string | null;
-        optional?: boolean | null;
         disabled?: boolean | null;
-        readOnly?: boolean | null;
         hidden?: boolean | null;
+        label?: string | null;
+        name: string;
+        optional?: boolean | null;
+        readOnly?: boolean | null;
+        reloadProps?: boolean | null;
         remoteOptions?: boolean | null;
         useQuery?: boolean | null;
-        reloadProps?: boolean | null;
         withLabel?: boolean | null;
     }
 }

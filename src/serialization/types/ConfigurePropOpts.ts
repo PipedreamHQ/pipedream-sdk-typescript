@@ -9,32 +9,34 @@ export const ConfigurePropOpts: core.serialization.ObjectSchema<
     serializers.ConfigurePropOpts.Raw,
     Pipedream.ConfigurePropOpts
 > = core.serialization.object({
-    id: core.serialization.string(),
-    version: core.serialization.string().optional(),
-    externalUserId: core.serialization.property("external_user_id", core.serialization.string()),
-    propName: core.serialization.property("prop_name", core.serialization.string()),
     blocking: core.serialization.boolean().optional(),
     configuredProps: core.serialization.property("configured_props", ConfiguredProps.optional()),
     dynamicPropsId: core.serialization.property("dynamic_props_id", core.serialization.string().optional()),
+    externalUserId: core.serialization.property("external_user_id", core.serialization.string()),
+    id: core.serialization.string(),
     page: core.serialization.number().optional(),
+    platformVersion: core.serialization.property("platform_version", core.serialization.string().optional()),
     prevContext: core.serialization.property(
         "prev_context",
         core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
     ),
+    propName: core.serialization.property("prop_name", core.serialization.string()),
     query: core.serialization.string().optional(),
+    version: core.serialization.string().optional(),
 });
 
 export declare namespace ConfigurePropOpts {
     export interface Raw {
-        id: string;
-        version?: string | null;
-        external_user_id: string;
-        prop_name: string;
         blocking?: boolean | null;
         configured_props?: ConfiguredProps.Raw | null;
         dynamic_props_id?: string | null;
+        external_user_id: string;
+        id: string;
         page?: number | null;
+        platform_version?: string | null;
         prev_context?: Record<string, unknown> | null;
+        prop_name: string;
         query?: string | null;
+        version?: string | null;
     }
 }

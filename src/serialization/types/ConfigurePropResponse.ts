@@ -10,19 +10,19 @@ export const ConfigurePropResponse: core.serialization.ObjectSchema<
     serializers.ConfigurePropResponse.Raw,
     Pipedream.ConfigurePropResponse
 > = core.serialization.object({
-    options: ConfigurePropOptions.optional(),
-    stringOptions: core.serialization.list(core.serialization.string()).optional(),
-    observations: core.serialization.list(Observation).optional(),
     context: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
     errors: core.serialization.list(core.serialization.string()).optional(),
+    observations: core.serialization.list(Observation).optional(),
+    options: ConfigurePropOptions.optional(),
+    stringOptions: core.serialization.list(core.serialization.string()).optional(),
 });
 
 export declare namespace ConfigurePropResponse {
     export interface Raw {
-        options?: (ConfigurePropOptions.Raw | undefined) | null;
-        stringOptions?: string[] | null;
-        observations?: Observation.Raw[] | null;
         context?: Record<string, unknown> | null;
         errors?: string[] | null;
+        observations?: Observation.Raw[] | null;
+        options?: (ConfigurePropOptions.Raw | undefined) | null;
+        stringOptions?: string[] | null;
     }
 }

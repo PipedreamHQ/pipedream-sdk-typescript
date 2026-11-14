@@ -8,17 +8,17 @@ export const ConfiguredPropValueSql: core.serialization.ObjectSchema<
     serializers.ConfiguredPropValueSql.Raw,
     Pipedream.ConfiguredPropValueSql
 > = core.serialization.object({
-    value: core.serialization.string(),
-    query: core.serialization.string(),
     params: core.serialization.list(core.serialization.string()),
+    query: core.serialization.string(),
     usePreparedStatements: core.serialization.boolean(),
+    value: core.serialization.string(),
 });
 
 export declare namespace ConfiguredPropValueSql {
     export interface Raw {
-        value: string;
-        query: string;
         params: string[];
+        query: string;
         usePreparedStatements: boolean;
+        value: string;
     }
 }

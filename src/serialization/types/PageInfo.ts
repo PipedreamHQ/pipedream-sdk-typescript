@@ -7,16 +7,16 @@ import type * as serializers from "../index.js";
 export const PageInfo: core.serialization.ObjectSchema<serializers.PageInfo.Raw, Pipedream.PageInfo> =
     core.serialization.object({
         count: core.serialization.number().optional(),
-        totalCount: core.serialization.property("total_count", core.serialization.number().optional()),
-        startCursor: core.serialization.property("start_cursor", core.serialization.string().optional()),
         endCursor: core.serialization.property("end_cursor", core.serialization.string().optional()),
+        startCursor: core.serialization.property("start_cursor", core.serialization.string().optional()),
+        totalCount: core.serialization.property("total_count", core.serialization.number().optional()),
     });
 
 export declare namespace PageInfo {
     export interface Raw {
         count?: number | null;
-        total_count?: number | null;
-        start_cursor?: string | null;
         end_cursor?: string | null;
+        start_cursor?: string | null;
+        total_count?: number | null;
     }
 }

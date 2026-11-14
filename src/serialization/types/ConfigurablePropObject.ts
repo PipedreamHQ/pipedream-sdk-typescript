@@ -10,37 +10,37 @@ export const ConfigurablePropObject: core.serialization.ObjectSchema<
     serializers.ConfigurablePropObject.Raw,
     Pipedream.ConfigurablePropObject
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("object"),
     default: ConfiguredPropValueObject.optional(),
     options: core.serialization.list(ConfigurablePropObjectOptionsItem).optional(),
-    name: core.serialization.string(),
-    label: core.serialization.string().optional(),
+    type: core.serialization.stringLiteral("object"),
     description: core.serialization.string().optional(),
-    optional: core.serialization.boolean().optional(),
     disabled: core.serialization.boolean().optional(),
-    readOnly: core.serialization.boolean().optional(),
     hidden: core.serialization.boolean().optional(),
+    label: core.serialization.string().optional(),
+    name: core.serialization.string(),
+    optional: core.serialization.boolean().optional(),
+    readOnly: core.serialization.boolean().optional(),
+    reloadProps: core.serialization.boolean().optional(),
     remoteOptions: core.serialization.boolean().optional(),
     useQuery: core.serialization.boolean().optional(),
-    reloadProps: core.serialization.boolean().optional(),
     withLabel: core.serialization.boolean().optional(),
 });
 
 export declare namespace ConfigurablePropObject {
     export interface Raw {
-        type: "object";
         default?: ConfiguredPropValueObject.Raw | null;
         options?: ConfigurablePropObjectOptionsItem.Raw[] | null;
-        name: string;
-        label?: string | null;
+        type: "object";
         description?: string | null;
-        optional?: boolean | null;
         disabled?: boolean | null;
-        readOnly?: boolean | null;
         hidden?: boolean | null;
+        label?: string | null;
+        name: string;
+        optional?: boolean | null;
+        readOnly?: boolean | null;
+        reloadProps?: boolean | null;
         remoteOptions?: boolean | null;
         useQuery?: boolean | null;
-        reloadProps?: boolean | null;
         withLabel?: boolean | null;
     }
 }

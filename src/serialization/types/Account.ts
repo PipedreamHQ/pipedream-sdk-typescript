@@ -9,40 +9,40 @@ import { App } from "./App.js";
 
 export const Account: core.serialization.ObjectSchema<serializers.Account.Raw, Pipedream.Account> =
     core.serialization.object({
-        id: AccountId,
-        name: core.serialization.string().optional(),
-        externalId: core.serialization.property("external_id", core.serialization.string().optional()),
-        healthy: core.serialization.boolean().optional(),
-        dead: core.serialization.boolean().optional(),
         app: App.optional(),
-        createdAt: core.serialization.property("created_at", core.serialization.date().optional()),
-        updatedAt: core.serialization.property("updated_at", core.serialization.date().optional()),
         authorizedScopes: core.serialization.property(
             "authorized_scopes",
             core.serialization.list(core.serialization.string()).optional(),
         ),
+        createdAt: core.serialization.property("created_at", core.serialization.date().optional()),
         credentials: AccountCredentials.optional(),
-        expiresAt: core.serialization.property("expires_at", core.serialization.date().optional()),
+        dead: core.serialization.boolean().optional(),
         error: core.serialization.string().optional(),
+        expiresAt: core.serialization.property("expires_at", core.serialization.date().optional()),
+        externalId: core.serialization.property("external_id", core.serialization.string().optional()),
+        healthy: core.serialization.boolean().optional(),
+        id: AccountId,
         lastRefreshedAt: core.serialization.property("last_refreshed_at", core.serialization.date().optional()),
+        name: core.serialization.string().optional(),
         nextRefreshAt: core.serialization.property("next_refresh_at", core.serialization.date().optional()),
+        updatedAt: core.serialization.property("updated_at", core.serialization.date().optional()),
     });
 
 export declare namespace Account {
     export interface Raw {
-        id: AccountId.Raw;
-        name?: string | null;
+        app?: App.Raw | null;
+        authorized_scopes?: string[] | null;
+        created_at?: string | null;
+        credentials?: AccountCredentials.Raw | null;
+        dead?: boolean | null;
+        error?: string | null;
+        expires_at?: string | null;
         external_id?: string | null;
         healthy?: boolean | null;
-        dead?: boolean | null;
-        app?: App.Raw | null;
-        created_at?: string | null;
-        updated_at?: string | null;
-        authorized_scopes?: string[] | null;
-        credentials?: AccountCredentials.Raw | null;
-        expires_at?: string | null;
-        error?: string | null;
+        id: AccountId.Raw;
         last_refreshed_at?: string | null;
+        name?: string | null;
         next_refresh_at?: string | null;
+        updated_at?: string | null;
     }
 }

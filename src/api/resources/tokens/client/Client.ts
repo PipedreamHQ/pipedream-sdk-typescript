@@ -16,100 +16,14 @@ export declare namespace TokensClient {
     export interface RequestOptions extends BaseRequestOptions {}
 }
 
+/**
+ * Connect tokens
+ */
 export class TokensClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<TokensClient.Options>;
 
     constructor(options: TokensClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
-    }
-
-    /**
-     * Generate a Connect token to use for client-side authentication
-     *
-     * @param {Pipedream.CreateTokenOpts} request
-     * @param {TokensClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Pipedream.TooManyRequestsError}
-     *
-     * @example
-     *     await client.tokens.create({
-     *         externalUserId: "external_user_id"
-     *     })
-     */
-    public create(
-        request: Pipedream.CreateTokenOpts,
-        requestOptions?: TokensClient.RequestOptions,
-    ): core.HttpResponsePromise<Pipedream.CreateTokenResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
-    }
-
-    private async __create(
-        request: Pipedream.CreateTokenOpts,
-        requestOptions?: TokensClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Pipedream.CreateTokenResponse>> {
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
-            }),
-            requestOptions?.headers,
-        );
-        const _response = await core.fetcher({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)) ??
-                    environments.PipedreamEnvironment.Prod,
-                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/tokens`,
-            ),
-            method: "POST",
-            headers: _headers,
-            contentType: "application/json",
-            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
-            requestType: "json",
-            body: serializers.CreateTokenOpts.jsonOrThrow(request, {
-                unrecognizedObjectKeys: "strip",
-                omitUndefined: true,
-            }),
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return {
-                data: serializers.CreateTokenResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 429:
-                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
-                default:
-                    throw new errors.PipedreamError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        return handleNonStatusCodeError(
-            _response.error,
-            _response.rawResponse,
-            "POST",
-            "/v1/connect/{project_id}/tokens",
-        );
     }
 
     /**
@@ -209,6 +123,104 @@ export class TokensClient {
             _response.rawResponse,
             "GET",
             "/v1/connect/tokens/{ctok}/validate",
+        );
+    }
+
+    /**
+     * Generate a Connect token to use for client-side authentication
+     *
+     * @param {Pipedream.CreateTokenOpts} request
+     * @param {TokensClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.BadRequestError}
+     * @throws {@link Pipedream.UnauthorizedError}
+     * @throws {@link Pipedream.NotFoundError}
+     * @throws {@link Pipedream.TooManyRequestsError}
+     *
+     * @example
+     *     await client.tokens.create({
+     *         externalUserId: "external_user_id"
+     *     })
+     */
+    public create(
+        request: Pipedream.CreateTokenOpts,
+        requestOptions?: TokensClient.RequestOptions,
+    ): core.HttpResponsePromise<Pipedream.CreateTokenResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
+    }
+
+    private async __create(
+        request: Pipedream.CreateTokenOpts,
+        requestOptions?: TokensClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Pipedream.CreateTokenResponse>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+            }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.PipedreamEnvironment.Prod,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/tokens`,
+            ),
+            method: "POST",
+            headers: _headers,
+            contentType: "application/json",
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            requestType: "json",
+            body: serializers.CreateTokenOpts.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.CreateTokenResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Pipedream.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new Pipedream.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Pipedream.NotFoundError(_response.error.body, _response.rawResponse);
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "POST",
+            "/v1/connect/{project_id}/tokens",
         );
     }
 }

@@ -6,6 +6,134 @@ import { mockServerPool } from "../mock-server/MockServerPool";
 import { mockOAuth } from "./mockAuth";
 
 describe("TokensClient", () => {
+    test("validate (1)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "projectId",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {
+            app: {
+                additional_scopes: ["additional_scopes"],
+                auth_type: "keys",
+                categories: ["categories"],
+                custom_fields_json: "custom_fields_json",
+                description: "description",
+                featured_weight: 1.1,
+                id: "id",
+                img_src: "img_src",
+                name: "name",
+                name_slug: "name_slug",
+                oauth_app_id: "oauth_app_id",
+                scope_labels: { additional_scopes: "additional_scopes", scopes: "scopes" },
+                scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
+                scopes: ["scopes"],
+            },
+            app_override_field_names: ["app_override_field_names"],
+            app_override_id: "app_override_id",
+            error: "error",
+            error_redirect_uri: "error_redirect_uri",
+            oauth_app_connect_base_url: "oauth_app_connect_base_url",
+            oauth_app_id: "oauth_app_id",
+            oauth_app_workday_official: true,
+            project_app_name: "project_app_name",
+            project_environment: "project_environment",
+            project_id: "project_id",
+            project_support_email: "project_support_email",
+            success: true,
+            success_redirect_uri: "success_redirect_uri",
+        };
+
+        server
+            .mockEndpoint()
+            .get("/v1/connect/tokens/ctok/validate")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.tokens.validate("ctok", {
+            appId: "app_id",
+            accountId: "account_id",
+            oauthAppId: "oauth_app_id",
+            appOverrideId: "app_override_id",
+        });
+        expect(response).toEqual({
+            app: {
+                additionalScopes: ["additional_scopes"],
+                authType: "keys",
+                categories: ["categories"],
+                customFieldsJson: "custom_fields_json",
+                description: "description",
+                featuredWeight: 1.1,
+                id: "id",
+                imgSrc: "img_src",
+                name: "name",
+                nameSlug: "name_slug",
+                oauthAppId: "oauth_app_id",
+                scopeLabels: {
+                    additionalScopes: "additional_scopes",
+                    scopes: "scopes",
+                },
+                scopeProfiles: [
+                    {
+                        name: "read_only",
+                        scopes: ["scopes"],
+                    },
+                ],
+                scopes: ["scopes"],
+            },
+            appOverrideFieldNames: ["app_override_field_names"],
+            appOverrideId: "app_override_id",
+            error: "error",
+            errorRedirectUri: "error_redirect_uri",
+            oauthAppConnectBaseUrl: "oauth_app_connect_base_url",
+            oauthAppId: "oauth_app_id",
+            oauthAppWorkdayOfficial: true,
+            projectAppName: "project_app_name",
+            projectEnvironment: "project_environment",
+            projectId: "project_id",
+            projectSupportEmail: "project_support_email",
+            success: true,
+            successRedirectUri: "success_redirect_uri",
+        });
+    });
+
+    test("validate (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "projectId",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/connect/tokens/ctok/validate")
+            .respondWith()
+            .statusCode(429)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.tokens.validate("ctok");
+        }).rejects.toThrow(Pipedream.TooManyRequestsError);
+    });
+
     test("create (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
@@ -64,6 +192,99 @@ describe("TokensClient", () => {
             .post("/v1/connect/project_id/tokens")
             .jsonBody(rawRequestBody)
             .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.tokens.create({
+                externalUserId: "external_user_id",
+            });
+        }).rejects.toThrow(Pipedream.BadRequestError);
+    });
+
+    test("create (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { external_user_id: "external_user_id" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/connect/project_id/tokens")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.tokens.create({
+                externalUserId: "external_user_id",
+            });
+        }).rejects.toThrow(Pipedream.UnauthorizedError);
+    });
+
+    test("create (4)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { external_user_id: "external_user_id" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/connect/project_id/tokens")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.tokens.create({
+                externalUserId: "external_user_id",
+            });
+        }).rejects.toThrow(Pipedream.NotFoundError);
+    });
+
+    test("create (5)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { external_user_id: "external_user_id" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/connect/project_id/tokens")
+            .jsonBody(rawRequestBody)
+            .respondWith()
             .statusCode(429)
             .jsonBody(rawResponseBody)
             .build();
@@ -72,125 +293,6 @@ describe("TokensClient", () => {
             return await client.tokens.create({
                 externalUserId: "external_user_id",
             });
-        }).rejects.toThrow(Pipedream.TooManyRequestsError);
-    });
-
-    test("validate (1)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new PipedreamClient({
-            maxRetries: 0,
-            projectId: "projectId",
-            clientId: "client_id",
-            clientSecret: "test_client_secret",
-            projectEnvironment: "test",
-            environment: server.baseUrl,
-        });
-
-        const rawResponseBody = {
-            app: {
-                id: "id",
-                name_slug: "name_slug",
-                name: "name",
-                auth_type: "keys",
-                description: "description",
-                img_src: "img_src",
-                custom_fields_json: "custom_fields_json",
-                categories: ["categories"],
-                featured_weight: 1.1,
-                scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
-                oauth_app_id: "oauth_app_id",
-            },
-            app_override_id: "app_override_id",
-            app_override_field_names: ["app_override_field_names"],
-            error: "error",
-            error_redirect_uri: "error_redirect_uri",
-            oauth_app_id: "oauth_app_id",
-            oauth_app_workday_official: true,
-            oauth_app_connect_base_url: "oauth_app_connect_base_url",
-            project_app_name: "project_app_name",
-            project_environment: "project_environment",
-            project_id: "project_id",
-            project_support_email: "project_support_email",
-            success: true,
-            success_redirect_uri: "success_redirect_uri",
-        };
-
-        server
-            .mockEndpoint()
-            .get("/v1/connect/tokens/ctok/validate")
-            .respondWith()
-            .statusCode(200)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        const response = await client.tokens.validate("ctok", {
-            appId: "app_id",
-            accountId: "account_id",
-            oauthAppId: "oauth_app_id",
-            appOverrideId: "app_override_id",
-        });
-        expect(response).toEqual({
-            app: {
-                id: "id",
-                nameSlug: "name_slug",
-                name: "name",
-                authType: "keys",
-                description: "description",
-                imgSrc: "img_src",
-                customFieldsJson: "custom_fields_json",
-                categories: ["categories"],
-                featuredWeight: 1.1,
-                scopeProfiles: [
-                    {
-                        name: "read_only",
-                        scopes: ["scopes"],
-                    },
-                ],
-                oauthAppId: "oauth_app_id",
-            },
-            appOverrideId: "app_override_id",
-            appOverrideFieldNames: ["app_override_field_names"],
-            error: "error",
-            errorRedirectUri: "error_redirect_uri",
-            oauthAppId: "oauth_app_id",
-            oauthAppWorkdayOfficial: true,
-            oauthAppConnectBaseUrl: "oauth_app_connect_base_url",
-            projectAppName: "project_app_name",
-            projectEnvironment: "project_environment",
-            projectId: "project_id",
-            projectSupportEmail: "project_support_email",
-            success: true,
-            successRedirectUri: "success_redirect_uri",
-        });
-    });
-
-    test("validate (2)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new PipedreamClient({
-            maxRetries: 0,
-            projectId: "projectId",
-            clientId: "client_id",
-            clientSecret: "test_client_secret",
-            projectEnvironment: "test",
-            environment: server.baseUrl,
-        });
-
-        const rawResponseBody = { key: "value" };
-
-        server
-            .mockEndpoint()
-            .get("/v1/connect/tokens/ctok/validate")
-            .respondWith()
-            .statusCode(429)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.tokens.validate("ctok");
         }).rejects.toThrow(Pipedream.TooManyRequestsError);
     });
 });

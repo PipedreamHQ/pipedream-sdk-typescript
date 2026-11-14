@@ -16,6 +16,9 @@ export declare namespace AccountsClient {
     export interface RequestOptions extends BaseRequestOptions {}
 }
 
+/**
+ * Connected accounts
+ */
 export class AccountsClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<AccountsClient.Options>;
 
@@ -136,11 +139,12 @@ export class AccountsClient {
     }
 
     /**
-     * Connect a new account for an external user in the project
+     * Connect a new account for an external user in the project.
      *
      * @param {Pipedream.CreateAccountOpts} request
      * @param {AccountsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
+     * @throws {@link Pipedream.UnprocessableEntityError}
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
@@ -218,6 +222,8 @@ export class AccountsClient {
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
+                case 422:
+                    throw new Pipedream.UnprocessableEntityError(_response.error.body, _response.rawResponse);
                 case 429:
                     throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
                 default:
@@ -470,12 +476,14 @@ export class AccountsClient {
     }
 
     /**
-     * List all connected accounts for a specific external user. Equivalent to GET /accounts with external_user_id filter but uses path-based routing.
+     * List all connected accounts for a specific external user, unpaginated and newest first
      *
-     * @param {string} external_user_id
+     * @param {string} external_user_id - The external user ID to list accounts for, or `me` for the requesting Connect token's own user.
      * @param {Pipedream.AccountsListByExternalUserRequest} request
      * @param {AccountsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
+     * @throws {@link Pipedream.NotFoundError}
+     * @throws {@link Pipedream.ContentTooLargeError}
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
@@ -548,6 +556,19 @@ export class AccountsClient {
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
+                case 404:
+                    throw new Pipedream.NotFoundError(_response.error.body, _response.rawResponse);
+                case 413:
+                    throw new Pipedream.ContentTooLargeError(
+                        serializers.AccountLimitReached.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
                 case 429:
                     throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
                 default:

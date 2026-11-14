@@ -6,30 +6,30 @@ import type * as Pipedream from "../index.js";
  * End user account data, returned from the API.
  */
 export interface Account {
-    id: Pipedream.AccountId;
-    /** The custom name of the account if set. */
-    name?: string;
+    app?: Pipedream.App;
+    /** The OAuth scopes effectively granted to this account. Empty for non-OAuth apps. */
+    authorizedScopes?: string[];
+    /** The date and time the account was created, an ISO 8601 formatted string */
+    createdAt?: Date;
+    /** The credentials associated with the account, if the `include_credentials` parameter was set to true in the request (only applicable for BYOA apps). In addition to the well-known OAuth fields listed below, this object may contain app-specific custom fields (e.g. `base_url`). */
+    credentials?: Pipedream.AccountCredentials;
+    /** Indicates if the account is no longer active */
+    dead?: boolean;
+    /** The error message if the account is unhealthy or dead, null otherwise */
+    error?: string;
+    /** The date and time the account's credentials expiration, an ISO 8601 formatted string */
+    expiresAt?: Date;
     /** The external ID associated with the account. */
     externalId?: string;
     /** Indicates if the account is healthy. Pipedream will periodically retry token refresh and test requests for unhealthy accounts */
     healthy?: boolean;
-    /** Indicates if the account is no longer active */
-    dead?: boolean;
-    app?: Pipedream.App;
-    /** The date and time the account was created, an ISO 8601 formatted string */
-    createdAt?: Date;
-    /** The date and time the account was last updated, an ISO 8601 formatted string */
-    updatedAt?: Date;
-    /** The OAuth scopes effectively granted to this account. Empty for non-OAuth apps. */
-    authorizedScopes?: string[];
-    /** The credentials associated with the account, if the `include_credentials` parameter was set to true in the request (only applicable for BYOA apps). In addition to the well-known OAuth fields listed below, this object may contain app-specific custom fields (e.g. `base_url`). */
-    credentials?: Pipedream.AccountCredentials;
-    /** The date and time the account's credentials expiration, an ISO 8601 formatted string */
-    expiresAt?: Date;
-    /** The error message if the account is unhealthy or dead, null otherwise */
-    error?: string;
+    id: Pipedream.AccountId;
     /** The date and time the account was last refreshed, an ISO 8601 formatted string */
     lastRefreshedAt?: Date;
+    /** The custom name of the account if set. */
+    name?: string;
     /** The date and time the account will next be refreshed, an ISO 8601 formatted string */
     nextRefreshAt?: Date;
+    /** The date and time the account was last updated, an ISO 8601 formatted string */
+    updatedAt?: Date;
 }
