@@ -9,8 +9,8 @@ export interface HttpRequestConfig {
     auth?: Pipedream.HttpRequestAuth;
     body?: Pipedream.HttpRequestBody;
     headers?: Pipedream.HttpRequestField[];
+    method?: string;
     params?: Pipedream.HttpRequestField[];
     tab?: string;
-    method?: string;
     url?: string;
 }

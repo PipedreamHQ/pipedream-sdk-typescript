@@ -6,35 +6,35 @@ import type * as serializers from "../../../../index.js";
 
 export const CreateTokenOpts: core.serialization.Schema<serializers.CreateTokenOpts.Raw, Pipedream.CreateTokenOpts> =
     core.serialization.object({
-        allowedOrigins: core.serialization.property(
-            "allowed_origins",
-            core.serialization.list(core.serialization.string()).optional(),
-        ),
-        errorRedirectUri: core.serialization.property("error_redirect_uri", core.serialization.string().optional()),
-        expiresIn: core.serialization.property("expires_in", core.serialization.number().optional()),
-        externalUserId: core.serialization.property("external_user_id", core.serialization.string()),
-        scope: core.serialization.string().optional(),
-        successRedirectUri: core.serialization.property("success_redirect_uri", core.serialization.string().optional()),
-        webhookUri: core.serialization.property("webhook_uri", core.serialization.string().optional()),
         allowProgressiveScopes: core.serialization.property(
             "allow_progressive_scopes",
             core.serialization.boolean().optional(),
         ),
+        allowedOrigins: core.serialization.property(
+            "allowed_origins",
+            core.serialization.list(core.serialization.string()).optional(),
+        ),
         appId: core.serialization.property("app_id", core.serialization.string().optional()),
+        errorRedirectUri: core.serialization.property("error_redirect_uri", core.serialization.string().optional()),
+        expiresIn: core.serialization.property("expires_in", core.serialization.number().optional()),
+        externalUserId: core.serialization.property("external_user_id", core.serialization.string()),
         oauthAppId: core.serialization.property("oauth_app_id", core.serialization.string().optional()),
+        scope: core.serialization.string().optional(),
+        successRedirectUri: core.serialization.property("success_redirect_uri", core.serialization.string().optional()),
+        webhookUri: core.serialization.property("webhook_uri", core.serialization.string().optional()),
     });
 
 export declare namespace CreateTokenOpts {
     export interface Raw {
+        allow_progressive_scopes?: boolean | null;
         allowed_origins?: string[] | null;
+        app_id?: string | null;
         error_redirect_uri?: string | null;
         expires_in?: number | null;
         external_user_id: string;
+        oauth_app_id?: string | null;
         scope?: string | null;
         success_redirect_uri?: string | null;
         webhook_uri?: string | null;
-        allow_progressive_scopes?: boolean | null;
-        app_id?: string | null;
-        oauth_app_id?: string | null;
     }
 }

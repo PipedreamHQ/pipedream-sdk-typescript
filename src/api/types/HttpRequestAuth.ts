@@ -6,9 +6,9 @@ import type * as Pipedream from "../index.js";
  * Authentication configuration for HTTP request
  */
 export interface HttpRequestAuth {
+    password?: string;
+    token?: string;
     /** The authentication type */
     type?: Pipedream.HttpRequestAuthType;
     username?: string;
-    password?: string;
-    token?: string;
 }

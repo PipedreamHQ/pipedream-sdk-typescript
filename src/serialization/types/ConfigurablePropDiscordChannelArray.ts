@@ -8,35 +8,35 @@ export const ConfigurablePropDiscordChannelArray: core.serialization.ObjectSchem
     serializers.ConfigurablePropDiscordChannelArray.Raw,
     Pipedream.ConfigurablePropDiscordChannelArray
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("$.discord.channel[]"),
     appProp: core.serialization.string().optional(),
-    name: core.serialization.string(),
-    label: core.serialization.string().optional(),
+    type: core.serialization.stringLiteral("$.discord.channel[]"),
     description: core.serialization.string().optional(),
-    optional: core.serialization.boolean().optional(),
     disabled: core.serialization.boolean().optional(),
-    readOnly: core.serialization.boolean().optional(),
     hidden: core.serialization.boolean().optional(),
+    label: core.serialization.string().optional(),
+    name: core.serialization.string(),
+    optional: core.serialization.boolean().optional(),
+    readOnly: core.serialization.boolean().optional(),
+    reloadProps: core.serialization.boolean().optional(),
     remoteOptions: core.serialization.boolean().optional(),
     useQuery: core.serialization.boolean().optional(),
-    reloadProps: core.serialization.boolean().optional(),
     withLabel: core.serialization.boolean().optional(),
 });
 
 export declare namespace ConfigurablePropDiscordChannelArray {
     export interface Raw {
-        type: "$.discord.channel[]";
         appProp?: string | null;
-        name: string;
-        label?: string | null;
+        type: "$.discord.channel[]";
         description?: string | null;
-        optional?: boolean | null;
         disabled?: boolean | null;
-        readOnly?: boolean | null;
         hidden?: boolean | null;
+        label?: string | null;
+        name: string;
+        optional?: boolean | null;
+        readOnly?: boolean | null;
+        reloadProps?: boolean | null;
         remoteOptions?: boolean | null;
         useQuery?: boolean | null;
-        reloadProps?: boolean | null;
         withLabel?: boolean | null;
     }
 }

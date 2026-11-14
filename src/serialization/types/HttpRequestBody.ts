@@ -11,19 +11,19 @@ export const HttpRequestBody: core.serialization.ObjectSchema<
     serializers.HttpRequestBody.Raw,
     Pipedream.HttpRequestBody
 > = core.serialization.object({
-    type: HttpRequestBodyType.optional(),
     contentType: core.serialization.string().optional(),
     fields: core.serialization.list(HttpRequestField).optional(),
     mode: HttpRequestBodyMode.optional(),
     raw: core.serialization.string().optional(),
+    type: HttpRequestBodyType.optional(),
 });
 
 export declare namespace HttpRequestBody {
     export interface Raw {
-        type?: HttpRequestBodyType.Raw | null;
         contentType?: string | null;
         fields?: HttpRequestField.Raw[] | null;
         mode?: HttpRequestBodyMode.Raw | null;
         raw?: string | null;
+        type?: HttpRequestBodyType.Raw | null;
     }
 }

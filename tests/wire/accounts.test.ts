@@ -167,6 +167,9 @@ describe("AccountsClient", () => {
                 featured_weight: 1.1,
                 scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
                 oauth_app_id: "oauth_app_id",
+                scopes: ["scopes"],
+                additional_scopes: ["additional_scopes"],
+                scope_labels: { scopes: "scopes", additional_scopes: "additional_scopes" },
             },
             created_at: "2024-01-15T09:30:00Z",
             updated_at: "2024-01-15T09:30:00Z",
@@ -223,6 +226,12 @@ describe("AccountsClient", () => {
                     },
                 ],
                 oauthAppId: "oauth_app_id",
+                scopes: ["scopes"],
+                additionalScopes: ["additional_scopes"],
+                scopeLabels: {
+                    scopes: "scopes",
+                    additionalScopes: "additional_scopes",
+                },
             },
             createdAt: new Date("2024-01-15T09:30:00.000Z"),
             updatedAt: new Date("2024-01-15T09:30:00.000Z"),
@@ -242,6 +251,39 @@ describe("AccountsClient", () => {
     });
 
     test("create (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { app_slug: "app_slug", cfmap_json: "cfmap_json", connect_token: "connect_token" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/connect/project_id/accounts")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(422)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.accounts.create({
+                appSlug: "app_slug",
+                cfmapJson: "cfmap_json",
+                connectToken: "connect_token",
+            });
+        }).rejects.toThrow(Pipedream.UnprocessableEntityError);
+    });
+
+    test("create (3)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -305,6 +347,9 @@ describe("AccountsClient", () => {
                 featured_weight: 1.1,
                 scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
                 oauth_app_id: "oauth_app_id",
+                scopes: ["scopes"],
+                additional_scopes: ["additional_scopes"],
+                scope_labels: { scopes: "scopes", additional_scopes: "additional_scopes" },
             },
             created_at: "2024-01-15T09:30:00Z",
             updated_at: "2024-01-15T09:30:00Z",
@@ -356,6 +401,12 @@ describe("AccountsClient", () => {
                     },
                 ],
                 oauthAppId: "oauth_app_id",
+                scopes: ["scopes"],
+                additionalScopes: ["additional_scopes"],
+                scopeLabels: {
+                    scopes: "scopes",
+                    additionalScopes: "additional_scopes",
+                },
             },
             createdAt: new Date("2024-01-15T09:30:00.000Z"),
             updatedAt: new Date("2024-01-15T09:30:00.000Z"),
@@ -521,38 +572,41 @@ describe("AccountsClient", () => {
 
         const rawResponseBody = [
             {
-                id: "id",
-                name: "name",
+                app: {
+                    additional_scopes: ["additional_scopes"],
+                    auth_type: "keys",
+                    categories: ["categories"],
+                    custom_fields_json: "custom_fields_json",
+                    description: "description",
+                    featured_weight: 1.1,
+                    id: "id",
+                    img_src: "img_src",
+                    name: "name",
+                    name_slug: "name_slug",
+                    oauth_app_id: "oauth_app_id",
+                    scope_labels: { additional_scopes: "additional_scopes", scopes: "scopes" },
+                    scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
+                    scopes: ["scopes"],
+                },
+                authorized_scopes: ["authorized_scopes"],
+                created_at: "2024-01-15T09:30:00Z",
+                credentials: {
+                    oauth_access_token: "oauth_access_token",
+                    oauth_client_id: "oauth_client_id",
+                    oauth_refresh_token: "oauth_refresh_token",
+                    oauth_signer_uri: "oauth_signer_uri",
+                    oauth_uid: "oauth_uid",
+                },
+                dead: true,
+                error: "error",
+                expires_at: "2024-01-15T09:30:00Z",
                 external_id: "external_id",
                 healthy: true,
-                dead: true,
-                app: {
-                    id: "id",
-                    name_slug: "name_slug",
-                    name: "name",
-                    auth_type: "keys",
-                    description: "description",
-                    img_src: "img_src",
-                    custom_fields_json: "custom_fields_json",
-                    categories: ["categories"],
-                    featured_weight: 1.1,
-                    scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
-                    oauth_app_id: "oauth_app_id",
-                },
-                created_at: "2024-01-15T09:30:00Z",
-                updated_at: "2024-01-15T09:30:00Z",
-                authorized_scopes: ["authorized_scopes"],
-                credentials: {
-                    oauth_client_id: "oauth_client_id",
-                    oauth_access_token: "oauth_access_token",
-                    oauth_refresh_token: "oauth_refresh_token",
-                    oauth_uid: "oauth_uid",
-                    oauth_signer_uri: "oauth_signer_uri",
-                },
-                expires_at: "2024-01-15T09:30:00Z",
-                error: "error",
+                id: "id",
                 last_refreshed_at: "2024-01-15T09:30:00Z",
+                name: "name",
                 next_refresh_at: "2024-01-15T09:30:00Z",
+                updated_at: "2024-01-15T09:30:00Z",
             },
         ];
 
@@ -570,48 +624,110 @@ describe("AccountsClient", () => {
         });
         expect(response).toEqual([
             {
-                id: "id",
-                name: "name",
-                externalId: "external_id",
-                healthy: true,
-                dead: true,
                 app: {
-                    id: "id",
-                    nameSlug: "name_slug",
-                    name: "name",
+                    additionalScopes: ["additional_scopes"],
                     authType: "keys",
-                    description: "description",
-                    imgSrc: "img_src",
-                    customFieldsJson: "custom_fields_json",
                     categories: ["categories"],
+                    customFieldsJson: "custom_fields_json",
+                    description: "description",
                     featuredWeight: 1.1,
+                    id: "id",
+                    imgSrc: "img_src",
+                    name: "name",
+                    nameSlug: "name_slug",
+                    oauthAppId: "oauth_app_id",
+                    scopeLabels: {
+                        additionalScopes: "additional_scopes",
+                        scopes: "scopes",
+                    },
                     scopeProfiles: [
                         {
                             name: "read_only",
                             scopes: ["scopes"],
                         },
                     ],
-                    oauthAppId: "oauth_app_id",
+                    scopes: ["scopes"],
                 },
-                createdAt: new Date("2024-01-15T09:30:00.000Z"),
-                updatedAt: new Date("2024-01-15T09:30:00.000Z"),
                 authorizedScopes: ["authorized_scopes"],
+                createdAt: new Date("2024-01-15T09:30:00.000Z"),
                 credentials: {
-                    oauthClientId: "oauth_client_id",
                     oauthAccessToken: "oauth_access_token",
+                    oauthClientId: "oauth_client_id",
                     oauthRefreshToken: "oauth_refresh_token",
-                    oauthUid: "oauth_uid",
                     oauthSignerUri: "oauth_signer_uri",
+                    oauthUid: "oauth_uid",
                 },
-                expiresAt: new Date("2024-01-15T09:30:00.000Z"),
+                dead: true,
                 error: "error",
+                expiresAt: new Date("2024-01-15T09:30:00.000Z"),
+                externalId: "external_id",
+                healthy: true,
+                id: "id",
                 lastRefreshedAt: new Date("2024-01-15T09:30:00.000Z"),
+                name: "name",
                 nextRefreshAt: new Date("2024-01-15T09:30:00.000Z"),
+                updatedAt: new Date("2024-01-15T09:30:00.000Z"),
             },
         ]);
     });
 
     test("listByExternalUser (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/connect/project_id/users/external_user_id/accounts")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.accounts.listByExternalUser("external_user_id");
+        }).rejects.toThrow(Pipedream.NotFoundError);
+    });
+
+    test("listByExternalUser (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { error: "error", limit: 1, message: "message", paginated_url: "paginated_url" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/connect/project_id/users/external_user_id/accounts")
+            .respondWith()
+            .statusCode(413)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.accounts.listByExternalUser("external_user_id");
+        }).rejects.toThrow(Pipedream.ContentTooLargeError);
+    });
+
+    test("listByExternalUser (4)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 

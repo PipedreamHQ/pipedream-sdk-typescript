@@ -29,54 +29,54 @@ import { ConfigurablePropTimer } from "./ConfigurablePropTimer.js";
 
 export const ConfigurableProp: core.serialization.Schema<serializers.ConfigurableProp.Raw, Pipedream.ConfigurableProp> =
     core.serialization.undiscriminatedUnion([
+        ConfigurablePropAirtableBaseId,
+        ConfigurablePropAirtableFieldId,
+        ConfigurablePropAirtableTableId,
+        ConfigurablePropAirtableViewId,
+        ConfigurablePropDiscordChannel,
+        ConfigurablePropDiscordChannelArray,
+        ConfigurablePropApphook,
+        ConfigurablePropHttp,
+        ConfigurablePropTimer,
+        ConfigurablePropDb,
         ConfigurablePropAlert,
+        ConfigurablePropAny,
         ConfigurablePropApp,
         ConfigurablePropBoolean,
         ConfigurablePropDataStore,
         ConfigurablePropDir,
-        ConfigurablePropTimer,
-        ConfigurablePropApphook,
-        ConfigurablePropIntegerArray,
-        ConfigurablePropHttp,
         ConfigurablePropHttpRequest,
-        ConfigurablePropDb,
-        ConfigurablePropSql,
-        ConfigurablePropAirtableBaseId,
-        ConfigurablePropAirtableTableId,
-        ConfigurablePropAirtableViewId,
-        ConfigurablePropAirtableFieldId,
-        ConfigurablePropDiscordChannel,
-        ConfigurablePropDiscordChannelArray,
         ConfigurablePropInteger,
+        ConfigurablePropIntegerArray,
+        ConfigurablePropObject,
+        ConfigurablePropSql,
         ConfigurablePropString,
         ConfigurablePropStringArray,
-        ConfigurablePropObject,
-        ConfigurablePropAny,
     ]);
 
 export declare namespace ConfigurableProp {
     export type Raw =
+        | ConfigurablePropAirtableBaseId.Raw
+        | ConfigurablePropAirtableFieldId.Raw
+        | ConfigurablePropAirtableTableId.Raw
+        | ConfigurablePropAirtableViewId.Raw
+        | ConfigurablePropDiscordChannel.Raw
+        | ConfigurablePropDiscordChannelArray.Raw
+        | ConfigurablePropApphook.Raw
+        | ConfigurablePropHttp.Raw
+        | ConfigurablePropTimer.Raw
+        | ConfigurablePropDb.Raw
         | ConfigurablePropAlert.Raw
+        | ConfigurablePropAny.Raw
         | ConfigurablePropApp.Raw
         | ConfigurablePropBoolean.Raw
         | ConfigurablePropDataStore.Raw
         | ConfigurablePropDir.Raw
-        | ConfigurablePropTimer.Raw
-        | ConfigurablePropApphook.Raw
-        | ConfigurablePropIntegerArray.Raw
-        | ConfigurablePropHttp.Raw
         | ConfigurablePropHttpRequest.Raw
-        | ConfigurablePropDb.Raw
-        | ConfigurablePropSql.Raw
-        | ConfigurablePropAirtableBaseId.Raw
-        | ConfigurablePropAirtableTableId.Raw
-        | ConfigurablePropAirtableViewId.Raw
-        | ConfigurablePropAirtableFieldId.Raw
-        | ConfigurablePropDiscordChannel.Raw
-        | ConfigurablePropDiscordChannelArray.Raw
         | ConfigurablePropInteger.Raw
-        | ConfigurablePropString.Raw
-        | ConfigurablePropStringArray.Raw
+        | ConfigurablePropIntegerArray.Raw
         | ConfigurablePropObject.Raw
-        | ConfigurablePropAny.Raw;
+        | ConfigurablePropSql.Raw
+        | ConfigurablePropString.Raw
+        | ConfigurablePropStringArray.Raw;
 }

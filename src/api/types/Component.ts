@@ -3,17 +3,17 @@
 import type * as Pipedream from "../index.js";
 
 export interface Component {
+    annotations?: Pipedream.ToolAnnotations;
+    /** The type of component (trigger or action) */
+    componentType?: string;
+    configurableProps: Pipedream.ConfigurableProp[];
+    /** A description of the component */
+    description?: string;
     /** The key that uniquely identifies the component. */
     key: string;
     /** The human-readable name of the component */
     name: string;
+    stash?: Pipedream.ComponentStash;
     /** The latest version of the component, in semantic versioning format. */
     version: string;
-    configurableProps: Pipedream.ConfigurableProp[];
-    /** A description of the component */
-    description?: string;
-    /** The type of component (trigger or action) */
-    componentType?: string;
-    stash?: Pipedream.ComponentStash;
-    annotations?: Pipedream.ToolAnnotations;
 }

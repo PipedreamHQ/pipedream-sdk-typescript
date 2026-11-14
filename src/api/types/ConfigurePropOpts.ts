@@ -6,23 +6,25 @@ import type * as Pipedream from "../index.js";
  * Request options for configuring a component's prop
  */
 export interface ConfigurePropOpts {
-    /** The component ID */
-    id: string;
-    /** Component semantic version */
-    version?: string;
-    /** The external user ID */
-    externalUserId: string;
-    /** The name of the prop to configure */
-    propName: string;
     /** Whether this operation should block until completion */
     blocking?: boolean;
     configuredProps?: Pipedream.ConfiguredProps;
     /** The ID for dynamic props */
     dynamicPropsId?: string;
+    /** The external user ID */
+    externalUserId: string;
+    /** The component ID */
+    id: string;
     /** Page number for paginated results */
     page?: number;
+    /** Pin a later platform version for the execution runtime. Honored only when strictly later than the current default. */
+    platformVersion?: string;
     /** Previous context for pagination */
     prevContext?: Record<string, unknown>;
+    /** The name of the prop to configure */
+    propName: string;
     /** Search query for filtering options */
     query?: string;
+    /** Component semantic version */
+    version?: string;
 }

@@ -4,10 +4,10 @@
  * Error response returned by the API in case of an error
  */
 export interface ErrorResponse {
-    /** The error message */
-    error: string;
     /** The error code */
     code?: string;
     /** Additional error details */
     details?: Record<string, unknown>;
+    /** The error message */
+    error: string;
 }

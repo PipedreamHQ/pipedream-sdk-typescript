@@ -368,6 +368,8 @@ export class ProjectsClient {
      * @param {Pipedream.UpdateProjectOpts} request
      * @param {ProjectsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
+     * @throws {@link Pipedream.BadRequestError}
+     * @throws {@link Pipedream.UnprocessableEntityError}
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
@@ -432,6 +434,10 @@ export class ProjectsClient {
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
+                case 400:
+                    throw new Pipedream.BadRequestError(_response.error.body, _response.rawResponse);
+                case 422:
+                    throw new Pipedream.UnprocessableEntityError(_response.error.body, _response.rawResponse);
                 case 429:
                     throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
                 default:

@@ -4,34 +4,44 @@ import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { AppAuthType } from "./AppAuthType.js";
+import { AppScopeLabels } from "./AppScopeLabels.js";
 import { AppScopeProfilesItem } from "./AppScopeProfilesItem.js";
 
 export const App: core.serialization.ObjectSchema<serializers.App.Raw, Pipedream.App> = core.serialization.object({
-    id: core.serialization.string().optional(),
-    nameSlug: core.serialization.property("name_slug", core.serialization.string()),
-    name: core.serialization.string(),
+    additionalScopes: core.serialization.property(
+        "additional_scopes",
+        core.serialization.list(core.serialization.string()).optional(),
+    ),
     authType: core.serialization.property("auth_type", AppAuthType.optional()),
-    description: core.serialization.string().optional(),
-    imgSrc: core.serialization.property("img_src", core.serialization.string()),
-    customFieldsJson: core.serialization.property("custom_fields_json", core.serialization.string().optional()),
     categories: core.serialization.list(core.serialization.string()),
+    customFieldsJson: core.serialization.property("custom_fields_json", core.serialization.string().optional()),
+    description: core.serialization.string().optional(),
     featuredWeight: core.serialization.property("featured_weight", core.serialization.number()),
-    scopeProfiles: core.serialization.property("scope_profiles", core.serialization.list(AppScopeProfilesItem)),
+    id: core.serialization.string().optional(),
+    imgSrc: core.serialization.property("img_src", core.serialization.string()),
+    name: core.serialization.string(),
+    nameSlug: core.serialization.property("name_slug", core.serialization.string()),
     oauthAppId: core.serialization.property("oauth_app_id", core.serialization.string().optional()),
+    scopeLabels: core.serialization.property("scope_labels", AppScopeLabels.optional()),
+    scopeProfiles: core.serialization.property("scope_profiles", core.serialization.list(AppScopeProfilesItem)),
+    scopes: core.serialization.list(core.serialization.string()).optional(),
 });
 
 export declare namespace App {
     export interface Raw {
-        id?: string | null;
-        name_slug: string;
-        name: string;
+        additional_scopes?: string[] | null;
         auth_type?: AppAuthType.Raw | null;
-        description?: string | null;
-        img_src: string;
-        custom_fields_json?: string | null;
         categories: string[];
+        custom_fields_json?: string | null;
+        description?: string | null;
         featured_weight: number;
-        scope_profiles: AppScopeProfilesItem.Raw[];
+        id?: string | null;
+        img_src: string;
+        name: string;
+        name_slug: string;
         oauth_app_id?: string | null;
+        scope_labels?: AppScopeLabels.Raw | null;
+        scope_profiles: AppScopeProfilesItem.Raw[];
+        scopes?: string[] | null;
     }
 }

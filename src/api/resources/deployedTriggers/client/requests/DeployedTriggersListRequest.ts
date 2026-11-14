@@ -21,6 +21,6 @@ export interface DeployedTriggersListRequest {
     limit?: number;
     /** Your end user ID, for whom you deployed the trigger */
     externalUserId: string;
-    /** Filter deployed triggers by emitter type (defaults to 'source' if not provided) */
+    /** Filter deployed triggers by emitter type. Returns all types when omitted. */
     emitterType?: Pipedream.EmitterType;
 }
