@@ -16,315 +16,14 @@ export declare namespace ActionsClient {
     export interface RequestOptions extends BaseRequestOptions {}
 }
 
+/**
+ * Action execution and configuration
+ */
 export class ActionsClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<ActionsClient.Options>;
 
     constructor(options: ActionsClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
-    }
-
-    /**
-     * Retrieve available actions with optional search and app filtering
-     *
-     * @param {Pipedream.ActionsListRequest} request
-     * @param {ActionsClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Pipedream.BadRequestError}
-     * @throws {@link Pipedream.TooManyRequestsError}
-     *
-     * @example
-     *     await client.actions.list({
-     *         after: "after",
-     *         before: "before",
-     *         limit: 1,
-     *         q: "q",
-     *         app: "app",
-     *         registry: "public"
-     *     })
-     */
-    public async list(
-        request: Pipedream.ActionsListRequest = {},
-        requestOptions?: ActionsClient.RequestOptions,
-    ): Promise<core.Page<Pipedream.Component, Pipedream.GetComponentsResponse>> {
-        const list = core.HttpResponsePromise.interceptFunction(
-            async (
-                request: Pipedream.ActionsListRequest,
-            ): Promise<core.WithRawResponse<Pipedream.GetComponentsResponse>> => {
-                const { after, before, limit, q, app, registry } = request;
-                const _queryParams: Record<string, unknown> = {
-                    after,
-                    before,
-                    limit,
-                    q,
-                    app,
-                    registry:
-                        registry != null
-                            ? serializers.ActionsListRequestRegistry.jsonOrThrow(registry, {
-                                  unrecognizedObjectKeys: "strip",
-                                  omitUndefined: true,
-                              })
-                            : undefined,
-                };
-                const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-                const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-                    _authRequest.headers,
-                    this._options?.headers,
-                    mergeOnlyDefinedHeaders({
-                        "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
-                    }),
-                    requestOptions?.headers,
-                );
-                const _response = await core.fetcher({
-                    url: core.url.join(
-                        (await core.Supplier.get(this._options.baseUrl)) ??
-                            (await core.Supplier.get(this._options.environment)) ??
-                            environments.PipedreamEnvironment.Prod,
-                        `v1/connect/${core.url.encodePathParam(this._options.projectId)}/actions`,
-                    ),
-                    method: "GET",
-                    headers: _headers,
-                    queryString: core.url
-                        .queryBuilder()
-                        .addMany(_queryParams)
-                        .mergeAdditional(requestOptions?.queryParams)
-                        .build(),
-                    timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-                    maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-                    abortSignal: requestOptions?.abortSignal,
-                    fetchFn: this._options?.fetch,
-                    logging: this._options.logging,
-                });
-                if (_response.ok) {
-                    return {
-                        data: serializers.GetComponentsResponse.parseOrThrow(_response.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        rawResponse: _response.rawResponse,
-                    };
-                }
-                if (_response.error.reason === "status-code") {
-                    switch (_response.error.statusCode) {
-                        case 400:
-                            throw new Pipedream.BadRequestError(_response.error.body, _response.rawResponse);
-                        case 429:
-                            throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
-                        default:
-                            throw new errors.PipedreamError({
-                                statusCode: _response.error.statusCode,
-                                body: _response.error.body,
-                                rawResponse: _response.rawResponse,
-                            });
-                    }
-                }
-                return handleNonStatusCodeError(
-                    _response.error,
-                    _response.rawResponse,
-                    "GET",
-                    "/v1/connect/{project_id}/actions",
-                );
-            },
-        );
-        const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Page<Pipedream.Component, Pipedream.GetComponentsResponse>({
-            response: dataWithRawResponse.data,
-            rawResponse: dataWithRawResponse.rawResponse,
-            hasNextPage: (response) =>
-                response?.pageInfo.endCursor != null &&
-                !(typeof response?.pageInfo.endCursor === "string" && response?.pageInfo.endCursor === ""),
-            getItems: (response) => response?.data ?? [],
-            loadPage: (response) => {
-                return list(core.setObjectProperty(request, "after", response?.pageInfo.endCursor));
-            },
-        });
-    }
-
-    /**
-     * Get detailed configuration for a specific action by its key
-     *
-     * @param {string} component_id - The key that uniquely identifies the component
-     * @param {Pipedream.ActionsRetrieveRequest} request
-     * @param {ActionsClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Pipedream.TooManyRequestsError}
-     *
-     * @example
-     *     await client.actions.retrieve("slack-send-message", {
-     *         version: "1.0.0"
-     *     })
-     */
-    public retrieve(
-        component_id: string,
-        request: Pipedream.ActionsRetrieveRequest = {},
-        requestOptions?: ActionsClient.RequestOptions,
-    ): core.HttpResponsePromise<Pipedream.GetComponentResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__retrieve(component_id, request, requestOptions));
-    }
-
-    private async __retrieve(
-        component_id: string,
-        request: Pipedream.ActionsRetrieveRequest = {},
-        requestOptions?: ActionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Pipedream.GetComponentResponse>> {
-        const { version } = request;
-        const _queryParams: Record<string, unknown> = {
-            version,
-        };
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
-            }),
-            requestOptions?.headers,
-        );
-        const _response = await core.fetcher({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)) ??
-                    environments.PipedreamEnvironment.Prod,
-                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/actions/${core.url.encodePathParam(component_id)}`,
-            ),
-            method: "GET",
-            headers: _headers,
-            queryString: core.url
-                .queryBuilder()
-                .addMany(_queryParams)
-                .mergeAdditional(requestOptions?.queryParams)
-                .build(),
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return {
-                data: serializers.GetComponentResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 429:
-                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
-                default:
-                    throw new errors.PipedreamError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        return handleNonStatusCodeError(
-            _response.error,
-            _response.rawResponse,
-            "GET",
-            "/v1/connect/{project_id}/actions/{component_id}",
-        );
-    }
-
-    /**
-     * Retrieve remote options for a given prop for a action
-     *
-     * @param {Pipedream.ConfigurePropOpts} request
-     * @param {ActionsClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Pipedream.TooManyRequestsError}
-     *
-     * @example
-     *     await client.actions.configureProp({
-     *         id: "id",
-     *         externalUserId: "external_user_id",
-     *         propName: "prop_name"
-     *     })
-     */
-    public configureProp(
-        request: Pipedream.ConfigurePropOpts,
-        requestOptions?: ActionsClient.RequestOptions,
-    ): core.HttpResponsePromise<Pipedream.ConfigurePropResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__configureProp(request, requestOptions));
-    }
-
-    private async __configureProp(
-        request: Pipedream.ConfigurePropOpts,
-        requestOptions?: ActionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Pipedream.ConfigurePropResponse>> {
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
-            }),
-            requestOptions?.headers,
-        );
-        const _response = await core.fetcher({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)) ??
-                    environments.PipedreamEnvironment.Prod,
-                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/actions/configure`,
-            ),
-            method: "POST",
-            headers: _headers,
-            contentType: "application/json",
-            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
-            requestType: "json",
-            body: serializers.ConfigurePropOpts.jsonOrThrow(request, {
-                unrecognizedObjectKeys: "strip",
-                omitUndefined: true,
-            }),
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return {
-                data: serializers.ConfigurePropResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 429:
-                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
-                default:
-                    throw new errors.PipedreamError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        return handleNonStatusCodeError(
-            _response.error,
-            _response.rawResponse,
-            "POST",
-            "/v1/connect/{project_id}/actions/configure",
-        );
     }
 
     /**
@@ -418,17 +117,256 @@ export class ActionsClient {
     }
 
     /**
+     * Retrieve available actions with optional search and app filtering
+     *
+     * @param {Pipedream.ActionsListRequest} request
+     * @param {ActionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.BadRequestError}
+     * @throws {@link Pipedream.UnauthorizedError}
+     * @throws {@link Pipedream.TooManyRequestsError}
+     * @throws {@link Pipedream.InternalServerError}
+     * @throws {@link Pipedream.BadGatewayError}
+     * @throws {@link Pipedream.ServiceUnavailableError}
+     *
+     * @example
+     *     await client.actions.list({
+     *         after: "after",
+     *         before: "before",
+     *         limit: 1,
+     *         q: "q",
+     *         app: "app",
+     *         registry: "public"
+     *     })
+     */
+    public async list(
+        request: Pipedream.ActionsListRequest = {},
+        requestOptions?: ActionsClient.RequestOptions,
+    ): Promise<core.Page<Pipedream.Component, Pipedream.GetComponentsResponse>> {
+        const list = core.HttpResponsePromise.interceptFunction(
+            async (
+                request: Pipedream.ActionsListRequest,
+            ): Promise<core.WithRawResponse<Pipedream.GetComponentsResponse>> => {
+                const { after, before, limit, q, app, registry } = request;
+                const _queryParams: Record<string, unknown> = {
+                    after,
+                    before,
+                    limit,
+                    q,
+                    app,
+                    registry:
+                        registry != null
+                            ? serializers.ActionsListRequestRegistry.jsonOrThrow(registry, {
+                                  unrecognizedObjectKeys: "strip",
+                                  omitUndefined: true,
+                              })
+                            : undefined,
+                };
+                const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+                const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+                    _authRequest.headers,
+                    this._options?.headers,
+                    mergeOnlyDefinedHeaders({
+                        "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+                    }),
+                    requestOptions?.headers,
+                );
+                const _response = await core.fetcher({
+                    url: core.url.join(
+                        (await core.Supplier.get(this._options.baseUrl)) ??
+                            (await core.Supplier.get(this._options.environment)) ??
+                            environments.PipedreamEnvironment.Prod,
+                        `v1/connect/${core.url.encodePathParam(this._options.projectId)}/actions`,
+                    ),
+                    method: "GET",
+                    headers: _headers,
+                    queryString: core.url
+                        .queryBuilder()
+                        .addMany(_queryParams)
+                        .mergeAdditional(requestOptions?.queryParams)
+                        .build(),
+                    timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+                    maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+                    abortSignal: requestOptions?.abortSignal,
+                    fetchFn: this._options?.fetch,
+                    logging: this._options.logging,
+                });
+                if (_response.ok) {
+                    return {
+                        data: serializers.GetComponentsResponse.parseOrThrow(_response.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        rawResponse: _response.rawResponse,
+                    };
+                }
+                if (_response.error.reason === "status-code") {
+                    switch (_response.error.statusCode) {
+                        case 400:
+                            throw new Pipedream.BadRequestError(_response.error.body, _response.rawResponse);
+                        case 401:
+                            throw new Pipedream.UnauthorizedError(_response.error.body, _response.rawResponse);
+                        case 429:
+                            throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                        case 500:
+                            throw new Pipedream.InternalServerError(_response.error.body, _response.rawResponse);
+                        case 502:
+                            throw new Pipedream.BadGatewayError(_response.error.body, _response.rawResponse);
+                        case 503:
+                            throw new Pipedream.ServiceUnavailableError(
+                                serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                                    unrecognizedObjectKeys: "passthrough",
+                                    allowUnrecognizedUnionMembers: true,
+                                    allowUnrecognizedEnumValues: true,
+                                    skipValidation: true,
+                                    breadcrumbsPrefix: ["response"],
+                                }),
+                                _response.rawResponse,
+                            );
+                        default:
+                            throw new errors.PipedreamError({
+                                statusCode: _response.error.statusCode,
+                                body: _response.error.body,
+                                rawResponse: _response.rawResponse,
+                            });
+                    }
+                }
+                return handleNonStatusCodeError(
+                    _response.error,
+                    _response.rawResponse,
+                    "GET",
+                    "/v1/connect/{project_id}/actions",
+                );
+            },
+        );
+        const dataWithRawResponse = await list(request).withRawResponse();
+        return new core.Page<Pipedream.Component, Pipedream.GetComponentsResponse>({
+            response: dataWithRawResponse.data,
+            rawResponse: dataWithRawResponse.rawResponse,
+            hasNextPage: (response) =>
+                response?.pageInfo.endCursor != null &&
+                !(typeof response?.pageInfo.endCursor === "string" && response?.pageInfo.endCursor === ""),
+            getItems: (response) => response?.data ?? [],
+            loadPage: (response) => {
+                return list(core.setObjectProperty(request, "after", response?.pageInfo.endCursor));
+            },
+        });
+    }
+
+    /**
+     * Configure a prop of an action to retrieve its options or validate its configuration
+     *
+     * @param {Pipedream.ConfigurePropOpts} request
+     * @param {ActionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.BadRequestError}
+     * @throws {@link Pipedream.UnauthorizedError}
+     * @throws {@link Pipedream.TooManyRequestsError}
+     *
+     * @example
+     *     await client.actions.configureProp({
+     *         externalUserId: "external_user_id",
+     *         id: "id",
+     *         propName: "prop_name"
+     *     })
+     */
+    public configureProp(
+        request: Pipedream.ConfigurePropOpts,
+        requestOptions?: ActionsClient.RequestOptions,
+    ): core.HttpResponsePromise<Pipedream.ConfigurePropResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__configureProp(request, requestOptions));
+    }
+
+    private async __configureProp(
+        request: Pipedream.ConfigurePropOpts,
+        requestOptions?: ActionsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Pipedream.ConfigurePropResponse>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+            }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.PipedreamEnvironment.Prod,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/actions/configure`,
+            ),
+            method: "POST",
+            headers: _headers,
+            contentType: "application/json",
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            requestType: "json",
+            body: serializers.ConfigurePropOpts.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.ConfigurePropResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Pipedream.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new Pipedream.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "POST",
+            "/v1/connect/{project_id}/actions/configure",
+        );
+    }
+
+    /**
      * Execute an action with the provided configuration and return results
      *
      * @param {Pipedream.RunActionOpts} request
      * @param {ActionsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
+     * @throws {@link Pipedream.BadRequestError}
+     * @throws {@link Pipedream.UnauthorizedError}
      * @throws {@link Pipedream.TooManyRequestsError}
      *
      * @example
      *     await client.actions.run({
-     *         id: "id",
-     *         externalUserId: "external_user_id"
+     *         externalUserId: "external_user_id",
+     *         id: "id"
      *     })
      */
     public run(
@@ -488,6 +426,10 @@ export class ActionsClient {
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
+                case 400:
+                    throw new Pipedream.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new Pipedream.UnauthorizedError(_response.error.body, _response.rawResponse);
                 case 429:
                     throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
                 default:
@@ -504,6 +446,127 @@ export class ActionsClient {
             _response.rawResponse,
             "POST",
             "/v1/connect/{project_id}/actions/run",
+        );
+    }
+
+    /**
+     * Get detailed configuration for a specific action by its key
+     *
+     * @param {string} component_id - The key that uniquely identifies the component
+     * @param {Pipedream.ActionsRetrieveRequest} request
+     * @param {ActionsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.BadRequestError}
+     * @throws {@link Pipedream.UnauthorizedError}
+     * @throws {@link Pipedream.NotFoundError}
+     * @throws {@link Pipedream.TooManyRequestsError}
+     * @throws {@link Pipedream.InternalServerError}
+     * @throws {@link Pipedream.BadGatewayError}
+     * @throws {@link Pipedream.ServiceUnavailableError}
+     *
+     * @example
+     *     await client.actions.retrieve("slack-send-message", {
+     *         version: "1.0.0"
+     *     })
+     */
+    public retrieve(
+        component_id: string,
+        request: Pipedream.ActionsRetrieveRequest = {},
+        requestOptions?: ActionsClient.RequestOptions,
+    ): core.HttpResponsePromise<Pipedream.GetComponentResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__retrieve(component_id, request, requestOptions));
+    }
+
+    private async __retrieve(
+        component_id: string,
+        request: Pipedream.ActionsRetrieveRequest = {},
+        requestOptions?: ActionsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Pipedream.GetComponentResponse>> {
+        const { version } = request;
+        const _queryParams: Record<string, unknown> = {
+            version,
+        };
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+            }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.PipedreamEnvironment.Prod,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/actions/${core.url.encodePathParam(component_id)}`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url
+                .queryBuilder()
+                .addMany(_queryParams)
+                .mergeAdditional(requestOptions?.queryParams)
+                .build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.GetComponentResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Pipedream.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new Pipedream.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Pipedream.NotFoundError(_response.error.body, _response.rawResponse);
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                case 500:
+                    throw new Pipedream.InternalServerError(_response.error.body, _response.rawResponse);
+                case 502:
+                    throw new Pipedream.BadGatewayError(_response.error.body, _response.rawResponse);
+                case 503:
+                    throw new Pipedream.ServiceUnavailableError(
+                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "GET",
+            "/v1/connect/{project_id}/actions/{component_id}",
         );
     }
 }

@@ -9,21 +9,21 @@ export const AccountCredentials: core.serialization.ObjectSchema<
     Pipedream.AccountCredentials
 > = core.serialization
     .object({
-        oauthClientId: core.serialization.property("oauth_client_id", core.serialization.string().optional()),
         oauthAccessToken: core.serialization.property("oauth_access_token", core.serialization.string().optional()),
+        oauthClientId: core.serialization.property("oauth_client_id", core.serialization.string().optional()),
         oauthRefreshToken: core.serialization.property("oauth_refresh_token", core.serialization.string().optional()),
-        oauthUid: core.serialization.property("oauth_uid", core.serialization.string().optional()),
         oauthSignerUri: core.serialization.property("oauth_signer_uri", core.serialization.string().optional()),
+        oauthUid: core.serialization.property("oauth_uid", core.serialization.string().optional()),
     })
     .passthrough();
 
 export declare namespace AccountCredentials {
     export interface Raw {
-        oauth_client_id?: string | null;
         oauth_access_token?: string | null;
+        oauth_client_id?: string | null;
         oauth_refresh_token?: string | null;
-        oauth_uid?: string | null;
         oauth_signer_uri?: string | null;
+        oauth_uid?: string | null;
         [key: string]: any;
     }
 }

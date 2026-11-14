@@ -9,37 +9,37 @@ export const ConfigurablePropDir: core.serialization.ObjectSchema<
     serializers.ConfigurablePropDir.Raw,
     Pipedream.ConfigurablePropDir
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("dir"),
     accessMode: ConfigurablePropDirAccessMode.optional(),
     sync: core.serialization.boolean().optional(),
-    name: core.serialization.string(),
-    label: core.serialization.string().optional(),
+    type: core.serialization.stringLiteral("dir"),
     description: core.serialization.string().optional(),
-    optional: core.serialization.boolean().optional(),
     disabled: core.serialization.boolean().optional(),
-    readOnly: core.serialization.boolean().optional(),
     hidden: core.serialization.boolean().optional(),
+    label: core.serialization.string().optional(),
+    name: core.serialization.string(),
+    optional: core.serialization.boolean().optional(),
+    readOnly: core.serialization.boolean().optional(),
+    reloadProps: core.serialization.boolean().optional(),
     remoteOptions: core.serialization.boolean().optional(),
     useQuery: core.serialization.boolean().optional(),
-    reloadProps: core.serialization.boolean().optional(),
     withLabel: core.serialization.boolean().optional(),
 });
 
 export declare namespace ConfigurablePropDir {
     export interface Raw {
-        type: "dir";
         accessMode?: ConfigurablePropDirAccessMode.Raw | null;
         sync?: boolean | null;
-        name: string;
-        label?: string | null;
+        type: "dir";
         description?: string | null;
-        optional?: boolean | null;
         disabled?: boolean | null;
-        readOnly?: boolean | null;
         hidden?: boolean | null;
+        label?: string | null;
+        name: string;
+        optional?: boolean | null;
+        readOnly?: boolean | null;
+        reloadProps?: boolean | null;
         remoteOptions?: boolean | null;
         useQuery?: boolean | null;
-        reloadProps?: boolean | null;
         withLabel?: boolean | null;
     }
 }

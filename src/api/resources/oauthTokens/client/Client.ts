@@ -99,16 +99,7 @@ export class OauthTokensClient {
                 case 400:
                     throw new Pipedream.BadRequestError(_response.error.body, _response.rawResponse);
                 case 401:
-                    throw new Pipedream.UnauthorizedError(
-                        serializers.UnauthorizedErrorBody.parseOrThrow(_response.error.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        _response.rawResponse,
-                    );
+                    throw new Pipedream.UnauthorizedError(_response.error.body, _response.rawResponse);
                 case 429:
                     throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
                 default:

@@ -54,8 +54,8 @@ import { PipedreamClient } from "@pipedream/sdk";
 
 const client = new PipedreamClient({ clientId: "YOUR_CLIENT_ID", clientSecret: "YOUR_CLIENT_SECRET", projectEnvironment: "YOUR_PROJECT_ENVIRONMENT", projectId: "YOUR_PROJECT_ID" });
 await client.actions.run({
-    id: "id",
-    externalUserId: "external_user_id"
+    externalUserId: "external_user_id",
+    id: "id"
 });
 ```
 
@@ -110,7 +110,7 @@ following namespace:
 ```typescript
 import { Pipedream } from "@pipedream/sdk";
 
-const request: Pipedream.AppsListRequest = {
+const request: Pipedream.AccountsListRequest = {
     ...
 };
 ```
@@ -532,34 +532,28 @@ List endpoints are paginated. The SDK provides an iterator so that you can simpl
 import { PipedreamClient } from "@pipedream/sdk";
 
 const client = new PipedreamClient({ clientId: "YOUR_CLIENT_ID", clientSecret: "YOUR_CLIENT_SECRET", projectEnvironment: "YOUR_PROJECT_ENVIRONMENT", projectId: "YOUR_PROJECT_ID" });
-const pageableResponse = await client.apps.list({
+const pageableResponse = await client.accounts.list({
+    externalUserId: "external_user_id",
+    oauthAppId: "oauth_app_id",
     after: "after",
     before: "before",
     limit: 1,
-    q: "q",
-    sortKey: "name",
-    sortDirection: "asc",
-    categoryIds: ["category_ids"],
-    hasComponents: true,
-    hasActions: true,
-    hasTriggers: true
+    app: "app",
+    includeCredentials: true
 });
 for await (const item of pageableResponse) {
     console.log(item);
 }
 
 // Or you can manually iterate page-by-page
-let page = await client.apps.list({
+let page = await client.accounts.list({
+    externalUserId: "external_user_id",
+    oauthAppId: "oauth_app_id",
     after: "after",
     before: "before",
     limit: 1,
-    q: "q",
-    sortKey: "name",
-    sortDirection: "asc",
-    categoryIds: ["category_ids"],
-    hasComponents: true,
-    hasActions: true,
-    hasTriggers: true
+    app: "app",
+    includeCredentials: true
 });
 while (page.hasNextPage()) {
     page = page.getNextPage();

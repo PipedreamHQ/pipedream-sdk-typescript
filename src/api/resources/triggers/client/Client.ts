@@ -16,315 +16,14 @@ export declare namespace TriggersClient {
     export interface RequestOptions extends BaseRequestOptions {}
 }
 
+/**
+ * Trigger configuration
+ */
 export class TriggersClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<TriggersClient.Options>;
 
     constructor(options: TriggersClient.Options) {
         this._options = normalizeClientOptionsWithAuth(options);
-    }
-
-    /**
-     * Retrieve available triggers with optional search and app filtering
-     *
-     * @param {Pipedream.TriggersListRequest} request
-     * @param {TriggersClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Pipedream.BadRequestError}
-     * @throws {@link Pipedream.TooManyRequestsError}
-     *
-     * @example
-     *     await client.triggers.list({
-     *         after: "after",
-     *         before: "before",
-     *         limit: 1,
-     *         q: "q",
-     *         app: "app",
-     *         registry: "public"
-     *     })
-     */
-    public async list(
-        request: Pipedream.TriggersListRequest = {},
-        requestOptions?: TriggersClient.RequestOptions,
-    ): Promise<core.Page<Pipedream.Component, Pipedream.GetComponentsResponse>> {
-        const list = core.HttpResponsePromise.interceptFunction(
-            async (
-                request: Pipedream.TriggersListRequest,
-            ): Promise<core.WithRawResponse<Pipedream.GetComponentsResponse>> => {
-                const { after, before, limit, q, app, registry } = request;
-                const _queryParams: Record<string, unknown> = {
-                    after,
-                    before,
-                    limit,
-                    q,
-                    app,
-                    registry:
-                        registry != null
-                            ? serializers.TriggersListRequestRegistry.jsonOrThrow(registry, {
-                                  unrecognizedObjectKeys: "strip",
-                                  omitUndefined: true,
-                              })
-                            : undefined,
-                };
-                const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-                const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-                    _authRequest.headers,
-                    this._options?.headers,
-                    mergeOnlyDefinedHeaders({
-                        "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
-                    }),
-                    requestOptions?.headers,
-                );
-                const _response = await core.fetcher({
-                    url: core.url.join(
-                        (await core.Supplier.get(this._options.baseUrl)) ??
-                            (await core.Supplier.get(this._options.environment)) ??
-                            environments.PipedreamEnvironment.Prod,
-                        `v1/connect/${core.url.encodePathParam(this._options.projectId)}/triggers`,
-                    ),
-                    method: "GET",
-                    headers: _headers,
-                    queryString: core.url
-                        .queryBuilder()
-                        .addMany(_queryParams)
-                        .mergeAdditional(requestOptions?.queryParams)
-                        .build(),
-                    timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-                    maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-                    abortSignal: requestOptions?.abortSignal,
-                    fetchFn: this._options?.fetch,
-                    logging: this._options.logging,
-                });
-                if (_response.ok) {
-                    return {
-                        data: serializers.GetComponentsResponse.parseOrThrow(_response.body, {
-                            unrecognizedObjectKeys: "passthrough",
-                            allowUnrecognizedUnionMembers: true,
-                            allowUnrecognizedEnumValues: true,
-                            skipValidation: true,
-                            breadcrumbsPrefix: ["response"],
-                        }),
-                        rawResponse: _response.rawResponse,
-                    };
-                }
-                if (_response.error.reason === "status-code") {
-                    switch (_response.error.statusCode) {
-                        case 400:
-                            throw new Pipedream.BadRequestError(_response.error.body, _response.rawResponse);
-                        case 429:
-                            throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
-                        default:
-                            throw new errors.PipedreamError({
-                                statusCode: _response.error.statusCode,
-                                body: _response.error.body,
-                                rawResponse: _response.rawResponse,
-                            });
-                    }
-                }
-                return handleNonStatusCodeError(
-                    _response.error,
-                    _response.rawResponse,
-                    "GET",
-                    "/v1/connect/{project_id}/triggers",
-                );
-            },
-        );
-        const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Page<Pipedream.Component, Pipedream.GetComponentsResponse>({
-            response: dataWithRawResponse.data,
-            rawResponse: dataWithRawResponse.rawResponse,
-            hasNextPage: (response) =>
-                response?.pageInfo.endCursor != null &&
-                !(typeof response?.pageInfo.endCursor === "string" && response?.pageInfo.endCursor === ""),
-            getItems: (response) => response?.data ?? [],
-            loadPage: (response) => {
-                return list(core.setObjectProperty(request, "after", response?.pageInfo.endCursor));
-            },
-        });
-    }
-
-    /**
-     * Get detailed configuration for a specific trigger by its key
-     *
-     * @param {string} component_id - The key that uniquely identifies the component
-     * @param {Pipedream.TriggersRetrieveRequest} request
-     * @param {TriggersClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Pipedream.TooManyRequestsError}
-     *
-     * @example
-     *     await client.triggers.retrieve("slack-send-message", {
-     *         version: "1.0.0"
-     *     })
-     */
-    public retrieve(
-        component_id: string,
-        request: Pipedream.TriggersRetrieveRequest = {},
-        requestOptions?: TriggersClient.RequestOptions,
-    ): core.HttpResponsePromise<Pipedream.GetComponentResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__retrieve(component_id, request, requestOptions));
-    }
-
-    private async __retrieve(
-        component_id: string,
-        request: Pipedream.TriggersRetrieveRequest = {},
-        requestOptions?: TriggersClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Pipedream.GetComponentResponse>> {
-        const { version } = request;
-        const _queryParams: Record<string, unknown> = {
-            version,
-        };
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
-            }),
-            requestOptions?.headers,
-        );
-        const _response = await core.fetcher({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)) ??
-                    environments.PipedreamEnvironment.Prod,
-                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/triggers/${core.url.encodePathParam(component_id)}`,
-            ),
-            method: "GET",
-            headers: _headers,
-            queryString: core.url
-                .queryBuilder()
-                .addMany(_queryParams)
-                .mergeAdditional(requestOptions?.queryParams)
-                .build(),
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return {
-                data: serializers.GetComponentResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 429:
-                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
-                default:
-                    throw new errors.PipedreamError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        return handleNonStatusCodeError(
-            _response.error,
-            _response.rawResponse,
-            "GET",
-            "/v1/connect/{project_id}/triggers/{component_id}",
-        );
-    }
-
-    /**
-     * Retrieve remote options for a given prop for a trigger
-     *
-     * @param {Pipedream.ConfigurePropOpts} request
-     * @param {TriggersClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Pipedream.TooManyRequestsError}
-     *
-     * @example
-     *     await client.triggers.configureProp({
-     *         id: "id",
-     *         externalUserId: "external_user_id",
-     *         propName: "prop_name"
-     *     })
-     */
-    public configureProp(
-        request: Pipedream.ConfigurePropOpts,
-        requestOptions?: TriggersClient.RequestOptions,
-    ): core.HttpResponsePromise<Pipedream.ConfigurePropResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__configureProp(request, requestOptions));
-    }
-
-    private async __configureProp(
-        request: Pipedream.ConfigurePropOpts,
-        requestOptions?: TriggersClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Pipedream.ConfigurePropResponse>> {
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({
-                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
-            }),
-            requestOptions?.headers,
-        );
-        const _response = await core.fetcher({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)) ??
-                    environments.PipedreamEnvironment.Prod,
-                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/triggers/configure`,
-            ),
-            method: "POST",
-            headers: _headers,
-            contentType: "application/json",
-            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
-            requestType: "json",
-            body: serializers.ConfigurePropOpts.jsonOrThrow(request, {
-                unrecognizedObjectKeys: "strip",
-                omitUndefined: true,
-            }),
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return {
-                data: serializers.ConfigurePropResponse.parseOrThrow(_response.body, {
-                    unrecognizedObjectKeys: "passthrough",
-                    allowUnrecognizedUnionMembers: true,
-                    allowUnrecognizedEnumValues: true,
-                    skipValidation: true,
-                    breadcrumbsPrefix: ["response"],
-                }),
-                rawResponse: _response.rawResponse,
-            };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 429:
-                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
-                default:
-                    throw new errors.PipedreamError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        return handleNonStatusCodeError(
-            _response.error,
-            _response.rawResponse,
-            "POST",
-            "/v1/connect/{project_id}/triggers/configure",
-        );
     }
 
     /**
@@ -504,6 +203,364 @@ export class TriggersClient {
             _response.rawResponse,
             "POST",
             "/v1/connect/{project_id}/triggers/deploy",
+        );
+    }
+
+    /**
+     * Retrieve available triggers with optional search and app filtering
+     *
+     * @param {Pipedream.TriggersListRequest} request
+     * @param {TriggersClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.BadRequestError}
+     * @throws {@link Pipedream.UnauthorizedError}
+     * @throws {@link Pipedream.TooManyRequestsError}
+     * @throws {@link Pipedream.InternalServerError}
+     * @throws {@link Pipedream.BadGatewayError}
+     * @throws {@link Pipedream.ServiceUnavailableError}
+     *
+     * @example
+     *     await client.triggers.list({
+     *         after: "after",
+     *         before: "before",
+     *         limit: 1,
+     *         q: "q",
+     *         app: "app",
+     *         registry: "public"
+     *     })
+     */
+    public async list(
+        request: Pipedream.TriggersListRequest = {},
+        requestOptions?: TriggersClient.RequestOptions,
+    ): Promise<core.Page<Pipedream.Component, Pipedream.GetComponentsResponse>> {
+        const list = core.HttpResponsePromise.interceptFunction(
+            async (
+                request: Pipedream.TriggersListRequest,
+            ): Promise<core.WithRawResponse<Pipedream.GetComponentsResponse>> => {
+                const { after, before, limit, q, app, registry } = request;
+                const _queryParams: Record<string, unknown> = {
+                    after,
+                    before,
+                    limit,
+                    q,
+                    app,
+                    registry:
+                        registry != null
+                            ? serializers.TriggersListRequestRegistry.jsonOrThrow(registry, {
+                                  unrecognizedObjectKeys: "strip",
+                                  omitUndefined: true,
+                              })
+                            : undefined,
+                };
+                const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+                const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+                    _authRequest.headers,
+                    this._options?.headers,
+                    mergeOnlyDefinedHeaders({
+                        "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+                    }),
+                    requestOptions?.headers,
+                );
+                const _response = await core.fetcher({
+                    url: core.url.join(
+                        (await core.Supplier.get(this._options.baseUrl)) ??
+                            (await core.Supplier.get(this._options.environment)) ??
+                            environments.PipedreamEnvironment.Prod,
+                        `v1/connect/${core.url.encodePathParam(this._options.projectId)}/triggers`,
+                    ),
+                    method: "GET",
+                    headers: _headers,
+                    queryString: core.url
+                        .queryBuilder()
+                        .addMany(_queryParams)
+                        .mergeAdditional(requestOptions?.queryParams)
+                        .build(),
+                    timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+                    maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+                    abortSignal: requestOptions?.abortSignal,
+                    fetchFn: this._options?.fetch,
+                    logging: this._options.logging,
+                });
+                if (_response.ok) {
+                    return {
+                        data: serializers.GetComponentsResponse.parseOrThrow(_response.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        rawResponse: _response.rawResponse,
+                    };
+                }
+                if (_response.error.reason === "status-code") {
+                    switch (_response.error.statusCode) {
+                        case 400:
+                            throw new Pipedream.BadRequestError(_response.error.body, _response.rawResponse);
+                        case 401:
+                            throw new Pipedream.UnauthorizedError(_response.error.body, _response.rawResponse);
+                        case 429:
+                            throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                        case 500:
+                            throw new Pipedream.InternalServerError(_response.error.body, _response.rawResponse);
+                        case 502:
+                            throw new Pipedream.BadGatewayError(_response.error.body, _response.rawResponse);
+                        case 503:
+                            throw new Pipedream.ServiceUnavailableError(
+                                serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                                    unrecognizedObjectKeys: "passthrough",
+                                    allowUnrecognizedUnionMembers: true,
+                                    allowUnrecognizedEnumValues: true,
+                                    skipValidation: true,
+                                    breadcrumbsPrefix: ["response"],
+                                }),
+                                _response.rawResponse,
+                            );
+                        default:
+                            throw new errors.PipedreamError({
+                                statusCode: _response.error.statusCode,
+                                body: _response.error.body,
+                                rawResponse: _response.rawResponse,
+                            });
+                    }
+                }
+                return handleNonStatusCodeError(
+                    _response.error,
+                    _response.rawResponse,
+                    "GET",
+                    "/v1/connect/{project_id}/triggers",
+                );
+            },
+        );
+        const dataWithRawResponse = await list(request).withRawResponse();
+        return new core.Page<Pipedream.Component, Pipedream.GetComponentsResponse>({
+            response: dataWithRawResponse.data,
+            rawResponse: dataWithRawResponse.rawResponse,
+            hasNextPage: (response) =>
+                response?.pageInfo.endCursor != null &&
+                !(typeof response?.pageInfo.endCursor === "string" && response?.pageInfo.endCursor === ""),
+            getItems: (response) => response?.data ?? [],
+            loadPage: (response) => {
+                return list(core.setObjectProperty(request, "after", response?.pageInfo.endCursor));
+            },
+        });
+    }
+
+    /**
+     * Configure a prop of a trigger to retrieve its options or validate its configuration
+     *
+     * @param {Pipedream.ConfigurePropOpts} request
+     * @param {TriggersClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.BadRequestError}
+     * @throws {@link Pipedream.UnauthorizedError}
+     * @throws {@link Pipedream.TooManyRequestsError}
+     *
+     * @example
+     *     await client.triggers.configureProp({
+     *         externalUserId: "external_user_id",
+     *         id: "id",
+     *         propName: "prop_name"
+     *     })
+     */
+    public configureProp(
+        request: Pipedream.ConfigurePropOpts,
+        requestOptions?: TriggersClient.RequestOptions,
+    ): core.HttpResponsePromise<Pipedream.ConfigurePropResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__configureProp(request, requestOptions));
+    }
+
+    private async __configureProp(
+        request: Pipedream.ConfigurePropOpts,
+        requestOptions?: TriggersClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Pipedream.ConfigurePropResponse>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+            }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.PipedreamEnvironment.Prod,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/triggers/configure`,
+            ),
+            method: "POST",
+            headers: _headers,
+            contentType: "application/json",
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            requestType: "json",
+            body: serializers.ConfigurePropOpts.jsonOrThrow(request, {
+                unrecognizedObjectKeys: "strip",
+                omitUndefined: true,
+            }),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.ConfigurePropResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Pipedream.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new Pipedream.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "POST",
+            "/v1/connect/{project_id}/triggers/configure",
+        );
+    }
+
+    /**
+     * Get detailed configuration for a specific trigger by its key
+     *
+     * @param {string} component_id - The key that uniquely identifies the component
+     * @param {Pipedream.TriggersRetrieveRequest} request
+     * @param {TriggersClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.BadRequestError}
+     * @throws {@link Pipedream.UnauthorizedError}
+     * @throws {@link Pipedream.NotFoundError}
+     * @throws {@link Pipedream.TooManyRequestsError}
+     * @throws {@link Pipedream.InternalServerError}
+     * @throws {@link Pipedream.BadGatewayError}
+     * @throws {@link Pipedream.ServiceUnavailableError}
+     *
+     * @example
+     *     await client.triggers.retrieve("slack-send-message", {
+     *         version: "1.0.0"
+     *     })
+     */
+    public retrieve(
+        component_id: string,
+        request: Pipedream.TriggersRetrieveRequest = {},
+        requestOptions?: TriggersClient.RequestOptions,
+    ): core.HttpResponsePromise<Pipedream.GetComponentResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__retrieve(component_id, request, requestOptions));
+    }
+
+    private async __retrieve(
+        component_id: string,
+        request: Pipedream.TriggersRetrieveRequest = {},
+        requestOptions?: TriggersClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Pipedream.GetComponentResponse>> {
+        const { version } = request;
+        const _queryParams: Record<string, unknown> = {
+            version,
+        };
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+            }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.PipedreamEnvironment.Prod,
+                `v1/connect/${core.url.encodePathParam(this._options.projectId)}/triggers/${core.url.encodePathParam(component_id)}`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url
+                .queryBuilder()
+                .addMany(_queryParams)
+                .mergeAdditional(requestOptions?.queryParams)
+                .build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.GetComponentResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Pipedream.BadRequestError(_response.error.body, _response.rawResponse);
+                case 401:
+                    throw new Pipedream.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Pipedream.NotFoundError(_response.error.body, _response.rawResponse);
+                case 429:
+                    throw new Pipedream.TooManyRequestsError(_response.error.body, _response.rawResponse);
+                case 500:
+                    throw new Pipedream.InternalServerError(_response.error.body, _response.rawResponse);
+                case 502:
+                    throw new Pipedream.BadGatewayError(_response.error.body, _response.rawResponse);
+                case 503:
+                    throw new Pipedream.ServiceUnavailableError(
+                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "GET",
+            "/v1/connect/{project_id}/triggers/{component_id}",
         );
     }
 }

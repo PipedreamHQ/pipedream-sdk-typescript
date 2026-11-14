@@ -9,17 +9,17 @@ export const HttpRequestAuth: core.serialization.ObjectSchema<
     serializers.HttpRequestAuth.Raw,
     Pipedream.HttpRequestAuth
 > = core.serialization.object({
-    type: HttpRequestAuthType.optional(),
-    username: core.serialization.string().optional(),
     password: core.serialization.string().optional(),
     token: core.serialization.string().optional(),
+    type: HttpRequestAuthType.optional(),
+    username: core.serialization.string().optional(),
 });
 
 export declare namespace HttpRequestAuth {
     export interface Raw {
-        type?: HttpRequestAuthType.Raw | null;
-        username?: string | null;
         password?: string | null;
         token?: string | null;
+        type?: HttpRequestAuthType.Raw | null;
+        username?: string | null;
     }
 }

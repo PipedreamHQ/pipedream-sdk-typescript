@@ -9,25 +9,25 @@ import { ToolAnnotations } from "./ToolAnnotations.js";
 
 export const Component: core.serialization.ObjectSchema<serializers.Component.Raw, Pipedream.Component> =
     core.serialization.object({
-        key: core.serialization.string(),
-        name: core.serialization.string(),
-        version: core.serialization.string(),
+        annotations: ToolAnnotations.optional(),
+        componentType: core.serialization.property("component_type", core.serialization.string().optional()),
         configurableProps: core.serialization.property("configurable_props", core.serialization.list(ConfigurableProp)),
         description: core.serialization.string().optional(),
-        componentType: core.serialization.property("component_type", core.serialization.string().optional()),
+        key: core.serialization.string(),
+        name: core.serialization.string(),
         stash: ComponentStash.optional(),
-        annotations: ToolAnnotations.optional(),
+        version: core.serialization.string(),
     });
 
 export declare namespace Component {
     export interface Raw {
-        key: string;
-        name: string;
-        version: string;
+        annotations?: ToolAnnotations.Raw | null;
+        component_type?: string | null;
         configurable_props: ConfigurableProp.Raw[];
         description?: string | null;
-        component_type?: string | null;
+        key: string;
+        name: string;
         stash?: ComponentStash.Raw | null;
-        annotations?: ToolAnnotations.Raw | null;
+        version: string;
     }
 }

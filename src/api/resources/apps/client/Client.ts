@@ -8,7 +8,7 @@ import * as environments from "../../../../environments.js";
 import { handleNonStatusCodeError } from "../../../../errors/handleNonStatusCodeError.js";
 import * as errors from "../../../../errors/index.js";
 import * as serializers from "../../../../serialization/index.js";
-import type * as Pipedream from "../../../index.js";
+import * as Pipedream from "../../../index.js";
 
 export declare namespace AppsClient {
     export type Options = BaseClientOptions;
@@ -16,6 +16,9 @@ export declare namespace AppsClient {
     export interface RequestOptions extends BaseRequestOptions {}
 }
 
+/**
+ * App registry
+ */
 export class AppsClient {
     protected readonly _options: NormalizedClientOptionsWithAuth<AppsClient.Options>;
 
@@ -29,6 +32,13 @@ export class AppsClient {
      * @param {Pipedream.AppsListRequest} request
      * @param {AppsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
+     * @throws {@link Pipedream.BadRequestError}
+     * @throws {@link Pipedream.UnauthorizedError}
+     * @throws {@link Pipedream.InternalServerError}
+     * @throws {@link Pipedream.NotImplementedError}
+     * @throws {@link Pipedream.BadGatewayError}
+     * @throws {@link Pipedream.ServiceUnavailableError}
+     *
      * @example
      *     await client.apps.list({
      *         after: "after",
@@ -37,10 +47,13 @@ export class AppsClient {
      *         q: "q",
      *         sortKey: "name",
      *         sortDirection: "asc",
-     *         categoryIds: ["category_ids"],
      *         hasComponents: true,
      *         hasActions: true,
-     *         hasTriggers: true
+     *         hasTriggers: true,
+     *         page: 1,
+     *         categoryName: "category_name",
+     *         authType: "auth_type",
+     *         categoryIds: ["category_ids"]
      *     })
      */
     public async list(
@@ -56,10 +69,13 @@ export class AppsClient {
                     q,
                     sortKey,
                     sortDirection,
-                    categoryIds,
                     hasComponents,
                     hasActions,
                     hasTriggers,
+                    page,
+                    categoryName,
+                    authType,
+                    categoryIds,
                 } = request;
                 const _queryParams: Record<string, unknown> = {
                     after,
@@ -80,10 +96,13 @@ export class AppsClient {
                                   omitUndefined: true,
                               })
                             : undefined,
-                    category_ids: categoryIds,
                     has_components: hasComponents,
                     has_actions: hasActions,
                     has_triggers: hasTriggers,
+                    page,
+                    category_name: categoryName,
+                    auth_type: authType,
+                    category_ids: categoryIds,
                 };
                 const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
                 const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -127,11 +146,44 @@ export class AppsClient {
                     };
                 }
                 if (_response.error.reason === "status-code") {
-                    throw new errors.PipedreamError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
+                    switch (_response.error.statusCode) {
+                        case 400:
+                            throw new Pipedream.BadRequestError(_response.error.body, _response.rawResponse);
+                        case 401:
+                            throw new Pipedream.UnauthorizedError(_response.error.body, _response.rawResponse);
+                        case 500:
+                            throw new Pipedream.InternalServerError(_response.error.body, _response.rawResponse);
+                        case 501:
+                            throw new Pipedream.NotImplementedError(
+                                serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                                    unrecognizedObjectKeys: "passthrough",
+                                    allowUnrecognizedUnionMembers: true,
+                                    allowUnrecognizedEnumValues: true,
+                                    skipValidation: true,
+                                    breadcrumbsPrefix: ["response"],
+                                }),
+                                _response.rawResponse,
+                            );
+                        case 502:
+                            throw new Pipedream.BadGatewayError(_response.error.body, _response.rawResponse);
+                        case 503:
+                            throw new Pipedream.ServiceUnavailableError(
+                                serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                                    unrecognizedObjectKeys: "passthrough",
+                                    allowUnrecognizedUnionMembers: true,
+                                    allowUnrecognizedEnumValues: true,
+                                    skipValidation: true,
+                                    breadcrumbsPrefix: ["response"],
+                                }),
+                                _response.rawResponse,
+                            );
+                        default:
+                            throw new errors.PipedreamError({
+                                statusCode: _response.error.statusCode,
+                                body: _response.error.body,
+                                rawResponse: _response.rawResponse,
+                            });
+                    }
                 }
                 return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/v1/connect/apps");
             },
@@ -151,10 +203,105 @@ export class AppsClient {
     }
 
     /**
+     * Retrieve the available filter values for apps, and how many apps carry each one
+     *
+     * @param {AppsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.UnauthorizedError}
+     * @throws {@link Pipedream.InternalServerError}
+     * @throws {@link Pipedream.BadGatewayError}
+     * @throws {@link Pipedream.ServiceUnavailableError}
+     *
+     * @example
+     *     await client.apps.facets()
+     */
+    public facets(requestOptions?: AppsClient.RequestOptions): core.HttpResponsePromise<Pipedream.FacetsResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__facets(requestOptions));
+    }
+
+    private async __facets(
+        requestOptions?: AppsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Pipedream.FacetsResponse>> {
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({
+                "x-pd-environment": requestOptions?.projectEnvironment ?? this._options?.projectEnvironment,
+            }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.PipedreamEnvironment.Prod,
+                "v1/connect/apps/facets",
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return {
+                data: serializers.FacetsResponse.parseOrThrow(_response.body, {
+                    unrecognizedObjectKeys: "passthrough",
+                    allowUnrecognizedUnionMembers: true,
+                    allowUnrecognizedEnumValues: true,
+                    skipValidation: true,
+                    breadcrumbsPrefix: ["response"],
+                }),
+                rawResponse: _response.rawResponse,
+            };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new Pipedream.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 500:
+                    throw new Pipedream.InternalServerError(_response.error.body, _response.rawResponse);
+                case 502:
+                    throw new Pipedream.BadGatewayError(_response.error.body, _response.rawResponse);
+                case 503:
+                    throw new Pipedream.ServiceUnavailableError(
+                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/v1/connect/apps/facets");
+    }
+
+    /**
      * Get detailed information about a specific app by ID or name slug
      *
      * @param {string} app_id - The name slug or ID of the app (e.g., 'slack', 'github')
      * @param {AppsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Pipedream.UnauthorizedError}
+     * @throws {@link Pipedream.NotFoundError}
+     * @throws {@link Pipedream.InternalServerError}
+     * @throws {@link Pipedream.BadGatewayError}
+     * @throws {@link Pipedream.ServiceUnavailableError}
      *
      * @example
      *     await client.apps.retrieve("app_id")
@@ -209,11 +356,33 @@ export class AppsClient {
         }
 
         if (_response.error.reason === "status-code") {
-            throw new errors.PipedreamError({
-                statusCode: _response.error.statusCode,
-                body: _response.error.body,
-                rawResponse: _response.rawResponse,
-            });
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new Pipedream.UnauthorizedError(_response.error.body, _response.rawResponse);
+                case 404:
+                    throw new Pipedream.NotFoundError(_response.error.body, _response.rawResponse);
+                case 500:
+                    throw new Pipedream.InternalServerError(_response.error.body, _response.rawResponse);
+                case 502:
+                    throw new Pipedream.BadGatewayError(_response.error.body, _response.rawResponse);
+                case 503:
+                    throw new Pipedream.ServiceUnavailableError(
+                        serializers.ErrorResponse.parseOrThrow(_response.error.body, {
+                            unrecognizedObjectKeys: "passthrough",
+                            allowUnrecognizedUnionMembers: true,
+                            allowUnrecognizedEnumValues: true,
+                            skipValidation: true,
+                            breadcrumbsPrefix: ["response"],
+                        }),
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.PipedreamError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
         }
 
         return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/v1/connect/apps/{app_id}");

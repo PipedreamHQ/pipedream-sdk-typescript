@@ -14,9 +14,9 @@ export const HttpRequestConfig: core.serialization.ObjectSchema<
     auth: HttpRequestAuth.optional(),
     body: HttpRequestBody.optional(),
     headers: core.serialization.list(HttpRequestField).optional(),
+    method: core.serialization.string().optional(),
     params: core.serialization.list(HttpRequestField).optional(),
     tab: core.serialization.string().optional(),
-    method: core.serialization.string().optional(),
     url: core.serialization.string().optional(),
 });
 
@@ -25,9 +25,9 @@ export declare namespace HttpRequestConfig {
         auth?: HttpRequestAuth.Raw | null;
         body?: HttpRequestBody.Raw | null;
         headers?: HttpRequestField.Raw[] | null;
+        method?: string | null;
         params?: HttpRequestField.Raw[] | null;
         tab?: string | null;
-        method?: string | null;
         url?: string | null;
     }
 }

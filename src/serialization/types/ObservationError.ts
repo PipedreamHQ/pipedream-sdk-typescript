@@ -8,15 +8,15 @@ export const ObservationError: core.serialization.ObjectSchema<
     serializers.ObservationError.Raw,
     Pipedream.ObservationError
 > = core.serialization.object({
-    name: core.serialization.string().optional(),
     message: core.serialization.string().optional(),
+    name: core.serialization.string().optional(),
     stack: core.serialization.string().optional(),
 });
 
 export declare namespace ObservationError {
     export interface Raw {
-        name?: string | null;
         message?: string | null;
+        name?: string | null;
         stack?: string | null;
     }
 }

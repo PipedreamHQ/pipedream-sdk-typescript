@@ -11,41 +11,41 @@ export const ConfigurablePropString: core.serialization.ObjectSchema<
     serializers.ConfigurablePropString.Raw,
     Pipedream.ConfigurablePropString
 > = core.serialization.object({
-    type: core.serialization.stringLiteral("string"),
-    secret: core.serialization.boolean().optional(),
-    format: ConfigurablePropStringFormat.optional(),
     default: ConfiguredPropValueString.optional(),
+    format: ConfigurablePropStringFormat.optional(),
     options: core.serialization.list(ConfigurablePropStringOptionsItem).optional(),
-    name: core.serialization.string(),
-    label: core.serialization.string().optional(),
+    secret: core.serialization.boolean().optional(),
+    type: core.serialization.stringLiteral("string"),
     description: core.serialization.string().optional(),
-    optional: core.serialization.boolean().optional(),
     disabled: core.serialization.boolean().optional(),
-    readOnly: core.serialization.boolean().optional(),
     hidden: core.serialization.boolean().optional(),
+    label: core.serialization.string().optional(),
+    name: core.serialization.string(),
+    optional: core.serialization.boolean().optional(),
+    readOnly: core.serialization.boolean().optional(),
+    reloadProps: core.serialization.boolean().optional(),
     remoteOptions: core.serialization.boolean().optional(),
     useQuery: core.serialization.boolean().optional(),
-    reloadProps: core.serialization.boolean().optional(),
     withLabel: core.serialization.boolean().optional(),
 });
 
 export declare namespace ConfigurablePropString {
     export interface Raw {
-        type: "string";
-        secret?: boolean | null;
-        format?: ConfigurablePropStringFormat.Raw | null;
         default?: ConfiguredPropValueString.Raw | null;
+        format?: ConfigurablePropStringFormat.Raw | null;
         options?: ConfigurablePropStringOptionsItem.Raw[] | null;
-        name: string;
-        label?: string | null;
+        secret?: boolean | null;
+        type: "string";
         description?: string | null;
-        optional?: boolean | null;
         disabled?: boolean | null;
-        readOnly?: boolean | null;
         hidden?: boolean | null;
+        label?: string | null;
+        name: string;
+        optional?: boolean | null;
+        readOnly?: boolean | null;
+        reloadProps?: boolean | null;
         remoteOptions?: boolean | null;
         useQuery?: boolean | null;
-        reloadProps?: boolean | null;
         withLabel?: boolean | null;
     }
 }

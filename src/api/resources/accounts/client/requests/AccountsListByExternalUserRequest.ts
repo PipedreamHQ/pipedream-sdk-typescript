@@ -8,6 +8,8 @@
  *     }
  */
 export interface AccountsListByExternalUserRequest {
+    /** Set to `true` to include account credentials in the response (BYOA and key-based accounts only) */
     includeCredentials?: boolean;
+    /** Only return accounts connected to this app, identified by its `name_slug` */
     app?: string;
 }

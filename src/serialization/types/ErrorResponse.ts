@@ -6,15 +6,15 @@ import type * as serializers from "../index.js";
 
 export const ErrorResponse: core.serialization.ObjectSchema<serializers.ErrorResponse.Raw, Pipedream.ErrorResponse> =
     core.serialization.object({
-        error: core.serialization.string(),
         code: core.serialization.string().optional(),
         details: core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
+        error: core.serialization.string(),
     });
 
 export declare namespace ErrorResponse {
     export interface Raw {
-        error: string;
         code?: string | null;
         details?: Record<string, unknown> | null;
+        error: string;
     }
 }

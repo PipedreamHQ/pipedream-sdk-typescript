@@ -7,24 +7,24 @@
  *     }
  */
 export interface CreateTokenOpts {
+    /** When true, end users may authorize a subset of the app's OAuth scopes; only the app's functional scopes (needed for the post-OAuth test request) are enforced. Defaults to false. */
+    allowProgressiveScopes?: boolean;
     /** List of allowed origins for CORS */
     allowedOrigins?: string[];
+    /** Scope the Connect Link to this app, identified by app ID or name slug: resolves the app's official OAuth client for your workspace (when it has one) and pins the link to the host serving that client's OAuth flow pages. Optional. */
+    appId?: string;
     /** URI to redirect to on error */
     errorRedirectUri?: string;
     /** Token TTL in seconds (max 14400 = 4 hours). Defaults to 4 hours if not specified. */
     expiresIn?: number;
     /** Your end user ID, for whom you're creating the token */
     externalUserId: string;
+    /** Scope the Connect Link to a specific OAuth client (overrides app_id's resolution). Optional. */
+    oauthAppId?: string;
     /** Space-separated scopes to restrict token permissions. Defaults to 'connect:*' if not specified. See https://pipedream.com/docs/connect/api-reference/authentication#connect-token-scopes for more information. */
     scope?: string;
     /** URI to redirect to on success */
     successRedirectUri?: string;
     /** Webhook URI for notifications */
     webhookUri?: string;
-    /** When true, end users may authorize a subset of the app's OAuth scopes; only the app's functional scopes (needed for the post-OAuth test request) are enforced. Defaults to false. */
-    allowProgressiveScopes?: boolean;
-    /** Scope the Connect Link to this app, identified by app ID or name slug: resolves the app's official OAuth client for your workspace (when it has one) and pins the link to the host serving that client's OAuth flow pages. Optional. */
-    appId?: string;
-    /** Scope the Connect Link to a specific OAuth client (overrides app_id's resolution). Optional. */
-    oauthAppId?: string;
 }

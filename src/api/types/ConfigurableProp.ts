@@ -6,26 +6,26 @@ import type * as Pipedream from "../index.js";
  * A configuration or input field for a component. This is a discriminated union based on the type field.
  */
 export type ConfigurableProp =
+    | Pipedream.ConfigurablePropAirtableBaseId
+    | Pipedream.ConfigurablePropAirtableFieldId
+    | Pipedream.ConfigurablePropAirtableTableId
+    | Pipedream.ConfigurablePropAirtableViewId
+    | Pipedream.ConfigurablePropDiscordChannel
+    | Pipedream.ConfigurablePropDiscordChannelArray
+    | Pipedream.ConfigurablePropApphook
+    | Pipedream.ConfigurablePropHttp
+    | Pipedream.ConfigurablePropTimer
+    | Pipedream.ConfigurablePropDb
     | Pipedream.ConfigurablePropAlert
+    | Pipedream.ConfigurablePropAny
     | Pipedream.ConfigurablePropApp
     | Pipedream.ConfigurablePropBoolean
     | Pipedream.ConfigurablePropDataStore
     | Pipedream.ConfigurablePropDir
-    | Pipedream.ConfigurablePropTimer
-    | Pipedream.ConfigurablePropApphook
-    | Pipedream.ConfigurablePropIntegerArray
-    | Pipedream.ConfigurablePropHttp
     | Pipedream.ConfigurablePropHttpRequest
-    | Pipedream.ConfigurablePropDb
-    | Pipedream.ConfigurablePropSql
-    | Pipedream.ConfigurablePropAirtableBaseId
-    | Pipedream.ConfigurablePropAirtableTableId
-    | Pipedream.ConfigurablePropAirtableViewId
-    | Pipedream.ConfigurablePropAirtableFieldId
-    | Pipedream.ConfigurablePropDiscordChannel
-    | Pipedream.ConfigurablePropDiscordChannelArray
     | Pipedream.ConfigurablePropInteger
-    | Pipedream.ConfigurablePropString
-    | Pipedream.ConfigurablePropStringArray
+    | Pipedream.ConfigurablePropIntegerArray
     | Pipedream.ConfigurablePropObject
-    | Pipedream.ConfigurablePropAny;
+    | Pipedream.ConfigurablePropSql
+    | Pipedream.ConfigurablePropString
+    | Pipedream.ConfigurablePropStringArray;
