@@ -4,6 +4,7 @@ import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
 import { AppAuthType } from "./AppAuthType.js";
+import { AppScopeLabels } from "./AppScopeLabels.js";
 import { AppScopeProfilesItem } from "./AppScopeProfilesItem.js";
 
 export const App: core.serialization.ObjectSchema<serializers.App.Raw, Pipedream.App> = core.serialization.object({
@@ -15,9 +16,15 @@ export const App: core.serialization.ObjectSchema<serializers.App.Raw, Pipedream
     imgSrc: core.serialization.property("img_src", core.serialization.string()),
     customFieldsJson: core.serialization.property("custom_fields_json", core.serialization.string().optional()),
     categories: core.serialization.list(core.serialization.string()),
-    featuredWeight: core.serialization.property("featured_weight", core.serialization.number()),
+    featuredWeight: core.serialization.property("featured_weight", core.serialization.number().optional()),
     scopeProfiles: core.serialization.property("scope_profiles", core.serialization.list(AppScopeProfilesItem)),
     oauthAppId: core.serialization.property("oauth_app_id", core.serialization.string().optional()),
+    scopes: core.serialization.list(core.serialization.string()).optional(),
+    additionalScopes: core.serialization.property(
+        "additional_scopes",
+        core.serialization.list(core.serialization.string()).optional(),
+    ),
+    scopeLabels: core.serialization.property("scope_labels", AppScopeLabels.optional()),
 });
 
 export declare namespace App {
@@ -30,8 +37,11 @@ export declare namespace App {
         img_src: string;
         custom_fields_json?: string | null;
         categories: string[];
-        featured_weight: number;
+        featured_weight?: number | null;
         scope_profiles: AppScopeProfilesItem.Raw[];
         oauth_app_id?: string | null;
+        scopes?: string[] | null;
+        additional_scopes?: string[] | null;
+        scope_labels?: AppScopeLabels.Raw | null;
     }
 }

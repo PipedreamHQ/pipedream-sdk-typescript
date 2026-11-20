@@ -32,7 +32,6 @@ describe("AccountsClient", () => {
                         name: "name",
                         img_src: "img_src",
                         categories: ["categories"],
-                        featured_weight: 1.1,
                         scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
                     },
                     created_at: "2024-01-15T09:30:00Z",
@@ -68,7 +67,6 @@ describe("AccountsClient", () => {
                         name: "name",
                         imgSrc: "img_src",
                         categories: ["categories"],
-                        featuredWeight: 1.1,
                         scopeProfiles: [
                             {
                                 name: "read_only",
@@ -167,6 +165,9 @@ describe("AccountsClient", () => {
                 featured_weight: 1.1,
                 scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
                 oauth_app_id: "oauth_app_id",
+                scopes: ["scopes"],
+                additional_scopes: ["additional_scopes"],
+                scope_labels: { scopes: "scopes", additional_scopes: "additional_scopes" },
             },
             created_at: "2024-01-15T09:30:00Z",
             updated_at: "2024-01-15T09:30:00Z",
@@ -223,6 +224,12 @@ describe("AccountsClient", () => {
                     },
                 ],
                 oauthAppId: "oauth_app_id",
+                scopes: ["scopes"],
+                additionalScopes: ["additional_scopes"],
+                scopeLabels: {
+                    scopes: "scopes",
+                    additionalScopes: "additional_scopes",
+                },
             },
             createdAt: new Date("2024-01-15T09:30:00.000Z"),
             updatedAt: new Date("2024-01-15T09:30:00.000Z"),
@@ -242,6 +249,39 @@ describe("AccountsClient", () => {
     });
 
     test("create (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { app_slug: "app_slug", cfmap_json: "cfmap_json", connect_token: "connect_token" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/connect/project_id/accounts")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(422)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.accounts.create({
+                appSlug: "app_slug",
+                cfmapJson: "cfmap_json",
+                connectToken: "connect_token",
+            });
+        }).rejects.toThrow(Pipedream.UnprocessableEntityError);
+    });
+
+    test("create (3)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 
@@ -305,6 +345,9 @@ describe("AccountsClient", () => {
                 featured_weight: 1.1,
                 scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
                 oauth_app_id: "oauth_app_id",
+                scopes: ["scopes"],
+                additional_scopes: ["additional_scopes"],
+                scope_labels: { scopes: "scopes", additional_scopes: "additional_scopes" },
             },
             created_at: "2024-01-15T09:30:00Z",
             updated_at: "2024-01-15T09:30:00Z",
@@ -356,6 +399,12 @@ describe("AccountsClient", () => {
                     },
                 ],
                 oauthAppId: "oauth_app_id",
+                scopes: ["scopes"],
+                additionalScopes: ["additional_scopes"],
+                scopeLabels: {
+                    scopes: "scopes",
+                    additionalScopes: "additional_scopes",
+                },
             },
             createdAt: new Date("2024-01-15T09:30:00.000Z"),
             updatedAt: new Date("2024-01-15T09:30:00.000Z"),
@@ -538,6 +587,9 @@ describe("AccountsClient", () => {
                     featured_weight: 1.1,
                     scope_profiles: [{ name: "read_only", scopes: ["scopes"] }],
                     oauth_app_id: "oauth_app_id",
+                    scopes: ["scopes"],
+                    additional_scopes: ["additional_scopes"],
+                    scope_labels: { scopes: "scopes", additional_scopes: "additional_scopes" },
                 },
                 created_at: "2024-01-15T09:30:00Z",
                 updated_at: "2024-01-15T09:30:00Z",
@@ -592,6 +644,12 @@ describe("AccountsClient", () => {
                         },
                     ],
                     oauthAppId: "oauth_app_id",
+                    scopes: ["scopes"],
+                    additionalScopes: ["additional_scopes"],
+                    scopeLabels: {
+                        scopes: "scopes",
+                        additionalScopes: "additional_scopes",
+                    },
                 },
                 createdAt: new Date("2024-01-15T09:30:00.000Z"),
                 updatedAt: new Date("2024-01-15T09:30:00.000Z"),
@@ -612,6 +670,62 @@ describe("AccountsClient", () => {
     });
 
     test("listByExternalUser (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/connect/project_id/users/external_user_id/accounts")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.accounts.listByExternalUser("external_user_id");
+        }).rejects.toThrow(Pipedream.NotFoundError);
+    });
+
+    test("listByExternalUser (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { error: "error", limit: 1, message: "message", paginated_url: "paginated_url" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/connect/project_id/users/external_user_id/accounts")
+            .respondWith()
+            .statusCode(413)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.accounts.listByExternalUser("external_user_id");
+        }).rejects.toThrow(Pipedream.ContentTooLargeError);
+    });
+
+    test("listByExternalUser (4)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 

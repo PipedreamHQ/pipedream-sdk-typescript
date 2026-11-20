@@ -14,6 +14,8 @@ export const RunActionOpts: core.serialization.Schema<serializers.RunActionOpts.
         configuredProps: core.serialization.property("configured_props", ConfiguredProps.optional()),
         dynamicPropsId: core.serialization.property("dynamic_props_id", core.serialization.string().optional()),
         stashId: core.serialization.property("stash_id", RunActionOptsStashId.optional()),
+        platformVersion: core.serialization.property("platform_version", core.serialization.string().optional()),
+        debug: core.serialization.boolean().optional(),
     });
 
 export declare namespace RunActionOpts {
@@ -24,5 +26,7 @@ export declare namespace RunActionOpts {
         configured_props?: ConfiguredProps.Raw | null;
         dynamic_props_id?: string | null;
         stash_id?: RunActionOptsStashId.Raw | null;
+        platform_version?: string | null;
+        debug?: boolean | null;
     }
 }

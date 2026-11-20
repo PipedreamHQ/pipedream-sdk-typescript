@@ -11,10 +11,13 @@ import type * as Pipedream from "../../../../index.js";
  *         q: "q",
  *         sortKey: "name",
  *         sortDirection: "asc",
- *         categoryIds: ["category_ids"],
  *         hasComponents: true,
  *         hasActions: true,
- *         hasTriggers: true
+ *         hasTriggers: true,
+ *         page: 1,
+ *         categoryName: "category_name",
+ *         authType: "auth_type",
+ *         categoryIds: ["category_ids"]
  *     }
  */
 export interface AppsListRequest {
@@ -30,12 +33,21 @@ export interface AppsListRequest {
     sortKey?: Pipedream.AppsListRequestSortKey;
     /** The direction to sort the apps */
     sortDirection?: Pipedream.AppsListRequestSortDirection;
-    /** Only return apps in these categories */
-    categoryIds?: string | string[];
     /** Only return apps that have components (actions or triggers) */
     hasComponents?: boolean;
     /** Only return apps that have actions */
     hasActions?: boolean;
     /** Only return apps that have triggers */
     hasTriggers?: boolean;
+    /**
+     * The page of results to return, 1-based. An alternative to `after`/
+     * `before` cursor pagination; ignored when either cursor is supplied.
+     */
+    page?: number;
+    /** Only return apps in this category, by name (e.g. `Developer Tools`) */
+    categoryName?: string;
+    /** Only return apps using this authentication type */
+    authType?: string;
+    /** Only return apps in these categories */
+    categoryIds?: string | string[];
 }

@@ -25,4 +25,6 @@ export interface ConfigurePropOpts {
     prevContext?: Record<string, unknown>;
     /** Search query for filtering options */
     query?: string;
+    /** Pin a later platform version for the execution runtime. Honored only when strictly later than the current default. */
+    platformVersion?: string;
 }

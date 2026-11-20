@@ -2,10 +2,9 @@
 
 import type * as core from "../../core/index.js";
 import * as errors from "../../errors/index.js";
-import type * as Pipedream from "../index.js";
 
 export class UnauthorizedError extends errors.PipedreamError {
-    constructor(body: Pipedream.UnauthorizedErrorBody, rawResponse?: core.RawResponse) {
+    constructor(body?: unknown, rawResponse?: core.RawResponse) {
         super({
             message: "UnauthorizedError",
             statusCode: 401,

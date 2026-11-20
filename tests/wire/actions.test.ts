@@ -6,325 +6,6 @@ import { mockServerPool } from "../mock-server/MockServerPool";
 import { mockOAuth } from "./mockAuth";
 
 describe("ActionsClient", () => {
-    test("list (1)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new PipedreamClient({
-            maxRetries: 0,
-            projectId: "project_id",
-            clientId: "client_id",
-            clientSecret: "test_client_secret",
-            projectEnvironment: "test",
-            environment: server.baseUrl,
-        });
-
-        const rawResponseBody = {
-            data: [
-                {
-                    key: "key",
-                    name: "GitLab: List Commits",
-                    version: "version",
-                    configurable_props: [{ name: "name", type: "alert", content: "content" }],
-                    description: "description",
-                    component_type: "component_type",
-                    stash: "optional",
-                },
-            ],
-            page_info: { count: 10, total_count: 120, start_cursor: "start_cursor", end_cursor: "end_cursor" },
-        };
-
-        server
-            .mockEndpoint({ once: false })
-            .get("/v1/connect/project_id/actions")
-            .respondWith()
-            .statusCode(200)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        const expected = {
-            data: [
-                {
-                    key: "key",
-                    name: "GitLab: List Commits",
-                    version: "version",
-                    configurableProps: [
-                        {
-                            name: "name",
-                            type: "alert",
-                            content: "content",
-                        },
-                    ],
-                    description: "description",
-                    componentType: "component_type",
-                    stash: "optional",
-                },
-            ],
-            pageInfo: {
-                count: 10,
-                totalCount: 120,
-                startCursor: "start_cursor",
-                endCursor: "end_cursor",
-            },
-        };
-        const page = await client.actions.list({
-            after: "after",
-            before: "before",
-            limit: 1,
-            q: "q",
-            app: "app",
-            registry: "public",
-        });
-
-        expect(expected.data).toEqual(page.data);
-        expect(page.hasNextPage()).toBe(true);
-        const nextPage = await page.getNextPage();
-        expect(expected.data).toEqual(nextPage.data);
-    });
-
-    test("list (2)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new PipedreamClient({
-            maxRetries: 0,
-            projectId: "project_id",
-            clientId: "client_id",
-            clientSecret: "test_client_secret",
-            projectEnvironment: "test",
-            environment: server.baseUrl,
-        });
-
-        const rawResponseBody = { key: "value" };
-
-        server
-            .mockEndpoint()
-            .get("/v1/connect/project_id/actions")
-            .respondWith()
-            .statusCode(400)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.actions.list();
-        }).rejects.toThrow(Pipedream.BadRequestError);
-    });
-
-    test("list (3)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new PipedreamClient({
-            maxRetries: 0,
-            projectId: "project_id",
-            clientId: "client_id",
-            clientSecret: "test_client_secret",
-            projectEnvironment: "test",
-            environment: server.baseUrl,
-        });
-
-        const rawResponseBody = { key: "value" };
-
-        server
-            .mockEndpoint()
-            .get("/v1/connect/project_id/actions")
-            .respondWith()
-            .statusCode(429)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.actions.list();
-        }).rejects.toThrow(Pipedream.TooManyRequestsError);
-    });
-
-    test("retrieve (1)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new PipedreamClient({
-            maxRetries: 0,
-            projectId: "project_id",
-            clientId: "client_id",
-            clientSecret: "test_client_secret",
-            projectEnvironment: "test",
-            environment: server.baseUrl,
-        });
-
-        const rawResponseBody = {
-            data: {
-                key: "key",
-                name: "GitLab: List Commits",
-                version: "version",
-                configurable_props: [{ name: "name", type: "alert", content: "content" }],
-                description: "description",
-                component_type: "component_type",
-                stash: "optional",
-                annotations: {
-                    destructiveHint: true,
-                    idempotentHint: true,
-                    openWorldHint: true,
-                    readOnlyHint: true,
-                    title: "title",
-                },
-            },
-        };
-
-        server
-            .mockEndpoint()
-            .get("/v1/connect/project_id/actions/slack-send-message")
-            .respondWith()
-            .statusCode(200)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        const response = await client.actions.retrieve("slack-send-message", {
-            version: "1.0.0",
-        });
-        expect(response).toEqual({
-            data: {
-                key: "key",
-                name: "GitLab: List Commits",
-                version: "version",
-                configurableProps: [
-                    {
-                        name: "name",
-                        type: "alert",
-                        content: "content",
-                    },
-                ],
-                description: "description",
-                componentType: "component_type",
-                stash: "optional",
-                annotations: {
-                    destructiveHint: true,
-                    idempotentHint: true,
-                    openWorldHint: true,
-                    readOnlyHint: true,
-                    title: "title",
-                },
-            },
-        });
-    });
-
-    test("retrieve (2)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new PipedreamClient({
-            maxRetries: 0,
-            projectId: "project_id",
-            clientId: "client_id",
-            clientSecret: "test_client_secret",
-            projectEnvironment: "test",
-            environment: server.baseUrl,
-        });
-
-        const rawResponseBody = { key: "value" };
-
-        server
-            .mockEndpoint()
-            .get("/v1/connect/project_id/actions/component_id")
-            .respondWith()
-            .statusCode(429)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.actions.retrieve("component_id");
-        }).rejects.toThrow(Pipedream.TooManyRequestsError);
-    });
-
-    test("configureProp (1)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new PipedreamClient({
-            maxRetries: 0,
-            projectId: "project_id",
-            clientId: "client_id",
-            clientSecret: "test_client_secret",
-            projectEnvironment: "test",
-            environment: server.baseUrl,
-        });
-        const rawRequestBody = { id: "id", external_user_id: "external_user_id", prop_name: "prop_name" };
-        const rawResponseBody = {
-            options: [{ label: "label", value: "value" }],
-            stringOptions: ["stringOptions"],
-            observations: [{ k: "k", msg: "msg", ts: 1.1 }],
-            context: { key: "value" },
-            errors: ["errors"],
-        };
-
-        server
-            .mockEndpoint()
-            .post("/v1/connect/project_id/actions/configure")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(200)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        const response = await client.actions.configureProp({
-            id: "id",
-            externalUserId: "external_user_id",
-            propName: "prop_name",
-        });
-        expect(response).toEqual({
-            options: [
-                {
-                    label: "label",
-                    value: "value",
-                },
-            ],
-            stringOptions: ["stringOptions"],
-            observations: [
-                {
-                    k: "k",
-                    msg: "msg",
-                    ts: 1.1,
-                },
-            ],
-            context: {
-                key: "value",
-            },
-            errors: ["errors"],
-        });
-    });
-
-    test("configureProp (2)", async () => {
-        const server = mockServerPool.createServer();
-        mockOAuth(server);
-
-        const client = new PipedreamClient({
-            maxRetries: 0,
-            projectId: "project_id",
-            clientId: "client_id",
-            clientSecret: "test_client_secret",
-            projectEnvironment: "test",
-            environment: server.baseUrl,
-        });
-        const rawRequestBody = { id: "id", external_user_id: "external_user_id", prop_name: "prop_name" };
-        const rawResponseBody = { key: "value" };
-
-        server
-            .mockEndpoint()
-            .post("/v1/connect/project_id/actions/configure")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(429)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.actions.configureProp({
-                id: "id",
-                externalUserId: "external_user_id",
-                propName: "prop_name",
-            });
-        }).rejects.toThrow(Pipedream.TooManyRequestsError);
-    });
-
     test("reloadProps (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
@@ -411,6 +92,420 @@ describe("ActionsClient", () => {
         }).rejects.toThrow(Pipedream.TooManyRequestsError);
     });
 
+    test("list (1)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {
+            data: [
+                {
+                    key: "slack-send-message",
+                    name: "Send Message",
+                    version: "1.0.0",
+                    configurable_props: [
+                        { name: "slack", type: "app", app: "slack" },
+                        { name: "channel", type: "string", label: "Channel" },
+                        { name: "text", type: "string", label: "Text" },
+                    ],
+                    description: "Send a message to a channel",
+                    component_type: "action",
+                    stash: "optional",
+                },
+            ],
+            page_info: { count: 1, total_count: 1, start_cursor: "start_cursor", end_cursor: "end_cursor" },
+        };
+
+        server
+            .mockEndpoint({ once: false })
+            .get("/v1/connect/project_id/actions")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const expected = {
+            data: [
+                {
+                    key: "slack-send-message",
+                    name: "Send Message",
+                    version: "1.0.0",
+                    configurableProps: [
+                        {
+                            name: "slack",
+                            type: "app",
+                            app: "slack",
+                        },
+                        {
+                            name: "channel",
+                            type: "string",
+                            label: "Channel",
+                        },
+                        {
+                            name: "text",
+                            type: "string",
+                            label: "Text",
+                        },
+                    ],
+                    description: "Send a message to a channel",
+                    componentType: "action",
+                    stash: "optional",
+                },
+            ],
+            pageInfo: {
+                count: 1,
+                totalCount: 1,
+                startCursor: "start_cursor",
+                endCursor: "end_cursor",
+            },
+        };
+        const page = await client.actions.list({
+            after: "after",
+            before: "before",
+            limit: 1,
+            q: "q",
+            app: "app",
+            registry: "public",
+        });
+
+        expect(expected.data).toEqual(page.data);
+        expect(page.hasNextPage()).toBe(true);
+        const nextPage = await page.getNextPage();
+        expect(expected.data).toEqual(nextPage.data);
+    });
+
+    test("list (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/connect/project_id/actions")
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.actions.list();
+        }).rejects.toThrow(Pipedream.BadRequestError);
+    });
+
+    test("list (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/connect/project_id/actions")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.actions.list();
+        }).rejects.toThrow(Pipedream.UnauthorizedError);
+    });
+
+    test("list (4)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/connect/project_id/actions")
+            .respondWith()
+            .statusCode(429)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.actions.list();
+        }).rejects.toThrow(Pipedream.TooManyRequestsError);
+    });
+
+    test("list (5)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/connect/project_id/actions")
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.actions.list();
+        }).rejects.toThrow(Pipedream.InternalServerError);
+    });
+
+    test("list (6)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/connect/project_id/actions")
+            .respondWith()
+            .statusCode(502)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.actions.list();
+        }).rejects.toThrow(Pipedream.BadGatewayError);
+    });
+
+    test("list (7)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { error: "error" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/connect/project_id/actions")
+            .respondWith()
+            .statusCode(503)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.actions.list();
+        }).rejects.toThrow(Pipedream.ServiceUnavailableError);
+    });
+
+    test("configureProp (1)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { id: "id", external_user_id: "external_user_id", prop_name: "prop_name" };
+        const rawResponseBody = {
+            options: [{ label: "label", value: "value" }],
+            stringOptions: ["stringOptions"],
+            observations: [{ k: "k", msg: "msg", ts: 1.1 }],
+            context: { key: "value" },
+            errors: ["errors"],
+        };
+
+        server
+            .mockEndpoint()
+            .post("/v1/connect/project_id/actions/configure")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.actions.configureProp({
+            id: "id",
+            externalUserId: "external_user_id",
+            propName: "prop_name",
+        });
+        expect(response).toEqual({
+            options: [
+                {
+                    label: "label",
+                    value: "value",
+                },
+            ],
+            stringOptions: ["stringOptions"],
+            observations: [
+                {
+                    k: "k",
+                    msg: "msg",
+                    ts: 1.1,
+                },
+            ],
+            context: {
+                key: "value",
+            },
+            errors: ["errors"],
+        });
+    });
+
+    test("configureProp (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { id: "id", external_user_id: "external_user_id", prop_name: "prop_name" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/connect/project_id/actions/configure")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.actions.configureProp({
+                id: "id",
+                externalUserId: "external_user_id",
+                propName: "prop_name",
+            });
+        }).rejects.toThrow(Pipedream.BadRequestError);
+    });
+
+    test("configureProp (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { id: "id", external_user_id: "external_user_id", prop_name: "prop_name" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/connect/project_id/actions/configure")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.actions.configureProp({
+                id: "id",
+                externalUserId: "external_user_id",
+                propName: "prop_name",
+            });
+        }).rejects.toThrow(Pipedream.UnauthorizedError);
+    });
+
+    test("configureProp (4)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { id: "id", external_user_id: "external_user_id", prop_name: "prop_name" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/connect/project_id/actions/configure")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(429)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.actions.configureProp({
+                id: "id",
+                externalUserId: "external_user_id",
+                propName: "prop_name",
+            });
+        }).rejects.toThrow(Pipedream.TooManyRequestsError);
+    });
+
     test("run (1)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
@@ -482,6 +577,70 @@ describe("ActionsClient", () => {
             .post("/v1/connect/project_id/actions/run")
             .jsonBody(rawRequestBody)
             .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.actions.run({
+                id: "id",
+                externalUserId: "external_user_id",
+            });
+        }).rejects.toThrow(Pipedream.BadRequestError);
+    });
+
+    test("run (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { id: "id", external_user_id: "external_user_id" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/connect/project_id/actions/run")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.actions.run({
+                id: "id",
+                externalUserId: "external_user_id",
+            });
+        }).rejects.toThrow(Pipedream.UnauthorizedError);
+    });
+
+    test("run (4)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = { id: "id", external_user_id: "external_user_id" };
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .post("/v1/connect/project_id/actions/run")
+            .jsonBody(rawRequestBody)
+            .respondWith()
             .statusCode(429)
             .jsonBody(rawResponseBody)
             .build();
@@ -492,5 +651,284 @@ describe("ActionsClient", () => {
                 externalUserId: "external_user_id",
             });
         }).rejects.toThrow(Pipedream.TooManyRequestsError);
+    });
+
+    test("retrieve (1)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = {
+            data: {
+                key: "slack-send-message",
+                name: "Send Message",
+                version: "1.0.0",
+                configurable_props: [
+                    { name: "slack", type: "app", app: "slack" },
+                    { name: "channel", type: "string", label: "Channel" },
+                    { name: "text", type: "string", label: "Text" },
+                ],
+                description: "Send a message to a channel",
+                component_type: "action",
+                stash: "optional",
+                annotations: {
+                    destructiveHint: true,
+                    idempotentHint: true,
+                    openWorldHint: true,
+                    readOnlyHint: true,
+                    title: "title",
+                },
+            },
+        };
+
+        server
+            .mockEndpoint()
+            .get("/v1/connect/project_id/actions/slack-send-message")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.actions.retrieve("slack-send-message", {
+            version: "1.0.0",
+        });
+        expect(response).toEqual({
+            data: {
+                key: "slack-send-message",
+                name: "Send Message",
+                version: "1.0.0",
+                configurableProps: [
+                    {
+                        name: "slack",
+                        type: "app",
+                        app: "slack",
+                    },
+                    {
+                        name: "channel",
+                        type: "string",
+                        label: "Channel",
+                    },
+                    {
+                        name: "text",
+                        type: "string",
+                        label: "Text",
+                    },
+                ],
+                description: "Send a message to a channel",
+                componentType: "action",
+                stash: "optional",
+                annotations: {
+                    destructiveHint: true,
+                    idempotentHint: true,
+                    openWorldHint: true,
+                    readOnlyHint: true,
+                    title: "title",
+                },
+            },
+        });
+    });
+
+    test("retrieve (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/connect/project_id/actions/component_id")
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.actions.retrieve("component_id");
+        }).rejects.toThrow(Pipedream.BadRequestError);
+    });
+
+    test("retrieve (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/connect/project_id/actions/component_id")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.actions.retrieve("component_id");
+        }).rejects.toThrow(Pipedream.UnauthorizedError);
+    });
+
+    test("retrieve (4)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/connect/project_id/actions/component_id")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.actions.retrieve("component_id");
+        }).rejects.toThrow(Pipedream.NotFoundError);
+    });
+
+    test("retrieve (5)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/connect/project_id/actions/component_id")
+            .respondWith()
+            .statusCode(429)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.actions.retrieve("component_id");
+        }).rejects.toThrow(Pipedream.TooManyRequestsError);
+    });
+
+    test("retrieve (6)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/connect/project_id/actions/component_id")
+            .respondWith()
+            .statusCode(500)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.actions.retrieve("component_id");
+        }).rejects.toThrow(Pipedream.InternalServerError);
+    });
+
+    test("retrieve (7)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/connect/project_id/actions/component_id")
+            .respondWith()
+            .statusCode(502)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.actions.retrieve("component_id");
+        }).rejects.toThrow(Pipedream.BadGatewayError);
+    });
+
+    test("retrieve (8)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "project_id",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+
+        const rawResponseBody = { error: "error" };
+
+        server
+            .mockEndpoint()
+            .get("/v1/connect/project_id/actions/component_id")
+            .respondWith()
+            .statusCode(503)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.actions.retrieve("component_id");
+        }).rejects.toThrow(Pipedream.ServiceUnavailableError);
     });
 });
