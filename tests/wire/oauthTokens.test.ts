@@ -84,7 +84,7 @@ describe("OauthTokensClient", () => {
             environment: server.baseUrl,
         });
         const rawRequestBody = { grant_type: "client_credentials", client_id: "client_id" };
-        const rawResponseBody = { error: "error" };
+        const rawResponseBody = { key: "value" };
 
         server
             .mockEndpoint()

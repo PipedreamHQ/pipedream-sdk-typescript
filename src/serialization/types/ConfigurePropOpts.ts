@@ -22,6 +22,7 @@ export const ConfigurePropOpts: core.serialization.ObjectSchema<
         core.serialization.record(core.serialization.string(), core.serialization.unknown()).optional(),
     ),
     query: core.serialization.string().optional(),
+    platformVersion: core.serialization.property("platform_version", core.serialization.string().optional()),
 });
 
 export declare namespace ConfigurePropOpts {
@@ -36,5 +37,6 @@ export declare namespace ConfigurePropOpts {
         page?: number | null;
         prev_context?: Record<string, unknown> | null;
         query?: string | null;
+        platform_version?: string | null;
     }
 }

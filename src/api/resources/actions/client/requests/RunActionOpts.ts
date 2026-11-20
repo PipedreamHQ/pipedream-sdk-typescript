@@ -20,4 +20,8 @@ export interface RunActionOpts {
     /** The ID for dynamic props */
     dynamicPropsId?: string;
     stashId?: Pipedream.RunActionOptsStashId;
+    /** Pin a later platform version for the execution runtime. Honored only when strictly later than the current default. */
+    platformVersion?: string;
+    /** Enable verbose debug logging for this execution. Defaults to false. */
+    debug?: boolean;
 }

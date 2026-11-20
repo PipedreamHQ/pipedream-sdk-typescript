@@ -26,6 +26,8 @@ describe("ProjectsClient", () => {
                     name: "name",
                     app_name: "app_name",
                     support_email: "support_email",
+                    allowed_email_domains: ["allowed_email_domains"],
+                    skip_missing_email: true,
                     connect_require_key_auth_test: true,
                 },
             ],
@@ -47,6 +49,8 @@ describe("ProjectsClient", () => {
                     name: "name",
                     appName: "app_name",
                     supportEmail: "support_email",
+                    allowedEmailDomains: ["allowed_email_domains"],
+                    skipMissingEmail: true,
                     connectRequireKeyAuthTest: true,
                 },
             ],
@@ -144,6 +148,8 @@ describe("ProjectsClient", () => {
             name: "name",
             app_name: "app_name",
             support_email: "support_email",
+            allowed_email_domains: ["allowed_email_domains"],
+            skip_missing_email: true,
             connect_require_key_auth_test: true,
         };
 
@@ -164,6 +170,8 @@ describe("ProjectsClient", () => {
             name: "name",
             appName: "app_name",
             supportEmail: "support_email",
+            allowedEmailDomains: ["allowed_email_domains"],
+            skipMissingEmail: true,
             connectRequireKeyAuthTest: true,
         });
     });
@@ -217,6 +225,8 @@ describe("ProjectsClient", () => {
             name: "name",
             app_name: "app_name",
             support_email: "support_email",
+            allowed_email_domains: ["allowed_email_domains"],
+            skip_missing_email: true,
             connect_require_key_auth_test: true,
         };
 
@@ -234,6 +244,8 @@ describe("ProjectsClient", () => {
             name: "name",
             appName: "app_name",
             supportEmail: "support_email",
+            allowedEmailDomains: ["allowed_email_domains"],
+            skipMissingEmail: true,
             connectRequireKeyAuthTest: true,
         });
     });
@@ -331,6 +343,8 @@ describe("ProjectsClient", () => {
             name: "name",
             app_name: "app_name",
             support_email: "support_email",
+            allowed_email_domains: ["allowed_email_domains"],
+            skip_missing_email: true,
             connect_require_key_auth_test: true,
         };
 
@@ -349,11 +363,71 @@ describe("ProjectsClient", () => {
             name: "name",
             appName: "app_name",
             supportEmail: "support_email",
+            allowedEmailDomains: ["allowed_email_domains"],
+            skipMissingEmail: true,
             connectRequireKeyAuthTest: true,
         });
     });
 
     test("update (2)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "projectId",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .patch("/v1/connect/projects/project_id")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.projects.update("project_id");
+        }).rejects.toThrow(Pipedream.BadRequestError);
+    });
+
+    test("update (3)", async () => {
+        const server = mockServerPool.createServer();
+        mockOAuth(server);
+
+        const client = new PipedreamClient({
+            maxRetries: 0,
+            projectId: "projectId",
+            clientId: "client_id",
+            clientSecret: "test_client_secret",
+            projectEnvironment: "test",
+            environment: server.baseUrl,
+        });
+        const rawRequestBody = {};
+        const rawResponseBody = { key: "value" };
+
+        server
+            .mockEndpoint()
+            .patch("/v1/connect/projects/project_id")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(422)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.projects.update("project_id");
+        }).rejects.toThrow(Pipedream.UnprocessableEntityError);
+    });
+
+    test("update (4)", async () => {
         const server = mockServerPool.createServer();
         mockOAuth(server);
 

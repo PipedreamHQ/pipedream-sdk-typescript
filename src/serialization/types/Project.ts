@@ -3,6 +3,7 @@
 import type * as Pipedream from "../../api/index.js";
 import * as core from "../../core/index.js";
 import type * as serializers from "../index.js";
+import { AllowedEmailDomains } from "./AllowedEmailDomains.js";
 
 export const Project: core.serialization.ObjectSchema<serializers.Project.Raw, Pipedream.Project> =
     core.serialization.object({
@@ -10,6 +11,8 @@ export const Project: core.serialization.ObjectSchema<serializers.Project.Raw, P
         name: core.serialization.string(),
         appName: core.serialization.property("app_name", core.serialization.string().optional()),
         supportEmail: core.serialization.property("support_email", core.serialization.string().optional()),
+        allowedEmailDomains: core.serialization.property("allowed_email_domains", AllowedEmailDomains.optional()),
+        skipMissingEmail: core.serialization.property("skip_missing_email", core.serialization.boolean().optional()),
         connectRequireKeyAuthTest: core.serialization.property(
             "connect_require_key_auth_test",
             core.serialization.boolean().optional(),
@@ -22,6 +25,8 @@ export declare namespace Project {
         name: string;
         app_name?: string | null;
         support_email?: string | null;
+        allowed_email_domains?: (AllowedEmailDomains.Raw | undefined) | null;
+        skip_missing_email?: boolean | null;
         connect_require_key_auth_test?: boolean | null;
     }
 }
