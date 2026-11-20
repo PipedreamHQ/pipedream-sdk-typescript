@@ -20,7 +20,7 @@ export interface ActionsListRequest {
     before?: string;
     /** The maximum number of results to return */
     limit?: number;
-    /** A search query to filter the actions */
+    /** A full-text search query matched against the name, key and description of the actions */
     q?: string;
     /** The ID or name slug of the app to filter the actions */
     app?: string;
